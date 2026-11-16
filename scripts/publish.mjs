@@ -14,7 +14,7 @@ try {
   } });
   const config = await loadConfig();
   await stat('site/index.html');
-  const allowed = new Set(['index.html', '404.html', 'app.js', 'style.css', 'results.json']);
+  const allowed = new Set(['index.html', '404.html', 'app.js', 'style.css', 'results.json', 'transformer.svg']);
   const entries = await readdir('site');
   if (entries.some(entry => !allowed.has(entry))) throw new Error('Unexpected site file; refusing to publish unreviewed content.');
   staging = await mkdtemp(path.join(tmpdir(), 'ai-basics-publish-'));

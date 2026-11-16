@@ -29,4 +29,9 @@ pre.settings { background: #f2f5f8; padding: 12px; font: 12px/1.4 ui-monospace, 
 a { color: #136c74; font-size: 13px; }
 footer { padding: 18px 36px; font-size: 12px; color: #526c7e; }
 .error { color: #a32121; }
+.architecture { margin: 0 0 20px; }
+.architecture img { display: block; width: 100%; max-height: 620px; object-fit: contain; }
+.evidence-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 18px; overflow-wrap: anywhere; }
+.evidence-table th, .evidence-table td { border: 1px solid #d5e0e7; padding: 6px; text-align: left; }
+.evidence-table th { background: #def2ed; }
 @media (max-width: 850px) { .layout, .comparison { grid-template-columns: 1fr; } nav { display: flex; overflow: auto; } nav button { min-width: 180px; } main { padding: 18px; } }

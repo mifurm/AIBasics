@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title description">
+  <title id="title">Lab 00: a tiny decoder-only transformer</title>
+  <desc id="description">Word tokens become IDs and eight-dimensional token plus position vectors. One pre-normalized block applies single-head causal self-attention with a residual connection, then a feed-forward network with a second residual. Final normalization and a vocabulary projection produce nine next-token probabilities. Greedy selection appends a token and repeats. Only the separate training loop updates weights.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#19777b"/></marker>
+    <marker id="trainArrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#a85c10"/></marker>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #152c40; text-anchor: middle; font-size: 19px; }
+      .title { font-size: 30px; font-weight: 700; }
+      .subtitle { font-size: 17px; }
+      .heading { font-size: 20px; font-weight: 700; }
+      .small { font-size: 16px; }
+      .box { fill: #fff; stroke: #19777b; stroke-width: 2; rx: 12; }
+      .layer { fill: #def2ed; stroke: #19777b; stroke-width: 2; rx: 9; }
+      .flow { fill: none; stroke: #19777b; stroke-width: 3; marker-end: url(#arrow); }
+      .skip { fill: none; stroke: #526c7e; stroke-width: 2; }
+    </style>
+  </defs>
+  <rect width="1400" height="920" fill="#f2f5f8"/>
+  <text class="title" x="700" y="36">How a tiny transformer predicts the next token</text>
+  <text class="subtitle" x="700" y="64">The actual Lab 00 model: 1 block | 1 attention head | width 8 | vocabulary 9 | 833 learned parameters</text>
+
+  <rect class="box" x="20" y="170" width="180" height="160"/>
+  <text class="heading" x="110" y="204">1. Tokenize</text>
+  <text x="110" y="240">the robot is</text>
+  <text x="110" y="273">IDs: 1, 2, 4</text>
+  <text class="small" x="110" y="306">Word-level toy tokens</text>
+  <path class="flow" d="M200 245H230"/>
+
+  <rect class="box" x="230" y="170" width="220" height="160"/>
+  <text class="heading" x="340" y="204">2. Embed + position</text>
+  <text x="340" y="240">Token vector</text>
+  <text x="340" y="273">+ position vector</text>
+  <text class="small" x="340" y="306">8 numbers per token</text>
+  <rect x="490" y="110" width="480" height="580" rx="18" fill="#e5ecf1" stroke="#526c7e" stroke-width="2"/>
+  <text class="heading" x="730" y="145">3. One decoder block</text>
+  <path class="flow" d="M450 245H505V202H525"/>
+  <rect class="layer" x="525" y="180" width="400" height="45"/>
+  <text x="725" y="209">LayerNorm</text>
+  <path class="flow" d="M725 225V250"/>
+  <rect class="layer" x="525" y="250" width="400" height="85"/>
+  <text class="heading" x="725" y="280">Single-head causal self-attention</text>
+  <text class="small" x="725" y="307">Q, K, V from learned linear projections</text>
+  <text class="small" x="725" y="327">softmax(Q K^T / sqrt(8) + mask) V -&gt; Wout</text>
+  <path class="flow" d="M725 335V355"/>
+  <rect class="box" x="525" y="355" width="400" height="45"/>
+  <text x="725" y="385">Add original input (residual)</text>
+  <path class="skip" d="M470 245V155H945V377H925"/>
+  <text class="small" x="1120" y="128">Mask: future scores = -infinity</text>
+  <text class="small" x="1120" y="150">Future attention weights = 0</text>
+  <path class="flow" d="M725 400V425"/>
+  <rect class="layer" x="525" y="425" width="400" height="45"/>
+  <text x="725" y="455">LayerNorm</text>
+  <path class="flow" d="M725 470V490"/>
+  <rect class="layer" x="525" y="490" width="400" height="65"/>
+  <text class="heading" x="725" y="518">Feed-forward network</text>
+  <text class="small" x="725" y="543">Linear 8 -&gt; 16 | ReLU | Linear 16 -&gt; 8</text>
+  <path class="flow" d="M725 555V590"/>
+  <rect class="box" x="525" y="590" width="400" height="45"/>
+  <text x="725" y="620">Add sublayer input (residual)</text>
+  <path class="skip" d="M725 412H945V612H925"/>
+  <path class="flow" d="M725 635V711H982V275H1000"/>
+
+  <rect class="box" x="1000" y="180" width="370" height="195"/>
+  <text class="heading" x="1185" y="215">4. Predict at every position</text>
+  <text x="1185" y="250">Final LayerNorm</text>
+  <text x="1185" y="282">Linear projection -&gt; 9 logits</text>
+  <text x="1185" y="314">Softmax -&gt; probabilities</text>
+  <text class="small" x="1185" y="349">Generation uses the last position</text>
+  <path class="flow" d="M1185 375V450"/>
+  <rect class="box" x="1000" y="450" width="370" height="120"/>
+  <text class="heading" x="1185" y="485">5. Choose + append</text>
+  <text x="1185" y="518">Greedy highest-probability token</text>
+  <text class="small" x="1185" y="549">Stop at &lt;eos&gt; or the token limit</text>
+  <path class="flow" d="M1370 510H1385V85H110V170"/>
+  <text class="small" x="330" y="106">Repeat with the growing context; weights stay fixed</text>
+
+  <rect x="20" y="745" width="1350" height="145" rx="14" fill="#fff3df" stroke="#a85c10" stroke-width="2"/>
+  <text class="heading" x="695" y="779">Separate training loop: this is when weights change</text>
+  <text x="230" y="821">Two fictional sentences</text>
+  <path d="M380 816H430" fill="none" stroke="#a85c10" stroke-width="3" marker-end="url(#trainArrow)"/>
+  <text x="590" y="821">Next-token targets + loss</text>
+  <path d="M750 816H800" fill="none" stroke="#a85c10" stroke-width="3" marker-end="url(#trainArrow)"/>
+  <text x="1080" y="821">Backprop + Adam update all parameters</text>
+  <text class="small" x="695" y="865">Teaching model, not GPT internals. Tiny-data memorization is not general language understanding.</text>
+</svg>

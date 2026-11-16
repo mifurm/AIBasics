@@ -1,13 +1,14 @@
-# AI Basics: twenty-eight small classroom labs
+# AI Basics: twenty-nine small classroom labs
 
-For beginners; English; JavaScript/Node.js 22+. Allow 200-230 minutes for all labs,
-or teach labs 1-7, 8-12, 13-18, 19-24, and 25-28 in five lessons. Every lab has a
+For beginners; English; JavaScript/Node.js 22+. Allow 210-240 minutes for all labs.
+Start with lab 00, then teach labs 1-7, 8-12, 13-18, 19-24, and 25-28 in five lessons. Every lab has a
 script, a teacher-friendly README, and real Azure outputs after execution.
 
 ## Learning path
 
 | Lab | Topic | Time |
 | --- | --- | --- |
+| [00](labs/00-tiny-transformer/readme.md) | Train and inspect a tiny causal transformer | 10 min |
 | [01](labs/01-specificity/readme.md) | Specific prompts | 5 min |
 | [02](labs/02-roles/readme.md) | System/user roles | 5 min |
 | [03](labs/03-few-shot/readme.md) | Examples without retraining | 5 min |
@@ -36,6 +37,35 @@ script, a teacher-friendly README, and real Azure outputs after execution.
 | [26](labs/26-agent-approval/readme.md) | Exact-action approval | 8 min |
 | [27](labs/27-agent-verification/readme.md) | Independent result verification | 8 min |
 | [28](labs/28-agent-trace/readme.md) | Trace-based evaluation | 8 min |
+
+## Start with the simplest model: Lab 00
+
+[Lab 00](labs/00-tiny-transformer/readme.md) trains a real 833-parameter
+decoder-only transformer from seeded initialization on two fictional sentences.
+One block and one attention head expose token/position embeddings, causal
+attention, normalization, residual paths, a feed-forward network, logits, and
+next-token probabilities. Three experiments show training versus prompting,
+the causal boundary with an unmasked control, and one-token-at-a-time generation.
+Students inspect measured tables and vectors rather than implement matrix math.
+
+The [architecture poster](web/transformer.svg) and a Mermaid version in the lab
+README explain the same implemented architecture. It is not GPT internals or a
+useful general language model. The nine-token vocabulary is deliberately tiny
+and word-based, unlike typical subword LLM vocabularies.
+
+```sh
+# CPU-only local preview: no Azure login, API call, or extra dependency.
+npm run demo -- 00-tiny-transformer
+
+# After shared Azure setup, deploy the current source and train inside Azure.
+npm run deploy:agents -- --confirm-costs
+npm run azure:agents -- 00-tiny-transformer
+```
+
+No new Azure infrastructure is required. Lab 00 uses zero model API requests;
+Azure CPU execution and monitoring still incur charges. Training-token counts
+are recorded separately from API billing usage. Its ID is 00, so existing labs
+01-28 keep their identifiers in the gallery, scripts, deck, and recordings.
 
 ## Agent primitives: a goal, tools, observations, and boundaries
 
@@ -296,7 +326,7 @@ npm run publish -- --media-directory /ABSOLUTE/SESSION --include-deck
 npm run verify -- --media
 ```
 
-When recordings are available, `deliverables/AI-Basics.pptx` embeds all twenty-eight MP4s
+When recordings are available, `deliverables/AI-Basics.pptx` embeds all twenty-nine MP4s
 and includes public recording links for viewers that cannot play embedded media.
 To rebuild the current clearly marked draft: `npm run deck -- --allow-missing-recordings`. Desktop PowerPoint is the
 recommended playback application. `deliverables/outcomes.md` records actual
@@ -312,7 +342,7 @@ a precise dollar limit and reaching it can prevent result capture. Download
 evidence before retention expires. No automatic paid tier upgrade is performed.
 Static Web Apps uses its Free tier and its usage limits.
 The original 18-lab run has 48 planned API requests; the ten agent labs add at
-most 142 (at most 190 together). Actual counts are in saved usage. A filter
+most 142 (at most 190 together). Lab 00 adds no model API requests. Actual counts are in saved usage. A filter
 rejection stops the
 runner early; the instructor can execute remaining labs individually). Visible-output caps are usually
 320 tokens; the reasoning request has a 1,400-token total completion cap.
@@ -344,11 +374,17 @@ The original eighteen-lab release checked focused tests, both original Bicep
 builds, deployed JSON equality, all 43 displayed variants, and the downloaded
 PowerPoint's SHA-256. The agent extension adds focused runtime/identity/result
 transport tests, two more Bicep templates, and Azure-job execution evidence.
-The recorded agent run completed all 21 variants inside Azure: 62 chat requests,
+The recorded agent release completed all 21 variants inside Azure: 62 chat requests,
 32,571 reported tokens, and 78 passing behavior checks. All 23 automated tests,
 all four Bicep builds, the 28-lab deployed manifest, browser navigation/stop
 labelling/trace rubric, and the published draft deck's SHA-256 were verified.
-The rebuilt draft has 34 slides; token counts describe this run, not future cost.
+That release's draft had 34 slides; token counts describe that run, not future cost.
+Lab 00 adds focused numerical-gradient, causal-mask, actual-learning, generation,
+and input-boundary tests. Its measured computation is not counted as model API usage.
+All three introductory variants ran in the existing Azure job and passed eight
+behavior checks. The current suite passes 27 tests; all 29 deployed lab records,
+the architecture SVG, and the 35-slide draft deck were verified. Browser checks
+confirmed the introductory tables, diagram rendering, and preserved lab IDs.
 
 `npm run verify` checks every saved/deployed lab against the current evaluator.
 The draft deck includes one slide per lab and explicit recording-pending

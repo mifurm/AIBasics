@@ -23,5 +23,6 @@ await writeFile('site/results.json', JSON.stringify(records, null, 2) + '\n');
 await copyFile('web/index.html', 'site/index.html');
 await copyFile('web/app.js', 'site/app.js');
 await copyFile('web/style.css', 'site/style.css');
+await copyFile('web/transformer.svg', 'site/transformer.svg');
 await writeFile('site/404.html', '<!doctype html><html lang="en"><title>Not found</title><a href="/">Return to AI Basics</a></html>\n');
 console.log(`Built gallery with ${records.length} real Azure lab records.`);

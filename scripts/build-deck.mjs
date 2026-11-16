@@ -71,8 +71,8 @@ function link(s, text, url, x, y, w = 7) {
 {
   const s = slide('Predict, run, inspect, discuss');
   const split = Math.ceil(labs.length / 2);
-  body(s, labs.slice(0, split).map((lab, i) => `${String(i + 1).padStart(2, '0')}  ${lab.title}`).join('\n'), 0.7, 1.8, 5.9, 4.9, 16);
-  body(s, labs.slice(split).map((lab, i) => `${String(i + split + 1).padStart(2, '0')}  ${lab.title}`).join('\n'), 6.9, 1.8, 5.8, 4.9, 16);
+  body(s, labs.slice(0, split).map(lab => `${lab.id.slice(0, 2)}  ${lab.title}`).join('\n'), 0.7, 1.8, 5.9, 4.9, 16);
+  body(s, labs.slice(split).map(lab => `${lab.id.slice(0, 2)}  ${lab.title}`).join('\n'), 6.9, 1.8, 5.8, 4.9, 16);
   s.addNotes('For every lab: predict before the video, inspect actual prompts and output, discuss the caution, then change one variable. The gallery includes a retained failed citation attempt and an Azure-blocked request.');
 }
 const report = [
@@ -92,11 +92,12 @@ for (let i = 0; i < labs.length; i++) {
   if (media && (await stat(media)).size === 0) throw new Error(`Empty recording: ${media}`);
   const tokens = record.results.reduce((sum, result) => sum + (result.usage?.total_tokens ?? 0) + (result.toolRequestUsage?.total_tokens ?? 0) +
     (result.extraRequests ?? []).reduce((extraSum, entry) => extraSum + entry.usage.total_tokens, 0), 0);
-  const requests = record.results.reduce((sum, result) => sum + (result.toolTrace ? 2 : 1) + (result.extraRequests?.length ?? 0), 0);
+  const requests = record.results.reduce((sum, result) => sum +
+    (result.kind === 'computation' ? 0 : (result.toolTrace ? 2 : 1) + (result.extraRequests?.length ?? 0)), 0);
   totalTokens += tokens;
   representedRequests += requests;
-  report.push(`| ${i + 1}. ${lab.title} | ${record.status ?? 'completed'} | ${requests} | ${tokens}${record.status === 'blocked' ? ' (usage not reported)' : ''} |`);
-  const s = slide(lab.title, `LAB ${String(i + 1).padStart(2, '0')} | ${lab.minutes} MINUTES`);
+  report.push(`| ${lab.id.slice(0, 2)}. ${lab.title} | ${record.status ?? 'completed'} | ${requests} | ${tokens}${record.status === 'blocked' ? ' (usage not reported)' : ''} |`);
+  const s = slide(lab.title, `LAB ${lab.id.slice(0, 2)} | ${lab.minutes} MINUTES`);
   body(s, lab.concept, 0.6, 1.7, 3.5, 1.3, 18);
   body(s, `ASK THE CLASS\n${lab.question}`, 0.6, 3.25, 3.5, 1.4, 16);
   body(s, `CAUTION\n${lab.caveat}`, 0.6, 4.8, 3.5, 1.7, 13);
@@ -106,12 +107,13 @@ for (let i = 0; i < labs.length; i++) {
   } else {
     s.addShape(pptx.ShapeType.roundRect, { x: 4.5, y: 1.7, w: 8.2, h: 4.61, fill: { color: C.white }, line: { color: 'D5E0E7' } });
     const last = record.results.at(-1);
-    body(s, 'ACTUAL AZURE OUTCOME', 4.8, 1.95, 7.6, 0.4, 14);
+    body(s, last.kind === 'computation' ? 'MEASURED TEACHING-MODEL COMPUTATION' : 'ACTUAL AZURE OUTCOME', 4.8, 1.95, 7.6, 0.4, 14);
     body(s, last.status === 'blocked' ? `HTTP ${last.error.status}: ${last.error.code}\nNo model answer was generated.\nThe second variant was not executed.` :
       last.output.length > 650 ? `${last.output.slice(0, 650)}\n[Excerpt: full output in the gallery]` : last.output,
       4.8, 2.55, 7.6, 2.9, 16);
     body(s, 'Recording pending: integrated browser was hidden and the user was unavailable to reveal it.', 4.8, 5.65, 7.6, 0.48, 11);
   }
+  if (lab.diagram) link(s, 'Open the transformer architecture', `${config.website}${lab.diagram}`, 0.6, 6.5, 3.8);
   link(s, 'Explore prompts and all outputs', `${config.website}#${lab.id}`, 8.55, 6.5, 4.15);
   s.addNotes([
     `Run: node labs/${lab.id}/demo.mjs`, `Try it: ${lab.exercise}`,
@@ -119,17 +121,19 @@ for (let i = 0; i < labs.length; i++) {
     lab.id === '09-grounding' ? 'First attempt omitted the citation and failed evaluation; retained separately and in the gallery. When recorded, the video includes that actual first attempt alongside the refined result.' : '',
     record.status === 'blocked' ? 'Azure returned HTTP 400 content_filter; no model completion and no second variant. No filter bypass attempted.' : '',
     ...record.results.map(result => result.status === 'blocked' ? result.error.message :
-      `${result.label}: ${result.actualModel}; ${result.latencyMs} ms; ${result.usage.total_tokens} tokens. Actual output:\n${result.output}`),
+      `${result.label}: ${result.actualModel}; ${result.latencyMs} ms; ${result.kind === 'computation' ? 'no model API requests' : `${result.usage.total_tokens} API tokens`}. Actual output:\n${result.output}`),
   ].filter(Boolean).join('\n\n'));
-  detailed.push(`\n## ${i + 1}. ${lab.title}\n\n${lab.concept}\n\nRecorded: ${record.recordedAt}\n\nCaution: ${lab.caveat}\n`);
+  detailed.push(`\n## ${lab.id.slice(0, 2)}. ${lab.title}\n\n${lab.concept}\n\nRecorded: ${record.recordedAt}\n\nCaution: ${lab.caveat}\n`);
   for (const result of record.results) {
     detailed.push(`\n### ${result.label}\n`);
     if (result.status === 'blocked') {
       detailed.push(`\n**Blocked**: ${result.error.message}\n\nNo completion was generated. Remaining variants were not executed.\n`);
     } else {
-      detailed.push(`\nModel: ${result.actualModel}; latency: ${result.latencyMs} ms; finish: ${result.finishReason}.\n\nUsage: \`${JSON.stringify(result.usage)}\`\n\n\`\`\`text\n${result.output}\n\`\`\`\n`);
+      detailed.push(`\nModel: ${result.actualModel}; latency: ${result.latencyMs} ms; finish: ${result.finishReason}.\n\n` +
+        (result.kind === 'computation' ? 'No model API requests. Toy training tokens are not API billing tokens.\n' : `Usage: \`${JSON.stringify(result.usage)}\`\n`) +
+        `\n\`\`\`text\n${result.output}\n\`\`\`\n`);
       if (result.toolTrace) detailed.push(`\nTool trace: \`${JSON.stringify(result.toolTrace)}\`\n\nAdditional first-request usage: \`${JSON.stringify(result.toolRequestUsage)}\`\n`);
-      for (const key of ['memoryTrace', 'summaryTrace', 'toolSteps', 'retrievalTrace', 'agentTrace', 'extraRequests']) {
+      for (const key of ['computationTrace', 'memoryTrace', 'summaryTrace', 'toolSteps', 'retrievalTrace', 'agentTrace', 'extraRequests']) {
         if (result[key]) detailed.push(`\n${key}:\n\n\`\`\`json\n${JSON.stringify(result[key], null, 2)}\n\`\`\`\n`);
       }
     }

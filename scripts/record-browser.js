@@ -3,7 +3,7 @@
 const storageDirectory = 'STORAGE_DIRECTORY';
 const galleryUrl = 'GALLERY_URL';
 await page.goto(galleryUrl);
-await page.getByRole('heading', { name: 'From vague to useful', exact: true }).waitFor();
+await page.locator('#caseSelect').waitFor();
 if (!(await page.evaluate(() => document.visibilityState === 'visible'))) {
   throw new Error('Reveal the integrated browser before recording.');
 }
@@ -17,7 +17,7 @@ const even = value => Math.max(2, Math.floor(value / 2) * 2);
 const scale = Math.min(1, 1280 / viewport.width);
 for (let index = 0; index < records.length; index++) {
   const lab = records[index];
-  const buttonName = `${String(index + 1).padStart(2, '0')} ${lab.title}`;
+  const buttonName = `${lab.id.slice(0, 2)} ${lab.title}`;
   await page.getByRole('button', { name: buttonName, exact: true }).click();
   await page.getByRole('heading', { name: lab.title, exact: true }).waitFor();
   await page.evaluate(() => scrollTo(0, 0));
@@ -27,7 +27,7 @@ for (let index = 0; index < records.length; index++) {
   });
   try {
     await page.screencast.showActions();
-    await page.screencast.showChapter(`Lab ${index + 1}: ${lab.title}`);
+    await page.screencast.showChapter(`Lab ${lab.id.slice(0, 2)}: ${lab.title}`);
     await page.waitForTimeout(1800);
     for (let variant = 0; variant < lab.results.length; variant++) {
       const result = lab.results[variant];

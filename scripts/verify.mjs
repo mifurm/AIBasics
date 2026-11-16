@@ -24,7 +24,12 @@ for (const lab of labs) {
   } else {
     if (record.results.length !== lab.cases.length) throw new Error(`Missing variants for ${lab.id}`);
     for (const result of record.results) {
-      if (!result.output?.trim() || !result.actualModel || !Number.isInteger(result.usage?.total_tokens)) throw new Error(`Invalid model result in ${lab.id}`);
+      if (!result.output?.trim() || !result.actualModel) throw new Error(`Invalid result in ${lab.id}`);
+      if (result.kind === 'computation') {
+        if (lab.id !== '00-tiny-transformer' || result.usage !== null || result.apiRequests !== 0 || !result.computationTrace) {
+          throw new Error(`Invalid teaching computation evidence in ${lab.id}`);
+        }
+      } else if (!Number.isInteger(result.usage?.total_tokens)) throw new Error(`Invalid API usage in ${lab.id}`);
       for (const extra of result.extraRequests ?? []) {
         if (!extra.model || !Number.isInteger(extra.usage?.total_tokens) || !Number.isInteger(extra.latencyMs)) {
           throw new Error(`Incomplete additional-request usage in ${lab.id}`);

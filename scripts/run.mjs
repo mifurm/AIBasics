@@ -6,9 +6,21 @@ import { multiplyTool, executeMultiply } from '../lib/tools.mjs';
 import { evaluate } from '../lib/evaluate.mjs';
 import { prepareExperiment, finishToolChain } from '../lib/experiments.mjs';
 import { runAgent } from '../lib/agent.mjs';
+import { runTransformerExperiment } from '../lib/transformer-lab.mjs';
 
 export async function runLab(id, session) {
   const lab = getLab(id);
+  if (lab.id === '00-tiny-transformer') {
+    const results = runTransformerExperiment();
+    const observations = evaluate(id, results);
+    const record = { labId: id, recordedAt: new Date().toISOString(), results, observations };
+    await mkdir(new URL('../results/', import.meta.url), { recursive: true });
+    await writeFile(new URL(`../results/${id}.json`, import.meta.url), JSON.stringify(record, null, 2) + '\n');
+    for (const result of results) console.log(`${result.label}\n${result.output}\n`);
+    const failed = observations.filter(check => !check.passed);
+    if (failed.length) throw new Error(`Saved actual computations; checks failed: ${failed.map(check => check.name).join(', ')}`);
+    return record;
+  }
   const config = session?.config ?? await loadConfig();
   const token = session?.token ?? await accessToken(config.subscriptionId);
   const results = [];

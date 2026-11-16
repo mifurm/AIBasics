@@ -9,16 +9,71 @@ function element(tag, text, className) {
   return node;
 }
 
+function evidenceTable(headers, rows) {
+  const table = element('table', undefined, 'evidence-table');
+  const head = element('tr');
+  for (const header of headers) {
+    const cell = element('th', header);
+    cell.scope = 'col';
+    head.append(cell);
+  }
+  const thead = element('thead');
+  thead.append(head);
+  const tbody = element('tbody');
+  for (const row of rows) {
+    const tr = element('tr');
+    for (const value of row) tr.append(element('td', String(value)));
+    tbody.append(tr);
+  }
+  table.append(thead, tbody);
+  return table;
+}
+
+function showComputation(answer, trace) {
+  if (trace.training) {
+    answer.append(element('h3', 'Measured training loss (lower is better)'),
+      evidenceTable(['Update', 'Mean cross-entropy'], trace.training.curve.map(point => [point.step, point.loss.toFixed(5)])));
+    const probes = [{ ...trace.beforeTraining, prefix: 'Before training: robot' }, ...trace.probes];
+    answer.append(element('h3', 'Actual next-token predictions'),
+      evidenceTable(['Context', 'Next token', 'Probability'], probes.flatMap(probe =>
+        probe.distribution.slice(0, 3).map(entry => [probe.prefix, entry.token, `${(100 * entry.probability).toFixed(3)}%`]))));
+  }
+  if (trace.original) {
+    answer.append(element('h3', 'Causal attention: each row reads only itself and earlier columns'),
+      evidenceTable(['Reads from ->', ...trace.original.tokens], trace.original.attention.map((row, i) =>
+        [trace.original.tokens[i], ...row.map((value, j) => j > i ? 'blocked' : value.toFixed(3))])));
+  }
+  if (trace.generation) {
+    answer.append(element('h3', 'One token at a time'),
+      evidenceTable(['Context supplied', 'Token appended', 'Probability'], trace.generation.steps.map(step =>
+        [step.prefix, step.nextToken, `${(100 * step.distribution[0].probability).toFixed(3)}%`])));
+  }
+  const details = element('details');
+  details.append(element('summary', 'Inspect measured vectors, attention, logits, and experiment evidence'),
+    element('pre', JSON.stringify(trace, null, 2), 'settings'));
+  answer.append(details);
+}
+
 function showLab(index, selectedCase = 0) {
   const lab = records[index];
   main.replaceChildren();
   for (const button of nav.querySelectorAll('button')) {
     button.setAttribute('aria-current', String(Number(button.dataset.index) === index));
   }
-  main.append(element('p', `LAB ${String(index + 1).padStart(2, '0')} / ${records.length}  |  ${lab.minutes} MINUTES`, 'eyebrow'));
+  main.append(element('p', `LAB ${lab.id.slice(0, 2)}  |  ${index + 1} OF ${records.length}  |  ${lab.minutes} MINUTES`, 'eyebrow'));
   const heading = element('h2', lab.title);
   heading.id = 'labTitle';
   main.append(heading, element('p', lab.concept, 'concept'));
+  if (lab.diagram) {
+    const figure = element('figure', undefined, 'architecture');
+    const image = element('img');
+    image.src = `./${lab.diagram}`;
+    image.alt = 'Tiny decoder-only transformer: token and position embeddings, one causal attention and feed-forward block with two residual paths, then next-token probabilities and a generation loop. A separate training loop updates weights.';
+    const link = element('a', 'Open the architecture diagram at full size');
+    link.href = image.src;
+    figure.append(image, link);
+    main.append(figure);
+  }
   const label = element('label', 'Prompt variant');
   label.htmlFor = 'caseSelect';
   const select = element('select');
@@ -34,16 +89,23 @@ function showLab(index, selectedCase = 0) {
   const result = lab.results[selectedCase];
   const grid = element('div', undefined, 'comparison');
   const prompt = element('section');
-  prompt.append(element('h3', 'What we sent'), element('pre', result.request.messages.map(message => `${message.role.toUpperCase()}: ${message.content ?? JSON.stringify(message.tool_calls)}`).join('\n\n')));
+  prompt.append(element('h3', result.kind === 'computation' ? 'Experiment' : 'What we sent'),
+    element('pre', result.kind === 'computation' ? result.label :
+      result.request.messages.map(message => `${message.role.toUpperCase()}: ${message.content ?? JSON.stringify(message.tool_calls)}`).join('\n\n')));
   const settings = Object.fromEntries(Object.entries(result.request).filter(([key]) => !['messages', 'model'].includes(key)));
-  prompt.append(element('h3', 'API parameters'), element('pre', JSON.stringify(settings, null, 2), 'settings'));
+  prompt.append(element('h3', result.kind === 'computation' ? 'Teaching model architecture' : 'API parameters'),
+    element('pre', JSON.stringify(result.computationTrace?.architecture ?? settings, null, 2), 'settings'));
   const answer = element('section');
   const output = element('pre', result.status === 'blocked'
     ? `BLOCKED BY AZURE\nHTTP ${result.error.status}: ${result.error.code}\n\n${result.error.message}\n\nNo model answer was generated. The runner stopped; remaining variants were not executed.`
     : result.output, 'output');
   output.id = 'output';
-  answer.append(element('h3', result.outputSource === 'application' ? 'Application-enforced stop (see Azure trace)' : 'What Azure returned'), output);
-  if (result.status !== 'blocked') {
+  answer.append(element('h3', result.kind === 'computation' ? 'Measured teaching-model computation' :
+    result.outputSource === 'application' ? 'Application-enforced stop (see Azure trace)' : 'What Azure returned'), output);
+  if (result.kind === 'computation') {
+    answer.append(element('p', `${result.actualModel} | ${result.latencyMs} ms | No Azure OpenAI API requests. Toy tokens are not API billing tokens.`, 'metrics'));
+    showComputation(answer, result.computationTrace);
+  } else if (result.status !== 'blocked') {
     answer.append(element('p', `${result.actualModel} | ${result.latencyMs} ms | ${result.usage.total_tokens} tokens | finish: ${result.finishReason}`, 'metrics'));
     const reasoningTokens = result.usage.completion_tokens_details?.reasoning_tokens;
     answer.append(element('p', `Input: ${result.usage.prompt_tokens} | Output: ${result.usage.completion_tokens}${reasoningTokens !== undefined ? ` (including ${reasoningTokens} reasoning tokens)` : ''}`, 'metrics'));
@@ -103,7 +165,7 @@ fetch('./results.json').then(response => {
   document.title = `AI Basics | ${records.length} classroom labs`;
   document.querySelector('header p').textContent = `${records.length} small experiments. Real Azure model outputs. No magic.`;
   records.forEach((lab, i) => {
-    const button = element('button', `${String(i + 1).padStart(2, '0')} ${lab.title}`);
+    const button = element('button', `${lab.id.slice(0, 2)} ${lab.title}`);
     button.dataset.index = String(i);
     button.addEventListener('click', () => showLab(i));
     nav.append(button);
