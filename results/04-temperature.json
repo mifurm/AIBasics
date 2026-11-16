@@ -1,0 +1,276 @@
+{
+  "labId": "04-temperature",
+  "recordedAt": "2026-11-14T16:47:14.058Z",
+  "results": [
+    {
+      "label": "Temperature 0, trial 1",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Invent one playful two-word name for a school robot club. Return only the name."
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 0
+      },
+      "output": "Circuit Sprouts",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 3,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 6,
+          "engine_ttft_ms": 26,
+          "engine_ttlt_ms": 48,
+          "pre_inference_ms": 63,
+          "service_tbt_ms": 6,
+          "service_ttft_ms": 797,
+          "service_ttlt_ms": 816,
+          "user_visible_ttft_ms": 734
+        },
+        "prompt_tokens": 24,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 27
+      },
+      "latencyMs": 998
+    },
+    {
+      "label": "Temperature 0, trial 2",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Invent one playful two-word name for a school robot club. Return only the name."
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 0
+      },
+      "output": "Circuit Sprouts",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 3,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 6,
+          "engine_ttft_ms": 31,
+          "engine_ttlt_ms": 55,
+          "pre_inference_ms": 94,
+          "service_tbt_ms": 6,
+          "service_ttft_ms": 432,
+          "service_ttlt_ms": 449,
+          "user_visible_ttft_ms": 338
+        },
+        "prompt_tokens": 24,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 27
+      },
+      "latencyMs": 630
+    },
+    {
+      "label": "Temperature 0, trial 3",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Invent one playful two-word name for a school robot club. Return only the name."
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 0
+      },
+      "output": "Circuit Sprouts",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 3,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 6,
+          "engine_ttft_ms": 30,
+          "engine_ttlt_ms": 54,
+          "pre_inference_ms": 66,
+          "service_tbt_ms": 7,
+          "service_ttft_ms": 403,
+          "service_ttlt_ms": 423,
+          "user_visible_ttft_ms": 336
+        },
+        "prompt_tokens": 24,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 27
+      },
+      "latencyMs": 578
+    },
+    {
+      "label": "Temperature 1.2, trial 1",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Invent one playful two-word name for a school robot club. Return only the name."
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 1.2
+      },
+      "output": "RoboRuckus",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 5,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 6,
+          "engine_ttft_ms": 32,
+          "engine_ttlt_ms": 71,
+          "pre_inference_ms": 65,
+          "service_tbt_ms": 6,
+          "service_ttft_ms": 407,
+          "service_ttlt_ms": 435,
+          "user_visible_ttft_ms": 342
+        },
+        "prompt_tokens": 24,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 29
+      },
+      "latencyMs": 598
+    },
+    {
+      "label": "Temperature 1.2, trial 2",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Invent one playful two-word name for a school robot club. Return only the name."
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 1.2
+      },
+      "output": "Byte Bunch",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 3,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 7,
+          "engine_ttft_ms": 30,
+          "engine_ttlt_ms": 59,
+          "pre_inference_ms": 96,
+          "service_tbt_ms": 8,
+          "service_ttft_ms": 426,
+          "service_ttlt_ms": 450,
+          "user_visible_ttft_ms": 330
+        },
+        "prompt_tokens": 24,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 27
+      },
+      "latencyMs": 694
+    },
+    {
+      "label": "Temperature 1.2, trial 3",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Invent one playful two-word name for a school robot club. Return only the name."
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 1.2
+      },
+      "output": "Gearheads Anonymous",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 3,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 6,
+          "engine_ttft_ms": 33,
+          "engine_ttlt_ms": 58,
+          "pre_inference_ms": 59,
+          "service_tbt_ms": 7,
+          "service_ttft_ms": 387,
+          "service_ttlt_ms": 410,
+          "user_visible_ttft_ms": 329
+        },
+        "prompt_tokens": 24,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 27
+      },
+      "latencyMs": 587
+    }
+  ],
+  "observations": [
+    {
+      "name": "Unique outputs in Temperature 0",
+      "passed": true,
+      "detail": "1 / 3. Observation only; no diversity threshold."
+    },
+    {
+      "name": "Unique outputs in Temperature 1.2",
+      "passed": true,
+      "detail": "3 / 3. Observation only; no diversity threshold."
+    }
+  ]
+}

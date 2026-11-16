@@ -1,0 +1,93 @@
+{
+  "labId": "12-models",
+  "recordedAt": "2026-11-14T16:48:15.270Z",
+  "results": [
+    {
+      "label": "GPT-4o: general chat",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Schedule a robot demo, plant demo, and art demo in slots 1, 2, 3. Robot must immediately follow plant. Art must not be first. Give the unique schedule and a brief constraint check in at most 70 words."
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 0
+      },
+      "output": "**Schedule:**  \nSlot 1: Plant Demo  \nSlot 2: Robot Demo  \nSlot 3: Art Demo  \n\n**Constraint Check:**  \n- Robot immediately follows Plant: ✅ (Robot is in Slot 2 after Plant in Slot 1)  \n- Art is not first: ✅ (Art is in Slot 3)  \n- Unique schedule: ✅ (Only one arrangement satisfies all constraints).",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 81,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 6,
+          "engine_ttft_ms": 32,
+          "engine_ttlt_ms": 509,
+          "pre_inference_ms": 82,
+          "service_tbt_ms": 6,
+          "service_ttft_ms": 417,
+          "service_ttlt_ms": 889,
+          "user_visible_ttft_ms": 335
+        },
+        "prompt_tokens": 57,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 138
+      },
+      "latencyMs": 1243
+    },
+    {
+      "label": "GPT-5-mini: reasoning",
+      "request": {
+        "model": "gpt-5-mini",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Schedule a robot demo, plant demo, and art demo in slots 1, 2, 3. Robot must immediately follow plant. Art must not be first. Give the unique schedule and a brief constraint check in at most 70 words."
+          }
+        ],
+        "max_completion_tokens": 1400,
+        "reasoning_effort": "low"
+      },
+      "output": "Schedule: Slot 1 — Plant; Slot 2 — Robot; Slot 3 — Art.\n\nConstraint check: Robot immediately follows Plant (slots 1→2). Art is not first (slot 3). Plant cannot be in slot 2 or 3 because Robot must follow it and Art cannot be first, so this is the unique valid schedule.",
+      "actualModel": "gpt-5-mini-2025-08-07",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 209,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 128,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 7,
+          "engine_ttft_ms": 34,
+          "engine_ttlt_ms": 1666,
+          "pre_inference_ms": 107,
+          "service_tbt_ms": 7,
+          "service_ttft_ms": 391,
+          "service_ttlt_ms": 2056,
+          "user_visible_ttft_ms": 284
+        },
+        "prompt_tokens": 56,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 265
+      },
+      "latencyMs": 2755
+    }
+  ],
+  "observations": []
+}

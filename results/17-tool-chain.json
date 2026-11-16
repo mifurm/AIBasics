@@ -1,0 +1,259 @@
+{
+  "labId": "17-tool-chain",
+  "recordedAt": "2026-11-14T20:04:35.118Z",
+  "results": [
+    {
+      "label": "Catalog lookup -> multiplication -> answer",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "First look up the robot kit unit price in the catalog, then multiply the returned price by the requested quantity. Never guess prices. Give one final sentence."
+          },
+          {
+            "role": "user",
+            "content": "What is the total for 4 robot kits in fictional credits?"
+          }
+        ],
+        "max_tokens": 320,
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "lookup_price",
+              "description": "Look up a classroom item in a read-only fictional catalog.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string",
+                    "enum": [
+                      "robot kit"
+                    ]
+                  }
+                },
+                "required": [
+                  "item"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "multiply",
+              "description": "Multiply a quantity by a unit price in fictional credits.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "quantity": {
+                    "type": "integer"
+                  },
+                  "unitPrice": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "quantity",
+                  "unitPrice"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "lookup_price"
+          }
+        },
+        "parallel_tool_calls": false
+      },
+      "output": "The total for 4 robot kits is 92 fictional credits.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 13,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 2,
+          "engine_ttft_ms": 29,
+          "engine_ttlt_ms": 61,
+          "pre_inference_ms": 72,
+          "service_tbt_ms": 2,
+          "service_ttft_ms": 416,
+          "service_ttlt_ms": 445,
+          "user_visible_ttft_ms": 344
+        },
+        "prompt_tokens": 215,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 228
+      },
+      "latencyMs": 2467,
+      "toolSteps": [
+        {
+          "name": "lookup_price",
+          "callId": "call_d0oJZFfzQSlkdp2mXuiVigWu",
+          "result": {
+            "arguments": {
+              "item": "robot kit"
+            },
+            "item": "robot kit",
+            "unitPrice": 23,
+            "currency": "fictional credits"
+          }
+        },
+        {
+          "name": "multiply",
+          "callId": "call_gOm22B7CdUmJmpNCGwIvMxzf",
+          "result": {
+            "arguments": {
+              "quantity": 4,
+              "unitPrice": 23
+            },
+            "total": 92
+          }
+        }
+      ],
+      "finalMessages": [
+        {
+          "role": "system",
+          "content": "First look up the robot kit unit price in the catalog, then multiply the returned price by the requested quantity. Never guess prices. Give one final sentence."
+        },
+        {
+          "role": "user",
+          "content": "What is the total for 4 robot kits in fictional credits?"
+        },
+        {
+          "annotations": [],
+          "content": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"item\":\"robot kit\"}",
+                "name": "lookup_price"
+              },
+              "id": "call_d0oJZFfzQSlkdp2mXuiVigWu",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_d0oJZFfzQSlkdp2mXuiVigWu",
+          "content": "{\"arguments\":{\"item\":\"robot kit\"},\"item\":\"robot kit\",\"unitPrice\":23,\"currency\":\"fictional credits\"}"
+        },
+        {
+          "annotations": [],
+          "content": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"quantity\":4,\"unitPrice\":23}",
+                "name": "multiply"
+              },
+              "id": "call_gOm22B7CdUmJmpNCGwIvMxzf",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_gOm22B7CdUmJmpNCGwIvMxzf",
+          "content": "{\"arguments\":{\"quantity\":4,\"unitPrice\":23},\"total\":92}"
+        }
+      ],
+      "extraRequests": [
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 6,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 30,
+              "engine_ttlt_ms": 73,
+              "pre_inference_ms": 93,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 846,
+              "service_ttlt_ms": 885,
+              "user_visible_ttft_ms": 753
+            },
+            "prompt_tokens": 134,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 140
+          },
+          "latencyMs": 1158
+        },
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 10,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 4,
+              "engine_ttft_ms": 91,
+              "engine_ttlt_ms": 139,
+              "pre_inference_ms": 81,
+              "service_tbt_ms": 4,
+              "service_ttft_ms": 478,
+              "service_ttlt_ms": 514,
+              "user_visible_ttft_ms": 396
+            },
+            "prompt_tokens": 181,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 191
+          },
+          "latencyMs": 709
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "name": "Lookup before calculation, using returned price",
+      "passed": true,
+      "detail": "[{\"name\":\"lookup_price\",\"callId\":\"call_d0oJZFfzQSlkdp2mXuiVigWu\",\"result\":{\"arguments\":{\"item\":\"robot kit\"},\"item\":\"robot kit\",\"unitPrice\":23,\"currency\":\"fictional credits\"}},{\"name\":\"multiply\",\"callId\":\"call_gOm22B7CdUmJmpNCGwIvMxzf\",\"result\":{\"arguments\":{\"quantity\":4,\"unitPrice\":23},\"total\":92}}]"
+    },
+    {
+      "name": "Final answer uses calculated total",
+      "passed": true,
+      "detail": "The total for 4 robot kits is 92 fictional credits."
+    }
+  ]
+}

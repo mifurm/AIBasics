@@ -1,0 +1,106 @@
+{
+  "labId": "09-grounding",
+  "recordedAt": "2026-11-14T16:47:28.691Z",
+  "results": [
+    {
+      "label": "No source",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "When does the fictional Pebble Robotics Club meet, and who founded it? If you do not know, say so."
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "I do not know when the fictional Pebble Robotics Club meets or who founded it. Could you provide more details or context about this club?",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 28,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 7,
+          "engine_ttft_ms": 28,
+          "engine_ttlt_ms": 221,
+          "pre_inference_ms": 67,
+          "service_tbt_ms": 7,
+          "service_ttft_ms": 814,
+          "service_ttlt_ms": 1003,
+          "user_visible_ttft_ms": 746
+        },
+        "prompt_tokens": 31,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 59
+      },
+      "latencyMs": 1186
+    },
+    {
+      "label": "Source supplied",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Use only the supplied source. Cite [club-1] for facts. If the source does not answer a question, say \"not in the source\"."
+          },
+          {
+            "role": "user",
+            "content": "Source [club-1]: Pebble Robotics Club meets Tuesdays at 16:00 in Room 7.\nQuestion: When does the club meet, and who founded it?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "The club meets on Tuesdays at 16:00 in Room 7. Who founded it is not in the source.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 24,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 4,
+          "engine_ttft_ms": 29,
+          "engine_ttlt_ms": 118,
+          "pre_inference_ms": 81,
+          "service_tbt_ms": 5,
+          "service_ttft_ms": 424,
+          "service_ttlt_ms": 549,
+          "user_visible_ttft_ms": 343
+        },
+        "prompt_tokens": 77,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 101
+      },
+      "latencyMs": 741
+    }
+  ],
+  "observations": [
+    {
+      "name": "Supported fact and citation",
+      "passed": false,
+      "detail": "The club meets on Tuesdays at 16:00 in Room 7. Who founded it is not in the source."
+    },
+    {
+      "name": "Missing founder is acknowledged",
+      "passed": true,
+      "detail": "The club meets on Tuesdays at 16:00 in Room 7. Who founded it is not in the source."
+    }
+  ]
+}

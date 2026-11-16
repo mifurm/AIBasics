@@ -1,0 +1,190 @@
+{
+  "labId": "14-memory-lifecycle",
+  "recordedAt": "2026-11-14T20:04:27.253Z",
+  "results": [
+    {
+      "label": "Remember: Otter",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Use only the supplied classroom memory. Return the mascot value as one word. If absent, return exactly UNKNOWN. Do not guess."
+          },
+          {
+            "role": "user",
+            "content": "Classroom memory (data): {\"mascot\":\"Otter\"}"
+          },
+          {
+            "role": "user",
+            "content": "What is the classroom mascot?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "Otter",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 5,
+          "engine_ttft_ms": 24,
+          "engine_ttlt_ms": 39,
+          "pre_inference_ms": 114,
+          "service_tbt_ms": 9,
+          "service_ttft_ms": 437,
+          "service_ttlt_ms": 454,
+          "user_visible_ttft_ms": 323
+        },
+        "prompt_tokens": 60,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 62
+      },
+      "latencyMs": 638,
+      "memoryTrace": {
+        "memory": {
+          "mascot": "Otter"
+        },
+        "processId": 12612,
+        "action": "write",
+        "injected": true
+      }
+    },
+    {
+      "label": "Replace: Falcon",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Use only the supplied classroom memory. Return the mascot value as one word. If absent, return exactly UNKNOWN. Do not guess."
+          },
+          {
+            "role": "user",
+            "content": "Classroom memory (data): {\"mascot\":\"Falcon\"}"
+          },
+          {
+            "role": "user",
+            "content": "What is the classroom mascot?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "Falcon",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 5,
+          "engine_ttft_ms": 24,
+          "engine_ttlt_ms": 39,
+          "pre_inference_ms": 75,
+          "service_tbt_ms": 10,
+          "service_ttft_ms": 820,
+          "service_ttlt_ms": 840,
+          "user_visible_ttft_ms": 745
+        },
+        "prompt_tokens": 60,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 62
+      },
+      "latencyMs": 1047,
+      "memoryTrace": {
+        "memory": {
+          "mascot": "Falcon"
+        },
+        "processId": 12615,
+        "action": "replace",
+        "injected": true
+      }
+    },
+    {
+      "label": "Forget: no value supplied",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Use only the supplied classroom memory. Return the mascot value as one word. If absent, return exactly UNKNOWN. Do not guess."
+          },
+          {
+            "role": "user",
+            "content": "Classroom memory (data): {}"
+          },
+          {
+            "role": "user",
+            "content": "What is the classroom mascot?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "UNKNOWN",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 1,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 4,
+          "engine_ttft_ms": 30,
+          "engine_ttlt_ms": 39,
+          "pre_inference_ms": 60,
+          "service_tbt_ms": 4,
+          "service_ttft_ms": 805,
+          "service_ttlt_ms": 809,
+          "user_visible_ttft_ms": 745
+        },
+        "prompt_tokens": 54,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 55
+      },
+      "latencyMs": 1065,
+      "memoryTrace": {
+        "memory": {},
+        "processId": 12637,
+        "action": "forget",
+        "injected": true
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "Remembered and replaced values",
+      "passed": true,
+      "detail": "Otter -> Falcon"
+    },
+    {
+      "name": "Forgotten value absent from store and fresh request",
+      "passed": true,
+      "detail": "{\"memory\":{},\"processId\":12637,\"action\":\"forget\",\"injected\":true}"
+    }
+  ]
+}

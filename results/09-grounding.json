@@ -1,0 +1,106 @@
+{
+  "labId": "09-grounding",
+  "recordedAt": "2026-11-14T16:49:07.477Z",
+  "results": [
+    {
+      "label": "No source",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "When does the fictional Pebble Robotics Club meet, and who founded it? If you do not know, say so."
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "I do not know when the fictional Pebble Robotics Club meets or who founded it. If you'd like, you can provide more context or details!",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 29,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 6,
+          "engine_ttft_ms": 31,
+          "engine_ttlt_ms": 197,
+          "pre_inference_ms": 74,
+          "service_tbt_ms": 6,
+          "service_ttft_ms": 421,
+          "service_ttlt_ms": 584,
+          "user_visible_ttft_ms": 346
+        },
+        "prompt_tokens": 31,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 60
+      },
+      "latencyMs": 2183
+    },
+    {
+      "label": "Source supplied: refined citation instruction",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Use only the supplied source. Your answer must include the literal citation [club-1] immediately after the meeting details. For the founder, say \"not in the source\". Use two short sentences."
+          },
+          {
+            "role": "user",
+            "content": "Source [club-1]: Pebble Robotics Club meets Tuesdays at 16:00 in Room 7.\nQuestion: When does the club meet, and who founded it?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "The Pebble Robotics Club meets Tuesdays at 16:00 in Room 7 [club-1]. The founder is not in the source.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 29,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 5,
+          "engine_ttft_ms": 29,
+          "engine_ttlt_ms": 191,
+          "pre_inference_ms": 82,
+          "service_tbt_ms": 5,
+          "service_ttft_ms": 416,
+          "service_ttlt_ms": 565,
+          "user_visible_ttft_ms": 334
+        },
+        "prompt_tokens": 86,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 115
+      },
+      "latencyMs": 909
+    }
+  ],
+  "observations": [
+    {
+      "name": "Supported fact and citation",
+      "passed": true,
+      "detail": "The Pebble Robotics Club meets Tuesdays at 16:00 in Room 7 [club-1]. The founder is not in the source."
+    },
+    {
+      "name": "Missing founder is acknowledged",
+      "passed": true,
+      "detail": "The Pebble Robotics Club meets Tuesdays at 16:00 in Room 7 [club-1]. The founder is not in the source."
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+node_modules/
+.azure.local.json
+.env
+infra/*.json

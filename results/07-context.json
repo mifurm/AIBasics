@@ -1,0 +1,118 @@
+{
+  "labId": "07-context",
+  "recordedAt": "2026-11-14T16:47:26.052Z",
+  "results": [
+    {
+      "label": "History included",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Answer in one short sentence. If information is missing, say you do not know."
+          },
+          {
+            "role": "user",
+            "content": "Our classroom robot is named Pebble."
+          },
+          {
+            "role": "assistant",
+            "content": "Your classroom robot is named Pebble."
+          },
+          {
+            "role": "user",
+            "content": "What is our classroom robot named?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "Your classroom robot is named Pebble.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 8,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 2,
+          "engine_ttft_ms": 31,
+          "engine_ttlt_ms": 51,
+          "pre_inference_ms": 97,
+          "service_tbt_ms": 1,
+          "service_ttft_ms": 438,
+          "service_ttlt_ms": 445,
+          "user_visible_ttft_ms": 341
+        },
+        "prompt_tokens": 59,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 67
+      },
+      "latencyMs": 635
+    },
+    {
+      "label": "Fresh request",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Answer in one short sentence. If information is missing, say you do not know."
+          },
+          {
+            "role": "user",
+            "content": "What is our classroom robot named?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "I do not know your classroom robot's name.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 10,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 3,
+          "engine_ttft_ms": 37,
+          "engine_ttlt_ms": 75,
+          "pre_inference_ms": 71,
+          "service_tbt_ms": 3,
+          "service_ttft_ms": 848,
+          "service_ttlt_ms": 880,
+          "user_visible_ttft_ms": 777
+        },
+        "prompt_tokens": 35,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 45
+      },
+      "latencyMs": 1039
+    }
+  ],
+  "observations": [
+    {
+      "name": "Sent history is used",
+      "passed": true,
+      "detail": "Your classroom robot is named Pebble."
+    },
+    {
+      "name": "Missing history is acknowledged",
+      "passed": true,
+      "detail": "I do not know your classroom robot's name."
+    }
+  ]
+}

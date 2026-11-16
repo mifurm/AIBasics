@@ -1,0 +1,91 @@
+{
+  "labId": "01-specificity",
+  "recordedAt": "2026-11-14T16:47:05.228Z",
+  "results": [
+    {
+      "label": "Vague",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Explain photosynthesis."
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "Certainly! Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy from the sun into chemical energy in the form of sugar (glucose). This process is crucial for life on Earth, as it provides oxygen and serves as the foundation for the food chain.\n\n### Components and Requirements of Photosynthesis:\n1. **Light Energy**: Plants absorb light energy, usually from the sun, using chlorophyll, a green pigment in the chloroplasts.\n2. **Carbon Dioxide (CO₂)**: Plants take in CO₂ from the air through small openings in their leaves called stomata.\n3. **Water (H₂O)**: Plants absorb water from the soil through their roots.\n4. **Chloroplasts**: These specialized organelles in plant cells contain chlorophyll and are the site where photosynthesis occurs.\n\n### The Photosynthesis Equation:\nThe chemical equation for photosynthesis is:\n\n**6CO₂ + 6H₂O + light energy → C₆H₁₂O₆ + 6O₂**\n\nIn words:\nSix molecules of carbon dioxide and six molecules of water react with light energy to produce one molecule of glucose and six molecules of oxygen.\n\n### Two Stages of Photosynthesis:\nPhotosynthesis occurs in two main stages:\n\n---\n\n#### 1. **Light-Dependent Reactions** (Occurs in the thylakoid membranes of the chloroplasts):\n   - **What Happens**: During this stage, sunlight is absorbed by chlorophyll. The energy from light is used to split water molecules into oxygen (",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "length",
+      "usage": {
+        "completion_tokens": 320,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 5,
+          "engine_ttft_ms": 31,
+          "engine_ttlt_ms": 1576,
+          "pre_inference_ms": 91,
+          "service_tbt_ms": 5,
+          "service_ttft_ms": 850,
+          "service_ttlt_ms": 2390,
+          "user_visible_ttft_ms": 758
+        },
+        "prompt_tokens": 11,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 331
+      },
+      "latencyMs": 4332
+    },
+    {
+      "label": "Specific",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Explain photosynthesis to a 10-year-old in exactly three short bullet points. Use a kitchen analogy. Include sunlight, water, and carbon dioxide."
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "1. **Sunlight is the stove**: Plants use sunlight like a stove to power their \"kitchen.\" It gives them the energy they need to cook food.  \n2. **Water and carbon dioxide are the ingredients**: Plants take water from their roots and carbon dioxide from the air—their special recipe ingredients!  \n3. **Sugar is the food**: Using sunlight energy, plants mix those ingredients to make sugar (their food) and give off oxygen—like sharing fresh-baked cookies with the world!  ",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 106,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 7,
+          "engine_ttft_ms": 21,
+          "engine_ttlt_ms": 726,
+          "pre_inference_ms": 88,
+          "service_tbt_ms": 7,
+          "service_ttft_ms": 413,
+          "service_ttlt_ms": 1114,
+          "user_visible_ttft_ms": 325
+        },
+        "prompt_tokens": 37,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 143
+      },
+      "latencyMs": 1463
+    }
+  ],
+  "observations": []
+}

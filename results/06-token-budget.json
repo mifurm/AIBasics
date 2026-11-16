@@ -1,0 +1,109 @@
+{
+  "labId": "06-token-budget",
+  "recordedAt": "2026-11-14T16:47:24.377Z",
+  "results": [
+    {
+      "label": "Output cap 24",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Write a numbered list of twelve practical tips for looking after a classroom plant. Give one full sentence for each tip."
+          }
+        ],
+        "max_tokens": 24,
+        "temperature": 0
+      },
+      "output": "1. **Choose the right plant**: Select a hardy, low-maintenance plant that thrives indoors, such as a",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "length",
+      "usage": {
+        "completion_tokens": 24,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 5,
+          "engine_ttft_ms": 33,
+          "engine_ttlt_ms": 158,
+          "pre_inference_ms": 48,
+          "service_tbt_ms": 5,
+          "service_ttft_ms": 837,
+          "service_ttlt_ms": 948,
+          "user_visible_ttft_ms": 790
+        },
+        "prompt_tokens": 30,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 54
+      },
+      "latencyMs": 1229
+    },
+    {
+      "label": "Output cap 280",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Write a numbered list of twelve practical tips for looking after a classroom plant. Give one full sentence for each tip."
+          }
+        ],
+        "max_tokens": 280,
+        "temperature": 0
+      },
+      "output": "1. **Choose the right plant**: Select a hardy, low-maintenance plant that thrives indoors, such as a pothos, spider plant, or peace lily.  \n2. **Place the plant in proper lighting**: Position the plant where it can receive adequate sunlight or indirect light, depending on its specific needs.  \n3. **Water consistently**: Water the plant regularly, ensuring the soil stays moist but not overly saturated to avoid root rot.  \n4. **Check soil moisture**: Use your finger or a moisture meter to check the soil before watering to prevent overwatering or underwatering.  \n5. **Use appropriate soil**: Ensure the plant is potted in nutrient-rich, well-draining soil suitable for its species.  \n6. **Fertilize occasionally**: Feed the plant with a balanced fertilizer every few months to promote healthy growth.  \n7. **Dust the leaves**: Wipe the leaves gently with a damp cloth to remove dust and improve photosynthesis.  \n8. **Prune as needed**: Trim dead or yellowing leaves to keep the plant healthy and encourage new growth.  \n9. **Monitor for pests**: Regularly inspect the plant for signs of pests like aphids or spider mites and treat infestations promptly.  \n10. **Rotate the plant**: Turn the pot occasionally to ensure even growth and prevent the plant from leaning",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "length",
+      "usage": {
+        "completion_tokens": 280,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 6,
+          "engine_ttft_ms": 33,
+          "engine_ttlt_ms": 1594,
+          "pre_inference_ms": 88,
+          "service_tbt_ms": 6,
+          "service_ttft_ms": 420,
+          "service_ttlt_ms": 1977,
+          "user_visible_ttft_ms": 332
+        },
+        "prompt_tokens": 30,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 310
+      },
+      "latencyMs": 2254
+    }
+  ],
+  "observations": [
+    {
+      "name": "Low cap is respected",
+      "passed": true,
+      "detail": "24 <= 24"
+    },
+    {
+      "name": "Low cap demonstrates truncation",
+      "passed": true,
+      "detail": "length"
+    },
+    {
+      "name": "Higher cap is respected",
+      "passed": true,
+      "detail": "280 <= 280"
+    }
+  ]
+}

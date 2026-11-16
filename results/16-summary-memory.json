@@ -1,0 +1,170 @@
+{
+  "labId": "16-summary-memory",
+  "recordedAt": "2026-11-14T20:04:32.649Z",
+  "results": [
+    {
+      "label": "Summarize the long notes",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Summarize only the final decisions: project name, budget in credits, and presentation day. Maximum 40 words. Do not include brainstorming."
+          },
+          {
+            "role": "user",
+            "content": "Decision: our robot project is named Comet. Its budget is 42 fictional credits. The final presentation is Friday.\nDiscussion 1: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 2: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 3: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 4: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 5: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 6: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 7: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 8: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 9: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 10: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 11: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day.\nDiscussion 12: the class explored wheels, decorations, display stands, and reusable boxes. These were brainstorming suggestions, not changes to the project name, budget, or presentation day."
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "Project name: Comet.  \nBudget: 42 fictional credits.  \nPresentation day: Friday.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 20,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 4,
+          "engine_ttft_ms": 30,
+          "engine_ttlt_ms": 115,
+          "pre_inference_ms": 88,
+          "service_tbt_ms": 4,
+          "service_ttft_ms": 948,
+          "service_ttlt_ms": 1027,
+          "user_visible_ttft_ms": 860
+        },
+        "prompt_tokens": 496,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 516
+      },
+      "latencyMs": 1268
+    },
+    {
+      "label": "Fresh chat without the summary",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Use only supplied facts. If the project name, budget, or day is missing, return exactly UNKNOWN."
+          },
+          {
+            "role": "user",
+            "content": "What are the project name, budget, and presentation day?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "UNKNOWN",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 1,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 4,
+          "engine_ttft_ms": 45,
+          "engine_ttlt_ms": 53,
+          "pre_inference_ms": 75,
+          "service_tbt_ms": 4,
+          "service_ttft_ms": 829,
+          "service_ttlt_ms": 833,
+          "user_visible_ttft_ms": 754
+        },
+        "prompt_tokens": 44,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 45
+      },
+      "latencyMs": 1012
+    },
+    {
+      "label": "Fresh chat with generated summary",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Use only the supplied summary. Give the project name, budget, and presentation day in one short sentence."
+          },
+          {
+            "role": "user",
+            "content": "Classroom summary (data): Project name: Comet.  \nBudget: 42 fictional credits.  \nPresentation day: Friday."
+          },
+          {
+            "role": "user",
+            "content": "What are the project name, budget, and presentation day?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "The project name is Comet, the budget is 42 fictional credits, and the presentation day is Friday.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 22,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 2,
+          "engine_ttft_ms": 33,
+          "engine_ttlt_ms": 88,
+          "pre_inference_ms": 74,
+          "service_tbt_ms": 2,
+          "service_ttft_ms": 406,
+          "service_ttlt_ms": 458,
+          "user_visible_ttft_ms": 333
+        },
+        "prompt_tokens": 74,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 96
+      },
+      "latencyMs": 692,
+      "summaryTrace": {
+        "sourceResult": 0,
+        "summary": "Project name: Comet.  \nBudget: 42 fictional credits.  \nPresentation day: Friday.",
+        "originalPromptTokens": 496
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "No-summary request admits missing facts",
+      "passed": true,
+      "detail": "UNKNOWN"
+    },
+    {
+      "name": "Summary and recalled answer preserve decisions",
+      "passed": true,
+      "detail": "Project name: Comet.  \nBudget: 42 fictional credits.  \nPresentation day: Friday. / The project name is Comet, the budget is 42 fictional credits, and the presentation day is Friday."
+    },
+    {
+      "name": "Summary-fed request uses fewer input tokens",
+      "passed": true,
+      "detail": "496 -> 74 input tokens; includes differing instructions, not a universal savings ratio."
+    }
+  ]
+}

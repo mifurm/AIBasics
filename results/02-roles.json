@@ -1,0 +1,99 @@
+{
+  "labId": "02-roles",
+  "recordedAt": "2026-11-14T16:47:08.360Z",
+  "results": [
+    {
+      "label": "Friendly tutor",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a friendly primary-school tutor. Explain with a playground analogy in at most 60 words."
+          },
+          {
+            "role": "user",
+            "content": "What is gravity?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "Gravity is like an invisible friend on the playground who always pulls you toward the ground, helping you stay connected to it. It's why you don’t float away while playing and why a ball comes back down after you throw it up. Gravity keeps everything on Earth grounded, like a big gentle hug!",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 59,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 7,
+          "engine_ttft_ms": 24,
+          "engine_ttlt_ms": 467,
+          "pre_inference_ms": 102,
+          "service_tbt_ms": 7,
+          "service_ttft_ms": 841,
+          "service_ttlt_ms": 1280,
+          "user_visible_ttft_ms": 739
+        },
+        "prompt_tokens": 35,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 94
+      },
+      "latencyMs": 1492
+    },
+    {
+      "label": "Science editor",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a science editor. Give a precise definition, then one caveat, in at most 60 words."
+          },
+          {
+            "role": "user",
+            "content": "What is gravity?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "**Definition:** Gravity is the natural force of attraction between massive objects, particularly noticeable as the pull exerted by planets on nearby matter due to their mass and the curvature of spacetime predicted by Einstein's theory of General Relativity.  \n\n**Caveat:** Gravity weakens with distance, but its range is infinite; however, quantum theories struggle to fully integrate it with other fundamental forces.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 78,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 7,
+          "engine_ttft_ms": 28,
+          "engine_ttlt_ms": 581,
+          "pre_inference_ms": 61,
+          "service_tbt_ms": 7,
+          "service_ttft_ms": 823,
+          "service_ttlt_ms": 1371,
+          "user_visible_ttft_ms": 762
+        },
+        "prompt_tokens": 38,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 116
+      },
+      "latencyMs": 1639
+    }
+  ],
+  "observations": []
+}

@@ -1,0 +1,32 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #152c40; background: #f2f5f8; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+header { background: #112b43; color: white; padding: 22px 36px; }
+header h1 { margin: 4px 0; font-size: 36px; }
+header p { margin: 6px 0 0; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #19777b; }
+header .eyebrow { color: #a3e8dc; }
+.layout { display: grid; grid-template-columns: 245px 1fr; }
+nav { padding: 18px 12px; background: #e5ecf1; }
+nav button { display: block; border: 0; padding: 12px; margin: 4px 0; width: 100%; text-align: left; background: transparent; color: #152c40; cursor: pointer; border-radius: 8px; font-size: 13px; }
+nav button[aria-current="true"] { background: #112b43; color: white; }
+button:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid #d27818; outline-offset: 3px; }
+main { min-width: 0; padding: 20px 30px; }
+h2 { font-size: 28px; margin: 6px 0; }
+.concept { font-size: 17px; line-height: 1.4; margin: 8px 0 18px; }
+label { font-size: 13px; font-weight: 700; margin-right: 12px; }
+select { padding: 8px; border: 1px solid #a3b8c6; border-radius: 6px; max-width: 100%; font: inherit; }
+.comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+section { background: white; padding: 18px; border: 1px solid #d5e0e7; border-radius: 12px; min-width: 0; }
+h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #19777b; margin: 0 0 10px; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.5 system-ui, sans-serif; margin: 0 0 12px; }
+pre.output { font-size: 17px; line-height: 1.5; }
+pre.settings { background: #f2f5f8; padding: 12px; font: 12px/1.4 ui-monospace, monospace; max-height: 180px; overflow: auto; }
+.metrics { font-size: 11px; line-height: 1.5; color: #526c7e; overflow-wrap: anywhere; }
+.discussion { padding: 14px 18px; margin-top: 18px; background: #def2ed; border-left: 4px solid #19777b; border-radius: 6px; }
+.discussion p { margin: 7px 0; font-size: 13px; line-height: 1.45; }
+.checks { font-size: 12px; line-height: 1.6; padding-left: 20px; }
+a { color: #136c74; font-size: 13px; }
+footer { padding: 18px 36px; font-size: 12px; color: #526c7e; }
+.error { color: #a32121; }
+@media (max-width: 850px) { .layout, .comparison { grid-template-columns: 1fr; } nav { display: flex; overflow: auto; } nav button { min-width: 180px; } main { padding: 18px; } }

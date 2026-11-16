@@ -1,0 +1,276 @@
+{
+  "labId": "15-multiturn",
+  "recordedAt": "2026-11-14T20:04:29.675Z",
+  "results": [
+    {
+      "label": "Turn 1: create the plan",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Maintain the current classroom plan. Project is the object we build, color is its color, material is its construction material. Return only the plan JSON."
+          },
+          {
+            "role": "user",
+            "content": "Plan a blue robot made of cardboard."
+          }
+        ],
+        "max_tokens": 320,
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "classroom_plan",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "material": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "project",
+                "color",
+                "material"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "output": "{\"project\":\"robot\",\"color\":\"blue\",\"material\":\"cardboard\"}",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 14,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 6,
+          "engine_ttft_ms": 26,
+          "engine_ttlt_ms": 114,
+          "pre_inference_ms": 77,
+          "service_tbt_ms": 10,
+          "service_ttft_ms": 425,
+          "service_ttlt_ms": 571,
+          "user_visible_ttft_ms": 348
+        },
+        "prompt_tokens": 90,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 104
+      },
+      "latencyMs": 735
+    },
+    {
+      "label": "Turn 2: revise it",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Maintain the current classroom plan. Project is the object we build, color is its color, material is its construction material. Return only the plan JSON."
+          },
+          {
+            "role": "user",
+            "content": "Plan a blue robot made of cardboard."
+          },
+          {
+            "role": "assistant",
+            "content": "{\"project\":\"robot\",\"color\":\"blue\",\"material\":\"cardboard\"}"
+          },
+          {
+            "role": "user",
+            "content": "Change it to red. Keep everything else the same."
+          }
+        ],
+        "max_tokens": 320,
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "classroom_plan",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "material": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "project",
+                "color",
+                "material"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "output": "{\"project\":\"robot\",\"color\":\"red\",\"material\":\"cardboard\"}",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 14,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 3,
+          "engine_ttft_ms": 28,
+          "engine_ttlt_ms": 68,
+          "pre_inference_ms": 77,
+          "service_tbt_ms": 3,
+          "service_ttft_ms": 407,
+          "service_ttlt_ms": 443,
+          "user_visible_ttft_ms": 330
+        },
+        "prompt_tokens": 128,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 142
+      },
+      "latencyMs": 634
+    },
+    {
+      "label": "Turn 3: recall the revised plan",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Maintain the current classroom plan. Project is the object we build, color is its color, material is its construction material. Return only the plan JSON."
+          },
+          {
+            "role": "user",
+            "content": "Plan a blue robot made of cardboard."
+          },
+          {
+            "role": "assistant",
+            "content": "{\"project\":\"robot\",\"color\":\"blue\",\"material\":\"cardboard\"}"
+          },
+          {
+            "role": "user",
+            "content": "Change it to red. Keep everything else the same."
+          },
+          {
+            "role": "assistant",
+            "content": "{\"project\":\"robot\",\"color\":\"red\",\"material\":\"cardboard\"}"
+          },
+          {
+            "role": "user",
+            "content": "What is our current plan? Keep the agreed material and latest color."
+          }
+        ],
+        "max_tokens": 320,
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "classroom_plan",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "material": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "project",
+                "color",
+                "material"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "output": "{\"project\":\"robot\",\"color\":\"red\",\"material\":\"cardboard\"}",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 14,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 3,
+          "engine_ttft_ms": 30,
+          "engine_ttlt_ms": 80,
+          "pre_inference_ms": 81,
+          "service_tbt_ms": 3,
+          "service_ttft_ms": 835,
+          "service_ttlt_ms": 881,
+          "user_visible_ttft_ms": 754
+        },
+        "prompt_tokens": 169,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 183
+      },
+      "latencyMs": 1052
+    }
+  ],
+  "observations": [
+    {
+      "name": "Turn 1 preserves the correct plan",
+      "passed": true,
+      "detail": "{\"project\":\"robot\",\"color\":\"blue\",\"material\":\"cardboard\"}"
+    },
+    {
+      "name": "Turn 2 preserves the correct plan",
+      "passed": true,
+      "detail": "{\"project\":\"robot\",\"color\":\"red\",\"material\":\"cardboard\"}"
+    },
+    {
+      "name": "Turn 2 uses actual previous reply",
+      "passed": true,
+      "detail": "Generated assistant reply included, not handwritten."
+    },
+    {
+      "name": "Turn 3 preserves the correct plan",
+      "passed": true,
+      "detail": "{\"project\":\"robot\",\"color\":\"red\",\"material\":\"cardboard\"}"
+    },
+    {
+      "name": "Turn 3 uses actual previous reply",
+      "passed": true,
+      "detail": "Generated assistant reply included, not handwritten."
+    }
+  ]
+}

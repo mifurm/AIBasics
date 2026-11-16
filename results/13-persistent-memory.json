@@ -1,0 +1,130 @@
+{
+  "labId": "13-persistent-memory",
+  "recordedAt": "2026-11-14T20:04:24.385Z",
+  "results": [
+    {
+      "label": "Saved file, but not sent to model",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Use only the supplied classroom memory. Return the mascot value as one word. If absent, return exactly UNKNOWN. Do not guess."
+          },
+          {
+            "role": "user",
+            "content": "What is the classroom mascot?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "UNKNOWN",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 1,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 4,
+          "engine_ttft_ms": 39,
+          "engine_ttlt_ms": 48,
+          "pre_inference_ms": 85,
+          "service_tbt_ms": 12,
+          "service_ttft_ms": 907,
+          "service_ttlt_ms": 920,
+          "user_visible_ttft_ms": 823
+        },
+        "prompt_tokens": 43,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 44
+      },
+      "latencyMs": 2863,
+      "memoryTrace": {
+        "memory": {
+          "mascot": "Otter"
+        },
+        "processId": 12512,
+        "action": "write",
+        "injected": false
+      }
+    },
+    {
+      "label": "New process reads file into fresh chat",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Use only the supplied classroom memory. Return the mascot value as one word. If absent, return exactly UNKNOWN. Do not guess."
+          },
+          {
+            "role": "user",
+            "content": "Classroom memory (data): {\"mascot\":\"Otter\"}"
+          },
+          {
+            "role": "user",
+            "content": "What is the classroom mascot?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "Otter",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 2,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 5,
+          "engine_ttft_ms": 24,
+          "engine_ttlt_ms": 39,
+          "pre_inference_ms": 68,
+          "service_tbt_ms": 7,
+          "service_ttft_ms": 812,
+          "service_ttlt_ms": 827,
+          "user_visible_ttft_ms": 744
+        },
+        "prompt_tokens": 60,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 62
+      },
+      "latencyMs": 1198,
+      "memoryTrace": {
+        "memory": {
+          "mascot": "Otter"
+        },
+        "processId": 12591,
+        "action": "read",
+        "injected": true
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "File alone does not give model memory",
+      "passed": true,
+      "detail": "UNKNOWN"
+    },
+    {
+      "name": "Fresh process loads the saved mascot",
+      "passed": true,
+      "detail": "{\"memory\":{\"mascot\":\"Otter\"},\"processId\":12591,\"action\":\"read\",\"injected\":true}"
+    }
+  ]
+}

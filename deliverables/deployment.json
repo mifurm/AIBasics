@@ -1,0 +1,27 @@
+{
+  "deployedAt": "2026-11-14T20:06:51.511Z",
+  "website": "https://zealous-beach-0f7cd5003.4.azurestaticapps.net/",
+  "resourceGroup": "rg-aibasics-classroom",
+  "appName": "aibasics-zgfkrl6mqqsly",
+  "region": "swedencentral",
+  "hosting": "static-web-apps-free",
+  "hostingRegion": "westeurope",
+  "reusedModels": true,
+  "models": [
+    {
+      "deployment": "gpt-5-mini",
+      "model": "gpt-5-mini",
+      "version": "2025-08-07"
+    },
+    {
+      "deployment": "gpt-4o",
+      "model": "gpt-4o",
+      "version": "2024-11-20"
+    },
+    {
+      "deployment": "text-embedding-3-small",
+      "model": "text-embedding-3-small",
+      "version": "1"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "labId": "11-tools",
+  "recordedAt": "2026-11-14T16:48:10.947Z",
+  "results": [
+    {
+      "label": "Calculate classroom supplies",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "user",
+            "content": "We need 17 robot kits at 23 credits each. Use the multiply tool, then state the total in one sentence."
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 0,
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "multiply",
+              "description": "Multiply a quantity by a unit price in fictional credits.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "quantity": {
+                    "type": "integer"
+                  },
+                  "unitPrice": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "quantity",
+                  "unitPrice"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "multiply"
+          }
+        },
+        "parallel_tool_calls": false
+      },
+      "output": "The total cost for 17 robot kits at 23 credits each is 391 credits.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 18,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 2,
+          "engine_ttft_ms": 29,
+          "engine_ttlt_ms": 75,
+          "pre_inference_ms": 83,
+          "service_tbt_ms": 2,
+          "service_ttft_ms": 413,
+          "service_ttlt_ms": 453,
+          "user_visible_ttft_ms": 330
+        },
+        "prompt_tokens": 108,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 126
+      },
+      "latencyMs": 2864,
+      "toolTrace": {
+        "arguments": {
+          "quantity": 17,
+          "unitPrice": 23
+        },
+        "total": 391
+      },
+      "toolRequestUsage": {
+        "completion_tokens": 10,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 4,
+          "engine_ttft_ms": 28,
+          "engine_ttlt_ms": 68,
+          "pre_inference_ms": 70,
+          "service_tbt_ms": 4,
+          "service_ttft_ms": 407,
+          "service_ttlt_ms": 443,
+          "user_visible_ttft_ms": 336
+        },
+        "prompt_tokens": 85,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 95
+      },
+      "toolRequestModel": "gpt-4o-2024-11-20",
+      "toolRequestFinishReason": "stop"
+    }
+  ],
+  "observations": [
+    {
+      "name": "Allowlisted code calculated 391",
+      "passed": true,
+      "detail": "{\"arguments\":{\"quantity\":17,\"unitPrice\":23},\"total\":391}"
+    },
+    {
+      "name": "Final answer uses tool result",
+      "passed": true,
+      "detail": "The total cost for 17 robot kits at 23 credits each is 391 credits."
+    }
+  ]
+}

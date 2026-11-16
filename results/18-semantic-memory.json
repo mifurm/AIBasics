@@ -1,0 +1,152 @@
+{
+  "labId": "18-semantic-memory",
+  "recordedAt": "2026-11-14T20:04:36.765Z",
+  "results": [
+    {
+      "label": "No memory cards supplied",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Answer only from supplied classroom facts. If no fact answers the question, return exactly UNKNOWN."
+          },
+          {
+            "role": "user",
+            "content": "On which weekday should we hydrate the classroom plant?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "UNKNOWN",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 1,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 4,
+          "engine_ttft_ms": 37,
+          "engine_ttlt_ms": 46,
+          "pre_inference_ms": 67,
+          "service_tbt_ms": 6,
+          "service_ttft_ms": 395,
+          "service_ttlt_ms": 401,
+          "user_visible_ttft_ms": 328
+        },
+        "prompt_tokens": 39,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 40
+      },
+      "latencyMs": 567
+    },
+    {
+      "label": "Embedding retrieval supplies one card",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Answer only from the retrieved classroom card. Give the weekday and cite the card ID in square brackets."
+          },
+          {
+            "role": "user",
+            "content": "Retrieved card [watering] (data): The classroom fern needs a drink of water every Monday."
+          },
+          {
+            "role": "user",
+            "content": "On which weekday should we hydrate the classroom plant?"
+          }
+        ],
+        "max_tokens": 320
+      },
+      "output": "Monday [watering].",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 4,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 7,
+          "engine_ttft_ms": 31,
+          "engine_ttlt_ms": 64,
+          "pre_inference_ms": 65,
+          "service_tbt_ms": 7,
+          "service_ttft_ms": 393,
+          "service_ttlt_ms": 422,
+          "user_visible_ttft_ms": 328
+        },
+        "prompt_tokens": 64,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 68
+      },
+      "latencyMs": 1076,
+      "retrievalTrace": {
+        "query": "On which weekday should we hydrate the classroom plant?",
+        "ranking": [
+          {
+            "id": "watering",
+            "text": "The classroom fern needs a drink of water every Monday.",
+            "similarity": 0.6590023810598361
+          },
+          {
+            "id": "library",
+            "text": "Library books should be returned to the front desk on Friday.",
+            "similarity": 0.37765157640848845
+          },
+          {
+            "id": "robot",
+            "text": "The robot club assembles wheeled machines in Room 7.",
+            "similarity": 0.23264235653794874
+          }
+        ],
+        "selectedId": "watering",
+        "dimensions": 1536
+      },
+      "extraRequests": [
+        {
+          "kind": "embedding",
+          "model": "text-embedding-3-small",
+          "usage": {
+            "prompt_tokens": 47,
+            "total_tokens": 47
+          },
+          "latencyMs": 479
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "name": "No retrieval means no classroom fact",
+      "passed": true,
+      "detail": "UNKNOWN"
+    },
+    {
+      "name": "Meaning retrieves watering card",
+      "passed": true,
+      "detail": "[{\"id\":\"watering\",\"text\":\"The classroom fern needs a drink of water every Monday.\",\"similarity\":0.6590023810598361},{\"id\":\"library\",\"text\":\"Library books should be returned to the front desk on Friday.\",\"similarity\":0.37765157640848845},{\"id\":\"robot\",\"text\":\"The robot club assembles wheeled machines in Room 7.\",\"similarity\":0.23264235653794874}]"
+    },
+    {
+      "name": "Answer uses retrieved fact and citation",
+      "passed": true,
+      "detail": "Monday [watering]."
+    }
+  ]
+}
