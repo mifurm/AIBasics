@@ -42,7 +42,7 @@ function showLab(index, selectedCase = 0) {
     ? `BLOCKED BY AZURE\nHTTP ${result.error.status}: ${result.error.code}\n\n${result.error.message}\n\nNo model answer was generated. The runner stopped; remaining variants were not executed.`
     : result.output, 'output');
   output.id = 'output';
-  answer.append(element('h3', 'What Azure returned'), output);
+  answer.append(element('h3', result.outputSource === 'application' ? 'Application-enforced stop (see Azure trace)' : 'What Azure returned'), output);
   if (result.status !== 'blocked') {
     answer.append(element('p', `${result.actualModel} | ${result.latencyMs} ms | ${result.usage.total_tokens} tokens | finish: ${result.finishReason}`, 'metrics'));
     const reasoningTokens = result.usage.completion_tokens_details?.reasoning_tokens;
@@ -55,7 +55,7 @@ function showLab(index, selectedCase = 0) {
     answer.append(element('pre', JSON.stringify(result.extraRequests, null, 2), 'settings'));
   }
   for (const [key, title] of [['memoryTrace', 'Application memory snapshot'], ['summaryTrace', 'Generated summary used as context'],
-    ['toolSteps', 'Ordered tool execution'], ['retrievalTrace', 'Semantic memory ranking']]) {
+    ['toolSteps', 'Ordered tool execution'], ['retrievalTrace', 'Semantic memory ranking'], ['agentTrace', 'Agent actions, observations, state, limits, and rubric']]) {
     if (result[key]) {
       answer.append(element('h3', title), element('pre', JSON.stringify(result[key], null, 2), 'settings'));
     }
@@ -91,6 +91,7 @@ function showLab(index, selectedCase = 0) {
     main.append(element('p', 'Recording pending: the integrated browser must be visible to capture real behavior.', 'metrics'));
   }
   main.append(element('p', `Actual run: ${lab.recordedAt}. Latency is one observation, not a benchmark.`, 'metrics'));
+  if (lab.execution) main.append(element('p', `Execution: ${lab.execution.runtime} | ${lab.execution.executionName}`, 'metrics'));
   history.replaceState(null, '', `#${lab.id}`);
 }
 

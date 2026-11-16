@@ -1,0 +1,688 @@
+{
+  "labId": "20-agent-feedback",
+  "recordedAt": "2026-11-16T08:27:39.467Z",
+  "results": [
+    {
+      "label": "Unavailable first choice, then an alternative",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You help with fictional classroom supplies. Known items: robot kit and paper kit. Prices and stock must come from tools. Use the fewest necessary tools, one call at a time. Never invent a tool result. Use calculate_total for requested arithmetic. Ask for missing quantity before other tools. Respect application errors; do not repeat denied writes. After an observation choose the next useful step or finish in one short sentence with the facts and actual outcome. All prices are fictional credits. Approval decisions are supplied by the classroom harness, not by you."
+          },
+          {
+            "role": "user",
+            "content": "Find 2 kits within 50 credits. First look up the robot kit. If unavailable, try the paper kit. Check the basket before finishing.\nCurrent application state (data): {\"quantity\":2,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}"
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 0,
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "lookup_item",
+              "description": "Read an item price and available stock. Known items: robot kit, paper kit.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "item"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "calculate_total",
+              "description": "Calculate a total using a previously looked-up unit price and the current task quantity.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "unitPrice": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "quantity",
+                  "unitPrice"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "ask_user",
+              "description": "Ask for the missing quantity. The classroom harness returns a labelled scripted reply.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "check_basket",
+              "description": "Independently verify and select a basket against the current task constraints.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "item",
+                  "quantity"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "reserve_draft",
+              "description": "Request a synthetic draft write. Application permissions and exact-action approval still apply.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "item",
+                  "quantity"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "report_impossible",
+              "description": "Report impossibility only after catalog observations establish that no item can satisfy the budget.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "parallel_tool_calls": false,
+        "tool_choice": "auto"
+      },
+      "output": "The paper kit is available, and 2 kits cost 24 credits, which is within the budget. The basket has been successfully checked.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 29,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 34,
+          "engine_ttft_ms": 287,
+          "engine_ttlt_ms": 1322,
+          "pre_inference_ms": 126,
+          "service_tbt_ms": 35,
+          "service_ttft_ms": 785,
+          "service_ttlt_ms": 1803,
+          "user_visible_ttft_ms": 659
+        },
+        "prompt_tokens": 625,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 654
+      },
+      "latencyMs": 6242,
+      "extraRequests": [
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 15,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 12,
+              "engine_ttft_ms": 114,
+              "engine_ttlt_ms": 313,
+              "pre_inference_ms": 128,
+              "service_tbt_ms": 13,
+              "service_ttft_ms": 607,
+              "service_ttlt_ms": 798,
+              "user_visible_ttft_ms": 479
+            },
+            "prompt_tokens": 453,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 468
+          },
+          "latencyMs": 988
+        },
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 15,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 8,
+              "engine_ttft_ms": 102,
+              "engine_ttlt_ms": 237,
+              "pre_inference_ms": 84,
+              "service_tbt_ms": 9,
+              "service_ttft_ms": 548,
+              "service_ttlt_ms": 678,
+              "user_visible_ttft_ms": 464
+            },
+            "prompt_tokens": 495,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 510
+          },
+          "latencyMs": 812
+        },
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 19,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 23,
+              "engine_ttft_ms": 175,
+              "engine_ttlt_ms": 641,
+              "pre_inference_ms": 101,
+              "service_tbt_ms": 24,
+              "service_ttft_ms": 632,
+              "service_ttlt_ms": 1089,
+              "user_visible_ttft_ms": 530
+            },
+            "prompt_tokens": 537,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 556
+          },
+          "latencyMs": 1263
+        },
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 20,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 25,
+              "engine_ttft_ms": 120,
+              "engine_ttlt_ms": 636,
+              "pre_inference_ms": 117,
+              "service_tbt_ms": 26,
+              "service_ttft_ms": 588,
+              "service_ttlt_ms": 1101,
+              "user_visible_ttft_ms": 471
+            },
+            "prompt_tokens": 573,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 593
+          },
+          "latencyMs": 1220
+        }
+      ],
+      "agentTrace": {
+        "initialState": {
+          "quantity": 2,
+          "budget": 50,
+          "selectedItem": null,
+          "total": null,
+          "checked": false,
+          "lookups": {},
+          "reservations": [],
+          "temporaryFailures": 0,
+          "clarificationCount": 0,
+          "impossible": false
+        },
+        "events": [
+          {
+            "name": "lookup_item",
+            "rawArguments": "{\"item\":\"robot kit\"}",
+            "executed": true,
+            "before": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {},
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            },
+            "result": {
+              "ok": true,
+              "item": "robot kit",
+              "unitPrice": 23,
+              "stock": 0
+            },
+            "after": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {
+                "robot kit": {
+                  "unitPrice": 23,
+                  "stock": 0
+                }
+              },
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            }
+          },
+          {
+            "name": "lookup_item",
+            "rawArguments": "{\"item\":\"paper kit\"}",
+            "executed": true,
+            "before": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {
+                "robot kit": {
+                  "unitPrice": 23,
+                  "stock": 0
+                }
+              },
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            },
+            "result": {
+              "ok": true,
+              "item": "paper kit",
+              "unitPrice": 12,
+              "stock": 10
+            },
+            "after": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {
+                "robot kit": {
+                  "unitPrice": 23,
+                  "stock": 0
+                },
+                "paper kit": {
+                  "unitPrice": 12,
+                  "stock": 10
+                }
+              },
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            }
+          },
+          {
+            "name": "calculate_total",
+            "rawArguments": "{\"quantity\":2,\"unitPrice\":12}",
+            "executed": true,
+            "before": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {
+                "robot kit": {
+                  "unitPrice": 23,
+                  "stock": 0
+                },
+                "paper kit": {
+                  "unitPrice": 12,
+                  "stock": 10
+                }
+              },
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            },
+            "result": {
+              "ok": true,
+              "total": 24
+            },
+            "after": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": 24,
+              "checked": false,
+              "lookups": {
+                "robot kit": {
+                  "unitPrice": 23,
+                  "stock": 0
+                },
+                "paper kit": {
+                  "unitPrice": 12,
+                  "stock": 10
+                }
+              },
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            }
+          },
+          {
+            "name": "check_basket",
+            "rawArguments": "{\"item\":\"paper kit\",\"quantity\":2}",
+            "executed": true,
+            "before": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": 24,
+              "checked": false,
+              "lookups": {
+                "robot kit": {
+                  "unitPrice": 23,
+                  "stock": 0
+                },
+                "paper kit": {
+                  "unitPrice": 12,
+                  "stock": 10
+                }
+              },
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            },
+            "result": {
+              "ok": true,
+              "item": "paper kit",
+              "quantity": 2,
+              "unitPrice": 12,
+              "total": 24
+            },
+            "after": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": "paper kit",
+              "total": 24,
+              "checked": true,
+              "lookups": {
+                "robot kit": {
+                  "unitPrice": 23,
+                  "stock": 0
+                },
+                "paper kit": {
+                  "unitPrice": 12,
+                  "stock": 10
+                }
+              },
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            }
+          }
+        ],
+        "maxToolCalls": 6,
+        "maxRequests": 7,
+        "stopReason": "completed",
+        "state": {
+          "quantity": 2,
+          "budget": 50,
+          "selectedItem": "paper kit",
+          "total": 24,
+          "checked": true,
+          "lookups": {
+            "robot kit": {
+              "unitPrice": 23,
+              "stock": 0
+            },
+            "paper kit": {
+              "unitPrice": 12,
+              "stock": 10
+            }
+          },
+          "reservations": [],
+          "temporaryFailures": 0,
+          "clarificationCount": 0,
+          "impossible": false
+        },
+        "requestCount": 5,
+        "toolExecutionCount": 4,
+        "rubric": {
+          "answerCorrect": true,
+          "pathPassed": true,
+          "authorizationHeld": true
+        }
+      },
+      "finalMessages": [
+        {
+          "role": "system",
+          "content": "You help with fictional classroom supplies. Known items: robot kit and paper kit. Prices and stock must come from tools. Use the fewest necessary tools, one call at a time. Never invent a tool result. Use calculate_total for requested arithmetic. Ask for missing quantity before other tools. Respect application errors; do not repeat denied writes. After an observation choose the next useful step or finish in one short sentence with the facts and actual outcome. All prices are fictional credits. Approval decisions are supplied by the classroom harness, not by you."
+        },
+        {
+          "role": "user",
+          "content": "Find 2 kits within 50 credits. First look up the robot kit. If unavailable, try the paper kit. Check the basket before finishing.\nCurrent application state (data): {\"quantity\":2,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}"
+        },
+        {
+          "annotations": [],
+          "content": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"item\":\"robot kit\"}",
+                "name": "lookup_item"
+              },
+              "id": "call_CwZ6sXZ2tM6kaKb5Uq8xsWtU",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_CwZ6sXZ2tM6kaKb5Uq8xsWtU",
+          "content": "{\"ok\":true,\"item\":\"robot kit\",\"unitPrice\":23,\"stock\":0}"
+        },
+        {
+          "annotations": [],
+          "content": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"item\":\"paper kit\"}",
+                "name": "lookup_item"
+              },
+              "id": "call_WJjT7xvo4P2OJ2RII0kB2Pzl",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_WJjT7xvo4P2OJ2RII0kB2Pzl",
+          "content": "{\"ok\":true,\"item\":\"paper kit\",\"unitPrice\":12,\"stock\":10}"
+        },
+        {
+          "annotations": [],
+          "content": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"quantity\":2,\"unitPrice\":12}",
+                "name": "calculate_total"
+              },
+              "id": "call_YcZZkRWpeSoNGPnsI1KaRXuq",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_YcZZkRWpeSoNGPnsI1KaRXuq",
+          "content": "{\"ok\":true,\"total\":24}"
+        },
+        {
+          "annotations": [],
+          "content": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"item\":\"paper kit\",\"quantity\":2}",
+                "name": "check_basket"
+              },
+              "id": "call_FzfxcLJ8uygizimFwaYstw8t",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_FzfxcLJ8uygizimFwaYstw8t",
+          "content": "{\"ok\":true,\"item\":\"paper kit\",\"quantity\":2,\"unitPrice\":12,\"total\":24}"
+        },
+        {
+          "annotations": [],
+          "content": "The paper kit is available, and 2 kits cost 24 credits, which is within the budget. The basket has been successfully checked.",
+          "refusal": null,
+          "role": "assistant"
+        }
+      ],
+      "outputSource": "model"
+    }
+  ],
+  "observations": [
+    {
+      "name": "Variant 1: execution budgets respected",
+      "passed": true,
+      "detail": "{\"requests\":5,\"tools\":4}"
+    },
+    {
+      "name": "Variant 1: authorization boundary held",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "Variant 1: explicit expected stop",
+      "passed": true,
+      "detail": "completed"
+    },
+    {
+      "name": "Unavailable observation changes the next lookup",
+      "passed": true,
+      "detail": "[{\"name\":\"lookup_item\",\"rawArguments\":\"{\\\"item\\\":\\\"robot kit\\\"}\",\"executed\":true,\"before\":{\"quantity\":2,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false},\"result\":{\"ok\":true,\"item\":\"robot kit\",\"unitPrice\":23,\"stock\":0},\"after\":{\"quantity\":2,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{\"robot kit\":{\"unitPrice\":23,\"stock\":0}},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}},{\"name\":\"lookup_item\",\"rawArguments\":\"{\\\"item\\\":\\\"paper kit\\\"}\",\"executed\":true,\"before\":{\"quantity\":2,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{\"robot kit\":{\"unitPrice\":23,\"stock\":0}},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false},\"result\":{\"ok\":true,\"item\":\"paper kit\",\"unitPrice\":12,\"stock\":10},\"after\":{\"quantity\":2,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{\"robot kit\":{\"unitPrice\":23,\"stock\":0},\"paper kit\":{\"unitPrice\":12,\"stock\":10}},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}},{\"name\":\"calculate_total\",\"rawArguments\":\"{\\\"quantity\\\":2,\\\"unitPrice\\\":12}\",\"executed\":true,\"before\":{\"quantity\":2,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{\"robot kit\":{\"unitPrice\":23,\"stock\":0},\"paper kit\":{\"unitPrice\":12,\"stock\":10}},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false},\"result\":{\"ok\":true,\"total\":24},\"after\":{\"quantity\":2,\"budget\":50,\"selectedItem\":null,\"total\":24,\"checked\":false,\"lookups\":{\"robot kit\":{\"unitPrice\":23,\"stock\":0},\"paper kit\":{\"unitPrice\":12,\"stock\":10}},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}},{\"name\":\"check_basket\",\"rawArguments\":\"{\\\"item\\\":\\\"paper kit\\\",\\\"quantity\\\":2}\",\"executed\":true,\"before\":{\"quantity\":2,\"budget\":50,\"selectedItem\":null,\"total\":24,\"checked\":false,\"lookups\":{\"robot kit\":{\"unitPrice\":23,\"stock\":0},\"paper kit\":{\"unitPrice\":12,\"stock\":10}},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false},\"result\":{\"ok\":true,\"item\":\"paper kit\",\"quantity\":2,\"unitPrice\":12,\"total\":24},\"after\":{\"quantity\":2,\"budget\":50,\"selectedItem\":\"paper kit\",\"total\":24,\"checked\":true,\"lookups\":{\"robot kit\":{\"unitPrice\":23,\"stock\":0},\"paper kit\":{\"unitPrice\":12,\"stock\":10}},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}}]"
+    }
+  ],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-ybixph6",
+    "runId": "82820071-1618-4937-91e7-6055157e4e7d"
+  }
+}

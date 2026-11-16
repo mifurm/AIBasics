@@ -46,7 +46,7 @@ function link(s, text, url, x, y, w = 7) {
   s.addShape(pptx.ShapeType.roundRect, { x: 8.5, y: 1.8, w: 4.1, h: 3.7, fill: { color: C.navy }, line: { color: C.navy } });
   s.addText(`${labs.length} LABS\nCHAT + REASONING\n+ EMBEDDINGS`, { x: 8.8, y: 2.4, w: 3.5, h: 2.3, fontSize: 24, bold: true, color: C.white, align: 'center', valign: 'mid' });
   link(s, 'Open the deployed teaching gallery', config.website, 0.6, 6.15);
-  s.addNotes('Audience: beginners. Split into three lessons: prompting, reliable outputs and tools, then memory and multi-turn workflows. Ask students to predict the result before showing it. The browser displays saved Azure API results; videos, when available, do not claim to show live inference.');
+  s.addNotes('Audience: beginners. Split into five lessons: prompting; reliable outputs and tools; memory; agent loops; safe and testable execution. Ask students to predict the result before showing it. The browser displays saved Azure API results; videos, when available, do not claim to show live inference.');
 }
 {
   const s = slide('How does a language model produce an answer?');
@@ -129,7 +129,7 @@ for (let i = 0; i < labs.length; i++) {
     } else {
       detailed.push(`\nModel: ${result.actualModel}; latency: ${result.latencyMs} ms; finish: ${result.finishReason}.\n\nUsage: \`${JSON.stringify(result.usage)}\`\n\n\`\`\`text\n${result.output}\n\`\`\`\n`);
       if (result.toolTrace) detailed.push(`\nTool trace: \`${JSON.stringify(result.toolTrace)}\`\n\nAdditional first-request usage: \`${JSON.stringify(result.toolRequestUsage)}\`\n`);
-      for (const key of ['memoryTrace', 'summaryTrace', 'toolSteps', 'retrievalTrace', 'extraRequests']) {
+      for (const key of ['memoryTrace', 'summaryTrace', 'toolSteps', 'retrievalTrace', 'agentTrace', 'extraRequests']) {
         if (result[key]) detailed.push(`\n${key}:\n\n\`\`\`json\n${JSON.stringify(result[key], null, 2)}\n\`\`\`\n`);
       }
     }

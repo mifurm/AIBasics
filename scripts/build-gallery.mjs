@@ -8,6 +8,10 @@ const { values } = parseArgs({ options: { 'media-directory': { type: 'string' } 
 const records = [];
 for (const lab of labs) {
   const record = JSON.parse(await readFile(`results/${lab.id}.json`, 'utf8'));
+  if (record.status === 'failed' || record.observations.some(check => !check.passed) ||
+      (record.status !== 'blocked' && record.results.length !== lab.cases.length)) {
+    throw new Error(`Cannot publish incomplete or failed outcomes for ${lab.id}; rerun that lab first.`);
+  }
   record.recordingAvailable = Boolean(values['media-directory']);
   if (record.recordingAvailable) await stat(path.join(values['media-directory'], `${lab.id}.mp4`));
   if (lab.id === '09-grounding') {

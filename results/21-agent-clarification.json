@@ -1,0 +1,556 @@
+{
+  "labId": "21-agent-clarification",
+  "recordedAt": "2026-11-16T08:27:45.867Z",
+  "results": [
+    {
+      "label": "Missing quantity: ask, then calculate",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You help with fictional classroom supplies. Known items: robot kit and paper kit. Prices and stock must come from tools. Use the fewest necessary tools, one call at a time. Never invent a tool result. Use calculate_total for requested arithmetic. Ask for missing quantity before other tools. Respect application errors; do not repeat denied writes. After an observation choose the next useful step or finish in one short sentence with the facts and actual outcome. All prices are fictional credits. Approval decisions are supplied by the classroom harness, not by you."
+          },
+          {
+            "role": "user",
+            "content": "What would robot kits for my class cost? I have not given you the quantity. Ask me before looking up or calculating anything.\nCurrent application state (data): {\"quantity\":null,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}"
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 0,
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "lookup_item",
+              "description": "Read an item price and available stock. Known items: robot kit, paper kit.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "item"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "calculate_total",
+              "description": "Calculate a total using a previously looked-up unit price and the current task quantity.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "unitPrice": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "quantity",
+                  "unitPrice"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "ask_user",
+              "description": "Ask for the missing quantity. The classroom harness returns a labelled scripted reply.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "check_basket",
+              "description": "Independently verify and select a basket against the current task constraints.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "item",
+                  "quantity"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "reserve_draft",
+              "description": "Request a synthetic draft write. Application permissions and exact-action approval still apply.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "item",
+                  "quantity"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "report_impossible",
+              "description": "Report impossibility only after catalog observations establish that no item can satisfy the budget.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "parallel_tool_calls": false,
+        "tool_choice": "auto"
+      },
+      "output": "The total cost for 2 robot kits is 46 credits.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 14,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 9,
+          "engine_ttft_ms": 84,
+          "engine_ttlt_ms": 221,
+          "pre_inference_ms": 115,
+          "service_tbt_ms": 10,
+          "service_ttft_ms": 559,
+          "service_ttlt_ms": 693,
+          "user_visible_ttft_ms": 444
+        },
+        "prompt_tokens": 600,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 614
+      },
+      "latencyMs": 6391,
+      "extraRequests": [
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 24,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 18,
+              "engine_ttft_ms": 81,
+              "engine_ttlt_ms": 522,
+              "pre_inference_ms": 146,
+              "service_tbt_ms": 18,
+              "service_ttft_ms": 602,
+              "service_ttlt_ms": 1038,
+              "user_visible_ttft_ms": 457
+            },
+            "prompt_tokens": 449,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 473
+          },
+          "latencyMs": 1202
+        },
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 36,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 46,
+              "engine_ttft_ms": 86,
+              "engine_ttlt_ms": 1842,
+              "pre_inference_ms": 179,
+              "service_tbt_ms": 68,
+              "service_ttft_ms": 641,
+              "service_ttlt_ms": 3081,
+              "user_visible_ttft_ms": 462
+            },
+            "prompt_tokens": 498,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 534
+          },
+          "latencyMs": 3263
+        },
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 19,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 18,
+              "engine_ttft_ms": 105,
+              "engine_ttlt_ms": 475,
+              "pre_inference_ms": 111,
+              "service_tbt_ms": 19,
+              "service_ttft_ms": 583,
+              "service_ttlt_ms": 948,
+              "user_visible_ttft_ms": 472
+            },
+            "prompt_tokens": 564,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 583
+          },
+          "latencyMs": 1071
+        }
+      ],
+      "agentTrace": {
+        "initialState": {
+          "quantity": null,
+          "budget": 50,
+          "selectedItem": null,
+          "total": null,
+          "checked": false,
+          "lookups": {},
+          "reservations": [],
+          "temporaryFailures": 0,
+          "clarificationCount": 0,
+          "impossible": false
+        },
+        "events": [
+          {
+            "name": "ask_user",
+            "rawArguments": "{\"question\":\"How many robot kits do you need for your class?\"}",
+            "executed": true,
+            "before": {
+              "quantity": null,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {},
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            },
+            "result": {
+              "ok": true,
+              "source": "scripted classroom user reply",
+              "quantity": 2
+            },
+            "after": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {},
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 1,
+              "impossible": false
+            }
+          },
+          {
+            "name": "lookup_item",
+            "rawArguments": "{\"item\":\"robot kit\"}",
+            "executed": true,
+            "before": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {},
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 1,
+              "impossible": false
+            },
+            "result": {
+              "ok": true,
+              "item": "robot kit",
+              "unitPrice": 23,
+              "stock": 10
+            },
+            "after": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {
+                "robot kit": {
+                  "unitPrice": 23,
+                  "stock": 10
+                }
+              },
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 1,
+              "impossible": false
+            }
+          },
+          {
+            "name": "calculate_total",
+            "rawArguments": "{\"quantity\":2,\"unitPrice\":23}",
+            "executed": true,
+            "before": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {
+                "robot kit": {
+                  "unitPrice": 23,
+                  "stock": 10
+                }
+              },
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 1,
+              "impossible": false
+            },
+            "result": {
+              "ok": true,
+              "total": 46
+            },
+            "after": {
+              "quantity": 2,
+              "budget": 50,
+              "selectedItem": null,
+              "total": 46,
+              "checked": false,
+              "lookups": {
+                "robot kit": {
+                  "unitPrice": 23,
+                  "stock": 10
+                }
+              },
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 1,
+              "impossible": false
+            }
+          }
+        ],
+        "maxToolCalls": 6,
+        "maxRequests": 7,
+        "stopReason": "completed",
+        "state": {
+          "quantity": 2,
+          "budget": 50,
+          "selectedItem": null,
+          "total": 46,
+          "checked": false,
+          "lookups": {
+            "robot kit": {
+              "unitPrice": 23,
+              "stock": 10
+            }
+          },
+          "reservations": [],
+          "temporaryFailures": 0,
+          "clarificationCount": 1,
+          "impossible": false
+        },
+        "requestCount": 4,
+        "toolExecutionCount": 3,
+        "rubric": {
+          "answerCorrect": true,
+          "pathPassed": true,
+          "authorizationHeld": true
+        }
+      },
+      "finalMessages": [
+        {
+          "role": "system",
+          "content": "You help with fictional classroom supplies. Known items: robot kit and paper kit. Prices and stock must come from tools. Use the fewest necessary tools, one call at a time. Never invent a tool result. Use calculate_total for requested arithmetic. Ask for missing quantity before other tools. Respect application errors; do not repeat denied writes. After an observation choose the next useful step or finish in one short sentence with the facts and actual outcome. All prices are fictional credits. Approval decisions are supplied by the classroom harness, not by you."
+        },
+        {
+          "role": "user",
+          "content": "What would robot kits for my class cost? I have not given you the quantity. Ask me before looking up or calculating anything.\nCurrent application state (data): {\"quantity\":null,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}"
+        },
+        {
+          "annotations": [],
+          "content": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"question\":\"How many robot kits do you need for your class?\"}",
+                "name": "ask_user"
+              },
+              "id": "call_MBBXosbF49wO4Rzk1UomE2OC",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_MBBXosbF49wO4Rzk1UomE2OC",
+          "content": "{\"ok\":true,\"source\":\"scripted classroom user reply\",\"quantity\":2}"
+        },
+        {
+          "annotations": [],
+          "content": "You need 2 robot kits. I will now look up the price and stock for robot kits.",
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"item\":\"robot kit\"}",
+                "name": "lookup_item"
+              },
+              "id": "call_Ayyj76lHgjXYHTLXFqVk9c77",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_Ayyj76lHgjXYHTLXFqVk9c77",
+          "content": "{\"ok\":true,\"item\":\"robot kit\",\"unitPrice\":23,\"stock\":10}"
+        },
+        {
+          "annotations": [],
+          "content": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"quantity\":2,\"unitPrice\":23}",
+                "name": "calculate_total"
+              },
+              "id": "call_Q7cjlGZmA3z0WvHgctW2M76o",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_Q7cjlGZmA3z0WvHgctW2M76o",
+          "content": "{\"ok\":true,\"total\":46}"
+        },
+        {
+          "annotations": [],
+          "content": "The total cost for 2 robot kits is 46 credits.",
+          "refusal": null,
+          "role": "assistant"
+        }
+      ],
+      "outputSource": "model"
+    }
+  ],
+  "observations": [
+    {
+      "name": "Variant 1: execution budgets respected",
+      "passed": true,
+      "detail": "{\"requests\":4,\"tools\":3}"
+    },
+    {
+      "name": "Variant 1: authorization boundary held",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "Variant 1: explicit expected stop",
+      "passed": true,
+      "detail": "completed"
+    },
+    {
+      "name": "Clarification precedes tools and supplies the quantity",
+      "passed": true,
+      "detail": "ask_user,lookup_item,calculate_total"
+    }
+  ],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-ybixph6",
+    "runId": "82820071-1618-4937-91e7-6055157e4e7d"
+  }
+}

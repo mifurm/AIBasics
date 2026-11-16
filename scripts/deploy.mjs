@@ -1,5 +1,5 @@
 import { parseArgs } from 'node:util';
-import { writeFile, mkdir } from 'node:fs/promises';
+import { writeFile, mkdir, readFile } from 'node:fs/promises';
 import { az } from '../lib/azure.mjs';
 
 try {
@@ -54,6 +54,13 @@ try {
     standardDeployment: 'gpt-4o', reasoningDeployment: 'gpt-5-mini', embeddingDeployment: 'text-embedding-3-small',
     reusedModels: !values['create-models'],
   };
+  try {
+    const previous = JSON.parse(await readFile('.azure.local.json', 'utf8'));
+    if (previous.subscriptionId === subscriptionId && previous.resourceGroup === values.group &&
+        previous.endpoint === config.endpoint && previous.agentRuntime) config.agentRuntime = previous.agentRuntime;
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
   await writeFile('.azure.local.json', JSON.stringify(config, null, 2) + '\n');
   await mkdir('deliverables', { recursive: true });
   await writeFile('deliverables/deployment.json', JSON.stringify({
@@ -63,6 +70,7 @@ try {
     models: deployments.filter(item => ['gpt-4o', 'gpt-5-mini', 'text-embedding-3-small'].includes(item.name)).map(item => ({
       deployment: item.name, model: item.properties.model.name, version: item.properties.model.version,
     })),
+    ...(config.agentRuntime ? { agentRuntime: config.agentRuntime } : {}),
   }, null, 2) + '\n');
   console.log(`Azure hosting ready: ${config.website}\nAI endpoint configured with Entra authentication; no API keys stored.`);
 } catch (error) {

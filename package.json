@@ -7,6 +7,8 @@
     "test": "node --test",
     "demo": "node scripts/run.mjs",
     "deploy": "node scripts/deploy.mjs",
+    "deploy:agents": "node scripts/deploy-agents.mjs",
+    "azure:agents": "node scripts/run-azure.mjs",
     "gallery": "node scripts/build-gallery.mjs",
     "publish": "node scripts/publish.mjs",
     "deck": "node scripts/build-deck.mjs",

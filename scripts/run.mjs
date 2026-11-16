@@ -5,14 +5,30 @@ import { loadConfig, accessToken, buildRequest, complete, AzureRequestError } fr
 import { multiplyTool, executeMultiply } from '../lib/tools.mjs';
 import { evaluate } from '../lib/evaluate.mjs';
 import { prepareExperiment, finishToolChain } from '../lib/experiments.mjs';
+import { runAgent } from '../lib/agent.mjs';
 
 export async function runLab(id, session) {
   const lab = getLab(id);
   const config = session?.config ?? await loadConfig();
-  const token = session?.token ?? accessToken(config.subscriptionId);
+  const token = session?.token ?? await accessToken(config.subscriptionId);
   const results = [];
   await mkdir(new URL('../results/', import.meta.url), { recursive: true });
   for (const testCase of lab.cases) {
+    if (testCase.agent) {
+      console.log(`${lab.id}: ${testCase.label}`);
+      try {
+        const result = await runAgent(testCase, config, token, testCase.continueAgent ? results.at(-1) : undefined);
+        results.push(result);
+        console.log(`${result.output}\n  ${result.agentTrace.stopReason} | ${result.agentTrace.requestCount} requests\n`);
+      } catch (error) {
+        await writeFile(new URL(`../results/${id}.json`, import.meta.url), JSON.stringify({
+          labId: id, recordedAt: new Date().toISOString(), status: 'failed', results,
+          observations: [], error: error.message,
+        }, null, 2) + '\n');
+        throw error;
+      }
+      continue;
+    }
     const request = buildRequest(testCase, config);
     const experimentTrace = await prepareExperiment(lab, testCase, results, request, config, token);
     if (testCase.tool) {
@@ -87,11 +103,13 @@ export async function runLab(id, session) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   try {
     const id = process.argv[2];
-    if (!id) throw new Error('Usage: npm run demo -- <lab-id|all|advanced>. Each execution makes billable Azure requests.');
-    if (id === 'all' || id === 'advanced') {
+    if (!id) throw new Error('Usage: npm run demo -- <lab-id|all|advanced|agents>. Each execution makes billable Azure requests.');
+    if (id === 'all' || id === 'advanced' || id === 'agents') {
       const config = await loadConfig();
-      const session = { config, token: accessToken(config.subscriptionId) };
-      for (const lab of labs.filter(entry => id === 'all' || Number(entry.id.slice(0, 2)) >= 13)) await runLab(lab.id, session);
+      const session = { config, token: await accessToken(config.subscriptionId) };
+      for (const lab of labs.filter(entry => id === 'all' ||
+        (id === 'advanced' && Number(entry.id.slice(0, 2)) >= 13 && Number(entry.id.slice(0, 2)) <= 18) ||
+        (id === 'agents' && entry.cases[0].agent))) await runLab(lab.id, session);
     } else {
       await runLab(id);
     }

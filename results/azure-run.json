@@ -1,0 +1,32 @@
+{
+  "runId": "82820071-1618-4937-91e7-6055157e4e7d",
+  "runtime": "Azure Container Apps Job",
+  "startedAt": "2026-11-16T08:27:22.459Z",
+  "status": "completed",
+  "labs": [
+    "19-workflow-agent",
+    "20-agent-feedback",
+    "21-agent-clarification",
+    "22-agent-state",
+    "23-agent-errors",
+    "24-agent-stopping",
+    "25-agent-permissions",
+    "26-agent-approval",
+    "27-agent-verification",
+    "28-agent-trace"
+  ],
+  "records": [
+    "19-workflow-agent",
+    "20-agent-feedback",
+    "21-agent-clarification",
+    "22-agent-state",
+    "23-agent-errors",
+    "24-agent-stopping",
+    "25-agent-permissions",
+    "26-agent-approval",
+    "27-agent-verification",
+    "28-agent-trace"
+  ],
+  "finishedAt": "2026-11-16T08:28:37.250Z",
+  "executionName": "aibasics-agents-zgfkrl6mqqsly-ybixph6"
+}

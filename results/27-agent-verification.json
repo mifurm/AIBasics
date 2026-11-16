@@ -1,0 +1,455 @@
+{
+  "labId": "27-agent-verification",
+  "recordedAt": "2026-11-16T08:28:25.271Z",
+  "results": [
+    {
+      "label": "Reject an over-budget candidate, then repair",
+      "request": {
+        "model": "gpt-4o",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You help with fictional classroom supplies. Known items: robot kit and paper kit. Prices and stock must come from tools. Use the fewest necessary tools, one call at a time. Never invent a tool result. Use calculate_total for requested arithmetic. Ask for missing quantity before other tools. Respect application errors; do not repeat denied writes. After an observation choose the next useful step or finish in one short sentence with the facts and actual outcome. All prices are fictional credits. Approval decisions are supplied by the classroom harness, not by you."
+          },
+          {
+            "role": "user",
+            "content": "First call check_basket for 3 robot kits within 50 credits. If invalid, try 3 paper kits. Finish only after a valid check.\nCurrent application state (data): {\"quantity\":3,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}"
+          }
+        ],
+        "max_tokens": 320,
+        "temperature": 0,
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "lookup_item",
+              "description": "Read an item price and available stock. Known items: robot kit, paper kit.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "item"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "calculate_total",
+              "description": "Calculate a total using a previously looked-up unit price and the current task quantity.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  },
+                  "unitPrice": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "quantity",
+                  "unitPrice"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "ask_user",
+              "description": "Ask for the missing quantity. The classroom harness returns a labelled scripted reply.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "check_basket",
+              "description": "Independently verify and select a basket against the current task constraints.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "item",
+                  "quantity"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "reserve_draft",
+              "description": "Request a synthetic draft write. Application permissions and exact-action approval still apply.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "item",
+                  "quantity"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "report_impossible",
+              "description": "Report impossibility only after catalog observations establish that no item can satisfy the budget.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "parallel_tool_calls": false,
+        "tool_choice": "auto"
+      },
+      "output": "The check for 3 paper kits was valid, with a total of 36 credits.",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "stop",
+      "usage": {
+        "completion_tokens": 19,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        },
+        "latency_checkpoint": {
+          "engine_tbt_ms": 23,
+          "engine_ttft_ms": 114,
+          "engine_ttlt_ms": 568,
+          "pre_inference_ms": 182,
+          "service_tbt_ms": 23,
+          "service_ttft_ms": 683,
+          "service_ttlt_ms": 1117,
+          "user_visible_ttft_ms": 501
+        },
+        "prompt_tokens": 558,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "total_tokens": 577
+      },
+      "latencyMs": 3635,
+      "extraRequests": [
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 20,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 10,
+              "engine_ttft_ms": 66,
+              "engine_ttlt_ms": 286,
+              "pre_inference_ms": 101,
+              "service_tbt_ms": 10,
+              "service_ttft_ms": 532,
+              "service_ttlt_ms": 737,
+              "user_visible_ttft_ms": 431
+            },
+            "prompt_tokens": 454,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 474
+          },
+          "latencyMs": 882
+        },
+        {
+          "kind": "chat",
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 20,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 13,
+              "engine_ttft_ms": 140,
+              "engine_ttlt_ms": 419,
+              "pre_inference_ms": 84,
+              "service_tbt_ms": 14,
+              "service_ttft_ms": 1040,
+              "service_ttlt_ms": 1317,
+              "user_visible_ttft_ms": 956
+            },
+            "prompt_tokens": 506,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 526
+          },
+          "latencyMs": 1435
+        }
+      ],
+      "agentTrace": {
+        "initialState": {
+          "quantity": 3,
+          "budget": 50,
+          "selectedItem": null,
+          "total": null,
+          "checked": false,
+          "lookups": {},
+          "reservations": [],
+          "temporaryFailures": 0,
+          "clarificationCount": 0,
+          "impossible": false
+        },
+        "events": [
+          {
+            "name": "check_basket",
+            "rawArguments": "{\"item\":\"robot kit\",\"quantity\":3}",
+            "executed": true,
+            "before": {
+              "quantity": 3,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {},
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            },
+            "result": {
+              "ok": false,
+              "error": {
+                "code": "over_budget",
+                "message": "Total 69 exceeds budget 50."
+              }
+            },
+            "after": {
+              "quantity": 3,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {},
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            }
+          },
+          {
+            "name": "check_basket",
+            "rawArguments": "{\"item\":\"paper kit\",\"quantity\":3}",
+            "executed": true,
+            "before": {
+              "quantity": 3,
+              "budget": 50,
+              "selectedItem": null,
+              "total": null,
+              "checked": false,
+              "lookups": {},
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            },
+            "result": {
+              "ok": true,
+              "item": "paper kit",
+              "quantity": 3,
+              "unitPrice": 12,
+              "total": 36
+            },
+            "after": {
+              "quantity": 3,
+              "budget": 50,
+              "selectedItem": "paper kit",
+              "total": 36,
+              "checked": true,
+              "lookups": {},
+              "reservations": [],
+              "temporaryFailures": 0,
+              "clarificationCount": 0,
+              "impossible": false
+            }
+          }
+        ],
+        "maxToolCalls": 6,
+        "maxRequests": 7,
+        "stopReason": "completed",
+        "state": {
+          "quantity": 3,
+          "budget": 50,
+          "selectedItem": "paper kit",
+          "total": 36,
+          "checked": true,
+          "lookups": {},
+          "reservations": [],
+          "temporaryFailures": 0,
+          "clarificationCount": 0,
+          "impossible": false
+        },
+        "requestCount": 3,
+        "toolExecutionCount": 2,
+        "rubric": {
+          "answerCorrect": true,
+          "pathPassed": false,
+          "authorizationHeld": true
+        }
+      },
+      "finalMessages": [
+        {
+          "role": "system",
+          "content": "You help with fictional classroom supplies. Known items: robot kit and paper kit. Prices and stock must come from tools. Use the fewest necessary tools, one call at a time. Never invent a tool result. Use calculate_total for requested arithmetic. Ask for missing quantity before other tools. Respect application errors; do not repeat denied writes. After an observation choose the next useful step or finish in one short sentence with the facts and actual outcome. All prices are fictional credits. Approval decisions are supplied by the classroom harness, not by you."
+        },
+        {
+          "role": "user",
+          "content": "First call check_basket for 3 robot kits within 50 credits. If invalid, try 3 paper kits. Finish only after a valid check.\nCurrent application state (data): {\"quantity\":3,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}"
+        },
+        {
+          "annotations": [],
+          "content": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"item\":\"robot kit\",\"quantity\":3}",
+                "name": "check_basket"
+              },
+              "id": "call_Rt1YZQKNFKmvWOukXyIarExd",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_Rt1YZQKNFKmvWOukXyIarExd",
+          "content": "{\"ok\":false,\"error\":{\"code\":\"over_budget\",\"message\":\"Total 69 exceeds budget 50.\"}}"
+        },
+        {
+          "annotations": [],
+          "content": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "function": {
+                "arguments": "{\"item\":\"paper kit\",\"quantity\":3}",
+                "name": "check_basket"
+              },
+              "id": "call_MLUdbASI9KrwIrfcrqlF8a5P",
+              "type": "function"
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_MLUdbASI9KrwIrfcrqlF8a5P",
+          "content": "{\"ok\":true,\"item\":\"paper kit\",\"quantity\":3,\"unitPrice\":12,\"total\":36}"
+        },
+        {
+          "annotations": [],
+          "content": "The check for 3 paper kits was valid, with a total of 36 credits.",
+          "refusal": null,
+          "role": "assistant"
+        }
+      ],
+      "outputSource": "model"
+    }
+  ],
+  "observations": [
+    {
+      "name": "Variant 1: execution budgets respected",
+      "passed": true,
+      "detail": "{\"requests\":3,\"tools\":2}"
+    },
+    {
+      "name": "Variant 1: authorization boundary held",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "Variant 1: explicit expected stop",
+      "passed": true,
+      "detail": "completed"
+    },
+    {
+      "name": "Invalid proposal is rejected before valid repair",
+      "passed": true,
+      "detail": "[{\"name\":\"check_basket\",\"rawArguments\":\"{\\\"item\\\":\\\"robot kit\\\",\\\"quantity\\\":3}\",\"executed\":true,\"before\":{\"quantity\":3,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false},\"result\":{\"ok\":false,\"error\":{\"code\":\"over_budget\",\"message\":\"Total 69 exceeds budget 50.\"}},\"after\":{\"quantity\":3,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}},{\"name\":\"check_basket\",\"rawArguments\":\"{\\\"item\\\":\\\"paper kit\\\",\\\"quantity\\\":3}\",\"executed\":true,\"before\":{\"quantity\":3,\"budget\":50,\"selectedItem\":null,\"total\":null,\"checked\":false,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false},\"result\":{\"ok\":true,\"item\":\"paper kit\",\"quantity\":3,\"unitPrice\":12,\"total\":36},\"after\":{\"quantity\":3,\"budget\":50,\"selectedItem\":\"paper kit\",\"total\":36,\"checked\":true,\"lookups\":{},\"reservations\":[],\"temporaryFailures\":0,\"clarificationCount\":0,\"impossible\":false}}]"
+    }
+  ],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-ybixph6",
+    "runId": "82820071-1618-4937-91e7-6055157e4e7d"
+  }
+}
