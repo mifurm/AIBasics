@@ -54,6 +54,95 @@ function showComputation(answer, trace) {
   answer.append(details);
 }
 
+function showModelComparison(lab, selectedPair, index) {
+  const pairs = lab.results.filter((_, resultIndex) => resultIndex % 2 === 0)
+    .map((_, pairIndex) => lab.results.slice(pairIndex * 2, pairIndex * 2 + 2));
+  const label = element('label', 'Prompt variant');
+  label.htmlFor = 'caseSelect';
+  const select = element('select');
+  select.id = 'caseSelect';
+  pairs.forEach((pair, pairIndex) => {
+    const option = element('option', `${pair[0].comparison.taskTitle} / ${pair[0].comparison.promptStyle}`);
+    option.value = String(pairIndex);
+    select.append(option);
+  });
+  select.value = String(selectedPair);
+  select.addEventListener('change', () => showLab(index, Number(select.value)));
+  main.append(label, select);
+  const pair = pairs[selectedPair];
+  const shared = element('section', undefined, 'shared-prompt');
+  shared.append(element('h3', 'Identical prompt sent to both models'),
+    element('pre', pair[0].request.messages.map(message => `${message.role.toUpperCase()}: ${message.content}`).join('\n\n')),
+    element('p', 'Only the model and its supported configuration change within this pair. Prompt wording changes only when you select broad versus specific.', 'metrics'));
+  main.append(shared);
+  const grid = element('div', undefined, 'comparison model-pair');
+  for (const [offset, result] of pair.entries()) {
+    const card = element('section');
+    card.dataset.resultIndex = String(selectedPair * 2 + offset);
+    const usage = result.usage;
+    const reasoning = usage.completion_tokens_details?.reasoning_tokens;
+    const words = result.output.trim().split(/\s+/).length;
+    const settings = Object.fromEntries(Object.entries(result.request).filter(([key]) => key !== 'messages'));
+    card.append(element('h3', result.comparison.modelLabel),
+      element('pre', result.output, 'output'),
+      element('p', `${result.actualModel} | ${result.latencyMs} ms | finish: ${result.finishReason}`, 'metrics'),
+      evidenceTable(['Measured quantity', 'This response'], [
+        ['Input tokens', usage.prompt_tokens],
+        ['Completion tokens (including reasoning)', usage.completion_tokens],
+        ['Reasoning tokens', reasoning ?? 'Not reported'],
+        ['Total tokens', usage.total_tokens],
+        ['Visible words (whitespace-separated)', words],
+      ]));
+    const settingsDetails = element('details');
+    settingsDetails.append(element('summary', 'Inspect model-specific API settings'), element('pre', JSON.stringify(settings, null, 2), 'settings'));
+    card.append(settingsDetails, element('h3', 'Match to the specific-prompt targets'));
+    const checks = element('ul', undefined, 'checks');
+    for (const check of result.comparison.targetChecks) {
+      checks.append(element('li', `${check.passed ? 'MATCHED' : 'NOT MATCHED'}: ${check.name} - ${check.detail}`));
+    }
+    card.append(checks);
+    grid.append(card);
+  }
+  main.append(grid);
+  const comparison = element('aside', undefined, 'discussion');
+  comparison.append(element('strong', 'What this pair actually shows'),
+    element('p', pair[0].output.trim() === pair[1].output.trim() ?
+      'These two recorded outputs are identical. Agreement is a valid observation, not a failed experiment.' :
+      'These two recorded outputs differ. Compare their meaning and instruction following, not just their wording.'),
+    element('p', 'The target checks describe the specific prompt. The broad prompt did not request every target; a target mismatch alone is not proof of a wrong answer or a weaker model.'),
+    element('p', `Manual review: ${pair[0].comparison.manualRubric}`),
+    element('p', 'Latency and tokens describe one run, not a benchmark or dollar cost. Both models may be correct; supported settings and output budgets differ. No hidden chain-of-thought is displayed.'));
+  main.append(comparison);
+}
+
+function showDiscussion(lab) {
+  const discussion = element('aside', undefined, 'discussion');
+  discussion.append(element('strong', 'Ask the class'), element('p', lab.question), element('p', `Important: ${lab.caveat}`), element('p', `Try it: ${lab.exercise}`));
+  main.append(discussion);
+  if (lab.observations.length) {
+    const checks = element('ul', undefined, 'checks');
+    for (const check of lab.observations) checks.append(element('li', `${check.passed ? 'PASS / OBSERVED' : 'FAILED'}: ${check.name} - ${check.detail}`));
+    main.append(checks);
+  }
+  if (lab.firstAttempt) {
+    const first = element('details');
+    first.append(element('summary', 'First attempt: a real missing-citation failure'));
+    first.append(element('pre', lab.firstAttempt.results[1].output));
+    first.append(element('p', 'The first instruction requested a citation, but the model omitted it. The failed check stopped the runner. We retained that output, refined the instruction, and ran again.'));
+    main.append(first);
+  }
+  if (lab.recordingAvailable) {
+    const recording = element('a', 'Watch this lab recording');
+    recording.href = `./recordings/${lab.id}.mp4`;
+    main.append(recording);
+  } else {
+    main.append(element('p', 'Recording pending: the integrated browser must be visible to capture real behavior.', 'metrics'));
+  }
+  main.append(element('p', `Actual run: ${lab.recordedAt}. Latency is one observation, not a benchmark.`, 'metrics'));
+  if (lab.execution) main.append(element('p', `Execution: ${lab.execution.runtime} | ${lab.execution.executionName}`, 'metrics'));
+  history.replaceState(null, '', `#${lab.id}`);
+}
+
 function showLab(index, selectedCase = 0) {
   const lab = records[index];
   main.replaceChildren();
@@ -73,6 +162,11 @@ function showLab(index, selectedCase = 0) {
     link.href = image.src;
     figure.append(image, link);
     main.append(figure);
+  }
+  if (lab.modelComparison) {
+    showModelComparison(lab, selectedCase, index);
+    showDiscussion(lab);
+    return;
   }
   const label = element('label', 'Prompt variant');
   label.htmlFor = 'caseSelect';
@@ -130,31 +224,7 @@ function showLab(index, selectedCase = 0) {
   }
   grid.append(prompt, answer);
   main.append(grid);
-  const discussion = element('aside', undefined, 'discussion');
-  discussion.append(element('strong', 'Ask the class'), element('p', lab.question), element('p', `Important: ${lab.caveat}`), element('p', `Try it: ${lab.exercise}`));
-  main.append(discussion);
-  if (lab.observations.length) {
-    const checks = element('ul', undefined, 'checks');
-    for (const check of lab.observations) checks.append(element('li', `${check.passed ? 'PASS / OBSERVED' : 'FAILED'}: ${check.name} - ${check.detail}`));
-    main.append(checks);
-  }
-  if (lab.firstAttempt) {
-    const first = element('details');
-    first.append(element('summary', 'First attempt: a real missing-citation failure'));
-    first.append(element('pre', lab.firstAttempt.results[1].output));
-    first.append(element('p', 'The first instruction requested a citation, but the model omitted it. The failed check stopped the runner. We retained that output, refined the instruction, and ran again.'));
-    main.append(first);
-  }
-  if (lab.recordingAvailable) {
-    const recording = element('a', 'Watch this lab recording');
-    recording.href = `./recordings/${lab.id}.mp4`;
-    main.append(recording);
-  } else {
-    main.append(element('p', 'Recording pending: the integrated browser must be visible to capture real behavior.', 'metrics'));
-  }
-  main.append(element('p', `Actual run: ${lab.recordedAt}. Latency is one observation, not a benchmark.`, 'metrics'));
-  if (lab.execution) main.append(element('p', `Execution: ${lab.execution.runtime} | ${lab.execution.executionName}`, 'metrics'));
-  history.replaceState(null, '', `#${lab.id}`);
+  showDiscussion(lab);
 }
 
 fetch('./results.json').then(response => {

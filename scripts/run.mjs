@@ -7,6 +7,7 @@ import { evaluate } from '../lib/evaluate.mjs';
 import { prepareExperiment, finishToolChain } from '../lib/experiments.mjs';
 import { runAgent } from '../lib/agent.mjs';
 import { runTransformerExperiment } from '../lib/transformer-lab.mjs';
+import { assessComparisonOutput } from '../lib/model-comparison.mjs';
 
 export async function runLab(id, session) {
   const lab = getLab(id);
@@ -99,6 +100,9 @@ export async function runLab(id, session) {
       latencyMs: testCase.toolChain ? final.latencyMs + experimentTrace.extraRequests.reduce((sum, entry) => sum + entry.latencyMs, 0) :
         first.latencyMs + (testCase.tool ? final.latencyMs : 0) + (experimentTrace.extraRequests ?? []).reduce((sum, entry) => sum + entry.latencyMs, 0),
       ...experimentTrace,
+      ...(testCase.comparison ? { comparison: {
+        ...testCase.comparison, targetChecks: assessComparisonOutput(testCase.comparison.taskId, final.message.content),
+      } } : {}),
       ...(toolTrace ? { toolTrace, toolRequestUsage: first.usage, toolRequestModel: first.model, toolRequestFinishReason: first.finishReason } : {}),
     });
     console.log(final.message.content);

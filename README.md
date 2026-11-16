@@ -1,6 +1,6 @@
 # AI Basics: twenty-nine small classroom labs
 
-For beginners; English; JavaScript/Node.js 22+. Allow 210-240 minutes for all labs.
+For beginners; English; JavaScript/Node.js 22+. Allow 210-245 minutes for all labs.
 Start with lab 00, then teach labs 1-7, 8-12, 13-18, 19-24, and 25-28 in five lessons. Every lab has a
 script, a teacher-friendly README, and real Azure outputs after execution.
 
@@ -20,7 +20,7 @@ script, a teacher-friendly README, and real Azure outputs after execution.
 | [09](labs/09-grounding/readme.md) | Source grounding | 6 min |
 | [10](labs/10-untrusted-context/readme.md) | Untrusted source instructions | 6 min |
 | [11](labs/11-tools/readme.md) | Tool calling | 7 min |
-| [12](labs/12-models/readme.md) | General chat vs reasoning | 8 min |
+| [12](labs/12-models/readme.md) | Same prompts, different models | 12 min |
 | [13](labs/13-persistent-memory/readme.md) | Memory across fresh processes | 6 min |
 | [14](labs/14-memory-lifecycle/readme.md) | Remember, replace, forget | 6 min |
 | [15](labs/15-multiturn/readme.md) | Real generated multi-turn dialogue | 7 min |
@@ -80,6 +80,24 @@ measurable outcome. The trace records messages, action arguments, observations,
 before/after state, stop reason, and usage, not hidden chain-of-thought.
 Approval and clarification replies are explicitly labelled scripted fixtures.
 Draft reservations are synthetic state persisted with each run record.
+
+## Compare real model outputs side by side
+
+[Lab 12](labs/12-models/readme.md) compares existing Azure GPT-4o and GPT-5-mini
+deployments on explanation, data extraction, and scheduling. Each task has a
+broad and a specific prompt: six identical-prompt pairs, twelve actual model
+responses. The gallery places both outputs, token usage, reported reasoning
+tokens, latency, supported settings, and simple target checks side by side.
+
+```sh
+npm run deploy:agents -- --confirm-costs
+npm run azure:agents -- 12-models
+```
+
+No new models or services are created. Target mismatches are preserved, not
+hidden; a broad prompt was not asked to meet every specific-prompt target.
+Single-run differences are observations, not rankings or a benchmark, and
+identical correct outputs are valid findings.
 
 ## Run the agent labs entirely in Azure
 
@@ -265,15 +283,15 @@ node labs/01-specificity/demo.mjs
 npm run demo -- advanced
 # Run the new agent labs with a local runner and Azure inference:
 npm run demo -- agents
-# Run every lab (original 48 planned requests, plus bounded agent requests):
+# Run every lab (58 planned requests for labs 01-18, plus bounded agent requests):
 npm run demo -- all
 npm run gallery
 npm run publish
 npm run verify
 ```
 
-Prompts are editable in `lib/labs.mjs`, `lib/advanced-labs.mjs`, and
-`lib/agent-labs.mjs`. The shared runner is deliberately small:
+Prompts are editable in `lib/labs.mjs`, `lib/model-comparison.mjs`,
+`lib/advanced-labs.mjs`, and `lib/agent-labs.mjs`. The shared runner is deliberately small:
 it sends requests, displays results, validates selected behaviors, and writes
 `results/<lab-id>.json`. API failures stop execution; Azure content-filter rejections are saved explicitly
 as blocked outcomes, not model answers. Behavior-check failures
@@ -341,8 +359,9 @@ workspace has a 0.1-GB daily ingestion cap and 30-day retention; that cap is not
 a precise dollar limit and reaching it can prevent result capture. Download
 evidence before retention expires. No automatic paid tier upgrade is performed.
 Static Web Apps uses its Free tier and its usage limits.
-The original 18-lab run has 48 planned API requests; the ten agent labs add at
-most 142 (at most 190 together). Lab 00 adds no model API requests. Actual counts are in saved usage. A filter
+Labs 01-18 now have 58 planned API requests, including twelve for the expanded
+model comparison; the ten agent labs add at most 142 (at most 200 together).
+Lab 00 adds no model API requests. Actual counts are in saved usage. A filter
 rejection stops the
 runner early; the instructor can execute remaining labs individually). Visible-output caps are usually
 320 tokens; the reasoning request has a 1,400-token total completion cap.

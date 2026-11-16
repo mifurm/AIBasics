@@ -18,7 +18,7 @@ Recording is pending: the integrated browser remained hidden and the user was un
 | 09. Ground answers in a source | completed | 2 | 175 |
 | 10. Instructions hidden in source text | blocked | 1 | 0 (usage not reported) |
 | 11. The model asks; code calculates | completed | 2 | 221 |
-| 12. General chat versus a reasoning model | completed | 2 | 403 |
+| 12. Same prompts, different models | completed | 12 | 1795 |
 | 13. Memory survives a new process | completed | 2 | 106 |
 | 14. Update and forget a saved fact | completed | 3 | 179 |
 | 15. Build and revise a plan across turns | completed | 3 | 429 |
@@ -36,9 +36,9 @@ Recording is pending: the integrated browser remained hidden and the user was un
 | 27. Check the result, not the claim | completed | 3 | 1577 |
 | 28. Evaluate the answer and the path | completed | 7 | 3648 |
 
-Final records represent 109 attempted requests and 37299 reported tokens.
+Final records represent 119 attempted requests and 38691 reported tokens.
 
-The retained failed grounding attempt adds 2 requests and 160 tokens. Total captured execution: 111 attempted requests and 37459 reported tokens. The blocked request supplied no usage; these totals are not a billing statement.
+The retained failed grounding attempt adds 2 requests and 160 tokens. Total captured execution: 121 attempted requests and 38851 reported tokens. The blocked request supplied no usage; these totals are not a billing statement.
 
 Latency is wall-clock request time from this machine; tool latency sums both model requests. Token usage includes tool-request tokens and reported reasoning tokens. Cost depends on current per-model pricing and storage/egress.
 
@@ -6047,47 +6047,498 @@ Additional first-request usage: `{"completion_tokens":10,"completion_tokens_deta
 - Passed / observed: Final answer uses tool result: The total cost for 17 robot kits at 23 credits each is 391 credits.
 
 
-## 12. General chat versus a reasoning model
+## 12. Same prompts, different models
 
-Models differ in training, capabilities, latency, cost, and supported API parameters.
+The same prompt can produce different wording, formatting, latency, and token use across models. Compare broad and specific prompts without assuming a winner.
 
-Recorded: 2026-11-14T16:48:15.270Z
+Recorded: 2026-11-16T19:21:56.647Z
 
-Caution: One easy task is not a benchmark. GPT-5-mini uses reasoning tokens; do not request or expose hidden chain-of-thought.
-
-
-### GPT-4o: general chat
+Caution: These are single observations, not a benchmark. Both models may be correct or identical. Supported settings differ; reasoning tokens are billed work, not visible explanations.
 
 
-Model: gpt-4o-2024-11-20; latency: 1243 ms; finish: stop.
+### Explain a concept / broad / GPT-4o
 
-Usage: `{"completion_tokens":81,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":6,"engine_ttft_ms":32,"engine_ttlt_ms":509,"pre_inference_ms":82,"service_tbt_ms":6,"service_ttft_ms":417,"service_ttlt_ms":889,"user_visible_ttft_ms":335},"prompt_tokens":57,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":138}`
+
+Model: gpt-4o-2024-11-20; latency: 3009 ms; finish: stop.
+
+Usage: `{"completion_tokens":104,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":20,"engine_ttft_ms":47,"engine_ttlt_ms":2098,"pre_inference_ms":67,"service_tbt_ms":20,"service_ttft_ms":432,"service_ttlt_ms":2480,"user_visible_ttft_ms":364},"prompt_tokens":23,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":127}`
 
 ```text
-**Schedule:**  
-Slot 1: Plant Demo  
-Slot 2: Robot Demo  
-Slot 3: Art Demo  
-
-**Constraint Check:**  
-- Robot immediately follows Plant: ✅ (Robot is in Slot 2 after Plant in Slot 1)  
-- Art is not first: ✅ (Art is in Slot 3)  
-- Unique schedule: ✅ (Only one arrangement satisfies all constraints).
+A language model generates text by predicting the most likely next word based on the input context. It uses patterns learned from vast amounts of training data to assign probabilities to possible word sequences. Starting with an initial prompt, the model selects words iteratively, updating the context with each choice. Advanced models like GPT use neural networks, specifically transformers, to process and understand relationships between words, enabling coherent and contextually relevant text generation. This process continues until a stopping condition, such as a specified length or end token, is met.
 ```
 
 
-### GPT-5-mini: reasoning
+comparison:
+
+```json
+{
+  "taskId": "explanation",
+  "taskTitle": "Explain a concept",
+  "promptStyle": "broad",
+  "modelLabel": "GPT-4o",
+  "manualRubric": "Is the explanation accurate, understandable to a 10-year-old, and free of misleading claims? Mentioning keywords alone does not establish accuracy.",
+  "targetChecks": [
+    {
+      "name": "Exactly two bullet lines",
+      "passed": false,
+      "detail": "1 non-empty lines."
+    },
+    {
+      "name": "At most 45 whitespace-separated words",
+      "passed": false,
+      "detail": "90 words."
+    },
+    {
+      "name": "Mentions tokens and context",
+      "passed": true,
+      "detail": "Keyword check only, not a factual-accuracy judgment."
+    }
+  ]
+}
+```
 
 
-Model: gpt-5-mini-2025-08-07; latency: 2755 ms; finish: stop.
+### Explain a concept / broad / GPT-5-mini
 
-Usage: `{"completion_tokens":209,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":128,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":7,"engine_ttft_ms":34,"engine_ttlt_ms":1666,"pre_inference_ms":107,"service_tbt_ms":7,"service_ttft_ms":391,"service_ttlt_ms":2056,"user_visible_ttft_ms":284},"prompt_tokens":56,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":265}`
+
+Model: gpt-5-mini-2025-08-07; latency: 2601 ms; finish: stop.
+
+Usage: `{"completion_tokens":90,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":9,"engine_ttft_ms":31,"engine_ttlt_ms":1395,"pre_inference_ms":115,"service_tbt_ms":9,"service_ttft_ms":811,"service_ttlt_ms":2179,"user_visible_ttft_ms":696},"prompt_tokens":22,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":112}`
 
 ```text
-Schedule: Slot 1 — Plant; Slot 2 — Robot; Slot 3 — Art.
-
-Constraint check: Robot immediately follows Plant (slots 1→2). Art is not first (slot 3). Plant cannot be in slot 2 or 3 because Robot must follow it and Art cannot be first, so this is the unique valid schedule.
+A language model is a neural network trained on text to predict the next token given prior tokens. Input words are converted to embeddings, processed (commonly by transformer layers with attention) to produce a probability distribution over possible next tokens. Text is generated by repeatedly sampling or selecting the highest-probability token and feeding it back until a stopping condition is reached. Training adjusts weights to match real-world token patterns.
 ```
+
+
+comparison:
+
+```json
+{
+  "taskId": "explanation",
+  "taskTitle": "Explain a concept",
+  "promptStyle": "broad",
+  "modelLabel": "GPT-5-mini",
+  "manualRubric": "Is the explanation accurate, understandable to a 10-year-old, and free of misleading claims? Mentioning keywords alone does not establish accuracy.",
+  "targetChecks": [
+    {
+      "name": "Exactly two bullet lines",
+      "passed": false,
+      "detail": "1 non-empty lines."
+    },
+    {
+      "name": "At most 45 whitespace-separated words",
+      "passed": false,
+      "detail": "69 words."
+    },
+    {
+      "name": "Mentions tokens and context",
+      "passed": false,
+      "detail": "Keyword check only, not a factual-accuracy judgment."
+    }
+  ]
+}
+```
+
+
+### Explain a concept / specific / GPT-4o
+
+
+Model: gpt-4o-2024-11-20; latency: 1024 ms; finish: stop.
+
+Usage: `{"completion_tokens":42,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":10,"engine_ttft_ms":47,"engine_ttlt_ms":491,"pre_inference_ms":90,"service_tbt_ms":10,"service_ttft_ms":450,"service_ttlt_ms":889,"user_visible_ttft_ms":361},"prompt_tokens":57,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":99}`
+
+```text
+- A language model reads words (tokens) you give it and guesses the next ones based on patterns it learned.  
+- It uses the context of earlier tokens to predict what fits best in the sentence.  
+```
+
+
+comparison:
+
+```json
+{
+  "taskId": "explanation",
+  "taskTitle": "Explain a concept",
+  "promptStyle": "specific",
+  "modelLabel": "GPT-4o",
+  "manualRubric": "Is the explanation accurate, understandable to a 10-year-old, and free of misleading claims? Mentioning keywords alone does not establish accuracy.",
+  "targetChecks": [
+    {
+      "name": "Exactly two bullet lines",
+      "passed": true,
+      "detail": "2 non-empty lines."
+    },
+    {
+      "name": "At most 45 whitespace-separated words",
+      "passed": true,
+      "detail": "36 words."
+    },
+    {
+      "name": "Mentions tokens and context",
+      "passed": true,
+      "detail": "Keyword check only, not a factual-accuracy judgment."
+    }
+  ]
+}
+```
+
+
+### Explain a concept / specific / GPT-5-mini
+
+
+Model: gpt-5-mini-2025-08-07; latency: 3140 ms; finish: stop.
+
+Usage: `{"completion_tokens":300,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":256,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":7,"engine_ttft_ms":30,"engine_ttlt_ms":2341,"pre_inference_ms":68,"service_tbt_ms":7,"service_ttft_ms":664,"service_ttlt_ms":2969,"user_visible_ttft_ms":595},"prompt_tokens":56,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":356}`
+
+```text
+- It learns from patterns and picks one small piece (a token) at a time.
+- Using the prior words as context, it repeats predictions to make sentences you read.
+```
+
+
+comparison:
+
+```json
+{
+  "taskId": "explanation",
+  "taskTitle": "Explain a concept",
+  "promptStyle": "specific",
+  "modelLabel": "GPT-5-mini",
+  "manualRubric": "Is the explanation accurate, understandable to a 10-year-old, and free of misleading claims? Mentioning keywords alone does not establish accuracy.",
+  "targetChecks": [
+    {
+      "name": "Exactly two bullet lines",
+      "passed": true,
+      "detail": "2 non-empty lines."
+    },
+    {
+      "name": "At most 45 whitespace-separated words",
+      "passed": true,
+      "detail": "30 words."
+    },
+    {
+      "name": "Mentions tokens and context",
+      "passed": true,
+      "detail": "Keyword check only, not a factual-accuracy judgment."
+    }
+  ]
+}
+```
+
+
+### Turn a note into data / broad / GPT-4o
+
+
+Model: gpt-4o-2024-11-20; latency: 699 ms; finish: stop.
+
+Usage: `{"completion_tokens":11,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":6,"engine_ttft_ms":31,"engine_ttlt_ms":102,"pre_inference_ms":73,"service_tbt_ms":6,"service_ttft_ms":424,"service_ttlt_ms":489,"user_visible_ttft_ms":350},"prompt_tokens":27,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":38}`
+
+```text
+You need to bring **3 notebooks** to class.
+```
+
+
+comparison:
+
+```json
+{
+  "taskId": "extraction",
+  "taskTitle": "Turn a note into data",
+  "promptStyle": "broad",
+  "modelLabel": "GPT-4o",
+  "manualRubric": "Does the answer preserve the item and quantity? A prose answer can be correct even though it does not meet the refined JSON target.",
+  "targetChecks": [
+    {
+      "name": "Exact JSON target and extracted values",
+      "passed": false,
+      "detail": "Not a standalone JSON object. Prose or Markdown may still convey the correct meaning."
+    }
+  ]
+}
+```
+
+
+### Turn a note into data / broad / GPT-5-mini
+
+
+Model: gpt-5-mini-2025-08-07; latency: 1840 ms; finish: stop.
+
+Usage: `{"completion_tokens":79,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":64,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":13,"engine_ttft_ms":34,"engine_ttlt_ms":1356,"pre_inference_ms":75,"service_tbt_ms":13,"service_ttft_ms":221,"service_ttlt_ms":1539,"user_visible_ttft_ms":146},"prompt_tokens":26,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":105}`
+
+```text
+Bring three notebooks to class.
+```
+
+
+comparison:
+
+```json
+{
+  "taskId": "extraction",
+  "taskTitle": "Turn a note into data",
+  "promptStyle": "broad",
+  "modelLabel": "GPT-5-mini",
+  "manualRubric": "Does the answer preserve the item and quantity? A prose answer can be correct even though it does not meet the refined JSON target.",
+  "targetChecks": [
+    {
+      "name": "Exact JSON target and extracted values",
+      "passed": false,
+      "detail": "Not a standalone JSON object. Prose or Markdown may still convey the correct meaning."
+    }
+  ]
+}
+```
+
+
+### Turn a note into data / specific / GPT-4o
+
+
+Model: gpt-4o-2024-11-20; latency: 674 ms; finish: stop.
+
+Usage: `{"completion_tokens":17,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":3,"engine_ttft_ms":36,"engine_ttlt_ms":94,"pre_inference_ms":95,"service_tbt_ms":3,"service_ttft_ms":453,"service_ttlt_ms":510,"user_visible_ttft_ms":357},"prompt_tokens":62,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":79}`
+
+```text
+{
+  "item": "notebooks",
+  "quantity": 3
+}
+```
+
+
+comparison:
+
+```json
+{
+  "taskId": "extraction",
+  "taskTitle": "Turn a note into data",
+  "promptStyle": "specific",
+  "modelLabel": "GPT-4o",
+  "manualRubric": "Does the answer preserve the item and quantity? A prose answer can be correct even though it does not meet the refined JSON target.",
+  "targetChecks": [
+    {
+      "name": "Exact JSON target and extracted values",
+      "passed": true,
+      "detail": "{\"item\":\"notebooks\",\"quantity\":3}"
+    }
+  ]
+}
+```
+
+
+### Turn a note into data / specific / GPT-5-mini
+
+
+Model: gpt-5-mini-2025-08-07; latency: 1535 ms; finish: stop.
+
+Usage: `{"completion_tokens":83,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":64,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":8,"engine_ttft_ms":42,"engine_ttlt_ms":757,"pre_inference_ms":87,"service_tbt_ms":8,"service_ttft_ms":347,"service_ttlt_ms":1047,"user_visible_ttft_ms":260},"prompt_tokens":61,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":144}`
+
+```text
+{"item":"notebooks","quantity":3}
+```
+
+
+comparison:
+
+```json
+{
+  "taskId": "extraction",
+  "taskTitle": "Turn a note into data",
+  "promptStyle": "specific",
+  "modelLabel": "GPT-5-mini",
+  "manualRubric": "Does the answer preserve the item and quantity? A prose answer can be correct even though it does not meet the refined JSON target.",
+  "targetChecks": [
+    {
+      "name": "Exact JSON target and extracted values",
+      "passed": true,
+      "detail": "{\"item\":\"notebooks\",\"quantity\":3}"
+    }
+  ]
+}
+```
+
+
+### Follow scheduling constraints / broad / GPT-4o
+
+
+Model: gpt-4o-2024-11-20; latency: 1380 ms; finish: stop.
+
+Usage: `{"completion_tokens":99,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":7,"engine_ttft_ms":43,"engine_ttlt_ms":743,"pre_inference_ms":121,"service_tbt_ms":7,"service_ttft_ms":496,"service_ttlt_ms":1175,"user_visible_ttft_ms":375},"prompt_tokens":46,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":145}`
+
+```text
+To satisfy the given constraints:
+
+1. **Robot must immediately follow Plant**: This means Robot and Plant must be scheduled consecutively, with Plant first and Robot second.
+2. **Art must not be first**: Art cannot occupy slot 1.
+
+The only valid schedule is:
+
+- **Slot 1: Plant**
+- **Slot 2: Robot**
+- **Slot 3: Art**
+
+This arrangement ensures that Robot immediately follows Plant, and Art is not in the first slot.
+```
+
+
+comparison:
+
+```json
+{
+  "taskId": "constraints",
+  "taskTitle": "Follow scheduling constraints",
+  "promptStyle": "broad",
+  "modelLabel": "GPT-4o",
+  "manualRubric": "Check the meaning, not only the format: each demo appears once; plant is immediately before robot; art is not first. The unique solution is plant, robot, art.",
+  "targetChecks": [
+    {
+      "name": "Exact three-line target and valid schedule",
+      "passed": false,
+      "detail": "Target is exactly: 1: plant / 2: robot / 3: art. Other formats require manual semantic review."
+    }
+  ]
+}
+```
+
+
+### Follow scheduling constraints / broad / GPT-5-mini
+
+
+Model: gpt-5-mini-2025-08-07; latency: 2054 ms; finish: stop.
+
+Usage: `{"completion_tokens":154,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":128,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":8,"engine_ttft_ms":28,"engine_ttlt_ms":1572,"pre_inference_ms":78,"service_tbt_ms":8,"service_ttft_ms":203,"service_ttlt_ms":1743,"user_visible_ttft_ms":125},"prompt_tokens":45,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":199}`
+
+```text
+Slot 1: Plant
+Slot 2: Robot
+Slot 3: Art
+```
+
+
+comparison:
+
+```json
+{
+  "taskId": "constraints",
+  "taskTitle": "Follow scheduling constraints",
+  "promptStyle": "broad",
+  "modelLabel": "GPT-5-mini",
+  "manualRubric": "Check the meaning, not only the format: each demo appears once; plant is immediately before robot; art is not first. The unique solution is plant, robot, art.",
+  "targetChecks": [
+    {
+      "name": "Exact three-line target and valid schedule",
+      "passed": false,
+      "detail": "Target is exactly: 1: plant / 2: robot / 3: art. Other formats require manual semantic review."
+    }
+  ]
+}
+```
+
+
+### Follow scheduling constraints / specific / GPT-4o
+
+
+Model: gpt-4o-2024-11-20; latency: 588 ms; finish: stop.
+
+Usage: `{"completion_tokens":12,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":4,"engine_ttft_ms":37,"engine_ttlt_ms":95,"pre_inference_ms":78,"service_tbt_ms":4,"service_ttft_ms":429,"service_ttlt_ms":482,"user_visible_ttft_ms":351},"prompt_tokens":84,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":96}`
+
+```text
+1: plant  
+2: robot  
+3: art  
+```
+
+
+comparison:
+
+```json
+{
+  "taskId": "constraints",
+  "taskTitle": "Follow scheduling constraints",
+  "promptStyle": "specific",
+  "modelLabel": "GPT-4o",
+  "manualRubric": "Check the meaning, not only the format: each demo appears once; plant is immediately before robot; art is not first. The unique solution is plant, robot, art.",
+  "targetChecks": [
+    {
+      "name": "Exact three-line target and valid schedule",
+      "passed": false,
+      "detail": "Target is exactly: 1: plant / 2: robot / 3: art. Other formats require manual semantic review."
+    }
+  ]
+}
+```
+
+
+### Follow scheduling constraints / specific / GPT-5-mini
+
+
+Model: gpt-5-mini-2025-08-07; latency: 3292 ms; finish: stop.
+
+Usage: `{"completion_tokens":212,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":192,"rejected_prediction_tokens":0},"latency_checkpoint":{"engine_tbt_ms":8,"engine_ttft_ms":36,"engine_ttlt_ms":2273,"pre_inference_ms":97,"service_tbt_ms":8,"service_ttft_ms":701,"service_ttlt_ms":2932,"user_visible_ttft_ms":605},"prompt_tokens":83,"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0},"total_tokens":295}`
+
+```text
+1: plant
+2: robot
+3: art
+```
+
+
+comparison:
+
+```json
+{
+  "taskId": "constraints",
+  "taskTitle": "Follow scheduling constraints",
+  "promptStyle": "specific",
+  "modelLabel": "GPT-5-mini",
+  "manualRubric": "Check the meaning, not only the format: each demo appears once; plant is immediately before robot; art is not first. The unique solution is plant, robot, art.",
+  "targetChecks": [
+    {
+      "name": "Exact three-line target and valid schedule",
+      "passed": true,
+      "detail": "Target is exactly: 1: plant / 2: robot / 3: art. Other formats require manual semantic review."
+    }
+  ]
+}
+```
+
+
+- Passed / observed: All twelve planned Azure responses are preserved: 12 / 12 responses.
+
+
+- Passed / observed: Explain a concept / broad: identical messages, distinct model deployments: The model-specific settings are deliberately recorded separately from the identical prompt.
+
+
+- Passed / observed: Explain a concept / broad: complete observable evidence: Model-quality failures remain visible in target checks; they do not erase or invalidate an otherwise complete experiment.
+
+
+- Passed / observed: Explain a concept / specific: identical messages, distinct model deployments: The model-specific settings are deliberately recorded separately from the identical prompt.
+
+
+- Passed / observed: Explain a concept / specific: complete observable evidence: Model-quality failures remain visible in target checks; they do not erase or invalidate an otherwise complete experiment.
+
+
+- Passed / observed: Turn a note into data / broad: identical messages, distinct model deployments: The model-specific settings are deliberately recorded separately from the identical prompt.
+
+
+- Passed / observed: Turn a note into data / broad: complete observable evidence: Model-quality failures remain visible in target checks; they do not erase or invalidate an otherwise complete experiment.
+
+
+- Passed / observed: Turn a note into data / specific: identical messages, distinct model deployments: The model-specific settings are deliberately recorded separately from the identical prompt.
+
+
+- Passed / observed: Turn a note into data / specific: complete observable evidence: Model-quality failures remain visible in target checks; they do not erase or invalidate an otherwise complete experiment.
+
+
+- Passed / observed: Follow scheduling constraints / broad: identical messages, distinct model deployments: The model-specific settings are deliberately recorded separately from the identical prompt.
+
+
+- Passed / observed: Follow scheduling constraints / broad: complete observable evidence: Model-quality failures remain visible in target checks; they do not erase or invalidate an otherwise complete experiment.
+
+
+- Passed / observed: Follow scheduling constraints / specific: identical messages, distinct model deployments: The model-specific settings are deliberately recorded separately from the identical prompt.
+
+
+- Passed / observed: Follow scheduling constraints / specific: complete observable evidence: Model-quality failures remain visible in target checks; they do not erase or invalidate an otherwise complete experiment.
 
 
 ## 13. Memory survives a new process

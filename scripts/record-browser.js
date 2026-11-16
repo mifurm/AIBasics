@@ -29,18 +29,23 @@ for (let index = 0; index < records.length; index++) {
     await page.screencast.showActions();
     await page.screencast.showChapter(`Lab ${lab.id.slice(0, 2)}: ${lab.title}`);
     await page.waitForTimeout(1800);
-    for (let variant = 0; variant < lab.results.length; variant++) {
-      const result = lab.results[variant];
-      await page.screencast.showChapter(result.label);
+    const variantCount = lab.modelComparison ? lab.results.length / 2 : lab.results.length;
+    for (let variant = 0; variant < variantCount; variant++) {
+      const entries = lab.modelComparison ? lab.results.slice(variant * 2, variant * 2 + 2) : [lab.results[variant]];
+      await page.screencast.showChapter(entries[0].label);
       await page.getByLabel('Prompt variant', { exact: true }).selectOption(String(variant));
-      const output = await page.locator('#output').textContent();
-      if (result.status === 'blocked') {
-        if (!output.includes('BLOCKED BY AZURE') || !output.includes('content_filter')) throw new Error('Blocked outcome was not displayed accurately.');
-      } else if (output !== result.output) {
-        throw new Error(`Displayed outcome differs from actual Azure record: ${lab.id}/${variant}`);
+      for (const [offset, result] of entries.entries()) {
+        const locator = lab.modelComparison ?
+          page.locator(`[data-result-index="${variant * 2 + offset}"] .output`) : page.locator('#output');
+        const output = await locator.textContent();
+        if (result.status === 'blocked') {
+          if (!output.includes('BLOCKED BY AZURE') || !output.includes('content_filter')) throw new Error('Blocked outcome was not displayed accurately.');
+        } else if (output !== result.output) {
+          throw new Error(`Displayed outcome differs from actual Azure record: ${lab.id}/${variant}`);
+        }
+        await locator.scrollIntoViewIfNeeded();
+        await page.waitForTimeout(2600);
       }
-      await page.locator('#output').scrollIntoViewIfNeeded();
-      await page.waitForTimeout(2600);
     }
     if (lab.id === '09-grounding') {
       await page.screencast.showChapter('Retained failure: the first answer omitted its citation');

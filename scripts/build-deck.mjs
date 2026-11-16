@@ -104,6 +104,16 @@ for (let i = 0; i < labs.length; i++) {
   if (media) {
     s.addMedia({ type: 'video', path: media, x: 4.5, y: 1.7, w: 8.2, h: 4.61 });
     link(s, 'Watch recording in browser', `${config.website}recordings/${lab.id}.mp4`, 4.5, 6.5, 3.8);
+  } else if (lab.modelComparison) {
+    body(s, 'SAME BROAD EXPLANATION PROMPT', 4.5, 1.7, 8.2, 0.4, 14);
+    record.results.slice(0, 2).forEach((result, offset) => {
+      const x = 4.5 + offset * 4.2;
+      s.addShape(pptx.ShapeType.roundRect, { x, y: 2.2, w: 4.0, h: 3.9, fill: { color: C.white }, line: { color: 'D5E0E7' } });
+      body(s, result.comparison.modelLabel, x + 0.15, 2.4, 3.7, 0.35, 18);
+      body(s, result.output.length > 320 ? `${result.output.slice(0, 320)}\n[Excerpt; full output in gallery]` : result.output,
+        x + 0.15, 3.0, 3.7, 2.25, 13);
+      body(s, `${result.latencyMs} ms | ${result.usage.total_tokens} tokens`, x + 0.15, 5.55, 3.7, 0.35, 12);
+    });
   } else {
     s.addShape(pptx.ShapeType.roundRect, { x: 4.5, y: 1.7, w: 8.2, h: 4.61, fill: { color: C.white }, line: { color: 'D5E0E7' } });
     const last = record.results.at(-1);
@@ -133,7 +143,7 @@ for (let i = 0; i < labs.length; i++) {
         (result.kind === 'computation' ? 'No model API requests. Toy training tokens are not API billing tokens.\n' : `Usage: \`${JSON.stringify(result.usage)}\`\n`) +
         `\n\`\`\`text\n${result.output}\n\`\`\`\n`);
       if (result.toolTrace) detailed.push(`\nTool trace: \`${JSON.stringify(result.toolTrace)}\`\n\nAdditional first-request usage: \`${JSON.stringify(result.toolRequestUsage)}\`\n`);
-      for (const key of ['computationTrace', 'memoryTrace', 'summaryTrace', 'toolSteps', 'retrievalTrace', 'agentTrace', 'extraRequests']) {
+      for (const key of ['comparison', 'computationTrace', 'memoryTrace', 'summaryTrace', 'toolSteps', 'retrievalTrace', 'agentTrace', 'extraRequests']) {
         if (result[key]) detailed.push(`\n${key}:\n\n\`\`\`json\n${JSON.stringify(result[key], null, 2)}\n\`\`\`\n`);
       }
     }

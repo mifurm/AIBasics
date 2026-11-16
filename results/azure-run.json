@@ -1,14 +1,14 @@
 {
-  "runId": "456802b3-b261-439f-8f8c-6da2acd8d9b7",
+  "runId": "e5ca849c-9f9a-4c59-8d9f-56a38d429cfd",
   "runtime": "Azure Container Apps Job",
-  "startedAt": "2026-11-16T17:54:54.233Z",
+  "startedAt": "2026-11-16T19:21:34.138Z",
   "status": "completed",
   "labs": [
-    "00-tiny-transformer"
+    "12-models"
   ],
   "records": [
-    "00-tiny-transformer"
+    "12-models"
   ],
-  "finishedAt": "2026-11-16T17:54:57.787Z",
-  "executionName": "aibasics-agents-zgfkrl6mqqsly-x8n3iik"
+  "finishedAt": "2026-11-16T19:21:56.921Z",
+  "executionName": "aibasics-agents-zgfkrl6mqqsly-lxlph05"
 }
