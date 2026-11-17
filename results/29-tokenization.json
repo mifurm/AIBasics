@@ -1,0 +1,1972 @@
+{
+  "labId": "29-tokenization",
+  "recordedAt": "2026-11-16T21:25:20.004Z",
+  "results": [
+    {
+      "label": "Toy BPE learns merges from eleven words",
+      "kind": "experiment",
+      "request": {
+        "summary": "Count adjacent symbol pairs across eleven fictional classroom words (54 word occurrences), merge the most frequent pair, and repeat 18 times. No model API request is used."
+      },
+      "output": "Learned 18 merges. Most frequent first merge: \"b + o\" (17 occurrences).\nrobots -> robot | s</w>\nlearners (unseen) -> learn | e | r | s</w>\nplayful (unseen) -> play | f | u | l | </w>\nzebra (unseen) -> z | e | b | r | a | </w>",
+      "outputSource": "computation",
+      "actualModel": "local-computation",
+      "finishReason": "completed",
+      "latencyMs": 1,
+      "usage": null,
+      "apiRequests": 0,
+      "apiCalls": [],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "text",
+          "text": "Byte-pair encoding starts from single characters (plus an end-of-word marker) and repeatedly merges the most frequent adjacent pair. Frequent chunks become single tokens."
+        },
+        {
+          "type": "table",
+          "title": "Learned merges, in order",
+          "headers": [
+            "Step",
+            "Merged pair",
+            "Occurrences",
+            "New token"
+          ],
+          "rows": [
+            [
+              1,
+              "b + o",
+              17,
+              "bo"
+            ],
+            [
+              2,
+              "bo + t",
+              17,
+              "bot"
+            ],
+            [
+              3,
+              "o + bot",
+              17,
+              "obot"
+            ],
+            [
+              4,
+              "r + obot",
+              17,
+              "robot"
+            ],
+            [
+              5,
+              "a + r",
+              13,
+              "ar"
+            ],
+            [
+              6,
+              "ar + n",
+              13,
+              "arn"
+            ],
+            [
+              7,
+              "e + arn",
+              13,
+              "earn"
+            ],
+            [
+              8,
+              "l + earn",
+              13,
+              "learn"
+            ],
+            [
+              9,
+              "a + y",
+              12,
+              "ay"
+            ],
+            [
+              10,
+              "c + l",
+              12,
+              "cl"
+            ],
+            [
+              11,
+              "cl + u",
+              12,
+              "clu"
+            ],
+            [
+              12,
+              "clu + b",
+              12,
+              "club"
+            ],
+            [
+              13,
+              "l + ay",
+              12,
+              "lay"
+            ],
+            [
+              14,
+              "p + lay",
+              12,
+              "play"
+            ],
+            [
+              15,
+              "s + </w>",
+              11,
+              "s</w>"
+            ],
+            [
+              16,
+              "g + </w>",
+              8,
+              "g</w>"
+            ],
+            [
+              17,
+              "i + n",
+              8,
+              "in"
+            ],
+            [
+              18,
+              "in + g</w>",
+              8,
+              "ing</w>"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Segmenting words with the learned merges",
+          "headers": [
+            "Word",
+            "Seen in training?",
+            "Pieces"
+          ],
+          "rows": [
+            [
+              "robots",
+              "yes",
+              "robot | s</w>"
+            ],
+            [
+              "learners",
+              "no",
+              "learn | e | r | s</w>"
+            ],
+            [
+              "playful",
+              "no",
+              "play | f | u | l | </w>"
+            ],
+            [
+              "zebra",
+              "no",
+              "z | e | b | r | a | </w>"
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "corpus": {
+          "robot": 8,
+          "robots": 6,
+          "robotic": 3,
+          "club": 7,
+          "clubs": 5,
+          "learn": 6,
+          "learner": 3,
+          "learning": 4,
+          "play": 5,
+          "player": 3,
+          "playing": 4
+        },
+        "merges": [
+          {
+            "step": 1,
+            "pair": [
+              "b",
+              "o"
+            ],
+            "count": 17,
+            "symbol": "bo"
+          },
+          {
+            "step": 2,
+            "pair": [
+              "bo",
+              "t"
+            ],
+            "count": 17,
+            "symbol": "bot"
+          },
+          {
+            "step": 3,
+            "pair": [
+              "o",
+              "bot"
+            ],
+            "count": 17,
+            "symbol": "obot"
+          },
+          {
+            "step": 4,
+            "pair": [
+              "r",
+              "obot"
+            ],
+            "count": 17,
+            "symbol": "robot"
+          },
+          {
+            "step": 5,
+            "pair": [
+              "a",
+              "r"
+            ],
+            "count": 13,
+            "symbol": "ar"
+          },
+          {
+            "step": 6,
+            "pair": [
+              "ar",
+              "n"
+            ],
+            "count": 13,
+            "symbol": "arn"
+          },
+          {
+            "step": 7,
+            "pair": [
+              "e",
+              "arn"
+            ],
+            "count": 13,
+            "symbol": "earn"
+          },
+          {
+            "step": 8,
+            "pair": [
+              "l",
+              "earn"
+            ],
+            "count": 13,
+            "symbol": "learn"
+          },
+          {
+            "step": 9,
+            "pair": [
+              "a",
+              "y"
+            ],
+            "count": 12,
+            "symbol": "ay"
+          },
+          {
+            "step": 10,
+            "pair": [
+              "c",
+              "l"
+            ],
+            "count": 12,
+            "symbol": "cl"
+          },
+          {
+            "step": 11,
+            "pair": [
+              "cl",
+              "u"
+            ],
+            "count": 12,
+            "symbol": "clu"
+          },
+          {
+            "step": 12,
+            "pair": [
+              "clu",
+              "b"
+            ],
+            "count": 12,
+            "symbol": "club"
+          },
+          {
+            "step": 13,
+            "pair": [
+              "l",
+              "ay"
+            ],
+            "count": 12,
+            "symbol": "lay"
+          },
+          {
+            "step": 14,
+            "pair": [
+              "p",
+              "lay"
+            ],
+            "count": 12,
+            "symbol": "play"
+          },
+          {
+            "step": 15,
+            "pair": [
+              "s",
+              "</w>"
+            ],
+            "count": 11,
+            "symbol": "s</w>"
+          },
+          {
+            "step": 16,
+            "pair": [
+              "g",
+              "</w>"
+            ],
+            "count": 8,
+            "symbol": "g</w>"
+          },
+          {
+            "step": 17,
+            "pair": [
+              "i",
+              "n"
+            ],
+            "count": 8,
+            "symbol": "in"
+          },
+          {
+            "step": 18,
+            "pair": [
+              "in",
+              "g</w>"
+            ],
+            "count": 8,
+            "symbol": "ing</w>"
+          }
+        ],
+        "segmentation": [
+          {
+            "word": "robots",
+            "seen": true,
+            "pieces": [
+              "robot",
+              "s</w>"
+            ]
+          },
+          {
+            "word": "learners",
+            "seen": false,
+            "pieces": [
+              "learn",
+              "e",
+              "r",
+              "s</w>"
+            ]
+          },
+          {
+            "word": "playful",
+            "seen": false,
+            "pieces": [
+              "play",
+              "f",
+              "u",
+              "l",
+              "</w>"
+            ]
+          },
+          {
+            "word": "zebra",
+            "seen": false,
+            "pieces": [
+              "z",
+              "e",
+              "b",
+              "r",
+              "a",
+              "</w>"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "The same sentence in eight languages (GPT-4o)",
+      "kind": "experiment",
+      "request": {
+        "summary": "Send each sentence as one user message to GPT-4o with max_tokens 1. The reported prompt tokens minus a calibrated 7-token chat overhead (measured with the one-token message \"a\") is the sentence's token count."
+      },
+      "output": "English: 9 tokens for 38 characters (1x English)\nPolish: 11 tokens for 29 characters (1.22x English)\nGerman: 11 tokens for 45 characters (1.22x English)\nSpanish: 12 tokens for 37 characters (1.33x English)\nRussian: 14 tokens for 33 characters (1.56x English)\nJapanese: 12 tokens for 14 characters (1.33x English)\nArabic: 14 tokens for 36 characters (1.56x English)\nHindi: 13 tokens for 30 characters (1.44x English)",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "completed",
+      "latencyMs": 6820,
+      "usage": {
+        "input_tokens": 160,
+        "output_tokens": 9,
+        "total_tokens": 169
+      },
+      "apiRequests": 9,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 924,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 25,
+              "engine_ttlt_ms": 26,
+              "pre_inference_ms": 148,
+              "service_ttft_ms": 500,
+              "service_ttlt_ms": 500,
+              "user_visible_ttft_ms": 352
+            },
+            "prompt_tokens": 8,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 9
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 637,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 37,
+              "engine_ttlt_ms": 38,
+              "pre_inference_ms": 88,
+              "service_ttft_ms": 441,
+              "service_ttlt_ms": 441,
+              "user_visible_ttft_ms": 353
+            },
+            "prompt_tokens": 16,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 17
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 605,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 54,
+              "engine_ttlt_ms": 55,
+              "pre_inference_ms": 91,
+              "service_ttft_ms": 446,
+              "service_ttlt_ms": 446,
+              "user_visible_ttft_ms": 355
+            },
+            "prompt_tokens": 18,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 19
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 586,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 31,
+              "engine_ttlt_ms": 32,
+              "pre_inference_ms": 85,
+              "service_ttft_ms": 441,
+              "service_ttlt_ms": 441,
+              "user_visible_ttft_ms": 356
+            },
+            "prompt_tokens": 18,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 19
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1012,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 30,
+              "engine_ttlt_ms": 31,
+              "pre_inference_ms": 82,
+              "service_ttft_ms": 888,
+              "service_ttlt_ms": 888,
+              "user_visible_ttft_ms": 806
+            },
+            "prompt_tokens": 19,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 20
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 967,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_ttft_ms": 28,
+              "engine_ttlt_ms": 28,
+              "pre_inference_ms": 77,
+              "service_ttft_ms": 832,
+              "service_ttlt_ms": 832,
+              "user_visible_ttft_ms": 755
+            },
+            "prompt_tokens": 21,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 22
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 954,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_ttft_ms": 31,
+              "engine_ttlt_ms": 31,
+              "pre_inference_ms": 47,
+              "service_ttft_ms": 838,
+              "service_ttlt_ms": 838,
+              "user_visible_ttft_ms": 791
+            },
+            "prompt_tokens": 19,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 20
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 573,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 34,
+              "engine_ttlt_ms": 35,
+              "pre_inference_ms": 67,
+              "service_ttft_ms": 427,
+              "service_ttlt_ms": 427,
+              "user_visible_ttft_ms": 360
+            },
+            "prompt_tokens": 21,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 22
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 553,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 31,
+              "engine_ttlt_ms": 32,
+              "pre_inference_ms": 82,
+              "service_ttft_ms": 426,
+              "service_ttlt_ms": 426,
+              "user_visible_ttft_ms": 344
+            },
+            "prompt_tokens": 20,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 21
+          }
+        }
+      ],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "bars",
+          "title": "Tokens for the same meaning",
+          "items": [
+            {
+              "label": "English",
+              "value": 9,
+              "max": 14,
+              "detail": "1x English"
+            },
+            {
+              "label": "Polish",
+              "value": 11,
+              "max": 14,
+              "detail": "1.22x English"
+            },
+            {
+              "label": "German",
+              "value": 11,
+              "max": 14,
+              "detail": "1.22x English"
+            },
+            {
+              "label": "Spanish",
+              "value": 12,
+              "max": 14,
+              "detail": "1.33x English"
+            },
+            {
+              "label": "Russian",
+              "value": 14,
+              "max": 14,
+              "detail": "1.56x English"
+            },
+            {
+              "label": "Japanese",
+              "value": 12,
+              "max": 14,
+              "detail": "1.33x English"
+            },
+            {
+              "label": "Arabic",
+              "value": 14,
+              "max": 14,
+              "detail": "1.56x English"
+            },
+            {
+              "label": "Hindi",
+              "value": 13,
+              "max": 14,
+              "detail": "1.44x English"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Measured cost of one sentence",
+          "headers": [
+            "Language",
+            "Text",
+            "Characters",
+            "UTF-8 bytes",
+            "Tokens",
+            "Characters per token",
+            "Relative to English"
+          ],
+          "rows": [
+            [
+              "English",
+              "The cat sleeps on the warm windowsill.",
+              38,
+              38,
+              9,
+              4.22,
+              "1x"
+            ],
+            [
+              "Polish",
+              "Kot śpi na ciepłym parapecie.",
+              29,
+              31,
+              11,
+              2.64,
+              "1.22x"
+            ],
+            [
+              "German",
+              "Die Katze schläft auf der warmen Fensterbank.",
+              45,
+              46,
+              11,
+              4.09,
+              "1.22x"
+            ],
+            [
+              "Spanish",
+              "El gato duerme en el alféizar cálido.",
+              37,
+              39,
+              12,
+              3.08,
+              "1.33x"
+            ],
+            [
+              "Russian",
+              "Кошка спит на тёплом подоконнике.",
+              33,
+              61,
+              14,
+              2.36,
+              "1.56x"
+            ],
+            [
+              "Japanese",
+              "猫は暖かい窓辺で寝ています。",
+              14,
+              42,
+              12,
+              1.17,
+              "1.33x"
+            ],
+            [
+              "Arabic",
+              "تنام القطة على حافة النافذة الدافئة.",
+              36,
+              66,
+              14,
+              2.57,
+              "1.56x"
+            ],
+            [
+              "Hindi",
+              "बिल्ली गर्म खिड़की पर सोती है।",
+              30,
+              80,
+              13,
+              2.31,
+              "1.44x"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Calibrated chat-message overhead: 7 tokens, subtracted from every count."
+        }
+      ],
+      "measurements": {
+        "model": "gpt-4o",
+        "overheadTokens": 7,
+        "rows": [
+          {
+            "id": "en",
+            "language": "English",
+            "text": "The cat sleeps on the warm windowsill.",
+            "characters": 38,
+            "bytes": 38,
+            "tokens": 9,
+            "charactersPerToken": 4.222222222222222
+          },
+          {
+            "id": "pl",
+            "language": "Polish",
+            "text": "Kot śpi na ciepłym parapecie.",
+            "characters": 29,
+            "bytes": 31,
+            "tokens": 11,
+            "charactersPerToken": 2.6363636363636362
+          },
+          {
+            "id": "de",
+            "language": "German",
+            "text": "Die Katze schläft auf der warmen Fensterbank.",
+            "characters": 45,
+            "bytes": 46,
+            "tokens": 11,
+            "charactersPerToken": 4.090909090909091
+          },
+          {
+            "id": "es",
+            "language": "Spanish",
+            "text": "El gato duerme en el alféizar cálido.",
+            "characters": 37,
+            "bytes": 39,
+            "tokens": 12,
+            "charactersPerToken": 3.0833333333333335
+          },
+          {
+            "id": "ru",
+            "language": "Russian",
+            "text": "Кошка спит на тёплом подоконнике.",
+            "characters": 33,
+            "bytes": 61,
+            "tokens": 14,
+            "charactersPerToken": 2.357142857142857
+          },
+          {
+            "id": "ja",
+            "language": "Japanese",
+            "text": "猫は暖かい窓辺で寝ています。",
+            "characters": 14,
+            "bytes": 42,
+            "tokens": 12,
+            "charactersPerToken": 1.1666666666666667
+          },
+          {
+            "id": "ar",
+            "language": "Arabic",
+            "text": "تنام القطة على حافة النافذة الدافئة.",
+            "characters": 36,
+            "bytes": 66,
+            "tokens": 14,
+            "charactersPerToken": 2.5714285714285716
+          },
+          {
+            "id": "hi",
+            "language": "Hindi",
+            "text": "बिल्ली गर्म खिड़की पर सोती है।",
+            "characters": 30,
+            "bytes": 80,
+            "tokens": 13,
+            "charactersPerToken": 2.3076923076923075
+          }
+        ]
+      }
+    },
+    {
+      "label": "Numbers, code, emoji, and whitespace (GPT-4o)",
+      "kind": "experiment",
+      "request": {
+        "summary": "Measure token counts for dates, long digit strings, number words, code, emoji, repeated letters, URLs, and runs of spaces with the same calibrated method."
+      },
+      "output": "Date: 6 tokens for 10 characters (1.67 characters/token)\nSixteen digits: 6 tokens for 16 characters (2.67 characters/token)\nNumber in words: 7 tokens for 44 characters (6.29 characters/token)\nCode: 20 tokens for 43 characters (2.15 characters/token)\nFive emoji: 5 tokens for 5 characters (1 characters/token)\nTwenty letter a: 3 tokens for 20 characters (6.67 characters/token)\nURL: 14 tokens for 31 characters (2.21 characters/token)\nTen spaces: 3 tokens for 12 characters (4 characters/token)",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "completed",
+      "latencyMs": 6358,
+      "usage": {
+        "input_tokens": 128,
+        "output_tokens": 9,
+        "total_tokens": 137
+      },
+      "apiRequests": 9,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 498,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_ttft_ms": 23,
+              "engine_ttlt_ms": 23,
+              "pre_inference_ms": 45,
+              "service_ttft_ms": 377,
+              "service_ttlt_ms": 377,
+              "user_visible_ttft_ms": 332
+            },
+            "prompt_tokens": 8,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 9
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 978,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_ttft_ms": 27,
+              "engine_ttlt_ms": 27,
+              "pre_inference_ms": 85,
+              "service_ttft_ms": 838,
+              "service_ttlt_ms": 838,
+              "user_visible_ttft_ms": 753
+            },
+            "prompt_tokens": 13,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 14
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 994,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 35,
+              "engine_ttlt_ms": 36,
+              "pre_inference_ms": 108,
+              "service_ttft_ms": 875,
+              "service_ttlt_ms": 875,
+              "user_visible_ttft_ms": 767
+            },
+            "prompt_tokens": 13,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 14
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 516,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 33,
+              "engine_ttlt_ms": 34,
+              "pre_inference_ms": 48,
+              "service_ttft_ms": 402,
+              "service_ttlt_ms": 402,
+              "user_visible_ttft_ms": 354
+            },
+            "prompt_tokens": 14,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 15
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 617,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_ttft_ms": 37,
+              "engine_ttlt_ms": 37,
+              "pre_inference_ms": 127,
+              "service_ttft_ms": 459,
+              "service_ttlt_ms": 459,
+              "user_visible_ttft_ms": 331
+            },
+            "prompt_tokens": 27,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 28
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 565,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_ttft_ms": 30,
+              "engine_ttlt_ms": 30,
+              "pre_inference_ms": 87,
+              "service_ttft_ms": 434,
+              "service_ttlt_ms": 434,
+              "user_visible_ttft_ms": 347
+            },
+            "prompt_tokens": 12,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 13
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 622,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_ttft_ms": 34,
+              "engine_ttlt_ms": 34,
+              "pre_inference_ms": 96,
+              "service_ttft_ms": 487,
+              "service_ttlt_ms": 487,
+              "user_visible_ttft_ms": 391
+            },
+            "prompt_tokens": 10,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 11
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 986,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_ttft_ms": 28,
+              "engine_ttlt_ms": 28,
+              "pre_inference_ms": 70,
+              "service_ttft_ms": 874,
+              "service_ttlt_ms": 874,
+              "user_visible_ttft_ms": 804
+            },
+            "prompt_tokens": 21,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 22
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 575,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 34,
+              "engine_ttlt_ms": 35,
+              "pre_inference_ms": 82,
+              "service_ttft_ms": 442,
+              "service_ttlt_ms": 442,
+              "user_visible_ttft_ms": 360
+            },
+            "prompt_tokens": 10,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 11
+          }
+        }
+      ],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "bars",
+          "title": "Characters packed into each token (higher means cheaper)",
+          "items": [
+            {
+              "label": "Date",
+              "value": 1.67,
+              "max": 6.666666666666667,
+              "detail": "6 tokens"
+            },
+            {
+              "label": "Sixteen digits",
+              "value": 2.67,
+              "max": 6.666666666666667,
+              "detail": "6 tokens"
+            },
+            {
+              "label": "Number in words",
+              "value": 6.29,
+              "max": 6.666666666666667,
+              "detail": "7 tokens"
+            },
+            {
+              "label": "Code",
+              "value": 2.15,
+              "max": 6.666666666666667,
+              "detail": "20 tokens"
+            },
+            {
+              "label": "Five emoji",
+              "value": 1,
+              "max": 6.666666666666667,
+              "detail": "5 tokens"
+            },
+            {
+              "label": "Twenty letter a",
+              "value": 6.67,
+              "max": 6.666666666666667,
+              "detail": "3 tokens"
+            },
+            {
+              "label": "URL",
+              "value": 2.21,
+              "max": 6.666666666666667,
+              "detail": "14 tokens"
+            },
+            {
+              "label": "Ten spaces",
+              "value": 4,
+              "max": 6.666666666666667,
+              "detail": "3 tokens"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Measured cost by content type",
+          "headers": [
+            "Content",
+            "Text",
+            "Characters",
+            "UTF-8 bytes",
+            "Tokens",
+            "Characters per token"
+          ],
+          "rows": [
+            [
+              "Date",
+              "2026-11-16",
+              10,
+              10,
+              6,
+              1.67
+            ],
+            [
+              "Sixteen digits",
+              "1234567890123456",
+              16,
+              16,
+              6,
+              2.67
+            ],
+            [
+              "Number in words",
+              "one million two hundred thirty-four thousand",
+              44,
+              44,
+              7,
+              6.29
+            ],
+            [
+              "Code",
+              "for (let i = 0; i < n; i++) { total += i; }",
+              43,
+              43,
+              20,
+              2.15
+            ],
+            [
+              "Five emoji",
+              "🙂🙂🙂🙂🙂",
+              5,
+              20,
+              5,
+              1
+            ],
+            [
+              "Twenty letter a",
+              "aaaaaaaaaaaaaaaaaaaa",
+              20,
+              20,
+              3,
+              6.67
+            ],
+            [
+              "URL",
+              "https://example.com/a/b?x=1&y=2",
+              31,
+              31,
+              14,
+              2.21
+            ],
+            [
+              "Ten spaces",
+              "a          b",
+              12,
+              12,
+              3,
+              4
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "model": "gpt-4o",
+        "overheadTokens": 7,
+        "rows": [
+          {
+            "id": "date",
+            "kind": "Date",
+            "text": "2026-11-16",
+            "language": "Date",
+            "characters": 10,
+            "bytes": 10,
+            "tokens": 6,
+            "charactersPerToken": 1.6666666666666667
+          },
+          {
+            "id": "digits",
+            "kind": "Sixteen digits",
+            "text": "1234567890123456",
+            "language": "Sixteen digits",
+            "characters": 16,
+            "bytes": 16,
+            "tokens": 6,
+            "charactersPerToken": 2.6666666666666665
+          },
+          {
+            "id": "number-words",
+            "kind": "Number in words",
+            "text": "one million two hundred thirty-four thousand",
+            "language": "Number in words",
+            "characters": 44,
+            "bytes": 44,
+            "tokens": 7,
+            "charactersPerToken": 6.285714285714286
+          },
+          {
+            "id": "code",
+            "kind": "Code",
+            "text": "for (let i = 0; i < n; i++) { total += i; }",
+            "language": "Code",
+            "characters": 43,
+            "bytes": 43,
+            "tokens": 20,
+            "charactersPerToken": 2.15
+          },
+          {
+            "id": "emoji",
+            "kind": "Five emoji",
+            "text": "🙂🙂🙂🙂🙂",
+            "language": "Five emoji",
+            "characters": 5,
+            "bytes": 20,
+            "tokens": 5,
+            "charactersPerToken": 1
+          },
+          {
+            "id": "repeat",
+            "kind": "Twenty letter a",
+            "text": "aaaaaaaaaaaaaaaaaaaa",
+            "language": "Twenty letter a",
+            "characters": 20,
+            "bytes": 20,
+            "tokens": 3,
+            "charactersPerToken": 6.666666666666667
+          },
+          {
+            "id": "url",
+            "kind": "URL",
+            "text": "https://example.com/a/b?x=1&y=2",
+            "language": "URL",
+            "characters": 31,
+            "bytes": 31,
+            "tokens": 14,
+            "charactersPerToken": 2.2142857142857144
+          },
+          {
+            "id": "spaces",
+            "kind": "Ten spaces",
+            "text": "a          b",
+            "language": "Ten spaces",
+            "characters": 12,
+            "bytes": 12,
+            "tokens": 3,
+            "charactersPerToken": 4
+          }
+        ]
+      }
+    },
+    {
+      "label": "Does another model count the same? (GPT-5-mini)",
+      "kind": "experiment",
+      "request": {
+        "summary": "Repeat the eight-language measurement with the GPT-5-mini deployment (max_completion_tokens 16, minimal reasoning). Its calibrated chat overhead is 6 tokens."
+      },
+      "output": "8 of 8 sentence counts equal GPT-4o.\nEnglish: GPT-4o 9, GPT-5-mini 9\nPolish: GPT-4o 11, GPT-5-mini 11\nGerman: GPT-4o 11, GPT-5-mini 11\nSpanish: GPT-4o 12, GPT-5-mini 12\nRussian: GPT-4o 14, GPT-5-mini 14\nJapanese: GPT-4o 12, GPT-5-mini 12\nArabic: GPT-4o 14, GPT-5-mini 14\nHindi: GPT-4o 13, GPT-5-mini 13",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 7496,
+      "usage": {
+        "input_tokens": 151,
+        "output_tokens": 144,
+        "total_tokens": 295
+      },
+      "apiRequests": 9,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 785,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 16,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 16,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 21,
+              "engine_ttlt_ms": 104,
+              "pre_inference_ms": 93,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 372,
+              "service_ttlt_ms": 482,
+              "user_visible_ttft_ms": 279
+            },
+            "prompt_tokens": 7,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 23
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 829,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 16,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 16,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 31,
+              "engine_ttlt_ms": 122,
+              "pre_inference_ms": 111,
+              "service_tbt_ms": 2,
+              "service_ttft_ms": 467,
+              "service_ttlt_ms": 496,
+              "user_visible_ttft_ms": 356
+            },
+            "prompt_tokens": 15,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 31
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1113,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 16,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 16,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 27,
+              "engine_ttlt_ms": 123,
+              "pre_inference_ms": 104,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 695,
+              "service_ttlt_ms": 799,
+              "user_visible_ttft_ms": 591
+            },
+            "prompt_tokens": 17,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 33
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 914,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 16,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 16,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 26,
+              "engine_ttlt_ms": 134,
+              "pre_inference_ms": 79,
+              "service_tbt_ms": 8,
+              "service_ttft_ms": 344,
+              "service_ttlt_ms": 466,
+              "user_visible_ttft_ms": 265
+            },
+            "prompt_tokens": 17,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 33
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 822,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 16,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 16,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 25,
+              "engine_ttlt_ms": 115,
+              "pre_inference_ms": 63,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 329,
+              "service_ttlt_ms": 438,
+              "user_visible_ttft_ms": 266
+            },
+            "prompt_tokens": 18,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 34
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 843,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 16,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 16,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 21,
+              "engine_ttlt_ms": 103,
+              "pre_inference_ms": 68,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 345,
+              "service_ttlt_ms": 455,
+              "user_visible_ttft_ms": 277
+            },
+            "prompt_tokens": 20,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 36
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 667,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 16,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 16,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 26,
+              "engine_ttlt_ms": 113,
+              "pre_inference_ms": 65,
+              "service_tbt_ms": 4,
+              "service_ttft_ms": 205,
+              "service_ttlt_ms": 271,
+              "user_visible_ttft_ms": 139
+            },
+            "prompt_tokens": 18,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 34
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 786,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 16,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 16,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 22,
+              "engine_ttlt_ms": 104,
+              "pre_inference_ms": 80,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 360,
+              "service_ttlt_ms": 451,
+              "user_visible_ttft_ms": 280
+            },
+            "prompt_tokens": 20,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 36
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 735,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 16,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 16,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 21,
+              "engine_ttlt_ms": 103,
+              "pre_inference_ms": 79,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 354,
+              "service_ttlt_ms": 463,
+              "user_visible_ttft_ms": 274
+            },
+            "prompt_tokens": 19,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 35
+          }
+        }
+      ],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "table",
+          "title": "Same sentences, two models",
+          "headers": [
+            "Language",
+            "GPT-4o tokens",
+            "GPT-5-mini tokens",
+            "Difference"
+          ],
+          "rows": [
+            [
+              "English",
+              9,
+              9,
+              0
+            ],
+            [
+              "Polish",
+              11,
+              11,
+              0
+            ],
+            [
+              "German",
+              11,
+              11,
+              0
+            ],
+            [
+              "Spanish",
+              12,
+              12,
+              0
+            ],
+            [
+              "Russian",
+              14,
+              14,
+              0
+            ],
+            [
+              "Japanese",
+              12,
+              12,
+              0
+            ],
+            [
+              "Arabic",
+              14,
+              14,
+              0
+            ],
+            [
+              "Hindi",
+              13,
+              13,
+              0
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "GPT-5-mini calibrated overhead: 6 tokens (GPT-4o: 7). Do not assume tokenizers are identical across models; measure them."
+        }
+      ],
+      "measurements": {
+        "model": "gpt-5-mini",
+        "overheadTokens": 6,
+        "rows": [
+          {
+            "id": "en",
+            "language": "English",
+            "text": "The cat sleeps on the warm windowsill.",
+            "characters": 38,
+            "bytes": 38,
+            "tokens": 9,
+            "charactersPerToken": 4.222222222222222
+          },
+          {
+            "id": "pl",
+            "language": "Polish",
+            "text": "Kot śpi na ciepłym parapecie.",
+            "characters": 29,
+            "bytes": 31,
+            "tokens": 11,
+            "charactersPerToken": 2.6363636363636362
+          },
+          {
+            "id": "de",
+            "language": "German",
+            "text": "Die Katze schläft auf der warmen Fensterbank.",
+            "characters": 45,
+            "bytes": 46,
+            "tokens": 11,
+            "charactersPerToken": 4.090909090909091
+          },
+          {
+            "id": "es",
+            "language": "Spanish",
+            "text": "El gato duerme en el alféizar cálido.",
+            "characters": 37,
+            "bytes": 39,
+            "tokens": 12,
+            "charactersPerToken": 3.0833333333333335
+          },
+          {
+            "id": "ru",
+            "language": "Russian",
+            "text": "Кошка спит на тёплом подоконнике.",
+            "characters": 33,
+            "bytes": 61,
+            "tokens": 14,
+            "charactersPerToken": 2.357142857142857
+          },
+          {
+            "id": "ja",
+            "language": "Japanese",
+            "text": "猫は暖かい窓辺で寝ています。",
+            "characters": 14,
+            "bytes": 42,
+            "tokens": 12,
+            "charactersPerToken": 1.1666666666666667
+          },
+          {
+            "id": "ar",
+            "language": "Arabic",
+            "text": "تنام القطة على حافة النافذة الدافئة.",
+            "characters": 36,
+            "bytes": 66,
+            "tokens": 14,
+            "charactersPerToken": 2.5714285714285716
+          },
+          {
+            "id": "hi",
+            "language": "Hindi",
+            "text": "बिल्ली गर्म खिड़की पर सोती है।",
+            "characters": 30,
+            "bytes": 80,
+            "tokens": 13,
+            "charactersPerToken": 2.3076923076923075
+          }
+        ],
+        "gpt4oTokens": [
+          9,
+          11,
+          11,
+          12,
+          14,
+          12,
+          14,
+          13
+        ],
+        "identical": 8
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "Toy BPE learned every requested merge deterministically",
+      "passed": true,
+      "detail": "18 merges."
+    },
+    {
+      "name": "Most frequent pair counts never increase",
+      "passed": true,
+      "detail": "17, 17, 17, 17, 13, 13, 13, 13, 12, 12, 12, 12, 12, 12, 11, 8, 8, 8"
+    },
+    {
+      "name": "Segmentations reconstruct each word",
+      "passed": true,
+      "detail": "Joined pieces equal the word plus end marker."
+    },
+    {
+      "name": "Calibrated overhead is a small constant for both models",
+      "passed": true,
+      "detail": "GPT-4o 7, GPT-5-mini 6"
+    },
+    {
+      "name": "Every probe has a positive measured token count",
+      "passed": true,
+      "detail": "All token counts are positive integers."
+    },
+    {
+      "name": "Probe sets are complete",
+      "passed": true,
+      "detail": "8 sentences and 8 format probes."
+    },
+    {
+      "name": "Same-meaning ratios are reported, not asserted",
+      "passed": true,
+      "detail": "English 1x, Polish 1.22x, German 1.22x, Spanish 1.33x, Russian 1.56x, Japanese 1.33x, Arabic 1.56x, Hindi 1.44x"
+    }
+  ],
+  "artifacts": [],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-qn4z1aa",
+    "runId": "e526795c-40db-4b11-a7d9-278778184467"
+  }
+}

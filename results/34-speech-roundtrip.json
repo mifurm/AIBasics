@@ -1,0 +1,1202 @@
+{
+  "labId": "34-speech-roundtrip",
+  "recordedAt": "2026-11-16T21:27:36.430Z",
+  "results": [
+    {
+      "label": "Voice alloy, normal speed",
+      "kind": "experiment",
+      "request": {
+        "summary": "Synthesize \"The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.\" with the alloy voice at speed 1, then transcribe the audio with Whisper (language hint: English).",
+        "parameters": {
+          "voice": "alloy",
+          "speed": 1,
+          "format": "wav"
+        }
+      },
+      "output": "6.213 s of audio, 2.9 words/s.\nHeard: \"The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.\"\nWord error rate 0% (0 substituted, 0 missed, 0 extra of 18 words).",
+      "outputSource": "azure-and-computation",
+      "actualModel": "tts + whisper",
+      "finishReason": "completed",
+      "latencyMs": 2465,
+      "usage": null,
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "audio.speech",
+          "deployment": "tts",
+          "latencyMs": 1032,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "tts",
+          "usage": null,
+          "billedCharacters": 100,
+          "parameters": {
+            "voice": "alloy",
+            "speed": 1,
+            "format": "wav"
+          }
+        },
+        {
+          "operation": "audio.transcriptions",
+          "deployment": "whisper",
+          "latencyMs": 472,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "whisper",
+          "usage": null,
+          "audioSeconds": 6.210000038146973
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "alloy-normal-audio",
+          "file": "alloy-normal-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 298244,
+          "sha256": "2df2260e971fc260e0eb09c62ece70f0ff507cc63170d6f27d21de6749489f6f",
+          "description": "Voice alloy, normal speed: 6.213 seconds of 24000 Hz mono 16-bit audio."
+        },
+        {
+          "id": "alloy-normal-spectrogram",
+          "file": "alloy-normal-spectrogram.png",
+          "mime": "image/png",
+          "bytes": 134663,
+          "sha256": "bd8401772614610ceab8365af3a88af287699b9f31e1a6c1b87db3afc8396bbf",
+          "description": "Spectrogram of Voice alloy, normal speed: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "alloy-normal-audio",
+          "caption": "Voice alloy, normal speed. Press play to hear exactly what Whisper received."
+        },
+        {
+          "type": "image",
+          "artifact": "alloy-normal-spectrogram",
+          "caption": "Spectrogram: time left to right, frequency 0 to 8 kHz bottom to top, brighter means more energy. Speech shows as bursts; noise fills the background.",
+          "alt": "Spectrogram of Voice alloy, normal speed"
+        },
+        {
+          "type": "bars",
+          "title": "Word error rate (lower is better)",
+          "items": [
+            {
+              "label": "Whisper transcript",
+              "value": 0,
+              "max": 100,
+              "detail": "0%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Measurements from the samples",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Sample rate (Hz)",
+              24000
+            ],
+            [
+              "Duration (s)",
+              6.213
+            ],
+            [
+              "Words per second",
+              2.9
+            ],
+            [
+              "Peak amplitude (0 to 1)",
+              0.332
+            ],
+            [
+              "Average level (dBFS)",
+              -24.9
+            ],
+            [
+              "Share of near-silent time",
+              0.361
+            ],
+            [
+              "Median pitch (Hz), voiced frames",
+              "147.1 (167 frames)"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What Whisper heard",
+          "headers": [
+            "Reference sentence",
+            "Transcript",
+            "Substituted",
+            "Missed",
+            "Extra"
+          ],
+          "rows": [
+            [
+              "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+              "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Whisper's own confidence signals: 2 segment(s), mean average log probability -0.306, highest no-speech probability 0.002. These are model-reported hints, not guarantees."
+        }
+      ],
+      "measurements": {
+        "clip": {
+          "sampleRate": 24000,
+          "samples": 149100,
+          "durationSeconds": 6.213,
+          "peak": 0.332,
+          "rmsDbfs": -24.9,
+          "silenceRatio": 0.361,
+          "wordsPerSecond": 2.9,
+          "pitchHz": 147.1,
+          "voicedFrames": 167
+        },
+        "noise": null,
+        "transcript": "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+        "errors": {
+          "wer": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "referenceWords": 18,
+          "hypothesisWords": 18
+        },
+        "confidence": {
+          "segments": 2,
+          "meanAvgLogprob": -0.306,
+          "maxNoSpeechProbability": 0.002
+        },
+        "whisperDuration": 6.210000038146973,
+        "reference": "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil."
+      }
+    },
+    {
+      "label": "Voice alloy, 1.5 times faster",
+      "kind": "experiment",
+      "request": {
+        "summary": "Synthesize \"The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.\" with the alloy voice at speed 1.5, then transcribe the audio with Whisper (language hint: English).",
+        "parameters": {
+          "voice": "alloy",
+          "speed": 1.5,
+          "format": "wav"
+        }
+      },
+      "output": "4.067 s of audio, 4.43 words/s.\nHeard: \"The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.\"\nWord error rate 0% (0 substituted, 0 missed, 0 extra of 18 words).",
+      "outputSource": "azure-and-computation",
+      "actualModel": "tts + whisper",
+      "finishReason": "completed",
+      "latencyMs": 2038,
+      "usage": null,
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "audio.speech",
+          "deployment": "tts",
+          "latencyMs": 1081,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "tts",
+          "usage": null,
+          "billedCharacters": 100,
+          "parameters": {
+            "voice": "alloy",
+            "speed": 1.5,
+            "format": "wav"
+          }
+        },
+        {
+          "operation": "audio.transcriptions",
+          "deployment": "whisper",
+          "latencyMs": 413,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "whisper",
+          "usage": null,
+          "audioSeconds": 4.059999942779541
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "alloy-fast-audio",
+          "file": "alloy-fast-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 195244,
+          "sha256": "f4e98471f931b21c4df5bbc56307e30e55aeea4ee41ebd606e23da703d5023f7",
+          "description": "Voice alloy, 1.5 times faster: 4.067 seconds of 24000 Hz mono 16-bit audio."
+        },
+        {
+          "id": "alloy-fast-spectrogram",
+          "file": "alloy-fast-spectrogram.png",
+          "mime": "image/png",
+          "bytes": 98801,
+          "sha256": "d6e81f8b210bc89737a8bdefef14fc05fe1fdc00107e2b8ac57eb325ee892800",
+          "description": "Spectrogram of Voice alloy, 1.5 times faster: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "alloy-fast-audio",
+          "caption": "Voice alloy, 1.5 times faster. Press play to hear exactly what Whisper received."
+        },
+        {
+          "type": "image",
+          "artifact": "alloy-fast-spectrogram",
+          "caption": "Spectrogram: time left to right, frequency 0 to 8 kHz bottom to top, brighter means more energy. Speech shows as bursts; noise fills the background.",
+          "alt": "Spectrogram of Voice alloy, 1.5 times faster"
+        },
+        {
+          "type": "bars",
+          "title": "Word error rate (lower is better)",
+          "items": [
+            {
+              "label": "Whisper transcript",
+              "value": 0,
+              "max": 100,
+              "detail": "0%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Measurements from the samples",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Sample rate (Hz)",
+              24000
+            ],
+            [
+              "Duration (s)",
+              4.067
+            ],
+            [
+              "Words per second",
+              4.43
+            ],
+            [
+              "Peak amplitude (0 to 1)",
+              0.344
+            ],
+            [
+              "Average level (dBFS)",
+              -26.8
+            ],
+            [
+              "Share of near-silent time",
+              0.424
+            ],
+            [
+              "Median pitch (Hz), voiced frames",
+              "160.4 (101 frames)"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What Whisper heard",
+          "headers": [
+            "Reference sentence",
+            "Transcript",
+            "Substituted",
+            "Missed",
+            "Extra"
+          ],
+          "rows": [
+            [
+              "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+              "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Whisper's own confidence signals: 2 segment(s), mean average log probability -0.364, highest no-speech probability 0.011. These are model-reported hints, not guarantees."
+        }
+      ],
+      "measurements": {
+        "clip": {
+          "sampleRate": 24000,
+          "samples": 97600,
+          "durationSeconds": 4.067,
+          "peak": 0.344,
+          "rmsDbfs": -26.8,
+          "silenceRatio": 0.424,
+          "wordsPerSecond": 4.43,
+          "pitchHz": 160.4,
+          "voicedFrames": 101
+        },
+        "noise": null,
+        "transcript": "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+        "errors": {
+          "wer": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "referenceWords": 18,
+          "hypothesisWords": 18
+        },
+        "confidence": {
+          "segments": 2,
+          "meanAvgLogprob": -0.364,
+          "maxNoSpeechProbability": 0.011
+        },
+        "whisperDuration": 4.059999942779541,
+        "reference": "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil."
+      }
+    },
+    {
+      "label": "Voice onyx, normal speed",
+      "kind": "experiment",
+      "request": {
+        "summary": "Synthesize \"The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.\" with the onyx voice at speed 1, then transcribe the audio with Whisper (language hint: English).",
+        "parameters": {
+          "voice": "onyx",
+          "speed": 1,
+          "format": "wav"
+        }
+      },
+      "output": "5.85 s of audio, 3.08 words/s.\nHeard: \"The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.\"\nWord error rate 0% (0 substituted, 0 missed, 0 extra of 18 words).",
+      "outputSource": "azure-and-computation",
+      "actualModel": "tts + whisper",
+      "finishReason": "completed",
+      "latencyMs": 2219,
+      "usage": null,
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "audio.speech",
+          "deployment": "tts",
+          "latencyMs": 988,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "tts",
+          "usage": null,
+          "billedCharacters": 100,
+          "parameters": {
+            "voice": "onyx",
+            "speed": 1,
+            "format": "wav"
+          }
+        },
+        {
+          "operation": "audio.transcriptions",
+          "deployment": "whisper",
+          "latencyMs": 428,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "whisper",
+          "usage": null,
+          "audioSeconds": 5.849999904632568
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "onyx-normal-audio",
+          "file": "onyx-normal-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 280844,
+          "sha256": "ec473bc0040f0d581487540ec0b82f74864b57d1a69de89a342edc465b04573d",
+          "description": "Voice onyx, normal speed: 5.85 seconds of 24000 Hz mono 16-bit audio."
+        },
+        {
+          "id": "onyx-normal-spectrogram",
+          "file": "onyx-normal-spectrogram.png",
+          "mime": "image/png",
+          "bytes": 98103,
+          "sha256": "769e598df031a6903d549e2ee480a519b54238a14ec15912095e372ce96d6547",
+          "description": "Spectrogram of Voice onyx, normal speed: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "onyx-normal-audio",
+          "caption": "Voice onyx, normal speed. Press play to hear exactly what Whisper received."
+        },
+        {
+          "type": "image",
+          "artifact": "onyx-normal-spectrogram",
+          "caption": "Spectrogram: time left to right, frequency 0 to 8 kHz bottom to top, brighter means more energy. Speech shows as bursts; noise fills the background.",
+          "alt": "Spectrogram of Voice onyx, normal speed"
+        },
+        {
+          "type": "bars",
+          "title": "Word error rate (lower is better)",
+          "items": [
+            {
+              "label": "Whisper transcript",
+              "value": 0,
+              "max": 100,
+              "detail": "0%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Measurements from the samples",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Sample rate (Hz)",
+              24000
+            ],
+            [
+              "Duration (s)",
+              5.85
+            ],
+            [
+              "Words per second",
+              3.08
+            ],
+            [
+              "Peak amplitude (0 to 1)",
+              0.401
+            ],
+            [
+              "Average level (dBFS)",
+              -24.9
+            ],
+            [
+              "Share of near-silent time",
+              0.418
+            ],
+            [
+              "Median pitch (Hz), voiced frames",
+              "92.6 (160 frames)"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What Whisper heard",
+          "headers": [
+            "Reference sentence",
+            "Transcript",
+            "Substituted",
+            "Missed",
+            "Extra"
+          ],
+          "rows": [
+            [
+              "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+              "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Whisper's own confidence signals: 2 segment(s), mean average log probability -0.343, highest no-speech probability 0.002. These are model-reported hints, not guarantees."
+        }
+      ],
+      "measurements": {
+        "clip": {
+          "sampleRate": 24000,
+          "samples": 140400,
+          "durationSeconds": 5.85,
+          "peak": 0.401,
+          "rmsDbfs": -24.9,
+          "silenceRatio": 0.418,
+          "wordsPerSecond": 3.08,
+          "pitchHz": 92.6,
+          "voicedFrames": 160
+        },
+        "noise": null,
+        "transcript": "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+        "errors": {
+          "wer": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "referenceWords": 18,
+          "hypothesisWords": 18
+        },
+        "confidence": {
+          "segments": 2,
+          "meanAvgLogprob": -0.343,
+          "maxNoSpeechProbability": 0.002
+        },
+        "whisperDuration": 5.849999904632568,
+        "reference": "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil."
+      }
+    },
+    {
+      "label": "Alloy with noise at 10 dB signal-to-noise",
+      "kind": "experiment",
+      "request": {
+        "summary": "Take the clean alloy recording, add seeded white noise so the signal is 10 dB above the noise, then transcribe the noisy audio with Whisper (language hint: English).",
+        "parameters": {
+          "snrDb": 10
+        }
+      },
+      "output": "6.213 s of audio, 2.9 words/s. Measured signal-to-noise ratio 9.99 dB.\nHeard: \"The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.\"\nWord error rate 0% (0 substituted, 0 missed, 0 extra of 18 words).",
+      "outputSource": "azure-and-computation",
+      "actualModel": "whisper",
+      "finishReason": "completed",
+      "latencyMs": 57687,
+      "usage": null,
+      "apiRequests": 1,
+      "apiCalls": [
+        {
+          "operation": "audio.transcriptions",
+          "deployment": "whisper",
+          "latencyMs": 667,
+          "attempts": 2,
+          "waitedMs": 56000,
+          "model": "whisper",
+          "usage": null,
+          "audioSeconds": 6.210000038146973
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "noise-10-audio",
+          "file": "noise-10-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 298244,
+          "sha256": "f4cff67fabfd14613ad3c2c6a467fe81918b317e43831faa039453076a015645",
+          "description": "Alloy with noise at 10 dB signal-to-noise: 6.213 seconds of 24000 Hz mono 16-bit audio."
+        },
+        {
+          "id": "noise-10-spectrogram",
+          "file": "noise-10-spectrogram.png",
+          "mime": "image/png",
+          "bytes": 249811,
+          "sha256": "36a338861ed52d903b1170eba3db7771a4562c6473d8299835c84882febe1a38",
+          "description": "Spectrogram of Alloy with noise at 10 dB signal-to-noise: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "noise-10-audio",
+          "caption": "Alloy with noise at 10 dB signal-to-noise. Press play to hear exactly what Whisper received."
+        },
+        {
+          "type": "image",
+          "artifact": "noise-10-spectrogram",
+          "caption": "Spectrogram: time left to right, frequency 0 to 8 kHz bottom to top, brighter means more energy. Speech shows as bursts; noise fills the background.",
+          "alt": "Spectrogram of Alloy with noise at 10 dB signal-to-noise"
+        },
+        {
+          "type": "bars",
+          "title": "Word error rate (lower is better)",
+          "items": [
+            {
+              "label": "Whisper transcript",
+              "value": 0,
+              "max": 100,
+              "detail": "0%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Measurements from the samples",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Sample rate (Hz)",
+              24000
+            ],
+            [
+              "Duration (s)",
+              6.213
+            ],
+            [
+              "Words per second",
+              2.9
+            ],
+            [
+              "Peak amplitude (0 to 1)",
+              0.379
+            ],
+            [
+              "Average level (dBFS)",
+              -24.5
+            ],
+            [
+              "Share of near-silent time",
+              0
+            ],
+            [
+              "Median pitch (Hz), voiced frames",
+              "151.5 (142 frames)"
+            ],
+            [
+              "Requested / measured signal-to-noise (dB)",
+              "10 / 9.99"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What Whisper heard",
+          "headers": [
+            "Reference sentence",
+            "Transcript",
+            "Substituted",
+            "Missed",
+            "Extra"
+          ],
+          "rows": [
+            [
+              "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+              "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Whisper's own confidence signals: 2 segment(s), mean average log probability -0.365, highest no-speech probability 0.003. These are model-reported hints, not guarantees."
+        }
+      ],
+      "measurements": {
+        "clip": {
+          "sampleRate": 24000,
+          "samples": 149100,
+          "durationSeconds": 6.213,
+          "peak": 0.379,
+          "rmsDbfs": -24.5,
+          "silenceRatio": 0,
+          "wordsPerSecond": 2.9,
+          "pitchHz": 151.5,
+          "voicedFrames": 142
+        },
+        "noise": {
+          "targetSnrDb": 10,
+          "measuredSnrDb": 9.99
+        },
+        "transcript": "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+        "errors": {
+          "wer": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "referenceWords": 18,
+          "hypothesisWords": 18
+        },
+        "confidence": {
+          "segments": 2,
+          "meanAvgLogprob": -0.365,
+          "maxNoSpeechProbability": 0.003
+        },
+        "whisperDuration": 6.210000038146973,
+        "reference": "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil."
+      }
+    },
+    {
+      "label": "Alloy with noise at 0 dB signal-to-noise",
+      "kind": "experiment",
+      "request": {
+        "summary": "Take the clean alloy recording, add seeded white noise so the signal is 0 dB above the noise, then transcribe the noisy audio with Whisper (language hint: English).",
+        "parameters": {
+          "snrDb": 0
+        }
+      },
+      "output": "6.213 s of audio, 2.9 words/s. Measured signal-to-noise ratio 0.01 dB.\nHeard: \"Robot Club meets on Tuesday at 4 in the afternoon. Please bring three notebooks and a pencil.\"\nWord error rate 6% (0 substituted, 1 missed, 0 extra of 18 words).",
+      "outputSource": "azure-and-computation",
+      "actualModel": "whisper",
+      "finishReason": "completed",
+      "latencyMs": 1388,
+      "usage": null,
+      "apiRequests": 1,
+      "apiCalls": [
+        {
+          "operation": "audio.transcriptions",
+          "deployment": "whisper",
+          "latencyMs": 428,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "whisper",
+          "usage": null,
+          "audioSeconds": 6.210000038146973
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "noise-0-audio",
+          "file": "noise-0-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 298244,
+          "sha256": "f5173eeabcf569f94130a64b57e1ffcd589106ee57a01b1160d193410aae6b14",
+          "description": "Alloy with noise at 0 dB signal-to-noise: 6.213 seconds of 24000 Hz mono 16-bit audio."
+        },
+        {
+          "id": "noise-0-spectrogram",
+          "file": "noise-0-spectrogram.png",
+          "mime": "image/png",
+          "bytes": 213190,
+          "sha256": "15b7715099cdc3a63cc107c4b08c368e67eaec5cb263642a1a382259977442a2",
+          "description": "Spectrogram of Alloy with noise at 0 dB signal-to-noise: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "noise-0-audio",
+          "caption": "Alloy with noise at 0 dB signal-to-noise. Press play to hear exactly what Whisper received."
+        },
+        {
+          "type": "image",
+          "artifact": "noise-0-spectrogram",
+          "caption": "Spectrogram: time left to right, frequency 0 to 8 kHz bottom to top, brighter means more energy. Speech shows as bursts; noise fills the background.",
+          "alt": "Spectrogram of Alloy with noise at 0 dB signal-to-noise"
+        },
+        {
+          "type": "bars",
+          "title": "Word error rate (lower is better)",
+          "items": [
+            {
+              "label": "Whisper transcript",
+              "value": 5.6,
+              "max": 100,
+              "detail": "6%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Measurements from the samples",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Sample rate (Hz)",
+              24000
+            ],
+            [
+              "Duration (s)",
+              6.213
+            ],
+            [
+              "Words per second",
+              2.9
+            ],
+            [
+              "Peak amplitude (0 to 1)",
+              0.483
+            ],
+            [
+              "Average level (dBFS)",
+              -21.9
+            ],
+            [
+              "Share of near-silent time",
+              0
+            ],
+            [
+              "Median pitch (Hz), voiced frames",
+              "178.1 (69 frames)"
+            ],
+            [
+              "Requested / measured signal-to-noise (dB)",
+              "0 / 0.01"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What Whisper heard",
+          "headers": [
+            "Reference sentence",
+            "Transcript",
+            "Substituted",
+            "Missed",
+            "Extra"
+          ],
+          "rows": [
+            [
+              "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+              "Robot Club meets on Tuesday at 4 in the afternoon. Please bring three notebooks and a pencil.",
+              0,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Whisper's own confidence signals: 2 segment(s), mean average log probability -0.385, highest no-speech probability 0.023. These are model-reported hints, not guarantees."
+        }
+      ],
+      "measurements": {
+        "clip": {
+          "sampleRate": 24000,
+          "samples": 149100,
+          "durationSeconds": 6.213,
+          "peak": 0.483,
+          "rmsDbfs": -21.9,
+          "silenceRatio": 0,
+          "wordsPerSecond": 2.9,
+          "pitchHz": 178.1,
+          "voicedFrames": 69
+        },
+        "noise": {
+          "targetSnrDb": 0,
+          "measuredSnrDb": 0.01
+        },
+        "transcript": "Robot Club meets on Tuesday at 4 in the afternoon. Please bring three notebooks and a pencil.",
+        "errors": {
+          "wer": 0.05555555555555555,
+          "substitutions": 0,
+          "deletions": 1,
+          "insertions": 0,
+          "referenceWords": 18,
+          "hypothesisWords": 17
+        },
+        "confidence": {
+          "segments": 2,
+          "meanAvgLogprob": -0.385,
+          "maxNoSpeechProbability": 0.023
+        },
+        "whisperDuration": 6.210000038146973,
+        "reference": "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil."
+      }
+    },
+    {
+      "label": "Alloy with noise at -10 dB signal-to-noise",
+      "kind": "experiment",
+      "request": {
+        "summary": "Take the clean alloy recording, add seeded white noise so the signal is -10 dB above the noise, then transcribe the noisy audio with Whisper (language hint: English).",
+        "parameters": {
+          "snrDb": -10
+        }
+      },
+      "output": "6.213 s of audio, 2.9 words/s. Measured signal-to-noise ratio -10.01 dB.\nHeard: \"Robots that make me feel better are always me. Please don't make me feel better than I am.\"\nWord error rate 100% (18 substituted, 0 missed, 0 extra of 18 words).",
+      "outputSource": "azure-and-computation",
+      "actualModel": "whisper",
+      "finishReason": "completed",
+      "latencyMs": 1401,
+      "usage": null,
+      "apiRequests": 1,
+      "apiCalls": [
+        {
+          "operation": "audio.transcriptions",
+          "deployment": "whisper",
+          "latencyMs": 418,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "whisper",
+          "usage": null,
+          "audioSeconds": 6.210000038146973
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "noise-minus-10-audio",
+          "file": "noise-minus-10-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 298244,
+          "sha256": "888731fd770b925f9285b1743902cd1cd4905b5d47865f5abb030ba955a6b292",
+          "description": "Alloy with noise at -10 dB signal-to-noise: 6.213 seconds of 24000 Hz mono 16-bit audio."
+        },
+        {
+          "id": "noise-minus-10-spectrogram",
+          "file": "noise-minus-10-spectrogram.png",
+          "mime": "image/png",
+          "bytes": 252655,
+          "sha256": "136b898f77686959a5d22c0df4029f90495bcf60333a75abae9e4eb7f70cd6cf",
+          "description": "Spectrogram of Alloy with noise at -10 dB signal-to-noise: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "noise-minus-10-audio",
+          "caption": "Alloy with noise at -10 dB signal-to-noise. Press play to hear exactly what Whisper received."
+        },
+        {
+          "type": "image",
+          "artifact": "noise-minus-10-spectrogram",
+          "caption": "Spectrogram: time left to right, frequency 0 to 8 kHz bottom to top, brighter means more energy. Speech shows as bursts; noise fills the background.",
+          "alt": "Spectrogram of Alloy with noise at -10 dB signal-to-noise"
+        },
+        {
+          "type": "bars",
+          "title": "Word error rate (lower is better)",
+          "items": [
+            {
+              "label": "Whisper transcript",
+              "value": 100,
+              "max": 100,
+              "detail": "100%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Measurements from the samples",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Sample rate (Hz)",
+              24000
+            ],
+            [
+              "Duration (s)",
+              6.213
+            ],
+            [
+              "Words per second",
+              2.9
+            ],
+            [
+              "Peak amplitude (0 to 1)",
+              0.863
+            ],
+            [
+              "Average level (dBFS)",
+              -14.5
+            ],
+            [
+              "Share of near-silent time",
+              0
+            ],
+            [
+              "Median pitch (Hz), voiced frames",
+              "not detected"
+            ],
+            [
+              "Requested / measured signal-to-noise (dB)",
+              "-10 / -10.01"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What Whisper heard",
+          "headers": [
+            "Reference sentence",
+            "Transcript",
+            "Substituted",
+            "Missed",
+            "Extra"
+          ],
+          "rows": [
+            [
+              "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil.",
+              "Robots that make me feel better are always me. Please don't make me feel better than I am.",
+              18,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Whisper's own confidence signals: 2 segment(s), mean average log probability -0.973, highest no-speech probability 0.398. These are model-reported hints, not guarantees."
+        }
+      ],
+      "measurements": {
+        "clip": {
+          "sampleRate": 24000,
+          "samples": 149100,
+          "durationSeconds": 6.213,
+          "peak": 0.863,
+          "rmsDbfs": -14.5,
+          "silenceRatio": 0,
+          "wordsPerSecond": 2.9,
+          "pitchHz": null,
+          "voicedFrames": 0
+        },
+        "noise": {
+          "targetSnrDb": -10,
+          "measuredSnrDb": -10.01
+        },
+        "transcript": "Robots that make me feel better are always me. Please don't make me feel better than I am.",
+        "errors": {
+          "wer": 1,
+          "substitutions": 18,
+          "deletions": 0,
+          "insertions": 0,
+          "referenceWords": 18,
+          "hypothesisWords": 18
+        },
+        "confidence": {
+          "segments": 2,
+          "meanAvgLogprob": -0.973,
+          "maxNoSpeechProbability": 0.398
+        },
+        "whisperDuration": 6.210000038146973,
+        "reference": "The robot club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil."
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "Six recordings were measured and transcribed",
+      "passed": true,
+      "detail": "6 audio files, 6 spectrograms, 6 transcripts."
+    },
+    {
+      "name": "Synthesized audio is real mono 16-bit speech of plausible length",
+      "passed": true,
+      "detail": "6.213s at 24000 Hz, 4.067s at 24000 Hz, 5.85s at 24000 Hz"
+    },
+    {
+      "name": "Asking for 1.5 times speed shortens the audio by roughly that factor",
+      "passed": true,
+      "detail": "Duration ratio 0.65 (ideal 0.67)."
+    },
+    {
+      "name": "Clean speech is recognized almost perfectly",
+      "passed": true,
+      "detail": "0%, 0%, 0%"
+    },
+    {
+      "name": "Noise was added at the requested signal-to-noise ratios",
+      "passed": true,
+      "detail": "10 dB -> 9.99 dB, 0 dB -> 0.01 dB, -10 dB -> -10.01 dB"
+    },
+    {
+      "name": "Noisy-speech error rates are reported, not assumed",
+      "passed": true,
+      "detail": "10 dB: 0%, 0 dB: 6%, -10 dB: 100%"
+    },
+    {
+      "name": "Pitch is measured for both voices",
+      "passed": true,
+      "detail": "alloy 147.1 Hz, onyx 92.6 Hz"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "alloy-normal-audio",
+      "file": "alloy-normal-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 298244,
+      "sha256": "2df2260e971fc260e0eb09c62ece70f0ff507cc63170d6f27d21de6749489f6f",
+      "description": "Voice alloy, normal speed: 6.213 seconds of 24000 Hz mono 16-bit audio."
+    },
+    {
+      "id": "alloy-normal-spectrogram",
+      "file": "alloy-normal-spectrogram.png",
+      "mime": "image/png",
+      "bytes": 134663,
+      "sha256": "bd8401772614610ceab8365af3a88af287699b9f31e1a6c1b87db3afc8396bbf",
+      "description": "Spectrogram of Voice alloy, normal speed: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+    },
+    {
+      "id": "alloy-fast-audio",
+      "file": "alloy-fast-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 195244,
+      "sha256": "f4e98471f931b21c4df5bbc56307e30e55aeea4ee41ebd606e23da703d5023f7",
+      "description": "Voice alloy, 1.5 times faster: 4.067 seconds of 24000 Hz mono 16-bit audio."
+    },
+    {
+      "id": "alloy-fast-spectrogram",
+      "file": "alloy-fast-spectrogram.png",
+      "mime": "image/png",
+      "bytes": 98801,
+      "sha256": "d6e81f8b210bc89737a8bdefef14fc05fe1fdc00107e2b8ac57eb325ee892800",
+      "description": "Spectrogram of Voice alloy, 1.5 times faster: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+    },
+    {
+      "id": "onyx-normal-audio",
+      "file": "onyx-normal-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 280844,
+      "sha256": "ec473bc0040f0d581487540ec0b82f74864b57d1a69de89a342edc465b04573d",
+      "description": "Voice onyx, normal speed: 5.85 seconds of 24000 Hz mono 16-bit audio."
+    },
+    {
+      "id": "onyx-normal-spectrogram",
+      "file": "onyx-normal-spectrogram.png",
+      "mime": "image/png",
+      "bytes": 98103,
+      "sha256": "769e598df031a6903d549e2ee480a519b54238a14ec15912095e372ce96d6547",
+      "description": "Spectrogram of Voice onyx, normal speed: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+    },
+    {
+      "id": "noise-10-audio",
+      "file": "noise-10-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 298244,
+      "sha256": "f4cff67fabfd14613ad3c2c6a467fe81918b317e43831faa039453076a015645",
+      "description": "Alloy with noise at 10 dB signal-to-noise: 6.213 seconds of 24000 Hz mono 16-bit audio."
+    },
+    {
+      "id": "noise-10-spectrogram",
+      "file": "noise-10-spectrogram.png",
+      "mime": "image/png",
+      "bytes": 249811,
+      "sha256": "36a338861ed52d903b1170eba3db7771a4562c6473d8299835c84882febe1a38",
+      "description": "Spectrogram of Alloy with noise at 10 dB signal-to-noise: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+    },
+    {
+      "id": "noise-0-audio",
+      "file": "noise-0-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 298244,
+      "sha256": "f5173eeabcf569f94130a64b57e1ffcd589106ee57a01b1160d193410aae6b14",
+      "description": "Alloy with noise at 0 dB signal-to-noise: 6.213 seconds of 24000 Hz mono 16-bit audio."
+    },
+    {
+      "id": "noise-0-spectrogram",
+      "file": "noise-0-spectrogram.png",
+      "mime": "image/png",
+      "bytes": 213190,
+      "sha256": "15b7715099cdc3a63cc107c4b08c368e67eaec5cb263642a1a382259977442a2",
+      "description": "Spectrogram of Alloy with noise at 0 dB signal-to-noise: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+    },
+    {
+      "id": "noise-minus-10-audio",
+      "file": "noise-minus-10-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 298244,
+      "sha256": "888731fd770b925f9285b1743902cd1cd4905b5d47865f5abb030ba955a6b292",
+      "description": "Alloy with noise at -10 dB signal-to-noise: 6.213 seconds of 24000 Hz mono 16-bit audio."
+    },
+    {
+      "id": "noise-minus-10-spectrogram",
+      "file": "noise-minus-10-spectrogram.png",
+      "mime": "image/png",
+      "bytes": 252655,
+      "sha256": "136b898f77686959a5d22c0df4029f90495bcf60333a75abae9e4eb7f70cd6cf",
+      "description": "Spectrogram of Alloy with noise at -10 dB signal-to-noise: time runs left to right, frequency from 0 to 8 kHz bottom to top, brighter means more energy."
+    }
+  ],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-qn4z1aa",
+    "runId": "e526795c-40db-4b11-a7d9-278778184467"
+  }
+}

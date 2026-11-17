@@ -1,0 +1,830 @@
+{
+  "labId": "31-embedding-space",
+  "recordedAt": "2026-11-16T21:25:33.953Z",
+  "results": [
+    {
+      "label": "Embed 24 sentences and draw the map",
+      "kind": "experiment",
+      "request": {
+        "summary": "Embed 12 English sentences, their 12 Polish translations, and 4 probe sentences in one request to the embedding deployment. Each becomes a 1536-number vector. Compare vectors with cosine similarity and project to 2D with PCA."
+      },
+      "output": "1536-dimensional vectors, 28 inputs.\nFor 83% of the 24 sentences, the nearest other sentence (not counting its own translation) shares its topic.\nMean cosine within a topic 0.28 versus between topics 0.164.\nThe map's two axes keep 22.0% of the variance.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "text-embedding-3-small",
+      "finishReason": "completed",
+      "latencyMs": 1871,
+      "usage": {
+        "input_tokens": 374,
+        "output_tokens": 0,
+        "total_tokens": 374
+      },
+      "apiRequests": 1,
+      "apiCalls": [
+        {
+          "operation": "embeddings",
+          "deployment": "text-embedding-3-small",
+          "latencyMs": 1173,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "text-embedding-3-small",
+          "usage": {
+            "prompt_tokens": 374,
+            "total_tokens": 374
+          },
+          "parameters": {}
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "sentence-map",
+          "file": "sentence-map.svg",
+          "mime": "image/svg+xml",
+          "bytes": 6454,
+          "sha256": "73d64ca82ef64abc88f612b1d22990ef38de3aec9816ed5ac8c05871973e81cd",
+          "description": "Two-dimensional PCA map of 24 sentences: four topics, English circles and Polish squares."
+        }
+      ],
+      "display": [
+        {
+          "type": "image",
+          "artifact": "sentence-map",
+          "caption": "Each dot is one sentence. Colors are topics, circles are English and squares are Polish. Dashed lines join translations.",
+          "alt": "Scatter plot of sentence embeddings grouped by topic"
+        },
+        {
+          "type": "table",
+          "title": "How well does the geometry separate topics?",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Vector length",
+              1536
+            ],
+            [
+              "Nearest neighbour (excluding itself and its translation) has the same topic",
+              "83%"
+            ],
+            [
+              "Mean cosine, same topic",
+              0.28
+            ],
+            [
+              "Mean cosine, different topic",
+              0.164
+            ],
+            [
+              "Variance kept by the two map axes",
+              "22.0%"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Embeddings carry language as well as meaning (mean cosine)",
+          "headers": [
+            "Sentence pair",
+            "Mean cosine"
+          ],
+          "rows": [
+            [
+              "Same language, same topic",
+              0.337
+            ],
+            [
+              "Same language, different topic",
+              0.219
+            ],
+            [
+              "Different language, same topic",
+              0.224
+            ],
+            [
+              "Different language, different topic",
+              0.109
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Chance would make a sentence's nearest neighbour share its topic about 18% of the time. Misses are often reasonable: a sentence can sit between topics because embeddings capture scenes, verbs, and language, not only a topic label."
+        }
+      ],
+      "measurements": {
+        "dimension": 1536,
+        "inputs": 28,
+        "normRange": [
+          0.9995936001134507,
+          1.0004054365451
+        ],
+        "analysis": {
+          "sentences": 24,
+          "topicNeighborAccuracy": 0.8333333333333334,
+          "withinTopicMean": 0.2803673927036863,
+          "betweenTopicMean": 0.16382857408001583,
+          "languageTopicMeans": {
+            "sameLanguageSameTopic": 0.3367617700856533,
+            "sameLanguageOtherTopic": 0.2189267152322985,
+            "otherLanguageSameTopic": 0.2239730153217192,
+            "otherLanguageOtherTopic": 0.10873043292773305
+          },
+          "englishToPolishTop1": 1,
+          "polishToEnglishTop1": 1,
+          "translations": [
+            {
+              "pair": 0,
+              "similarity": 0.376770496079231,
+              "rank": 1,
+              "short": "dog"
+            },
+            {
+              "pair": 1,
+              "similarity": 0.34164327922906035,
+              "rank": 1,
+              "short": "lion"
+            },
+            {
+              "pair": 2,
+              "similarity": 0.5653477697811629,
+              "rank": 1,
+              "short": "parrot"
+            },
+            {
+              "pair": 3,
+              "similarity": 0.5878184165898083,
+              "rank": 1,
+              "short": "soup"
+            },
+            {
+              "pair": 4,
+              "similarity": 0.5689011151830707,
+              "rank": 1,
+              "short": "bread"
+            },
+            {
+              "pair": 5,
+              "similarity": 0.5208724716783472,
+              "rank": 1,
+              "short": "onion"
+            },
+            {
+              "pair": 6,
+              "similarity": 0.4204119644651323,
+              "rank": 1,
+              "short": "rocket"
+            },
+            {
+              "pair": 7,
+              "similarity": 0.7025470347364298,
+              "rank": 1,
+              "short": "galaxy"
+            },
+            {
+              "pair": 8,
+              "similarity": 0.6152163616300839,
+              "rank": 1,
+              "short": "probe"
+            },
+            {
+              "pair": 9,
+              "similarity": 0.6652770896695777,
+              "rank": 1,
+              "short": "striker"
+            },
+            {
+              "pair": 10,
+              "similarity": 0.7450479576748039,
+              "rank": 1,
+              "short": "marathon"
+            },
+            {
+              "pair": 11,
+              "similarity": 0.565533867837994,
+              "rank": 1,
+              "short": "drill"
+            }
+          ],
+          "translationMean": 0.5562823187128919,
+          "bank": [
+            {
+              "id": "trap",
+              "kind": "Shares the word \"bank\", different meaning",
+              "text": "He fished from the muddy river bank.",
+              "similarity": 0.1374998973912272
+            },
+            {
+              "id": "paraphrase",
+              "kind": "Shares no key words, same meaning",
+              "text": "I would like to set up a savings account with a lender.",
+              "similarity": 0.5439246325918973
+            },
+            {
+              "id": "both",
+              "kind": "Shares the word and the meaning",
+              "text": "She deposited her paycheck at the bank.",
+              "similarity": 0.35000272446303327
+            }
+          ]
+        },
+        "explainedVariance": [
+          0.12099285104919175,
+          0.09882898657531097
+        ],
+        "coordinates": [
+          [
+            0.07981260458110584,
+            -0.304321559157997
+          ],
+          [
+            0.09175589763665933,
+            -0.17893327581124893
+          ],
+          [
+            0.07268712048879146,
+            -0.26385368115514907
+          ],
+          [
+            -0.32887364251868145,
+            -0.38199129606551885
+          ],
+          [
+            -0.16978102057530853,
+            0.029237505488729106
+          ],
+          [
+            -0.30011961084988215,
+            -0.3836091524414033
+          ],
+          [
+            0.41833343904459397,
+            0.023528907270377843
+          ],
+          [
+            0.6561575900665928,
+            -0.14166714580718
+          ],
+          [
+            0.5400238581565825,
+            -0.18896370488681677
+          ],
+          [
+            0.02549221811824398,
+            0.49472273582984616
+          ],
+          [
+            0.0002374321801313658,
+            0.46077971366084397
+          ],
+          [
+            -0.0731157046991509,
+            0.23510038762296662
+          ],
+          [
+            -0.12987544563840114,
+            -0.10578498668290238
+          ],
+          [
+            -0.15582686315246652,
+            -0.02515139333401417
+          ],
+          [
+            -0.1690361317171609,
+            -0.1459527689982094
+          ],
+          [
+            -0.40948999954497367,
+            -0.20032503511631583
+          ],
+          [
+            -0.3435372295610772,
+            0.04131952304368236
+          ],
+          [
+            -0.4399428472632393,
+            -0.25128387011188913
+          ],
+          [
+            0.11423404860707903,
+            0.15874169380521955
+          ],
+          [
+            0.5164455992895938,
+            -0.02673280624723845
+          ],
+          [
+            0.40835043129494636,
+            -0.13863489756522823
+          ],
+          [
+            -0.05106589983445597,
+            0.48563913384073365
+          ],
+          [
+            -0.09837838497391412,
+            0.4852272115408573
+          ],
+          [
+            -0.25448745913560666,
+            0.32290876127785034
+          ]
+        ]
+      }
+    },
+    {
+      "label": "Translations land next to each other",
+      "kind": "experiment",
+      "request": {
+        "summary": "No new API request: reuse the vectors from the first variant. For each English sentence, rank its Polish translation among all twelve Polish sentences by cosine similarity."
+      },
+      "output": "English to Polish: the true translation is the closest Polish sentence for 100% of sentences. Polish to English: 100%.\nMean translation cosine 0.556.",
+      "outputSource": "computation",
+      "actualModel": "local-computation",
+      "finishReason": "completed",
+      "latencyMs": 0,
+      "usage": null,
+      "apiRequests": 0,
+      "apiCalls": [],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "table",
+          "title": "Is the translation the nearest Polish sentence?",
+          "headers": [
+            "English",
+            "Polish translation",
+            "Cosine similarity",
+            "Rank among 12 Polish sentences"
+          ],
+          "rows": [
+            [
+              "The dog barked at the cat in the garden.",
+              "Pies szczekał na kota w ogrodzie.",
+              0.377,
+              1
+            ],
+            [
+              "A hungry lion hunted a zebra on the savanna.",
+              "Głodny lew polował na zebrę na sawannie.",
+              0.342,
+              1
+            ],
+            [
+              "The parrot learned to repeat human words.",
+              "Papuga nauczyła się powtarzać ludzkie słowa.",
+              0.565,
+              1
+            ],
+            [
+              "She stirred the soup and added a pinch of salt.",
+              "Zamieszała zupę i dodała szczyptę soli.",
+              0.588,
+              1
+            ],
+            [
+              "Bake the bread for forty minutes until golden.",
+              "Piecz chleb przez czterdzieści minut, aż się zarumieni.",
+              0.569,
+              1
+            ],
+            [
+              "He chopped onions and garlic for the sauce.",
+              "Pokroił cebulę i czosnek na sos.",
+              0.521,
+              1
+            ],
+            [
+              "The rocket left the launch pad at sunrise.",
+              "Rakieta opuściła wyrzutnię o wschodzie słońca.",
+              0.42,
+              1
+            ],
+            [
+              "Astronomers photographed a distant galaxy.",
+              "Astronomowie sfotografowali odległą galaktykę.",
+              0.703,
+              1
+            ],
+            [
+              "The probe orbited the red planet for a year.",
+              "Sonda krążyła wokół czerwonej planety przez rok.",
+              0.615,
+              1
+            ],
+            [
+              "The striker scored in the final minute of the match.",
+              "Napastnik strzelił gola w ostatniej minucie meczu.",
+              0.665,
+              1
+            ],
+            [
+              "She won the marathon in under three hours.",
+              "Wygrała maraton w czasie poniżej trzech godzin.",
+              0.745,
+              1
+            ],
+            [
+              "The team practiced passing drills before the game.",
+              "Drużyna ćwiczyła podania przed meczem.",
+              0.566,
+              1
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "englishToPolishTop1": 1,
+        "polishToEnglishTop1": 1,
+        "translations": [
+          {
+            "pair": 0,
+            "similarity": 0.376770496079231,
+            "rank": 1,
+            "short": "dog"
+          },
+          {
+            "pair": 1,
+            "similarity": 0.34164327922906035,
+            "rank": 1,
+            "short": "lion"
+          },
+          {
+            "pair": 2,
+            "similarity": 0.5653477697811629,
+            "rank": 1,
+            "short": "parrot"
+          },
+          {
+            "pair": 3,
+            "similarity": 0.5878184165898083,
+            "rank": 1,
+            "short": "soup"
+          },
+          {
+            "pair": 4,
+            "similarity": 0.5689011151830707,
+            "rank": 1,
+            "short": "bread"
+          },
+          {
+            "pair": 5,
+            "similarity": 0.5208724716783472,
+            "rank": 1,
+            "short": "onion"
+          },
+          {
+            "pair": 6,
+            "similarity": 0.4204119644651323,
+            "rank": 1,
+            "short": "rocket"
+          },
+          {
+            "pair": 7,
+            "similarity": 0.7025470347364298,
+            "rank": 1,
+            "short": "galaxy"
+          },
+          {
+            "pair": 8,
+            "similarity": 0.6152163616300839,
+            "rank": 1,
+            "short": "probe"
+          },
+          {
+            "pair": 9,
+            "similarity": 0.6652770896695777,
+            "rank": 1,
+            "short": "striker"
+          },
+          {
+            "pair": 10,
+            "similarity": 0.7450479576748039,
+            "rank": 1,
+            "short": "marathon"
+          },
+          {
+            "pair": 11,
+            "similarity": 0.565533867837994,
+            "rank": 1,
+            "short": "drill"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Shared words versus shared meaning",
+      "kind": "experiment",
+      "request": {
+        "summary": "No new API request. Compare \"I need to open a bank account.\" with a sentence that shares the word but not the meaning, one that shares the meaning but no key words, and one that shares both."
+      },
+      "output": "1. 0.544  Shares no key words, same meaning: \"I would like to set up a savings account with a lender.\"\n2. 0.35  Shares the word and the meaning: \"She deposited her paycheck at the bank.\"\n3. 0.137  Shares the word \"bank\", different meaning: \"He fished from the muddy river bank.\"",
+      "outputSource": "computation",
+      "actualModel": "local-computation",
+      "finishReason": "completed",
+      "latencyMs": 0,
+      "usage": null,
+      "apiRequests": 0,
+      "apiCalls": [],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "table",
+          "title": "Closest to \"I need to open a bank account.\"",
+          "headers": [
+            "Rank",
+            "Candidate",
+            "What it shares",
+            "Cosine similarity"
+          ],
+          "rows": [
+            [
+              1,
+              "I would like to set up a savings account with a lender.",
+              "Shares no key words, same meaning",
+              0.544
+            ],
+            [
+              2,
+              "She deposited her paycheck at the bank.",
+              "Shares the word and the meaning",
+              0.35
+            ],
+            [
+              3,
+              "He fished from the muddy river bank.",
+              "Shares the word \"bank\", different meaning",
+              0.137
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "query": "I need to open a bank account.",
+        "candidates": [
+          {
+            "id": "trap",
+            "kind": "Shares the word \"bank\", different meaning",
+            "text": "He fished from the muddy river bank.",
+            "similarity": 0.1374998973912272
+          },
+          {
+            "id": "paraphrase",
+            "kind": "Shares no key words, same meaning",
+            "text": "I would like to set up a savings account with a lender.",
+            "similarity": 0.5439246325918973
+          },
+          {
+            "id": "both",
+            "kind": "Shares the word and the meaning",
+            "text": "She deposited her paycheck at the bank.",
+            "similarity": 0.35000272446303327
+          }
+        ]
+      }
+    },
+    {
+      "label": "Shorter vectors: 256 dimensions instead of 1536",
+      "kind": "experiment",
+      "request": {
+        "summary": "Request the same 28 inputs with dimensions=256. The model returns shorter vectors that are 6 times smaller to store and compare. Measure how much of the geometry survives."
+      },
+      "output": "256 numbers instead of 1536. Topic neighbours 83% (full 83%); translation retrieval 100% (full 100%).\nCorrelation between full and short similarity scores: 0.952.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "text-embedding-3-small",
+      "finishReason": "completed",
+      "latencyMs": 373,
+      "usage": {
+        "input_tokens": 374,
+        "output_tokens": 0,
+        "total_tokens": 374
+      },
+      "apiRequests": 1,
+      "apiCalls": [
+        {
+          "operation": "embeddings",
+          "deployment": "text-embedding-3-small",
+          "latencyMs": 344,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "text-embedding-3-small",
+          "usage": {
+            "prompt_tokens": 374,
+            "total_tokens": 374
+          },
+          "parameters": {
+            "dimensions": 256
+          }
+        }
+      ],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "table",
+          "title": "Full versus shortened vectors",
+          "headers": [
+            "Measurement",
+            "1536 dimensions",
+            "256 dimensions"
+          ],
+          "rows": [
+            [
+              "Topic neighbour accuracy",
+              "83%",
+              "83%"
+            ],
+            [
+              "English to Polish retrieval",
+              "100%",
+              "100%"
+            ],
+            [
+              "Mean cosine, same topic",
+              0.28,
+              0.283
+            ],
+            [
+              "Mean cosine, different topic",
+              0.164,
+              0.154
+            ],
+            [
+              "Correlation of all pairwise similarities",
+              "1",
+              0.952
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "dimension": 256,
+        "normRange": [
+          0.9996553709926265,
+          1.0003309580639868
+        ],
+        "analysis": {
+          "sentences": 24,
+          "topicNeighborAccuracy": 0.8333333333333334,
+          "withinTopicMean": 0.28327098877004264,
+          "betweenTopicMean": 0.1540704329149564,
+          "languageTopicMeans": {
+            "sameLanguageSameTopic": 0.3438556350273263,
+            "sameLanguageOtherTopic": 0.21340058979894674,
+            "otherLanguageSameTopic": 0.222686342512759,
+            "otherLanguageOtherTopic": 0.09474027603096609
+          },
+          "englishToPolishTop1": 1,
+          "polishToEnglishTop1": 1,
+          "translations": [
+            {
+              "pair": 0,
+              "similarity": 0.3304478235044587,
+              "rank": 1,
+              "short": "dog"
+            },
+            {
+              "pair": 1,
+              "similarity": 0.33657609131658356,
+              "rank": 1,
+              "short": "lion"
+            },
+            {
+              "pair": 2,
+              "similarity": 0.6245461077209563,
+              "rank": 1,
+              "short": "parrot"
+            },
+            {
+              "pair": 3,
+              "similarity": 0.5706767675905018,
+              "rank": 1,
+              "short": "soup"
+            },
+            {
+              "pair": 4,
+              "similarity": 0.60531618853802,
+              "rank": 1,
+              "short": "bread"
+            },
+            {
+              "pair": 5,
+              "similarity": 0.5151221729952709,
+              "rank": 1,
+              "short": "onion"
+            },
+            {
+              "pair": 6,
+              "similarity": 0.38615799720033867,
+              "rank": 1,
+              "short": "rocket"
+            },
+            {
+              "pair": 7,
+              "similarity": 0.7076914976006025,
+              "rank": 1,
+              "short": "galaxy"
+            },
+            {
+              "pair": 8,
+              "similarity": 0.6172520687745381,
+              "rank": 1,
+              "short": "probe"
+            },
+            {
+              "pair": 9,
+              "similarity": 0.6794971653906565,
+              "rank": 1,
+              "short": "striker"
+            },
+            {
+              "pair": 10,
+              "similarity": 0.746762765353558,
+              "rank": 1,
+              "short": "marathon"
+            },
+            {
+              "pair": 11,
+              "similarity": 0.5752566379753953,
+              "rank": 1,
+              "short": "drill"
+            }
+          ],
+          "translationMean": 0.5579419403300733,
+          "bank": [
+            {
+              "id": "trap",
+              "kind": "Shares the word \"bank\", different meaning",
+              "text": "He fished from the muddy river bank.",
+              "similarity": 0.05700634687969115
+            },
+            {
+              "id": "paraphrase",
+              "kind": "Shares no key words, same meaning",
+              "text": "I would like to set up a savings account with a lender.",
+              "similarity": 0.581655257719396
+            },
+            {
+              "id": "both",
+              "kind": "Shares the word and the meaning",
+              "text": "She deposited her paycheck at the bank.",
+              "similarity": 0.3524601604423493
+            }
+          ]
+        },
+        "agreement": 0.9522996717534584
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "Vectors are complete and unit length",
+      "passed": true,
+      "detail": "1536 and 256 dimensions; norms 1.000-1.000."
+    },
+    {
+      "name": "The sentence map is a real two-component projection",
+      "passed": true,
+      "detail": "Variance kept: 0.121, 0.099."
+    },
+    {
+      "name": "Same-topic sentences are closer than different-topic sentences",
+      "passed": true,
+      "detail": "0.280 > 0.164; neighbours 83%."
+    },
+    {
+      "name": "Language leaves a measurable signature alongside topic",
+      "passed": true,
+      "detail": "{\"sameLanguageSameTopic\":0.337,\"sameLanguageOtherTopic\":0.219,\"otherLanguageSameTopic\":0.224,\"otherLanguageOtherTopic\":0.109}"
+    },
+    {
+      "name": "Translations are retrieved across languages",
+      "passed": true,
+      "detail": "100% and 100%."
+    },
+    {
+      "name": "Shared meaning outranks a shared word",
+      "passed": true,
+      "detail": "trap 0.137, paraphrase 0.544, both 0.350"
+    },
+    {
+      "name": "Shorter vectors keep most of the similarity structure",
+      "passed": true,
+      "detail": "Correlation 0.952."
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "sentence-map",
+      "file": "sentence-map.svg",
+      "mime": "image/svg+xml",
+      "bytes": 6454,
+      "sha256": "73d64ca82ef64abc88f612b1d22990ef38de3aec9816ed5ac8c05871973e81cd",
+      "description": "Two-dimensional PCA map of 24 sentences: four topics, English circles and Polish squares."
+    }
+  ],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-qn4z1aa",
+    "runId": "e526795c-40db-4b11-a7d9-278778184467"
+  }
+}

@@ -1,6 +1,7 @@
 import { parseArgs } from 'node:util';
 import { writeFile, mkdir, readFile } from 'node:fs/promises';
 import { az } from '../lib/azure.mjs';
+import { findMediaDeployments } from '../lib/media-deployments.mjs';
 
 try {
   const { values } = parseArgs({ options: {
@@ -36,7 +37,7 @@ try {
   let aiName = values['reuse-account'];
   if (values['create-models']) {
     const ai = az(['deployment', 'group', 'create', '-g', values.group, '-n', 'classroom-models',
-      '--template-file', 'infra/models.bicep', '--parameters', `studentPrincipalId=${principalId}`, ...sub]);
+      '--template-file', 'infra/models.bicep', '--parameters', `studentPrincipalId=${principalId}`, 'includeMediaModels=true', ...sub]);
     aiGroup = values.group;
     aiName = ai.properties.outputs.accountName.value;
   }
@@ -46,12 +47,15 @@ try {
     const entry = deployments.find(item => item.name === name && item.properties.provisioningState === 'Succeeded');
     if (!entry || entry.properties.model.name !== name) throw new Error(`A ready ${name} deployment with that name is required.`);
   }
+  const media = findMediaDeployments(deployments);
+  for (const spec of media.missing) console.warn(`Note: no ${spec.model} deployment; ${spec.labs} need one. Run npm run deploy:media-models -- --confirm-costs.`);
   const config = {
     subscriptionId, resourceGroup: values.group, appName, region: values.region,
     hostingRegion: values['hosting-region'], hosting: 'static-web-apps-free',
     website: deployment.properties.outputs.website.value,
     aiResourceGroup: aiGroup, aiAccountName: aiName, endpoint: ai.properties.endpoint,
     standardDeployment: 'gpt-4o', reasoningDeployment: 'gpt-5-mini', embeddingDeployment: 'text-embedding-3-small',
+    ...media.found,
     reusedModels: !values['create-models'],
   };
   try {
@@ -67,7 +71,7 @@ try {
     deployedAt: new Date().toISOString(), website: config.website,
     resourceGroup: values.group, appName, region: values.region,
     hosting: config.hosting, hostingRegion: config.hostingRegion, reusedModels: config.reusedModels,
-    models: deployments.filter(item => ['gpt-4o', 'gpt-5-mini', 'text-embedding-3-small'].includes(item.name)).map(item => ({
+    models: deployments.filter(item => ['gpt-4o', 'gpt-5-mini', 'text-embedding-3-small', ...Object.values(media.found)].includes(item.name)).map(item => ({
       deployment: item.name, model: item.properties.model.name, version: item.properties.model.version,
     })),
     ...(config.agentRuntime ? { agentRuntime: config.agentRuntime } : {}),

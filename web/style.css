@@ -36,4 +36,18 @@ footer { padding: 18px 36px; font-size: 12px; color: #526c7e; }
 .evidence-table th { background: #def2ed; }
 .shared-prompt { margin-top: 18px; }
 .model-pair details { margin-bottom: 16px; }
+.stack { grid-template-columns: 1fr; }
+.stack details { margin: 12px 0; }
+.stack summary { font-size: 13px; cursor: pointer; color: #136c74; }
+.block { margin: 16px 0; min-width: 0; }
+.block h4 { margin: 0 0 8px; font-size: 13px; color: #152c40; }
+.block p { font-size: 14px; line-height: 1.5; margin: 6px 0; }
+.block figure { margin: 0; }
+.block img { display: block; max-width: 100%; height: auto; border: 1px solid #d5e0e7; border-radius: 6px; background: #fff; }
+.block figcaption { font-size: 12px; line-height: 1.4; color: #526c7e; margin: 6px 0; }
+.block audio { width: 100%; max-width: 620px; }
+.table-wrap { overflow-x: auto; }
+.bar-row { display: grid; grid-template-columns: minmax(130px, 1.3fr) 3fr minmax(60px, auto); gap: 10px; align-items: center; font-size: 12px; margin: 6px 0; }
+.bar-track { background: #e5ecf1; border-radius: 6px; height: 14px; overflow: hidden; }
+.bar-fill { background: #19777b; height: 100%; }
 @media (max-width: 850px) { .layout, .comparison { grid-template-columns: 1fr; } nav { display: flex; overflow: auto; } nav button { min-width: 180px; } main { padding: 18px; } }

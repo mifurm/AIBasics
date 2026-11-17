@@ -6,9 +6,13 @@ param aiEndpoint string
 param standardDeployment string = 'gpt-4o'
 param reasoningDeployment string = 'gpt-5-mini'
 param embeddingDeployment string = 'text-embedding-3-small'
+param imageDeployment string = 'gpt-image-1.5'
+param speechDeployment string = 'tts'
+param transcriptionDeployment string = 'whisper'
+param diarizationDeployment string = 'gpt-4o-transcribe-diarize'
 param sourceSha256 string
-@description('Compressed source code only. Never include credentials or local configuration.')
-param sourceArchive string
+@description('Compressed source code only, split into parts that each fit one environment variable. Never include credentials or local configuration.')
+param sourceArchiveParts array
 param suffix string = uniqueString(resourceGroup().id)
 
 resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
@@ -122,6 +126,7 @@ resource environment 'Microsoft.App/managedEnvironments@2025-01-01' = {
     }
   }
 }
+var archiveEnvironment = [for (part, index) in sourceArchiveParts: { name: 'SOURCE_ARCHIVE_${index}', value: part }]
 resource job 'Microsoft.App/jobs@2025-01-01' = {
   name: 'aibasics-agents-${suffix}'
   location: location
@@ -146,9 +151,8 @@ resource job 'Microsoft.App/jobs@2025-01-01' = {
           image: 'docker.io/library/node:22-bookworm-slim'
           command: ['node', '--input-type=module', '-e', loadTextContent('../scripts/azure-bootstrap.mjs')]
           resources: { cpu: json('0.5'), memory: '1Gi' }
-          env: [
+          env: concat([
             { name: 'AZURE_CLIENT_ID', value: identity.properties.clientId }
-            { name: 'SOURCE_ARCHIVE', value: sourceArchive }
             { name: 'SOURCE_SHA256', value: sourceSha256 }
             { name: 'LAB_SELECTION', value: 'agents' }
             { name: 'INGESTION_ENDPOINT', value: ingestion.properties.endpoints.logsIngestion }
@@ -160,9 +164,13 @@ resource job 'Microsoft.App/jobs@2025-01-01' = {
                 standardDeployment: standardDeployment
                 reasoningDeployment: reasoningDeployment
                 embeddingDeployment: embeddingDeployment
+                imageDeployment: imageDeployment
+                speechDeployment: speechDeployment
+                transcriptionDeployment: transcriptionDeployment
+                diarizationDeployment: diarizationDeployment
               })
             }
-          ]
+          ], archiveEnvironment)
         }
       ]
     }

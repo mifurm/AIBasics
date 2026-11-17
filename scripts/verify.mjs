@@ -1,5 +1,6 @@
 import { parseArgs } from 'node:util';
 import { readFile, stat } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { labs } from '../lib/labs.mjs';
 import { evaluate } from '../lib/evaluate.mjs';
 import { loadConfig } from '../lib/azure.mjs';
@@ -29,6 +30,9 @@ for (const lab of labs) {
         if (lab.id !== '00-tiny-transformer' || result.usage !== null || result.apiRequests !== 0 || !result.computationTrace) {
           throw new Error(`Invalid teaching computation evidence in ${lab.id}`);
         }
+      } else if (result.kind === 'experiment') {
+        if (lab.series !== 'genai' || result.apiRequests !== result.apiCalls.length ||
+          result.apiCalls.some(call => !call.operation || !Number.isInteger(call.latencyMs))) throw new Error(`Invalid experiment evidence in ${lab.id}`);
       } else if (!Number.isInteger(result.usage?.total_tokens)) throw new Error(`Invalid API usage in ${lab.id}`);
       for (const extra of result.extraRequests ?? []) {
         if (!extra.model || !Number.isInteger(extra.usage?.total_tokens) || !Number.isInteger(extra.latencyMs)) {
@@ -38,7 +42,19 @@ for (const lab of labs) {
     }
     const failed = evaluate(lab.id, record.results).filter(check => !check.passed);
     if (failed.length) throw new Error(`Behavior check failed for ${lab.id}: ${failed.map(check => check.name).join(', ')}`);
-    console.log(`${lab.id}: verified saved and deployed outcomes.`);
+    let verifiedArtifacts = 0;
+    for (const artifact of record.artifacts ?? []) {
+      const response = await fetch(new URL(`media/${lab.id}/${artifact.file}`, config.website), { signal: AbortSignal.timeout(60_000) });
+      if (!response.ok || !(response.headers.get('content-type') ?? '').startsWith(artifact.mime.split('/')[0])) {
+        throw new Error(`Deployed artifact is missing or has the wrong type: ${lab.id}/${artifact.file} (HTTP ${response.status}, ${response.headers.get('content-type')})`);
+      }
+      const bytes = Buffer.from(await response.arrayBuffer());
+      if (createHash('sha256').update(bytes).digest('hex') !== artifact.sha256) throw new Error(`Deployed artifact differs from the Azure record: ${lab.id}/${artifact.file}`);
+      const local = await readFile(`results/media/${lab.id}/${artifact.file}`);
+      if (!local.equals(bytes)) throw new Error(`Local artifact differs from the deployed artifact: ${lab.id}/${artifact.file}`);
+      verifiedArtifacts++;
+    }
+    console.log(`${lab.id}: verified saved and deployed outcomes${verifiedArtifacts ? ` and ${verifiedArtifacts} media files` : ''}.`);
   }
   if (values.media) {
     const response = await fetch(`${config.website}recordings/${lab.id}.mp4`, { method: 'HEAD' });

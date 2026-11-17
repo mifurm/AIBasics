@@ -1,0 +1,1281 @@
+{
+  "labId": "30-logprobs",
+  "recordedAt": "2026-11-16T21:25:31.693Z",
+  "results": [
+    {
+      "label": "Four prompts, four real next-token distributions",
+      "kind": "experiment",
+      "request": {
+        "summary": "Ask GPT-4o for exactly one token with temperature 1, logprobs enabled, and the ten most likely alternatives. Convert each log probability to a probability with exp()."
+      },
+      "output": "A confident answer: sampled \"Paris\"; top choice \"Paris\" at 100.00%; entropy 0.00 bits over the top 10.\nA \"random\" choice from 1 to 10: sampled \"7\"; top choice \"7\" at 98.36%; entropy 0.15 bits over the top 10.\nA \"random\" choice from 1 to 100: sampled \"47\"; top choice \"47\" at 36.75%; entropy 2.54 bits over the top 10.\nAn open-ended story start: sampled \"Rust\"; top choice \"The\" at 20.42%; entropy 2.95 bits over the top 10.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "completed",
+      "latencyMs": 2728,
+      "usage": {
+        "input_tokens": 91,
+        "output_tokens": 4,
+        "total_tokens": 95
+      },
+      "apiRequests": 4,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 544,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 40,
+              "engine_ttlt_ms": 41,
+              "pre_inference_ms": 68,
+              "service_ttft_ms": 423,
+              "service_ttlt_ms": 423,
+              "user_visible_ttft_ms": 356
+            },
+            "prompt_tokens": 19,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 20
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 957,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 34,
+              "engine_ttlt_ms": 35,
+              "pre_inference_ms": 74,
+              "service_ttft_ms": 846,
+              "service_ttlt_ms": 846,
+              "user_visible_ttft_ms": 772
+            },
+            "prompt_tokens": 25,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 26
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 603,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 52,
+              "engine_ttlt_ms": 53,
+              "pre_inference_ms": 79,
+              "service_ttft_ms": 472,
+              "service_ttlt_ms": 472,
+              "user_visible_ttft_ms": 394
+            },
+            "prompt_tokens": 25,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 26
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 621,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 1,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 35,
+              "engine_ttlt_ms": 36,
+              "pre_inference_ms": 112,
+              "service_ttft_ms": 466,
+              "service_ttlt_ms": 466,
+              "user_visible_ttft_ms": 354
+            },
+            "prompt_tokens": 22,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 23
+          }
+        }
+      ],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "bars",
+          "title": "A confident answer: \"What is the capital of France? Answer with one word.\"",
+          "items": [
+            {
+              "label": "\"Paris\"",
+              "value": 100,
+              "max": 100,
+              "detail": "100.00%"
+            },
+            {
+              "label": "\" Paris\"",
+              "value": 0,
+              "max": 100,
+              "detail": "0.0000%"
+            },
+            {
+              "label": "\"**\"",
+              "value": 0,
+              "max": 100,
+              "detail": "0.0000%"
+            },
+            {
+              "label": "\"\\n\"",
+              "value": 0,
+              "max": 100,
+              "detail": "0.0000%"
+            },
+            {
+              "label": "\"-\"",
+              "value": 0,
+              "max": 100,
+              "detail": "0.0000%"
+            },
+            {
+              "label": "\"PAR\"",
+              "value": 0,
+              "max": 100,
+              "detail": "0.0000%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Sampled token: \"Paris\". Top-10 probability mass: 100.00%. Entropy: 0.00 bits (0 means certain; log2(10)=3.32 means ten equally likely choices)."
+        },
+        {
+          "type": "bars",
+          "title": "A \"random\" choice from 1 to 10: \"Pick a random whole number from 1 to 10. Answer with only the number.\"",
+          "items": [
+            {
+              "label": "\"7\"",
+              "value": 98.3588,
+              "max": 100,
+              "detail": "98.36%"
+            },
+            {
+              "label": "\"8\"",
+              "value": 0.851,
+              "max": 100,
+              "detail": "0.85%"
+            },
+            {
+              "label": "\"6\"",
+              "value": 0.5161,
+              "max": 100,
+              "detail": "0.52%"
+            },
+            {
+              "label": "\"4\"",
+              "value": 0.2438,
+              "max": 100,
+              "detail": "0.24%"
+            },
+            {
+              "label": "\"3\"",
+              "value": 0.0291,
+              "max": 100,
+              "detail": "0.0291%"
+            },
+            {
+              "label": "\"5\"",
+              "value": 0.0008,
+              "max": 100,
+              "detail": "0.0008%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Sampled token: \"7\". Top-10 probability mass: 100.00%. Entropy: 0.15 bits (0 means certain; log2(10)=3.32 means ten equally likely choices)."
+        },
+        {
+          "type": "bars",
+          "title": "A \"random\" choice from 1 to 100: \"Pick a random whole number from 1 to 100. Answer with only the number.\"",
+          "items": [
+            {
+              "label": "\"47\"",
+              "value": 36.747,
+              "max": 100,
+              "detail": "36.75%"
+            },
+            {
+              "label": "\"57\"",
+              "value": 17.358,
+              "max": 100,
+              "detail": "17.36%"
+            },
+            {
+              "label": "\"87\"",
+              "value": 13.5184,
+              "max": 100,
+              "detail": "13.52%"
+            },
+            {
+              "label": "\"37\"",
+              "value": 13.5184,
+              "max": 100,
+              "detail": "13.52%"
+            },
+            {
+              "label": "\"73\"",
+              "value": 4.9732,
+              "max": 100,
+              "detail": "4.97%"
+            },
+            {
+              "label": "\"67\"",
+              "value": 4.3888,
+              "max": 100,
+              "detail": "4.39%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Sampled token: \"47\". Top-10 probability mass: 96.49%. Entropy: 2.54 bits (0 means certain; log2(10)=3.32 means ten equally likely choices)."
+        },
+        {
+          "type": "bars",
+          "title": "An open-ended story start: \"Write a one-sentence story about a robot. Begin the story directly.\"",
+          "items": [
+            {
+              "label": "\"The\"",
+              "value": 20.4235,
+              "max": 100,
+              "detail": "20.42%"
+            },
+            {
+              "label": "\"S\"",
+              "value": 14.0368,
+              "max": 100,
+              "detail": "14.04%"
+            },
+            {
+              "label": "\"Blink\"",
+              "value": 10.9319,
+              "max": 100,
+              "detail": "10.93%"
+            },
+            {
+              "label": "\"Rust\"",
+              "value": 8.5138,
+              "max": 100,
+              "detail": "8.51%"
+            },
+            {
+              "label": "\"Deep\"",
+              "value": 5.8514,
+              "max": 100,
+              "detail": "5.85%"
+            },
+            {
+              "label": "\"Wh\"",
+              "value": 5.1639,
+              "max": 100,
+              "detail": "5.16%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Sampled token: \"Rust\". Top-10 probability mass: 75.65%. Entropy: 2.95 bits (0 means certain; log2(10)=3.32 means ten equally likely choices)."
+        },
+        {
+          "type": "table",
+          "title": "All ten alternatives",
+          "headers": [
+            "Prompt",
+            "Rank",
+            "Token",
+            "Probability"
+          ],
+          "rows": [
+            [
+              "A confident answer",
+              1,
+              "\"Paris\"",
+              "100.00%"
+            ],
+            [
+              "A confident answer",
+              2,
+              "\" Paris\"",
+              "0.0000%"
+            ],
+            [
+              "A confident answer",
+              3,
+              "\"**\"",
+              "0.0000%"
+            ],
+            [
+              "A confident answer",
+              4,
+              "\"\\n\"",
+              "0.0000%"
+            ],
+            [
+              "A confident answer",
+              5,
+              "\"-\"",
+              "0.0000%"
+            ],
+            [
+              "A confident answer",
+              6,
+              "\"PAR\"",
+              "0.0000%"
+            ],
+            [
+              "A confident answer",
+              7,
+              "\"巴黎\"",
+              "0.0000%"
+            ],
+            [
+              "A confident answer",
+              8,
+              "\"Par\"",
+              "0.0000%"
+            ],
+            [
+              "A confident answer",
+              9,
+              "\"\\\"\"",
+              "0.0000%"
+            ],
+            [
+              "A confident answer",
+              10,
+              "\"\\n\\n\"",
+              "0.0000%"
+            ],
+            [
+              "A \"random\" choice from 1 to 10",
+              1,
+              "\"7\"",
+              "98.36%"
+            ],
+            [
+              "A \"random\" choice from 1 to 10",
+              2,
+              "\"8\"",
+              "0.85%"
+            ],
+            [
+              "A \"random\" choice from 1 to 10",
+              3,
+              "\"6\"",
+              "0.52%"
+            ],
+            [
+              "A \"random\" choice from 1 to 10",
+              4,
+              "\"4\"",
+              "0.24%"
+            ],
+            [
+              "A \"random\" choice from 1 to 10",
+              5,
+              "\"3\"",
+              "0.0291%"
+            ],
+            [
+              "A \"random\" choice from 1 to 10",
+              6,
+              "\"5\"",
+              "0.0008%"
+            ],
+            [
+              "A \"random\" choice from 1 to 10",
+              7,
+              "\"2\"",
+              "0.0002%"
+            ],
+            [
+              "A \"random\" choice from 1 to 10",
+              8,
+              "\"9\"",
+              "0.0002%"
+            ],
+            [
+              "A \"random\" choice from 1 to 10",
+              9,
+              "\"10\"",
+              "0.0000%"
+            ],
+            [
+              "A \"random\" choice from 1 to 10",
+              10,
+              "\"1\"",
+              "0.0000%"
+            ],
+            [
+              "A \"random\" choice from 1 to 100",
+              1,
+              "\"47\"",
+              "36.75%"
+            ],
+            [
+              "A \"random\" choice from 1 to 100",
+              2,
+              "\"57\"",
+              "17.36%"
+            ],
+            [
+              "A \"random\" choice from 1 to 100",
+              3,
+              "\"87\"",
+              "13.52%"
+            ],
+            [
+              "A \"random\" choice from 1 to 100",
+              4,
+              "\"37\"",
+              "13.52%"
+            ],
+            [
+              "A \"random\" choice from 1 to 100",
+              5,
+              "\"73\"",
+              "4.97%"
+            ],
+            [
+              "A \"random\" choice from 1 to 100",
+              6,
+              "\"67\"",
+              "4.39%"
+            ],
+            [
+              "A \"random\" choice from 1 to 100",
+              7,
+              "\"27\"",
+              "3.42%"
+            ],
+            [
+              "A \"random\" choice from 1 to 100",
+              8,
+              "\"42\"",
+              "1.11%"
+            ],
+            [
+              "A \"random\" choice from 1 to 100",
+              9,
+              "\"17\"",
+              "0.86%"
+            ],
+            [
+              "A \"random\" choice from 1 to 100",
+              10,
+              "\"83\"",
+              "0.59%"
+            ],
+            [
+              "An open-ended story start",
+              1,
+              "\"The\"",
+              "20.42%"
+            ],
+            [
+              "An open-ended story start",
+              2,
+              "\"S\"",
+              "14.04%"
+            ],
+            [
+              "An open-ended story start",
+              3,
+              "\"Blink\"",
+              "10.93%"
+            ],
+            [
+              "An open-ended story start",
+              4,
+              "\"Rust\"",
+              "8.51%"
+            ],
+            [
+              "An open-ended story start",
+              5,
+              "\"Deep\"",
+              "5.85%"
+            ],
+            [
+              "An open-ended story start",
+              6,
+              "\"Wh\"",
+              "5.16%"
+            ],
+            [
+              "An open-ended story start",
+              7,
+              "\"In\"",
+              "3.55%"
+            ],
+            [
+              "An open-ended story start",
+              8,
+              "\"Cl\"",
+              "3.13%"
+            ],
+            [
+              "An open-ended story start",
+              9,
+              "\"Late\"",
+              "2.15%"
+            ],
+            [
+              "An open-ended story start",
+              10,
+              "\"Am\"",
+              "1.90%"
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "model": "gpt-4o",
+        "probes": [
+          {
+            "id": "capital",
+            "label": "A confident answer",
+            "prompt": "What is the capital of France? Answer with one word.",
+            "sampledToken": "Paris",
+            "tokens": [
+              {
+                "token": "Paris",
+                "probability": 1
+              },
+              {
+                "token": " Paris",
+                "probability": 2.9989608248573072e-9
+              },
+              {
+                "token": "**",
+                "probability": 4.058652126475693e-10
+              },
+              {
+                "token": "\n",
+                "probability": 2.7894680928689246e-10
+              },
+              {
+                "token": "-",
+                "probability": 1.162823303022097e-10
+              },
+              {
+                "token": "PAR",
+                "probability": 1.162823303022097e-10
+              },
+              {
+                "token": "巴黎",
+                "probability": 5.4927883509546835e-11
+              },
+              {
+                "token": "Par",
+                "probability": 4.8473687062702556e-11
+              },
+              {
+                "token": "\"",
+                "probability": 4.277787868968998e-11
+              },
+              {
+                "token": "\n\n",
+                "probability": 2.289734845645553e-11
+              }
+            ],
+            "coveredMass": 1.000000004085414,
+            "entropyBits": 1.2580997536328804e-7
+          },
+          {
+            "id": "number10",
+            "label": "A \"random\" choice from 1 to 10",
+            "prompt": "Pick a random whole number from 1 to 10. Answer with only the number.",
+            "sampledToken": "7",
+            "tokens": [
+              {
+                "token": "7",
+                "probability": 0.9835878836144125
+              },
+              {
+                "token": "8",
+                "probability": 0.008509703684053398
+              },
+              {
+                "token": "6",
+                "probability": 0.005161396189447934
+              },
+              {
+                "token": "4",
+                "probability": 0.00243807092534013
+              },
+              {
+                "token": "3",
+                "probability": 0.0002911860474581595
+              },
+              {
+                "token": "5",
+                "probability": 0.00000775984532170112
+              },
+              {
+                "token": "2",
+                "probability": 0.000001961996154646264
+              },
+              {
+                "token": "9",
+                "probability": 0.000001961996154646264
+              },
+              {
+                "token": "10",
+                "probability": 7.458115536095794e-10
+              },
+              {
+                "token": "1",
+                "probability": 3.9920415759103096e-10
+              }
+            ],
+            "coveredMass": 0.9999999254433587,
+            "entropyBits": 0.1460060130587225
+          },
+          {
+            "id": "number100",
+            "label": "A \"random\" choice from 1 to 100",
+            "prompt": "Pick a random whole number from 1 to 100. Answer with only the number.",
+            "sampledToken": "47",
+            "tokens": [
+              {
+                "token": "47",
+                "probability": 0.36746958485020975
+              },
+              {
+                "token": "57",
+                "probability": 0.17358034103286535
+              },
+              {
+                "token": "87",
+                "probability": 0.13518448940694916
+              },
+              {
+                "token": "37",
+                "probability": 0.13518448940694916
+              },
+              {
+                "token": "73",
+                "probability": 0.04973159441807522
+              },
+              {
+                "token": "67",
+                "probability": 0.043887978034544736
+              },
+              {
+                "token": "27",
+                "probability": 0.03417999166072406
+              },
+              {
+                "token": "42",
+                "probability": 0.011096618626941883
+              },
+              {
+                "token": "17",
+                "probability": 0.008642055276107076
+              },
+              {
+                "token": "83",
+                "probability": 0.0059395919379873485
+              }
+            ],
+            "coveredMass": 0.9648967346513536,
+            "entropyBits": 2.544343311373692
+          },
+          {
+            "id": "story",
+            "label": "An open-ended story start",
+            "prompt": "Write a one-sentence story about a robot. Begin the story directly.",
+            "sampledToken": "Rust",
+            "tokens": [
+              {
+                "token": "The",
+                "probability": 0.20423493874775805
+              },
+              {
+                "token": "S",
+                "probability": 0.14036848375586503
+              },
+              {
+                "token": "Blink",
+                "probability": 0.10931908506761345
+              },
+              {
+                "token": "Rust",
+                "probability": 0.08513778905530688
+              },
+              {
+                "token": "Deep",
+                "probability": 0.05851428963767979
+              },
+              {
+                "token": "Wh",
+                "probability": 0.0516386793621903
+              },
+              {
+                "token": "In",
+                "probability": 0.03549071069655803
+              },
+              {
+                "token": "Cl",
+                "probability": 0.03132044226023843
+              },
+              {
+                "token": "Late",
+                "probability": 0.02152620417245356
+              },
+              {
+                "token": "Am",
+                "probability": 0.01899680850659386
+              }
+            ],
+            "coveredMass": 0.7565474312622575,
+            "entropyBits": 2.945630147100148
+          }
+        ]
+      }
+    },
+    {
+      "label": "Temperature reshapes the same probabilities",
+      "kind": "experiment",
+      "request": {
+        "summary": "Predict each temperature's distribution as p^(1/T), renormalized, from the temperature-1 probabilities of the \"a \"random\" choice from 1 to 100\" prompt. Then draw 100 real samples at each temperature in one request (n=100, max_tokens=1) and compare."
+      },
+      "output": "T=0.3: predicted top 86.51%, sampled top 82.00%, distance between prediction and 100 samples 0.069 (0 identical, 1 disjoint).\nT=1: predicted top 38.08%, sampled top 43.00%, distance between prediction and 100 samples 0.120 (0 identical, 1 disjoint).\nT=2: predicted top 22.87%, sampled top 16.00%, distance between prediction and 100 samples 0.311 (0 identical, 1 disjoint).",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "completed",
+      "latencyMs": 8887,
+      "usage": {
+        "input_tokens": 75,
+        "output_tokens": 300,
+        "total_tokens": 375
+      },
+      "apiRequests": 3,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 2794,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 100,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 34,
+              "engine_ttlt_ms": 154,
+              "pre_inference_ms": 100,
+              "service_tbt_ms": 4,
+              "service_ttft_ms": 451,
+              "service_ttlt_ms": 890,
+              "user_visible_ttft_ms": 351
+            },
+            "prompt_tokens": 25,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 125
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 3003,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 100,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 37,
+              "engine_ttlt_ms": 156,
+              "pre_inference_ms": 66,
+              "service_tbt_ms": 4,
+              "service_ttft_ms": 872,
+              "service_ttlt_ms": 1291,
+              "user_visible_ttft_ms": 806
+            },
+            "prompt_tokens": 25,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 125
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 3083,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 100,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 1,
+              "engine_ttft_ms": 34,
+              "engine_ttlt_ms": 156,
+              "pre_inference_ms": 41,
+              "service_tbt_ms": 4,
+              "service_ttft_ms": 812,
+              "service_ttlt_ms": 1230,
+              "user_visible_ttft_ms": 771
+            },
+            "prompt_tokens": 25,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 125
+          }
+        }
+      ],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "text",
+          "text": "Only 100 samples per temperature are drawn, so empirical frequencies are noisy. The question is whether the prediction is close, not exact."
+        },
+        {
+          "type": "table",
+          "title": "Predicted versus sampled probability",
+          "headers": [
+            "Token",
+            "Raw (T=1)",
+            "T=0.3 predicted",
+            "T=0.3 sampled",
+            "T=1 predicted",
+            "T=1 sampled",
+            "T=2 predicted",
+            "T=2 sampled"
+          ],
+          "rows": [
+            [
+              "\"47\"",
+              "38.08%",
+              "86.51%",
+              "82.00%",
+              "38.08%",
+              "43.00%",
+              "22.87%",
+              "16.00%"
+            ],
+            [
+              "\"57\"",
+              "17.99%",
+              "7.10%",
+              "14.00%",
+              "17.99%",
+              "20.00%",
+              "15.72%",
+              "13.00%"
+            ],
+            [
+              "\"87\"",
+              "14.01%",
+              "3.09%",
+              "1.00%",
+              "14.01%",
+              "17.00%",
+              "13.87%",
+              "10.00%"
+            ],
+            [
+              "\"37\"",
+              "14.01%",
+              "3.09%",
+              "3.00%",
+              "14.01%",
+              "8.00%",
+              "13.87%",
+              "12.00%"
+            ],
+            [
+              "\"73\"",
+              "5.15%",
+              "0.11%",
+              "0.0000%",
+              "5.15%",
+              "5.00%",
+              "8.41%",
+              "2.00%"
+            ],
+            [
+              "\"67\"",
+              "4.55%",
+              "0.0726%",
+              "0.0000%",
+              "4.55%",
+              "2.00%",
+              "7.90%",
+              "5.00%"
+            ],
+            [
+              "\"27\"",
+              "3.54%",
+              "0.0315%",
+              "0.0000%",
+              "3.54%",
+              "2.00%",
+              "6.97%",
+              "3.00%"
+            ],
+            [
+              "\"42\"",
+              "1.15%",
+              "0.0007%",
+              "0.0000%",
+              "1.15%",
+              "0.0000%",
+              "3.97%",
+              "3.00%"
+            ],
+            [
+              "\"17\"",
+              "0.90%",
+              "0.0003%",
+              "0.0000%",
+              "0.90%",
+              "1.00%",
+              "3.51%",
+              "2.00%"
+            ],
+            [
+              "\"83\"",
+              "0.62%",
+              "0.0001%",
+              "0.0000%",
+              "0.62%",
+              "0.0000%",
+              "2.91%",
+              "3.00%"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "How close was the prediction?",
+          "headers": [
+            "Temperature",
+            "Samples",
+            "Sampled outside the top 10",
+            "Distance (0 identical, 1 disjoint)"
+          ],
+          "rows": [
+            [
+              0.3,
+              100,
+              "0.0000%",
+              "0.069"
+            ],
+            [
+              1,
+              100,
+              "2.00%",
+              "0.120"
+            ],
+            [
+              2,
+              100,
+              "31.00%",
+              "0.311"
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "model": "gpt-4o",
+        "prompt": "Pick a random whole number from 1 to 100. Answer with only the number.",
+        "tokens": [
+          "47",
+          "57",
+          "87",
+          "37",
+          "73",
+          "67",
+          "27",
+          "42",
+          "17",
+          "83"
+        ],
+        "rawTop10": [
+          0.3808382510310677,
+          0.17989525179146262,
+          0.14010254626449264,
+          0.14010254626449264,
+          0.051540846426477695,
+          0.04548463732795488,
+          0.03542347116873012,
+          0.011500317317325596,
+          0.008956456132302813,
+          0.006155676275693381
+        ],
+        "sweep": [
+          {
+            "temperature": 0.3,
+            "samples": 100,
+            "predicted": [
+              0.8651098664679039,
+              0.07101254219853911,
+              0.030861911357594203,
+              0.030861911357594203,
+              0.0011009676204543084,
+              0.0007258025879385813,
+              0.00031543250444790867,
+              0.000007418261474330375,
+              0.000003223963146981058,
+              9.236809065105473e-7
+            ],
+            "empirical": [
+              0.82,
+              0.14,
+              0.01,
+              0.03,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "outside": 0,
+            "distance": 0.06898745780146093
+          },
+          {
+            "temperature": 1,
+            "samples": 100,
+            "predicted": [
+              0.3808382510310676,
+              0.1798952517914626,
+              0.14010254626449262,
+              0.14010254626449262,
+              0.05154084642647768,
+              0.04548463732795487,
+              0.03542347116873011,
+              0.011500317317325594,
+              0.00895645613230281,
+              0.006155676275693379
+            ],
+            "empirical": [
+              0.43,
+              0.2,
+              0.17,
+              0.08,
+              0.05,
+              0.02,
+              0.02,
+              0,
+              0.01,
+              0
+            ],
+            "outside": 0.02,
+            "distance": 0.12020749478067431
+          },
+          {
+            "temperature": 2,
+            "samples": 100,
+            "predicted": [
+              0.22867240801651834,
+              0.1571640943850678,
+              0.1386968182253605,
+              0.1386968182253605,
+              0.0841238726582711,
+              0.07902706486963727,
+              0.0697411399678068,
+              0.03973730373081162,
+              0.035068047459504544,
+              0.029072432461661486
+            ],
+            "empirical": [
+              0.16,
+              0.13,
+              0.1,
+              0.12,
+              0.02,
+              0.05,
+              0.03,
+              0.03,
+              0.02,
+              0.03
+            ],
+            "outside": 0.31,
+            "distance": 0.3109275675383385
+          }
+        ]
+      }
+    },
+    {
+      "label": "A reasoning model does not expose its distribution",
+      "kind": "experiment",
+      "request": {
+        "summary": "Send the same one-word question to the GPT-5-mini reasoning deployment with logprobs enabled. The result, success or refusal, is recorded exactly as Azure returned it."
+      },
+      "output": "Azure refused with HTTP 400 unsupported_parameter: Azure request failed (400): unsupported_parameter: Unsupported parameter: 'logprobs' is not supported with this model.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-5-mini",
+      "finishReason": "completed",
+      "latencyMs": 60,
+      "usage": null,
+      "apiRequests": 1,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "model": "gpt-5-mini",
+          "latencyMs": 59,
+          "attempts": 1,
+          "waitedMs": 0,
+          "usage": null,
+          "httpStatus": 400,
+          "error": "unsupported_parameter"
+        }
+      ],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "text",
+          "text": "The reasoning deployment rejects this parameter. A capability that exists in one model may be absent in another, so choose models for the features you need, not only for answer quality."
+        }
+      ],
+      "measurements": {
+        "model": "gpt-5-mini",
+        "outcome": {
+          "accepted": false,
+          "status": 400,
+          "code": "unsupported_parameter",
+          "message": "Azure request failed (400): unsupported_parameter: Unsupported parameter: 'logprobs' is not supported with this model."
+        }
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "Each prompt returned ten ordered, valid probabilities",
+      "passed": true,
+      "detail": "capital: 100.00% covered; number10: 100.00% covered; number100: 96.49% covered; story: 75.65% covered"
+    },
+    {
+      "name": "The factual question is sharper than the spread-out random choice",
+      "passed": true,
+      "detail": "0.000 < 2.544 bits"
+    },
+    {
+      "name": "Every temperature drew the planned number of samples",
+      "passed": true,
+      "detail": "100 samples at each temperature."
+    },
+    {
+      "name": "Predicted distributions are normalized and sharper at lower temperature",
+      "passed": true,
+      "detail": "T=0.3: 86.51%, T=1: 38.08%, T=2: 22.87%"
+    },
+    {
+      "name": "Prediction-versus-sample distances are measured",
+      "passed": true,
+      "detail": "T=0.3: 0.069, T=1: 0.120, T=2: 0.311"
+    },
+    {
+      "name": "Real samples are more concentrated at low temperature than at high temperature",
+      "passed": true,
+      "detail": "Leading token share 82.00% at T=0.3 versus 16.00% at T=2."
+    },
+    {
+      "name": "Samples at temperature 1 match the reported probabilities",
+      "passed": true,
+      "detail": "Distance 0.120 (0 identical, 1 disjoint) from 100 samples."
+    },
+    {
+      "name": "The reasoning-model outcome is a real acceptance or Azure's documented refusal, not an unrelated failure",
+      "passed": true,
+      "detail": "{\"accepted\":false,\"status\":400,\"code\":\"unsupported_parameter\",\"message\":\"Azure request failed (400): unsupported_parameter: Unsupported parameter: 'logprobs' is not supported with this model.\"}"
+    }
+  ],
+  "artifacts": [],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-qn4z1aa",
+    "runId": "e526795c-40db-4b11-a7d9-278778184467"
+  }
+}

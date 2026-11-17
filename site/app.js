@@ -115,6 +115,88 @@ function showModelComparison(lab, selectedPair, index) {
   main.append(comparison);
 }
 
+function mediaUrl(lab, artifact) {
+  return `./media/${encodeURIComponent(lab.id)}/${encodeURIComponent(artifact.file)}`;
+}
+
+function renderBlock(block, lab, artifacts) {
+  const wrap = element('div', undefined, `block block-${block.type}`);
+  if (block.type === 'text') wrap.append(element('p', block.text));
+  else if (block.type === 'code') {
+    if (block.title) wrap.append(element('h4', block.title));
+    wrap.append(element('pre', block.text, 'settings'));
+  } else if (block.type === 'table') {
+    if (block.title) wrap.append(element('h4', block.title));
+    const scroller = element('div', undefined, 'table-wrap');
+    scroller.append(evidenceTable(block.headers, block.rows.map(row => row.map(cell => (cell === null ? 'none' : cell)))));
+    wrap.append(scroller);
+  } else if (block.type === 'bars') {
+    wrap.append(element('h4', block.title));
+    for (const item of block.items) {
+      const row = element('div', undefined, 'bar-row');
+      const track = element('div', undefined, 'bar-track');
+      const fill = element('div', undefined, 'bar-fill');
+      fill.style.width = `${Math.max(0, Math.min(100, (item.value / item.max) * 100))}%`;
+      track.append(fill);
+      row.append(element('span', item.label), track, element('span', item.detail ?? String(item.value), 'metrics'));
+      wrap.append(row);
+    }
+  } else if (block.type === 'image' || block.type === 'audio') {
+    const artifact = artifacts.get(block.artifact);
+    const figure = element('figure');
+    const media = element(block.type === 'image' ? 'img' : 'audio');
+    media.src = mediaUrl(lab, artifact);
+    if (block.type === 'image') {
+      media.alt = block.alt;
+      media.loading = 'lazy';
+    } else {
+      media.controls = true;
+      media.preload = 'none';
+      media.setAttribute('aria-label', block.caption);
+    }
+    const link = element('a', `Open ${artifact.file} (${(artifact.bytes / 1024).toFixed(0)} KB)`);
+    link.href = media.src;
+    figure.append(media, element('figcaption', block.caption), link);
+    wrap.append(figure);
+  }
+  return wrap;
+}
+
+function showExperiment(lab, result) {
+  const grid = element('div', undefined, 'comparison stack');
+  const did = element('section');
+  did.append(element('h3', 'What we did'), element('pre', result.request.summary));
+  if (result.request.parameters) {
+    const details = element('details');
+    details.append(element('summary', 'Inspect the settings'), element('pre', JSON.stringify(result.request.parameters, null, 2), 'settings'));
+    did.append(details);
+  }
+  const outcome = element('section');
+  const output = element('pre', result.output, 'output');
+  output.id = 'output';
+  outcome.append(element('h3', 'Measured outcome'), output);
+  const tokens = result.usage ? ` | ${result.usage.total_tokens} tokens reported` : '';
+  outcome.append(element('p', `${result.actualModel} | ${result.latencyMs} ms | ${result.apiRequests} Azure API request${result.apiRequests === 1 ? '' : 's'}${tokens}`, 'metrics'));
+  const artifacts = new Map(result.artifacts.map(artifact => [artifact.id, artifact]));
+  for (const block of result.display) outcome.append(renderBlock(block, lab, artifacts));
+  if (result.apiCalls.length) {
+    const details = element('details');
+    details.append(element('summary', `Every Azure API call in this variant (${result.apiCalls.length})`),
+      evidenceTable(['Operation', 'Deployment', 'Model', 'Latency (ms)', 'Attempts', 'Tokens'],
+        result.apiCalls.map(call => [call.operation, call.deployment ?? '', call.model ?? '', call.latencyMs, call.attempts ?? 1, call.usage?.total_tokens ?? 'not token-billed'])));
+    outcome.append(details);
+  } else {
+    outcome.append(element('p', 'No Azure model request: computed from earlier results or local code.', 'metrics'));
+  }
+  if (Object.keys(result.measurements ?? {}).length) {
+    const details = element('details');
+    details.append(element('summary', 'Inspect all recorded measurements'), element('pre', JSON.stringify(result.measurements, null, 2), 'settings'));
+    outcome.append(details);
+  }
+  grid.append(did, outcome);
+  return grid;
+}
+
 function showDiscussion(lab) {
   const discussion = element('aside', undefined, 'discussion');
   discussion.append(element('strong', 'Ask the class'), element('p', lab.question), element('p', `Important: ${lab.caveat}`), element('p', `Try it: ${lab.exercise}`));
@@ -181,6 +263,11 @@ function showLab(index, selectedCase = 0) {
   select.addEventListener('change', () => showLab(index, Number(select.value)));
   main.append(label, select);
   const result = lab.results[selectedCase];
+  if (result.kind === 'experiment') {
+    main.append(showExperiment(lab, result));
+    showDiscussion(lab);
+    return;
+  }
   const grid = element('div', undefined, 'comparison');
   const prompt = element('section');
   prompt.append(element('h3', result.kind === 'computation' ? 'Experiment' : 'What we sent'),

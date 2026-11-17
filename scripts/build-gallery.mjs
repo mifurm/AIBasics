@@ -1,9 +1,11 @@
-import { mkdir, readFile, writeFile, copyFile, stat } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, copyFile, stat, rm } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { parseArgs } from 'node:util';
 import path from 'node:path';
 import { labs } from '../lib/labs.mjs';
 
 await mkdir('site', { recursive: true });
+await rm('site/media', { recursive: true, force: true });
 const { values } = parseArgs({ options: { 'media-directory': { type: 'string' } } });
 const records = [];
 for (const lab of labs) {
@@ -11,6 +13,13 @@ for (const lab of labs) {
   if (record.status === 'failed' || record.observations.some(check => !check.passed) ||
       (record.status !== 'blocked' && record.results.length !== lab.cases.length)) {
     throw new Error(`Cannot publish incomplete or failed outcomes for ${lab.id}; rerun that lab first.`);
+  }
+  for (const artifact of record.artifacts ?? []) {
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*\.(png|wav|svg)$/.test(artifact.file)) throw new Error(`Unsafe artifact file name in ${lab.id}: ${artifact.file}`);
+    const bytes = await readFile(`results/media/${lab.id}/${artifact.file}`);
+    if (createHash('sha256').update(bytes).digest('hex') !== artifact.sha256) throw new Error(`Artifact ${lab.id}/${artifact.file} does not match its recorded hash.`);
+    await mkdir(`site/media/${lab.id}`, { recursive: true });
+    await writeFile(`site/media/${lab.id}/${artifact.file}`, bytes);
   }
   record.recordingAvailable = Boolean(values['media-directory']);
   if (record.recordingAvailable) await stat(path.join(values['media-directory'], `${lab.id}.mp4`));

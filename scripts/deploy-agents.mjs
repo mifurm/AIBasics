@@ -5,6 +5,10 @@ import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { az, loadConfig } from '../lib/azure.mjs';
+import { findMediaDeployments } from '../lib/media-deployments.mjs';
+
+// Only what the job needs: the job never builds the gallery, deploys, or records videos.
+const RUNTIME_FILES = ['lib', 'scripts/azure-bootstrap.mjs', 'scripts/azure-entry.mjs', 'scripts/run.mjs', 'scripts/classroom-memory.mjs'];
 
 let directory;
 try {
@@ -22,14 +26,21 @@ try {
   if (!principalId) throw new Error('Sign in interactively with az login; publisher object ID was not found.');
   directory = await mkdtemp(join(tmpdir(), 'aibasics-deploy-'));
   const archive = join(directory, 'source.tgz');
-  execFileSync('tar', ['-czf', archive, 'lib', 'scripts'], {
+  execFileSync('tar', ['-czf', archive, ...RUNTIME_FILES], {
     env: { ...process.env, COPYFILE_DISABLE: '1' }, stdio: 'pipe',
   });
   const archiveBytes = await readFile(archive);
+  const encoded = archiveBytes.toString('base64');
+  const parts = encoded.match(/.{1,48000}/g);
+  if (parts.length > 12) throw new Error(`Source archive needs ${parts.length} environment variables; reduce the packaged source before deploying.`);
+  console.log(`Runtime source archive: ${archiveBytes.length} bytes compressed, ${encoded.length} encoded characters in ${parts.length} environment variable(s).`);
   const sha256 = createHash('sha256').update(archiveBytes).digest('hex');
+  const media = findMediaDeployments(az(['cognitiveservices', 'account', 'deployment', 'list', '-g', config.aiResourceGroup, '-n', config.aiAccountName, ...sub]));
+  for (const spec of media.missing) console.warn(`Warning: no ${spec.model} deployment; ${spec.labs} will fail until you run npm run deploy:media-models -- --confirm-costs.`);
+  Object.assign(config, media.found);
   const parameters = join(directory, 'parameters.json');
   await writeFile(parameters, JSON.stringify({
-    sourceArchive: { value: archiveBytes.toString('base64') },
+    sourceArchiveParts: { value: parts },
   }));
   console.log('Deploying a manual Consumption job and authenticated Azure Monitor results. No model deployments are changed.');
   const deployment = az(['deployment', 'group', 'create', '-g', config.resourceGroup, '-n', 'classroom-agents',
@@ -38,6 +49,7 @@ try {
     `aiAccountName=${config.aiAccountName}`, `aiEndpoint=${config.endpoint}`,
     `standardDeployment=${config.standardDeployment}`, `reasoningDeployment=${config.reasoningDeployment}`,
     `embeddingDeployment=${config.embeddingDeployment}`, `sourceSha256=${sha256}`,
+    ...['imageDeployment', 'speechDeployment', 'transcriptionDeployment', 'diarizationDeployment'].filter(key => config[key]).map(key => `${key}=${config[key]}`),
     `location=${values.region ?? config.region}`, `@${parameters}`, ...sub]);
   const outputs = deployment.properties.outputs;
   config.agentRuntime = {

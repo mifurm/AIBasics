@@ -8,6 +8,8 @@ import { prepareExperiment, finishToolChain } from '../lib/experiments.mjs';
 import { runAgent } from '../lib/agent.mjs';
 import { runTransformerExperiment } from '../lib/transformer-lab.mjs';
 import { assessComparisonOutput } from '../lib/model-comparison.mjs';
+import { runGenaiLab } from '../lib/genai/runner.mjs';
+import { selectLabs, selectionGroups } from '../lib/selection.mjs';
 
 export async function runLab(id, session) {
   const lab = getLab(id);
@@ -24,6 +26,7 @@ export async function runLab(id, session) {
   }
   const config = session?.config ?? await loadConfig();
   const token = session?.token ?? await accessToken(config.subscriptionId);
+  if (lab.series === 'genai') return runGenaiLab(lab, { config, token }, new URL('../results/', import.meta.url));
   const results = [];
   await mkdir(new URL('../results/', import.meta.url), { recursive: true });
   for (const testCase of lab.cases) {
@@ -119,13 +122,12 @@ export async function runLab(id, session) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   try {
     const id = process.argv[2];
-    if (!id) throw new Error('Usage: npm run demo -- <lab-id|all|advanced|agents>. Each execution makes billable Azure requests.');
-    if (id === 'all' || id === 'advanced' || id === 'agents') {
+    if (!id) throw new Error(`Usage: npm run demo -- <lab-id|${selectionGroups.join('|')}>. Each execution makes billable Azure requests.`);
+    if (selectionGroups.includes(id) || id === 'advanced' || id.includes(',')) {
       const config = await loadConfig();
       const session = { config, token: await accessToken(config.subscriptionId) };
-      for (const lab of labs.filter(entry => id === 'all' ||
-        (id === 'advanced' && Number(entry.id.slice(0, 2)) >= 13 && Number(entry.id.slice(0, 2)) <= 18) ||
-        (id === 'agents' && entry.cases[0].agent))) await runLab(lab.id, session);
+      const chosen = id === 'advanced' ? labs.filter(entry => Number(entry.id.slice(0, 2)) >= 13 && Number(entry.id.slice(0, 2)) <= 18) : selectLabs(id);
+      for (const lab of chosen) await runLab(lab.id, session);
     } else {
       await runLab(id);
     }

@@ -1,0 +1,1056 @@
+{
+  "labId": "33-vision",
+  "recordedAt": "2026-11-16T21:26:29.150Z",
+  "results": [
+    {
+      "label": "Count colored shapes",
+      "kind": "experiment",
+      "request": {
+        "summary": "Prompt: \"Count the shapes in this image. Count only shapes that match both the stated color and the stated shape exactly. Return JSON with integer fields red_circles, blue_squares and green_triangles.\" The same image (f1dc91511ed3...) was sent to both models with image detail \"high\" and a strict JSON schema.",
+        "parameters": {
+          "prompt": "Count the shapes in this image. Count only shapes that match both the stated color and the stated shape exactly. Return JSON with integer fields red_circles, blue_squares and green_triangles.",
+          "detail": "high",
+          "imageSha256": "f1dc91511ed3f90f3167fd015b5ab98b0e2ee7e97036d0269d95d43a3dc3ac7b"
+        }
+      },
+      "output": "GPT-4o: 1/3 correct. red_circles 5 (truth 6) WRONG; blue_squares 5 (truth 4) WRONG; green_triangles 4 (truth 4) OK. 398 input tokens.\nGPT-5-mini: 3/3 correct. red_circles 6 (truth 6) OK; blue_squares 4 (truth 4) OK; green_triangles 4 (truth 4) OK. 401 input tokens.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 6230,
+      "usage": {
+        "input_tokens": 799,
+        "output_tokens": 565,
+        "total_tokens": 1364
+      },
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1945,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 20,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 150,
+              "engine_ttlt_ms": 287,
+              "pre_inference_ms": 134,
+              "service_tbt_ms": 9,
+              "service_ttft_ms": 1532,
+              "service_ttlt_ms": 1705,
+              "user_visible_ttft_ms": 1398
+            },
+            "prompt_tokens": 398,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 418
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 4284,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 545,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 512,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 54,
+              "engine_ttlt_ms": 3659,
+              "pre_inference_ms": 124,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 230,
+              "service_ttlt_ms": 3809,
+              "user_visible_ttft_ms": 106
+            },
+            "prompt_tokens": 401,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 946
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "shapes-scene",
+          "file": "shapes-scene.png",
+          "mime": "image/png",
+          "bytes": 4277,
+          "sha256": "f1dc91511ed3f90f3167fd015b5ab98b0e2ee7e97036d0269d95d43a3dc3ac7b",
+          "description": "A seeded scene with six red circles, four blue squares, four green triangles, and distractor blue circles and red squares."
+        }
+      ],
+      "display": [
+        {
+          "type": "image",
+          "artifact": "shapes-scene",
+          "caption": "The exact image sent to both models.",
+          "alt": "Count colored shapes"
+        },
+        {
+          "type": "table",
+          "title": "Ground truth versus each model",
+          "headers": [
+            "Field",
+            "Truth",
+            "GPT-4o",
+            "Correct?",
+            "GPT-5-mini",
+            "Correct?"
+          ],
+          "rows": [
+            [
+              "red_circles",
+              6,
+              5,
+              "NO",
+              6,
+              "yes"
+            ],
+            [
+              "blue_squares",
+              4,
+              5,
+              "NO",
+              4,
+              "yes"
+            ],
+            [
+              "green_triangles",
+              4,
+              4,
+              "yes",
+              4,
+              "yes"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the image cost",
+          "headers": [
+            "Model",
+            "Image detail",
+            "Input tokens (image + text)",
+            "Output tokens",
+            "Reasoning tokens",
+            "Latency (ms)"
+          ],
+          "rows": [
+            [
+              "GPT-4o",
+              "high",
+              398,
+              20,
+              0,
+              1945
+            ],
+            [
+              "GPT-5-mini",
+              "high",
+              401,
+              545,
+              512,
+              4284
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "We drew this image, so the truth is exact. A wrong answer here is a real error, not a matter of opinion."
+        }
+      ],
+      "measurements": {
+        "task": "shapes",
+        "detail": "high",
+        "truth": {
+          "red_circles": 6,
+          "blue_squares": 4,
+          "green_triangles": 4
+        },
+        "imageSha256": "f1dc91511ed3f90f3167fd015b5ab98b0e2ee7e97036d0269d95d43a3dc3ac7b",
+        "pixelSha256": "79396ab5ce1c18252b872bfc42d14da76a2b3a83971ab6215ecf3ba1bcf55a4f",
+        "answers": [
+          {
+            "model": "GPT-4o",
+            "actualModel": "gpt-4o-2024-11-20",
+            "answer": {
+              "red_circles": 5,
+              "blue_squares": 5,
+              "green_triangles": 4
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "red_circles",
+                "truth": 6,
+                "answer": 5,
+                "correct": false
+              },
+              {
+                "field": "blue_squares",
+                "truth": 4,
+                "answer": 5,
+                "correct": false
+              },
+              {
+                "field": "green_triangles",
+                "truth": 4,
+                "answer": 4,
+                "correct": true
+              }
+            ],
+            "correct": 1,
+            "promptTokens": 398,
+            "completionTokens": 20,
+            "reasoningTokens": 0,
+            "latencyMs": 1945
+          },
+          {
+            "model": "GPT-5-mini",
+            "actualModel": "gpt-5-mini-2025-08-07",
+            "answer": {
+              "red_circles": 6,
+              "blue_squares": 4,
+              "green_triangles": 4
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "red_circles",
+                "truth": 6,
+                "answer": 6,
+                "correct": true
+              },
+              {
+                "field": "blue_squares",
+                "truth": 4,
+                "answer": 4,
+                "correct": true
+              },
+              {
+                "field": "green_triangles",
+                "truth": 4,
+                "answer": 4,
+                "correct": true
+              }
+            ],
+            "correct": 3,
+            "promptTokens": 401,
+            "completionTokens": 545,
+            "reasoningTokens": 512,
+            "latencyMs": 4284
+          }
+        ]
+      }
+    },
+    {
+      "label": "Read a bar chart",
+      "kind": "experiment",
+      "request": {
+        "summary": "Prompt: \"This bar chart has four bars labelled A, B, C and D and a vertical axis from 0 to 100. Return JSON with tallest_bar (the label of the tallest bar) and value_of_c (your best estimate of bar C, as a number).\" The same image (c929487c4dc8...) was sent to both models with image detail \"high\" and a strict JSON schema.",
+        "parameters": {
+          "prompt": "This bar chart has four bars labelled A, B, C and D and a vertical axis from 0 to 100. Return JSON with tallest_bar (the label of the tallest bar) and value_of_c (your best estimate of bar C, as a number).",
+          "detail": "high",
+          "imageSha256": "c929487c4dc83adf64a5e31ce824dae59211b6411a06ced946755973f3a172e6"
+        }
+      },
+      "output": "GPT-4o: 2/2 correct. tallest_bar B (truth B) OK; value_of_c (within 5) 60 (truth 55) OK. 415 input tokens.\nGPT-5-mini: 2/2 correct. tallest_bar B (truth B) OK; value_of_c (within 5) 55 (truth 55) OK. 340 input tokens.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 3143,
+      "usage": {
+        "input_tokens": 755,
+        "output_tokens": 42,
+        "total_tokens": 797
+      },
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 2098,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 14,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 37,
+              "engine_ttft_ms": 248,
+              "engine_ttlt_ms": 800,
+              "pre_inference_ms": 99,
+              "service_tbt_ms": 39,
+              "service_ttft_ms": 1373,
+              "service_ttlt_ms": 1921,
+              "user_visible_ttft_ms": 1274
+            },
+            "prompt_tokens": 415,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 429
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1043,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 28,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 50,
+              "engine_ttlt_ms": 508,
+              "pre_inference_ms": 75,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 151,
+              "service_ttlt_ms": 606,
+              "user_visible_ttft_ms": 77
+            },
+            "prompt_tokens": 340,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 368
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "bar-chart",
+          "file": "bar-chart.png",
+          "mime": "image/png",
+          "bytes": 3653,
+          "sha256": "c929487c4dc83adf64a5e31ce824dae59211b6411a06ced946755973f3a172e6",
+          "description": "A bar chart with four bars labelled A to D on a 0 to 100 axis."
+        }
+      ],
+      "display": [
+        {
+          "type": "image",
+          "artifact": "bar-chart",
+          "caption": "The exact image sent to both models.",
+          "alt": "Read a bar chart"
+        },
+        {
+          "type": "table",
+          "title": "Ground truth versus each model",
+          "headers": [
+            "Field",
+            "Truth",
+            "GPT-4o",
+            "Correct?",
+            "GPT-5-mini",
+            "Correct?"
+          ],
+          "rows": [
+            [
+              "tallest_bar",
+              "B",
+              "B",
+              "yes",
+              "B",
+              "yes"
+            ],
+            [
+              "value_of_c (within 5)",
+              55,
+              60,
+              "yes",
+              55,
+              "yes"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the image cost",
+          "headers": [
+            "Model",
+            "Image detail",
+            "Input tokens (image + text)",
+            "Output tokens",
+            "Reasoning tokens",
+            "Latency (ms)"
+          ],
+          "rows": [
+            [
+              "GPT-4o",
+              "high",
+              415,
+              14,
+              0,
+              2098
+            ],
+            [
+              "GPT-5-mini",
+              "high",
+              340,
+              28,
+              0,
+              1043
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "We drew this image, so the truth is exact. A wrong answer here is a real error, not a matter of opinion."
+        }
+      ],
+      "measurements": {
+        "task": "chart",
+        "detail": "high",
+        "truth": {
+          "tallest_bar": "B",
+          "values": {
+            "A": 35,
+            "B": 80,
+            "C": 55,
+            "D": 20
+          }
+        },
+        "imageSha256": "c929487c4dc83adf64a5e31ce824dae59211b6411a06ced946755973f3a172e6",
+        "pixelSha256": "2eefaa0ea37cf8dfd04f86e8cdd5d3eba2d786e54661e5e4c05488e1134c805c",
+        "answers": [
+          {
+            "model": "GPT-4o",
+            "actualModel": "gpt-4o-2024-11-20",
+            "answer": {
+              "tallest_bar": "B",
+              "value_of_c": 60
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "tallest_bar",
+                "truth": "B",
+                "answer": "B",
+                "correct": true
+              },
+              {
+                "field": "value_of_c (within 5)",
+                "truth": 55,
+                "answer": 60,
+                "correct": true
+              }
+            ],
+            "correct": 2,
+            "promptTokens": 415,
+            "completionTokens": 14,
+            "reasoningTokens": 0,
+            "latencyMs": 2098
+          },
+          {
+            "model": "GPT-5-mini",
+            "actualModel": "gpt-5-mini-2025-08-07",
+            "answer": {
+              "tallest_bar": "B",
+              "value_of_c": 55
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "tallest_bar",
+                "truth": "B",
+                "answer": "B",
+                "correct": true
+              },
+              {
+                "field": "value_of_c (within 5)",
+                "truth": 55,
+                "answer": 55,
+                "correct": true
+              }
+            ],
+            "correct": 2,
+            "promptTokens": 340,
+            "completionTokens": 28,
+            "reasoningTokens": 0,
+            "latencyMs": 1043
+          }
+        ]
+      }
+    },
+    {
+      "label": "Read a large and a tiny code (low image detail)",
+      "kind": "experiment",
+      "request": {
+        "summary": "Prompt: \"This image contains two codes made of capital letters and digits: one large and one very small. Return JSON with large_code and small_code, using exactly the characters shown.\" The same image (b35fb0faa358...) was sent to both models with image detail \"low\" and a strict JSON schema.",
+        "parameters": {
+          "prompt": "This image contains two codes made of capital letters and digits: one large and one very small. Return JSON with large_code and small_code, using exactly the characters shown.",
+          "detail": "low",
+          "imageSha256": "b35fb0faa358c7fa930249c1086f15f254e0a3d8f6efb32a404564a40c1419f3"
+        }
+      },
+      "output": "GPT-4o: 1/2 correct. large_code R4X9 (truth R4X9) OK; small_code MX75 (truth M7K2P5) WRONG. 182 input tokens.\nGPT-5-mini: 1/2 correct. large_code R4X9 (truth R4X9) OK; small_code RX2P5 (truth M7K2P5) WRONG. 382 input tokens.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 2775,
+      "usage": {
+        "input_tokens": 564,
+        "output_tokens": 108,
+        "total_tokens": 672
+      },
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1298,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 15,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 9,
+              "engine_ttft_ms": 58,
+              "engine_ttlt_ms": 204,
+              "pre_inference_ms": 105,
+              "service_tbt_ms": 10,
+              "service_ttft_ms": 936,
+              "service_ttlt_ms": 1081,
+              "user_visible_ttft_ms": 831
+            },
+            "prompt_tokens": 182,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 197
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1475,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 93,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 64,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 72,
+              "engine_ttlt_ms": 968,
+              "pre_inference_ms": 146,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 255,
+              "service_ttlt_ms": 1147,
+              "user_visible_ttft_ms": 109
+            },
+            "prompt_tokens": 382,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 475
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "text-sample",
+          "file": "text-sample.png",
+          "mime": "image/png",
+          "bytes": 6777,
+          "sha256": "b35fb0faa358c7fa930249c1086f15f254e0a3d8f6efb32a404564a40c1419f3",
+          "description": "A 1024 by 1024 image with one large code and one very small code whose letters are 7 pixels tall."
+        }
+      ],
+      "display": [
+        {
+          "type": "image",
+          "artifact": "text-sample",
+          "caption": "The exact image sent to both models.",
+          "alt": "Read a large and a tiny code (low image detail)"
+        },
+        {
+          "type": "table",
+          "title": "Ground truth versus each model",
+          "headers": [
+            "Field",
+            "Truth",
+            "GPT-4o",
+            "Correct?",
+            "GPT-5-mini",
+            "Correct?"
+          ],
+          "rows": [
+            [
+              "large_code",
+              "R4X9",
+              "R4X9",
+              "yes",
+              "R4X9",
+              "yes"
+            ],
+            [
+              "small_code",
+              "M7K2P5",
+              "MX75",
+              "NO",
+              "RX2P5",
+              "NO"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the image cost",
+          "headers": [
+            "Model",
+            "Image detail",
+            "Input tokens (image + text)",
+            "Output tokens",
+            "Reasoning tokens",
+            "Latency (ms)"
+          ],
+          "rows": [
+            [
+              "GPT-4o",
+              "low",
+              182,
+              15,
+              0,
+              1298
+            ],
+            [
+              "GPT-5-mini",
+              "low",
+              382,
+              93,
+              64,
+              1475
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "We drew this image, so the truth is exact. A wrong answer here is a real error, not a matter of opinion."
+        }
+      ],
+      "measurements": {
+        "task": "text-low",
+        "detail": "low",
+        "truth": {
+          "large_code": "R4X9",
+          "small_code": "M7K2P5"
+        },
+        "imageSha256": "b35fb0faa358c7fa930249c1086f15f254e0a3d8f6efb32a404564a40c1419f3",
+        "pixelSha256": "48a12b99d261b29845a96d257c1c7ce733bb4be65071af2c71ef9b380d9bb904",
+        "answers": [
+          {
+            "model": "GPT-4o",
+            "actualModel": "gpt-4o-2024-11-20",
+            "answer": {
+              "large_code": "R4X9",
+              "small_code": "MX75"
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "large_code",
+                "truth": "R4X9",
+                "answer": "R4X9",
+                "correct": true
+              },
+              {
+                "field": "small_code",
+                "truth": "M7K2P5",
+                "answer": "MX75",
+                "correct": false
+              }
+            ],
+            "correct": 1,
+            "promptTokens": 182,
+            "completionTokens": 15,
+            "reasoningTokens": 0,
+            "latencyMs": 1298
+          },
+          {
+            "model": "GPT-5-mini",
+            "actualModel": "gpt-5-mini-2025-08-07",
+            "answer": {
+              "large_code": "R4X9",
+              "small_code": "RX2P5"
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "large_code",
+                "truth": "R4X9",
+                "answer": "R4X9",
+                "correct": true
+              },
+              {
+                "field": "small_code",
+                "truth": "M7K2P5",
+                "answer": "RX2P5",
+                "correct": false
+              }
+            ],
+            "correct": 1,
+            "promptTokens": 382,
+            "completionTokens": 93,
+            "reasoningTokens": 64,
+            "latencyMs": 1475
+          }
+        ]
+      }
+    },
+    {
+      "label": "Read a large and a tiny code (high image detail)",
+      "kind": "experiment",
+      "request": {
+        "summary": "Prompt: \"This image contains two codes made of capital letters and digits: one large and one very small. Return JSON with large_code and small_code, using exactly the characters shown.\" The same image (b35fb0faa358...) was sent to both models with image detail \"high\" and a strict JSON schema.",
+        "parameters": {
+          "prompt": "This image contains two codes made of capital letters and digits: one large and one very small. Return JSON with large_code and small_code, using exactly the characters shown.",
+          "detail": "high",
+          "imageSha256": "b35fb0faa358c7fa930249c1086f15f254e0a3d8f6efb32a404564a40c1419f3"
+        }
+      },
+      "output": "GPT-4o: 1/2 correct. large_code R4X9 (truth R4X9) OK; small_code MX2PS (truth M7K2P5) WRONG. 981 input tokens.\nGPT-5-mini: 2/2 correct. large_code R4X9 (truth R4X9) OK; small_code M7K2P5 (truth M7K2P5) OK. 766 input tokens.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 3216,
+      "usage": {
+        "input_tokens": 1747,
+        "output_tokens": 111,
+        "total_tokens": 1858
+      },
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1682,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 16,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 9,
+              "engine_ttft_ms": 204,
+              "engine_ttlt_ms": 365,
+              "pre_inference_ms": 194,
+              "service_tbt_ms": 10,
+              "service_ttft_ms": 1195,
+              "service_ttlt_ms": 1351,
+              "user_visible_ttft_ms": 1001
+            },
+            "prompt_tokens": 981,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 997
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1532,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 95,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 64,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 84,
+              "engine_ttlt_ms": 932,
+              "pre_inference_ms": 85,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 197,
+              "service_ttlt_ms": 1050,
+              "user_visible_ttft_ms": 112
+            },
+            "prompt_tokens": 766,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 861
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "text-sample",
+          "file": "text-sample.png",
+          "mime": "image/png",
+          "bytes": 6777,
+          "sha256": "b35fb0faa358c7fa930249c1086f15f254e0a3d8f6efb32a404564a40c1419f3",
+          "description": "A 1024 by 1024 image with one large code and one very small code whose letters are 7 pixels tall."
+        }
+      ],
+      "display": [
+        {
+          "type": "image",
+          "artifact": "text-sample",
+          "caption": "The exact image sent to both models.",
+          "alt": "Read a large and a tiny code (high image detail)"
+        },
+        {
+          "type": "table",
+          "title": "Ground truth versus each model",
+          "headers": [
+            "Field",
+            "Truth",
+            "GPT-4o",
+            "Correct?",
+            "GPT-5-mini",
+            "Correct?"
+          ],
+          "rows": [
+            [
+              "large_code",
+              "R4X9",
+              "R4X9",
+              "yes",
+              "R4X9",
+              "yes"
+            ],
+            [
+              "small_code",
+              "M7K2P5",
+              "MX2PS",
+              "NO",
+              "M7K2P5",
+              "yes"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the image cost",
+          "headers": [
+            "Model",
+            "Image detail",
+            "Input tokens (image + text)",
+            "Output tokens",
+            "Reasoning tokens",
+            "Latency (ms)"
+          ],
+          "rows": [
+            [
+              "GPT-4o",
+              "high",
+              981,
+              16,
+              0,
+              1682
+            ],
+            [
+              "GPT-5-mini",
+              "high",
+              766,
+              95,
+              64,
+              1532
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "We drew this image, so the truth is exact. A wrong answer here is a real error, not a matter of opinion."
+        }
+      ],
+      "measurements": {
+        "task": "text-high",
+        "detail": "high",
+        "truth": {
+          "large_code": "R4X9",
+          "small_code": "M7K2P5"
+        },
+        "imageSha256": "b35fb0faa358c7fa930249c1086f15f254e0a3d8f6efb32a404564a40c1419f3",
+        "pixelSha256": "48a12b99d261b29845a96d257c1c7ce733bb4be65071af2c71ef9b380d9bb904",
+        "answers": [
+          {
+            "model": "GPT-4o",
+            "actualModel": "gpt-4o-2024-11-20",
+            "answer": {
+              "large_code": "R4X9",
+              "small_code": "MX2PS"
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "large_code",
+                "truth": "R4X9",
+                "answer": "R4X9",
+                "correct": true
+              },
+              {
+                "field": "small_code",
+                "truth": "M7K2P5",
+                "answer": "MX2PS",
+                "correct": false
+              }
+            ],
+            "correct": 1,
+            "promptTokens": 981,
+            "completionTokens": 16,
+            "reasoningTokens": 0,
+            "latencyMs": 1682
+          },
+          {
+            "model": "GPT-5-mini",
+            "actualModel": "gpt-5-mini-2025-08-07",
+            "answer": {
+              "large_code": "R4X9",
+              "small_code": "M7K2P5"
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "large_code",
+                "truth": "R4X9",
+                "answer": "R4X9",
+                "correct": true
+              },
+              {
+                "field": "small_code",
+                "truth": "M7K2P5",
+                "answer": "M7K2P5",
+                "correct": true
+              }
+            ],
+            "correct": 2,
+            "promptTokens": 766,
+            "completionTokens": 95,
+            "reasoningTokens": 64,
+            "latencyMs": 1532
+          }
+        ]
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "Images are redrawn pixel-for-pixel, so the ground truth is exact",
+      "passed": true,
+      "detail": "Seeded drawing reproduces every recorded pixel hash and shape count."
+    },
+    {
+      "name": "Every model returned parseable JSON for every task",
+      "passed": true,
+      "detail": "8 of 8 answers parsed against the strict schema."
+    },
+    {
+      "name": "Both models saw identical images and prompts",
+      "passed": true,
+      "detail": "One request per model per task, same image and wording."
+    },
+    {
+      "name": "Low image detail costs fewer input tokens than high detail",
+      "passed": true,
+      "detail": "GPT-4o: 182 (low) versus 981 (high) input tokens for the same image."
+    },
+    {
+      "name": "Correctness is reported per field, not summarized away",
+      "passed": true,
+      "detail": "shapes: GPT-4o 1/3, GPT-5-mini 3/3; chart: GPT-4o 2/2, GPT-5-mini 2/2; text-low: GPT-4o 1/2, GPT-5-mini 1/2; text-high: GPT-4o 1/2, GPT-5-mini 2/2"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "shapes-scene",
+      "file": "shapes-scene.png",
+      "mime": "image/png",
+      "bytes": 4277,
+      "sha256": "f1dc91511ed3f90f3167fd015b5ab98b0e2ee7e97036d0269d95d43a3dc3ac7b",
+      "description": "A seeded scene with six red circles, four blue squares, four green triangles, and distractor blue circles and red squares."
+    },
+    {
+      "id": "bar-chart",
+      "file": "bar-chart.png",
+      "mime": "image/png",
+      "bytes": 3653,
+      "sha256": "c929487c4dc83adf64a5e31ce824dae59211b6411a06ced946755973f3a172e6",
+      "description": "A bar chart with four bars labelled A to D on a 0 to 100 axis."
+    },
+    {
+      "id": "text-sample",
+      "file": "text-sample.png",
+      "mime": "image/png",
+      "bytes": 6777,
+      "sha256": "b35fb0faa358c7fa930249c1086f15f254e0a3d8f6efb32a404564a40c1419f3",
+      "description": "A 1024 by 1024 image with one large code and one very small code whose letters are 7 pixels tall."
+    }
+  ],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-qn4z1aa",
+    "runId": "e526795c-40db-4b11-a7d9-278778184467"
+  }
+}

@@ -8,6 +8,7 @@
     "demo": "node scripts/run.mjs",
     "deploy": "node scripts/deploy.mjs",
     "deploy:agents": "node scripts/deploy-agents.mjs",
+    "deploy:media-models": "node scripts/deploy-media-models.mjs",
     "azure:agents": "node scripts/run-azure.mjs",
     "gallery": "node scripts/build-gallery.mjs",
     "publish": "node scripts/publish.mjs",

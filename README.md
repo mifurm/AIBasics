@@ -1,7 +1,8 @@
-# AI Basics: twenty-nine small classroom labs
+# AI Basics: thirty-nine small classroom labs
 
-For beginners; English; JavaScript/Node.js 22+. Allow 210-245 minutes for all labs.
-Start with lab 00, then teach labs 1-7, 8-12, 13-18, 19-24, and 25-28 in five lessons. Every lab has a
+For beginners; English; JavaScript/Node.js 22+. Allow 325-365 minutes for all labs.
+Start with lab 00, then teach labs 1-7, 8-12, 13-18, 19-24, 25-28, 29-31 (inside a model), 32-35 (images and sound),
+and 36-38 (music, video, and evaluation) in eight lessons. Every lab has a
 script, a teacher-friendly README, and real Azure outputs after execution.
 
 ## Learning path
@@ -37,6 +38,83 @@ script, a teacher-friendly README, and real Azure outputs after execution.
 | [26](labs/26-agent-approval/readme.md) | Exact-action approval | 8 min |
 | [27](labs/27-agent-verification/readme.md) | Independent result verification | 8 min |
 | [28](labs/28-agent-trace/readme.md) | Trace-based evaluation | 8 min |
+| [29](labs/29-tokenization/readme.md) | Tokens: learned chunks, uneven costs | 10 min |
+| [30](labs/30-logprobs/readme.md) | The model's real probabilities | 10 min |
+| [31](labs/31-embedding-space/readme.md) | Meaning as geometry (embeddings) | 10 min |
+| [32](labs/32-image-generation/readme.md) | From prompt to pixels (image generation) | 12 min |
+| [33](labs/33-vision/readme.md) | What a vision model sees | 12 min |
+| [34](labs/34-speech-roundtrip/readme.md) | Sound is samples: speech out, speech in | 12 min |
+| [35](labs/35-diarization/readme.md) | Who spoke when (diarization) | 12 min |
+| [36](labs/36-music-tokens/readme.md) | Music is tokens | 12 min |
+| [37](labs/37-video-frames/readme.md) | Video is frames over time | 12 min |
+| [38](labs/38-llm-judge/readme.md) | Can a model grade a model? | 14 min |
+
+## Beyond text: the same ideas in every modality
+
+Labs 29-38 take the first 29 labs' primitives (tokens, probabilities, embeddings, evaluation) to production-scale
+models and to images, sound, music, and video. The same loop appears everywhere: turn the input into tokens or
+frames, let a model score what comes next, then decode.
+
+```mermaid
+flowchart LR
+  T[Text<br/>subword tokens] --> M((Model))
+  I[Image<br/>image tokens] --> M
+  S[Speech<br/>audio samples, spectrogram frames] --> M
+  V[Video<br/>sampled frames over time] --> M
+  N[Music<br/>note-event tokens] --> M
+  M --> P[Next-token<br/>probabilities]
+  P --> D[Sample or decode]
+  D --> O[Text, pixels,<br/>audio samples, notes]
+```
+
+Two limits are stated openly rather than hidden:
+
+- **No video generation.** Azure's only video-generation model, Sora 2, passed its retirement date
+  (2026-11-02) and is flagged *Deprecated* in this subscription's regional catalog. Lab 37 therefore studies video
+  *understanding* from frames. Nothing here pretends to generate video.
+- **No music-generation model.** The catalog has none. Lab 36 teaches music as symbolic tokens with a tiny
+  statistical model and GPT-4o, renders real audio, and verifies it by pitch tracking. It is not how audio music
+  models work.
+
+## Run the advanced GenAI labs entirely in Azure
+
+They use models that are already deployed on the reused AI account: `gpt-4o`, `gpt-5-mini`, `text-embedding-3-small`,
+`gpt-image-1.5` (image generation), `tts` (text to speech), `whisper` (speech to text), and
+`gpt-4o-transcribe-diarize` (speaker diarization). The existing job identity's *Cognitive Services OpenAI User* role
+already covers audio, image generation, chat, and embeddings. No video model, music model, or new infrastructure
+is required.
+
+```sh
+# Finds the media models by the model they serve, and creates only missing ones (use --dry-run to preview).
+npm run deploy:media-models -- --confirm-costs
+# Packages the runtime source (split across several environment variables) and updates the job.
+npm run deploy:agents -- --confirm-costs
+# Runs labs 29-38 inside Azure, downloads verified records and media files.
+npm run azure:agents -- genai
+# Or one lab, or several (comma-separated, no spaces):
+npm run azure:agents -- 34-speech-roundtrip
+npm run azure:agents -- 30-logprobs,33-vision,37-video-frames
+npm run gallery
+npm run publish -- --include-deck
+npm run verify
+```
+
+`infra/models.bicep` also deploys the image, speech, transcription, and diarization models when it creates a new
+classroom AI account (`includeMediaModels`, default true).
+
+**How media gets out of the job.** Images (PNG), audio (WAV), and an SVG map cannot be scraped from console logs. Each
+artifact is hashed (SHA-256), gzipped, base64-chunked, and submitted through the same authenticated Azure Monitor
+Logs Ingestion channel as the JSON records, in requests kept below the 1 MB limit. The manifest, written last, lists
+every record and artifact. `azure:agents` polls only that small manifest, then downloads everything once, rejects any
+missing, conflicting, or corrupt chunk, and writes `results/<lab>.json` and `results/media/<lab>/`. Per-artifact
+(2 MB) and per-lab (8 MB) caps protect the workspace's 0.1 GB daily ingestion cap, so avoid needless reruns.
+`build-gallery`, `publish`, and `verify` copy, publish, and re-download every file and compare hashes.
+
+**Rate limits.** The Standard `tts` and `whisper` deployments allow only 3 requests per window. The client reads
+`Retry-After` and retries a bounded number of times, so those labs are slower but explicit about it.
+
+**Cost.** One full execution is about 136 requests (the judge lab makes 56), three generated images, nine speech
+syntheses, and nine transcriptions or diarizations. Caps reduce exposure; they are not a dollar limit.
 
 ## Start with the simplest model: Lab 00
 
@@ -283,6 +361,8 @@ node labs/01-specificity/demo.mjs
 npm run demo -- advanced
 # Run the new agent labs with a local runner and Azure inference:
 npm run demo -- agents
+# Run the ten advanced GenAI labs (about 136 billable requests, including three generated images):
+npm run demo -- genai
 # Run every lab (58 planned requests for labs 01-18, plus bounded agent requests):
 npm run demo -- all
 npm run gallery
@@ -291,7 +371,7 @@ npm run verify
 ```
 
 Prompts are editable in `lib/labs.mjs`, `lib/model-comparison.mjs`,
-`lib/advanced-labs.mjs`, and `lib/agent-labs.mjs`. The shared runner is deliberately small:
+`lib/advanced-labs.mjs`, `lib/agent-labs.mjs`, and the ten modules in `lib/genai/`. The shared runner is deliberately small:
 it sends requests, displays results, validates selected behaviors, and writes
 `results/<lab-id>.json`. API failures stop execution; Azure content-filter rejections are saved explicitly
 as blocked outcomes, not model answers. Behavior-check failures
@@ -344,7 +424,7 @@ npm run publish -- --media-directory /ABSOLUTE/SESSION --include-deck
 npm run verify -- --media
 ```
 
-When recordings are available, `deliverables/AI-Basics.pptx` embeds all twenty-nine MP4s
+When recordings are available, `deliverables/AI-Basics.pptx` embeds all thirty-nine MP4s
 and includes public recording links for viewers that cannot play embedded media.
 To rebuild the current clearly marked draft: `npm run deck -- --allow-missing-recordings`. Desktop PowerPoint is the
 recommended playback application. `deliverables/outcomes.md` records actual
@@ -360,8 +440,9 @@ a precise dollar limit and reaching it can prevent result capture. Download
 evidence before retention expires. No automatic paid tier upgrade is performed.
 Static Web Apps uses its Free tier and its usage limits.
 Labs 01-18 now have 58 planned API requests, including twelve for the expanded
-model comparison; the ten agent labs add at most 142 (at most 200 together).
-Lab 00 adds no model API requests. Actual counts are in saved usage. A filter
+model comparison; the ten agent labs add at most 142 (at most 200 together), and the ten advanced
+GenAI labs add about 136 more (image generation, speech, and transcription are billed per image, character, or
+minute, not per token). Lab 00 adds no model API requests. Actual counts are in saved usage. A filter
 rejection stops the
 runner early; the instructor can execute remaining labs individually). Visible-output caps are usually
 320 tokens; the reasoning request has a 1,400-token total completion cap.
@@ -401,9 +482,18 @@ That release's draft had 34 slides; token counts describe that run, not future c
 Lab 00 adds focused numerical-gradient, causal-mask, actual-learning, generation,
 and input-boundary tests. Its measured computation is not counted as model API usage.
 All three introductory variants ran in the existing Azure job and passed eight
-behavior checks. The current suite passes 27 tests; all 29 deployed lab records,
+behavior checks. At that point the suite passed 27 tests; all 29 deployed lab records,
 the architecture SVG, and the 35-slide draft deck were verified. Browser checks
 confirmed the introductory tables, diagram rendering, and preserved lab IDs.
+
+The advanced GenAI labs (29-38) add tests for the media codecs (PNG, WAV, FFT), tokenization and probability maths,
+scoring (word error rate, diarization, judge bias), the Azure client's retries and request shapes, artifact validation,
+and a full run of every lab against a fake Azure client. The current suite passes 84 tests. One execution inside Azure
+(`aibasics-agents-zgfkrl6mqqsly-qn4z1aa`, about 4 minutes 40 seconds) completed all ten labs: 136 Azure requests,
+38 media artifacts (6.1 MB), and 64 of 64 behavior checks passing; lab 36 was then re-run on its own after a wording
+fix. All 39 deployed lab records and all 38 media files were verified against the saved results, a browser check
+confirmed that the ten labs render with their images and audio and without console errors, and the draft deck has
+45 slides. Counts and findings describe those runs, not future cost or model behaviour.
 
 `npm run verify` checks every saved/deployed lab against the current evaluator.
 The draft deck includes one slide per lab and explicit recording-pending
@@ -424,3 +514,9 @@ not applied. Recheck `npm audit` as upstream fixes become available.
 - [Static Web Apps deployment](https://learn.microsoft.com/azure/static-web-apps/static-web-apps-cli-deploy)
 - [Azure Container Apps jobs](https://learn.microsoft.com/azure/container-apps/jobs)
 - [Container Apps managed identity](https://learn.microsoft.com/azure/container-apps/managed-identity)
+- [Azure OpenAI image generation](https://learn.microsoft.com/azure/ai-foundry/openai/how-to/dall-e)
+- [Text to speech](https://learn.microsoft.com/azure/ai-foundry/openai/text-to-speech-quickstart)
+- [Whisper speech to text](https://learn.microsoft.com/azure/ai-foundry/openai/whisper-quickstart)
+- [Vision-enabled chat models](https://learn.microsoft.com/azure/ai-foundry/openai/how-to/gpt-with-vision)
+- [Azure OpenAI model catalog and retirement dates](https://learn.microsoft.com/azure/ai-foundry/openai/concepts/models)
+- [C2PA Content Credentials specification](https://c2pa.org/specifications/specifications/2.1/index.html)

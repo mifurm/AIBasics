@@ -1,0 +1,1457 @@
+{
+  "labId": "35-diarization",
+  "recordedAt": "2026-11-16T21:27:59.526Z",
+  "results": [
+    {
+      "label": "Two speakers take turns",
+      "kind": "experiment",
+      "request": {
+        "summary": "Assemble 4 synthetic speech turns (alloy, onyx) into one recording. Find the stretches where each voice is really speaking, send only the audio to the diarization model, and compare its speaker timeline with ours.",
+        "parameters": {
+          "turns": [
+            "u1",
+            "u2",
+            "u4",
+            "u5"
+          ],
+          "overlapSeconds": 0,
+          "gapSeconds": 0.6,
+          "sampleRate": 16000
+        }
+      },
+      "output": "2 real speakers; the model found 2.\nIt covered 91% of the true speaking time, and 100% of that covered time went to the correct speaker (91% of all speech correctly attributed).\nMean error in where each turn starts: 0.06 s.\nTranscript word error rate: 0%.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "tts + gpt-4o-transcribe-diarize",
+      "finishReason": "completed",
+      "latencyMs": 5896,
+      "usage": {
+        "input_tokens": 138,
+        "output_tokens": 429,
+        "total_tokens": 567
+      },
+      "apiRequests": 7,
+      "apiCalls": [
+        {
+          "operation": "audio.speech",
+          "deployment": "tts",
+          "latencyMs": 975,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "tts",
+          "usage": null,
+          "billedCharacters": 61,
+          "parameters": {
+            "voice": "alloy",
+            "speed": 1,
+            "format": "wav"
+          }
+        },
+        {
+          "operation": "audio.speech",
+          "deployment": "tts",
+          "latencyMs": 902,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "tts",
+          "usage": null,
+          "billedCharacters": 50,
+          "parameters": {
+            "voice": "onyx",
+            "speed": 1,
+            "format": "wav"
+          }
+        },
+        {
+          "operation": "audio.speech",
+          "deployment": "tts",
+          "latencyMs": 971,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "tts",
+          "usage": null,
+          "billedCharacters": 49,
+          "parameters": {
+            "voice": "nova",
+            "speed": 1,
+            "format": "wav"
+          }
+        },
+        {
+          "operation": "audio.speech",
+          "deployment": "tts",
+          "latencyMs": 908,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "tts",
+          "usage": null,
+          "billedCharacters": 61,
+          "parameters": {
+            "voice": "alloy",
+            "speed": 1,
+            "format": "wav"
+          }
+        },
+        {
+          "operation": "audio.speech",
+          "deployment": "tts",
+          "latencyMs": 856,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "tts",
+          "usage": null,
+          "billedCharacters": 50,
+          "parameters": {
+            "voice": "onyx",
+            "speed": 1,
+            "format": "wav"
+          }
+        },
+        {
+          "operation": "audio.speech",
+          "deployment": "tts",
+          "latencyMs": 1119,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "tts",
+          "usage": null,
+          "billedCharacters": 45,
+          "parameters": {
+            "voice": "nova",
+            "speed": 1,
+            "format": "wav"
+          }
+        },
+        {
+          "operation": "audio.diarization",
+          "deployment": "gpt-4o-transcribe-diarize",
+          "latencyMs": 5839,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-transcribe-diarize",
+          "usage": {
+            "type": "tokens",
+            "total_tokens": 567,
+            "input_tokens": 138,
+            "input_token_details": {
+              "text_tokens": 0,
+              "audio_tokens": 138
+            },
+            "output_tokens": 429
+          },
+          "audioSeconds": 13.894458333333333
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "two-speakers-audio",
+          "file": "two-speakers-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 444666,
+          "sha256": "b015a5a933830d7b60ecb9ae68e17ef919494d7d3582deba72c1f6086ba85092",
+          "description": "Two speakers take turns: 13.89 seconds of 16 kHz mono audio assembled from synthetic speech turns."
+        },
+        {
+          "id": "two-speakers-timeline",
+          "file": "two-speakers-timeline.png",
+          "mime": "image/png",
+          "bytes": 2078,
+          "sha256": "0b852b4600c334919b862ac838e7493cdf67f963deecf5d7cb1dc3603ba2c587",
+          "description": "Two speakers take turns: true speech by voice above, the model's diarization below, colored by the voice each label was matched to."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "two-speakers-audio",
+          "caption": "Two speakers take turns (13.89 seconds). Listen for who is talking."
+        },
+        {
+          "type": "image",
+          "artifact": "two-speakers-timeline",
+          "caption": "Top rows: when each real voice is speaking. Bottom rows: the model. Colors show which real voice each model label was matched to.",
+          "alt": "Speaker timeline for Two speakers take turns"
+        },
+        {
+          "type": "bars",
+          "title": "Speech correctly attributed (higher is better)",
+          "items": [
+            {
+              "label": "Covered by any speaker",
+              "value": 90.6,
+              "max": 100,
+              "detail": "91%"
+            },
+            {
+              "label": "Right speaker, when covered",
+              "value": 100,
+              "max": 100,
+              "detail": "100%"
+            },
+            {
+              "label": "Overall correctly attributed",
+              "value": 90.6,
+              "max": 100,
+              "detail": "91%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Scores",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Real speakers / speakers found",
+              "2 / 2"
+            ],
+            [
+              "True speaking time covered by the model",
+              "91%"
+            ],
+            [
+              "Right speaker, among covered time",
+              "100%"
+            ],
+            [
+              "Overall correctly attributed",
+              "91%"
+            ],
+            [
+              "Mean error of turn start (s)",
+              "0.06"
+            ],
+            [
+              "True overlap between different speakers (s)",
+              "0.00"
+            ],
+            [
+              "Transcript word error rate",
+              "0%"
+            ],
+            [
+              "Label to voice matching",
+              "A = alloy, B = onyx"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Truth is speech only: the pauses inside a turn are not counted, because the model also leaves them out. Labels such as A and B are arbitrary, so each is matched to the voice it overlaps most."
+        },
+        {
+          "type": "table",
+          "title": "The true turns",
+          "headers": [
+            "Voice",
+            "Start (s)",
+            "End (s)",
+            "Said"
+          ],
+          "rows": [
+            [
+              "alloy",
+              0,
+              3.35,
+              "Welcome to the robot club. Today we will build a small rover."
+            ],
+            [
+              "onyx",
+              3.95,
+              6.47,
+              "Great, I brought the battery packs and the wheels."
+            ],
+            [
+              "alloy",
+              7.07,
+              10.42,
+              "Perfect. Let us start with the chassis, then test the motors."
+            ],
+            [
+              "onyx",
+              11.02,
+              13.49,
+              "Should we label each cable before we connect them?"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the model returned",
+          "headers": [
+            "Label",
+            "Start (s)",
+            "End (s)",
+            "Heard"
+          ],
+          "rows": [
+            [
+              "A",
+              0,
+              3.15,
+              "Welcome to the robot club; today we will build a small rover."
+            ],
+            [
+              "B",
+              3.9,
+              4.2,
+              "Great,"
+            ],
+            [
+              "B",
+              4.3,
+              6.2,
+              "I brought the battery packs and the wheels."
+            ],
+            [
+              "A",
+              7.05,
+              9,
+              "Perfect; let us start with the chassis,"
+            ],
+            [
+              "A",
+              9.4,
+              10.1,
+              "then test the motors."
+            ],
+            [
+              "B",
+              11,
+              13.35,
+              "Should we label each cable before we connect them?"
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "durationSeconds": 13.89,
+        "truth": [
+          {
+            "turn": "u1",
+            "voice": "alloy",
+            "start": 0,
+            "end": 3.35,
+            "text": "Welcome to the robot club. Today we will build a small rover."
+          },
+          {
+            "turn": "u2",
+            "voice": "onyx",
+            "start": 3.95,
+            "end": 6.47,
+            "text": "Great, I brought the battery packs and the wheels."
+          },
+          {
+            "turn": "u4",
+            "voice": "alloy",
+            "start": 7.07,
+            "end": 10.42,
+            "text": "Perfect. Let us start with the chassis, then test the motors."
+          },
+          {
+            "turn": "u5",
+            "voice": "onyx",
+            "start": 11.02,
+            "end": 13.49,
+            "text": "Should we label each cable before we connect them?"
+          }
+        ],
+        "speech": [
+          {
+            "turn": "u1",
+            "voice": "alloy",
+            "start": 0.02,
+            "end": 1.26
+          },
+          {
+            "turn": "u1",
+            "voice": "alloy",
+            "start": 1.66,
+            "end": 3.22
+          },
+          {
+            "turn": "u2",
+            "voice": "onyx",
+            "start": 3.97,
+            "end": 5.35
+          },
+          {
+            "turn": "u2",
+            "voice": "onyx",
+            "start": 5.67,
+            "end": 6.27
+          },
+          {
+            "turn": "u4",
+            "voice": "alloy",
+            "start": 7.11,
+            "end": 7.55
+          },
+          {
+            "turn": "u4",
+            "voice": "alloy",
+            "start": 8.01,
+            "end": 10.29
+          },
+          {
+            "turn": "u5",
+            "voice": "onyx",
+            "start": 11.08,
+            "end": 13.44
+          }
+        ],
+        "predicted": [
+          {
+            "speaker": "A",
+            "start": 0,
+            "end": 3.15,
+            "text": "Welcome to the robot club; today we will build a small rover."
+          },
+          {
+            "speaker": "B",
+            "start": 3.9,
+            "end": 4.2,
+            "text": "Great,"
+          },
+          {
+            "speaker": "B",
+            "start": 4.3,
+            "end": 6.2,
+            "text": "I brought the battery packs and the wheels."
+          },
+          {
+            "speaker": "A",
+            "start": 7.05,
+            "end": 9,
+            "text": "Perfect; let us start with the chassis,"
+          },
+          {
+            "speaker": "A",
+            "start": 9.4,
+            "end": 10.1,
+            "text": "then test the motors."
+          },
+          {
+            "speaker": "B",
+            "start": 11,
+            "end": 13.35,
+            "text": "Should we label each cable before we connect them?"
+          }
+        ],
+        "score": {
+          "mapping": {
+            "A": "alloy",
+            "B": "onyx"
+          },
+          "coverage": 0.9058316430020277,
+          "accuracyWhenCovered": 1,
+          "attribution": 0.9058316430020277,
+          "detectedSpeakers": 2,
+          "expectedSpeakers": 2,
+          "predictedSegments": 6,
+          "speechIntervals": 7,
+          "meanStartErrorSeconds": 0.05962500000000115,
+          "overlapSeconds": 0,
+          "speechSeconds": 9.86
+        },
+        "errors": {
+          "wer": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "referenceWords": 41,
+          "hypothesisWords": 41
+        },
+        "text": "Welcome to the robot club; today we will build a small rover. Great, I brought the battery packs and the wheels. Perfect; let us start with the chassis, then test the motors. Should we label each cable before we connect them?"
+      }
+    },
+    {
+      "label": "Three speakers take turns",
+      "kind": "experiment",
+      "request": {
+        "summary": "Assemble 6 synthetic speech turns (alloy, onyx, nova) into one recording. Find the stretches where each voice is really speaking, send only the audio to the diarization model, and compare its speaker timeline with ours.",
+        "parameters": {
+          "turns": [
+            "u1",
+            "u2",
+            "u3",
+            "u4",
+            "u5",
+            "u6"
+          ],
+          "overlapSeconds": 0,
+          "gapSeconds": 0.6,
+          "sampleRate": 16000
+        }
+      },
+      "output": "3 real speakers; the model found 3.\nIt covered 91% of the true speaking time, and 100% of that covered time went to the correct speaker (91% of all speech correctly attributed).\nMean error in where each turn starts: 0.07 s.\nTranscript word error rate: 0%.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-transcribe-diarize",
+      "finishReason": "completed",
+      "latencyMs": 6306,
+      "usage": {
+        "input_tokens": 202,
+        "output_tokens": 619,
+        "total_tokens": 821
+      },
+      "apiRequests": 1,
+      "apiCalls": [
+        {
+          "operation": "audio.diarization",
+          "deployment": "gpt-4o-transcribe-diarize",
+          "latencyMs": 6217,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-transcribe-diarize",
+          "usage": {
+            "type": "tokens",
+            "total_tokens": 821,
+            "input_tokens": 202,
+            "input_token_details": {
+              "text_tokens": 0,
+              "audio_tokens": 202
+            },
+            "output_tokens": 619
+          },
+          "audioSeconds": 20.2905
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "three-speakers-audio",
+          "file": "three-speakers-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 649340,
+          "sha256": "d32acb00f51d9599f96b711aaf4465d2c905e5943129a481885aa43cc84d31e4",
+          "description": "Three speakers take turns: 20.29 seconds of 16 kHz mono audio assembled from synthetic speech turns."
+        },
+        {
+          "id": "three-speakers-timeline",
+          "file": "three-speakers-timeline.png",
+          "mime": "image/png",
+          "bytes": 2723,
+          "sha256": "4f7fd4a7bfb2f6667609fc29aec45a10d55f3f19111fd52eb199c20bf5389b76",
+          "description": "Three speakers take turns: true speech by voice above, the model's diarization below, colored by the voice each label was matched to."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "three-speakers-audio",
+          "caption": "Three speakers take turns (20.29 seconds). Listen for who is talking."
+        },
+        {
+          "type": "image",
+          "artifact": "three-speakers-timeline",
+          "caption": "Top rows: when each real voice is speaking. Bottom rows: the model. Colors show which real voice each model label was matched to.",
+          "alt": "Speaker timeline for Three speakers take turns"
+        },
+        {
+          "type": "bars",
+          "title": "Speech correctly attributed (higher is better)",
+          "items": [
+            {
+              "label": "Covered by any speaker",
+              "value": 91,
+              "max": 100,
+              "detail": "91%"
+            },
+            {
+              "label": "Right speaker, when covered",
+              "value": 100,
+              "max": 100,
+              "detail": "100%"
+            },
+            {
+              "label": "Overall correctly attributed",
+              "value": 91,
+              "max": 100,
+              "detail": "91%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Scores",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Real speakers / speakers found",
+              "3 / 3"
+            ],
+            [
+              "True speaking time covered by the model",
+              "91%"
+            ],
+            [
+              "Right speaker, among covered time",
+              "100%"
+            ],
+            [
+              "Overall correctly attributed",
+              "91%"
+            ],
+            [
+              "Mean error of turn start (s)",
+              "0.07"
+            ],
+            [
+              "True overlap between different speakers (s)",
+              "0.00"
+            ],
+            [
+              "Transcript word error rate",
+              "0%"
+            ],
+            [
+              "Label to voice matching",
+              "A = alloy, B = onyx, C = nova"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Truth is speech only: the pauses inside a turn are not counted, because the model also leaves them out. Labels such as A and B are arbitrary, so each is matched to the voice it overlaps most."
+        },
+        {
+          "type": "table",
+          "title": "The true turns",
+          "headers": [
+            "Voice",
+            "Start (s)",
+            "End (s)",
+            "Said"
+          ],
+          "rows": [
+            [
+              "alloy",
+              0,
+              3.35,
+              "Welcome to the robot club. Today we will build a small rover."
+            ],
+            [
+              "onyx",
+              3.95,
+              6.47,
+              "Great, I brought the battery packs and the wheels."
+            ],
+            [
+              "nova",
+              7.07,
+              9.88,
+              "I will handle the sensors and the wiring diagram."
+            ],
+            [
+              "alloy",
+              10.48,
+              13.83,
+              "Perfect. Let us start with the chassis, then test the motors."
+            ],
+            [
+              "onyx",
+              14.43,
+              16.9,
+              "Should we label each cable before we connect them?"
+            ],
+            [
+              "nova",
+              17.5,
+              19.89,
+              "Yes, labels will save us a lot of time later."
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the model returned",
+          "headers": [
+            "Label",
+            "Start (s)",
+            "End (s)",
+            "Heard"
+          ],
+          "rows": [
+            [
+              "A",
+              0,
+              1.3,
+              "Welcome to the robot club,"
+            ],
+            [
+              "A",
+              1.65,
+              3.15,
+              "today we will build a small rover."
+            ],
+            [
+              "B",
+              3.9,
+              4.2,
+              "Great,"
+            ],
+            [
+              "B",
+              4.3,
+              6.2,
+              "I brought the battery packs and the wheels."
+            ],
+            [
+              "C",
+              7,
+              9.6,
+              "I will handle the sensors and the wiring diagram."
+            ],
+            [
+              "A",
+              10.45,
+              10.9,
+              "Perfect."
+            ],
+            [
+              "A",
+              11.4,
+              12.4,
+              "Let us start with the chassis,"
+            ],
+            [
+              "A",
+              12.8,
+              13.5,
+              "then test the motors."
+            ],
+            [
+              "B",
+              14.4,
+              16.75,
+              "Should we label each cable before we connect them?"
+            ],
+            [
+              "C",
+              17.45,
+              17.8,
+              "Yes,"
+            ],
+            [
+              "C",
+              17.95,
+              19.7,
+              "labels will save us a lot of time later."
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "durationSeconds": 20.29,
+        "truth": [
+          {
+            "turn": "u1",
+            "voice": "alloy",
+            "start": 0,
+            "end": 3.35,
+            "text": "Welcome to the robot club. Today we will build a small rover."
+          },
+          {
+            "turn": "u2",
+            "voice": "onyx",
+            "start": 3.95,
+            "end": 6.47,
+            "text": "Great, I brought the battery packs and the wheels."
+          },
+          {
+            "turn": "u3",
+            "voice": "nova",
+            "start": 7.07,
+            "end": 9.88,
+            "text": "I will handle the sensors and the wiring diagram."
+          },
+          {
+            "turn": "u4",
+            "voice": "alloy",
+            "start": 10.48,
+            "end": 13.83,
+            "text": "Perfect. Let us start with the chassis, then test the motors."
+          },
+          {
+            "turn": "u5",
+            "voice": "onyx",
+            "start": 14.43,
+            "end": 16.9,
+            "text": "Should we label each cable before we connect them?"
+          },
+          {
+            "turn": "u6",
+            "voice": "nova",
+            "start": 17.5,
+            "end": 19.89,
+            "text": "Yes, labels will save us a lot of time later."
+          }
+        ],
+        "speech": [
+          {
+            "turn": "u1",
+            "voice": "alloy",
+            "start": 0.02,
+            "end": 1.26
+          },
+          {
+            "turn": "u1",
+            "voice": "alloy",
+            "start": 1.66,
+            "end": 3.22
+          },
+          {
+            "turn": "u2",
+            "voice": "onyx",
+            "start": 3.97,
+            "end": 5.35
+          },
+          {
+            "turn": "u2",
+            "voice": "onyx",
+            "start": 5.67,
+            "end": 6.27
+          },
+          {
+            "turn": "u3",
+            "voice": "nova",
+            "start": 7.07,
+            "end": 9.63
+          },
+          {
+            "turn": "u4",
+            "voice": "alloy",
+            "start": 10.52,
+            "end": 10.96
+          },
+          {
+            "turn": "u4",
+            "voice": "alloy",
+            "start": 11.42,
+            "end": 13.7
+          },
+          {
+            "turn": "u5",
+            "voice": "onyx",
+            "start": 14.49,
+            "end": 16.85
+          },
+          {
+            "turn": "u6",
+            "voice": "nova",
+            "start": 17.52,
+            "end": 19.84
+          }
+        ],
+        "predicted": [
+          {
+            "speaker": "A",
+            "start": 0,
+            "end": 1.3,
+            "text": "Welcome to the robot club,"
+          },
+          {
+            "speaker": "A",
+            "start": 1.65,
+            "end": 3.15,
+            "text": "today we will build a small rover."
+          },
+          {
+            "speaker": "B",
+            "start": 3.9,
+            "end": 4.2,
+            "text": "Great,"
+          },
+          {
+            "speaker": "B",
+            "start": 4.3,
+            "end": 6.2,
+            "text": "I brought the battery packs and the wheels."
+          },
+          {
+            "speaker": "C",
+            "start": 7,
+            "end": 9.6,
+            "text": "I will handle the sensors and the wiring diagram."
+          },
+          {
+            "speaker": "A",
+            "start": 10.45,
+            "end": 10.9,
+            "text": "Perfect."
+          },
+          {
+            "speaker": "A",
+            "start": 11.4,
+            "end": 12.4,
+            "text": "Let us start with the chassis,"
+          },
+          {
+            "speaker": "A",
+            "start": 12.8,
+            "end": 13.5,
+            "text": "then test the motors."
+          },
+          {
+            "speaker": "B",
+            "start": 14.4,
+            "end": 16.75,
+            "text": "Should we label each cable before we connect them?"
+          },
+          {
+            "speaker": "C",
+            "start": 17.45,
+            "end": 17.8,
+            "text": "Yes,"
+          },
+          {
+            "speaker": "C",
+            "start": 17.95,
+            "end": 19.7,
+            "text": "labels will save us a lot of time later."
+          }
+        ],
+        "score": {
+          "mapping": {
+            "A": "alloy",
+            "B": "onyx",
+            "C": "nova"
+          },
+          "coverage": 0.9104180800542734,
+          "accuracyWhenCovered": 1,
+          "attribution": 0.9104180800542734,
+          "detectedSpeakers": 3,
+          "expectedSpeakers": 3,
+          "predictedSegments": 11,
+          "speechIntervals": 9,
+          "meanStartErrorSeconds": 0.065187500000001,
+          "overlapSeconds": 0,
+          "speechSeconds": 14.740000000000004
+        },
+        "errors": {
+          "wer": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "referenceWords": 60,
+          "hypothesisWords": 60
+        },
+        "text": "Welcome to the robot club, today we will build a small rover. Great, I brought the battery packs and the wheels. I will handle the sensors and the wiring diagram. Perfect. Let us start with the chassis, then test the motors. Should we label each cable before we connect them? Yes, labels will save us a lot of time later."
+      }
+    },
+    {
+      "label": "Two speakers, and one interrupts",
+      "kind": "experiment",
+      "request": {
+        "summary": "Assemble 4 synthetic speech turns (alloy, onyx) into one recording, with the second speaker starting 2 seconds before the first finishes. Find the stretches where each voice is really speaking, send only the audio to the diarization model, and compare its speaker timeline with ours.",
+        "parameters": {
+          "turns": [
+            "u1",
+            "u2",
+            "u4",
+            "u5"
+          ],
+          "overlapSeconds": 2,
+          "gapSeconds": 0.6,
+          "sampleRate": 16000
+        }
+      },
+      "output": "2 real speakers; the model found 2.\nIt covered 92% of the true speaking time, and 84% of that covered time went to the correct speaker (77% of all speech correctly attributed).\nMean error in where each turn starts: 0.06 s.\nTranscript word error rate: 29%.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-transcribe-diarize",
+      "finishReason": "completed",
+      "latencyMs": 5051,
+      "usage": {
+        "input_tokens": 112,
+        "output_tokens": 384,
+        "total_tokens": 496
+      },
+      "apiRequests": 1,
+      "apiCalls": [
+        {
+          "operation": "audio.diarization",
+          "deployment": "gpt-4o-transcribe-diarize",
+          "latencyMs": 5018,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-transcribe-diarize",
+          "usage": {
+            "type": "tokens",
+            "total_tokens": 496,
+            "input_tokens": 112,
+            "input_token_details": {
+              "text_tokens": 0,
+              "audio_tokens": 112
+            },
+            "output_tokens": 384
+          },
+          "audioSeconds": 11.294458333333333
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "interruption-audio",
+          "file": "interruption-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 361466,
+          "sha256": "cf62b9098bd03ee395fd30ae6e941449a383cb3d2537c9f09c335c0915b640c1",
+          "description": "Two speakers, and one interrupts: 11.29 seconds of 16 kHz mono audio assembled from synthetic speech turns."
+        },
+        {
+          "id": "interruption-timeline",
+          "file": "interruption-timeline.png",
+          "mime": "image/png",
+          "bytes": 2193,
+          "sha256": "280311bde3450a8aad128dcd638f501fe85d510f17a7e8fe98ed3d1df463d531",
+          "description": "Two speakers, and one interrupts: true speech by voice above, the model's diarization below, colored by the voice each label was matched to."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "interruption-audio",
+          "caption": "Two speakers, and one interrupts (11.29 seconds). Listen for who is talking."
+        },
+        {
+          "type": "image",
+          "artifact": "interruption-timeline",
+          "caption": "Top rows: when each real voice is speaking. Bottom rows: the model. Colors show which real voice each model label was matched to.",
+          "alt": "Speaker timeline for Two speakers, and one interrupts"
+        },
+        {
+          "type": "bars",
+          "title": "Speech correctly attributed (higher is better)",
+          "items": [
+            {
+              "label": "Covered by any speaker",
+              "value": 91.8,
+              "max": 100,
+              "detail": "92%"
+            },
+            {
+              "label": "Right speaker, when covered",
+              "value": 84.3,
+              "max": 100,
+              "detail": "84%"
+            },
+            {
+              "label": "Overall correctly attributed",
+              "value": 77.3,
+              "max": 100,
+              "detail": "77%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Scores",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Real speakers / speakers found",
+              "2 / 2"
+            ],
+            [
+              "True speaking time covered by the model",
+              "92%"
+            ],
+            [
+              "Right speaker, among covered time",
+              "84%"
+            ],
+            [
+              "Overall correctly attributed",
+              "77%"
+            ],
+            [
+              "Mean error of turn start (s)",
+              "0.06"
+            ],
+            [
+              "True overlap between different speakers (s)",
+              "1.24"
+            ],
+            [
+              "Transcript word error rate",
+              "29%"
+            ],
+            [
+              "Label to voice matching",
+              "A = alloy, B = onyx"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Truth is speech only: the pauses inside a turn are not counted, because the model also leaves them out. Labels such as A and B are arbitrary, so each is matched to the voice it overlaps most."
+        },
+        {
+          "type": "table",
+          "title": "The true turns",
+          "headers": [
+            "Voice",
+            "Start (s)",
+            "End (s)",
+            "Said"
+          ],
+          "rows": [
+            [
+              "alloy",
+              0,
+              3.35,
+              "Welcome to the robot club. Today we will build a small rover."
+            ],
+            [
+              "onyx",
+              1.35,
+              3.87,
+              "Great, I brought the battery packs and the wheels."
+            ],
+            [
+              "alloy",
+              4.47,
+              7.82,
+              "Perfect. Let us start with the chassis, then test the motors."
+            ],
+            [
+              "onyx",
+              8.42,
+              10.89,
+              "Should we label each cable before we connect them?"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the model returned",
+          "headers": [
+            "Label",
+            "Start (s)",
+            "End (s)",
+            "Heard"
+          ],
+          "rows": [
+            [
+              "A",
+              0,
+              1.3,
+              "Welcome to the robot club."
+            ],
+            [
+              "B",
+              1.3,
+              1.65,
+              "Great-I"
+            ],
+            [
+              "A",
+              1.65,
+              1.75,
+              "Today"
+            ],
+            [
+              "B",
+              1.75,
+              2.2,
+              "brought we the will battery"
+            ],
+            [
+              "A",
+              2.2,
+              2.9,
+              "build packs a small rover."
+            ],
+            [
+              "B",
+              2.9,
+              3.55,
+              "and the wheels."
+            ],
+            [
+              "A",
+              4.45,
+              4.9,
+              "Perfect."
+            ],
+            [
+              "A",
+              5.4,
+              6.45,
+              "Let us start with the chassis,"
+            ],
+            [
+              "A",
+              6.8,
+              7.5,
+              "then test the motors."
+            ],
+            [
+              "B",
+              8.4,
+              10.75,
+              "Should we label each cable before we connect them?"
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "durationSeconds": 11.29,
+        "truth": [
+          {
+            "turn": "u1",
+            "voice": "alloy",
+            "start": 0,
+            "end": 3.35,
+            "text": "Welcome to the robot club. Today we will build a small rover."
+          },
+          {
+            "turn": "u2",
+            "voice": "onyx",
+            "start": 1.35,
+            "end": 3.87,
+            "text": "Great, I brought the battery packs and the wheels."
+          },
+          {
+            "turn": "u4",
+            "voice": "alloy",
+            "start": 4.47,
+            "end": 7.82,
+            "text": "Perfect. Let us start with the chassis, then test the motors."
+          },
+          {
+            "turn": "u5",
+            "voice": "onyx",
+            "start": 8.42,
+            "end": 10.89,
+            "text": "Should we label each cable before we connect them?"
+          }
+        ],
+        "speech": [
+          {
+            "turn": "u1",
+            "voice": "alloy",
+            "start": 0.02,
+            "end": 1.26
+          },
+          {
+            "turn": "u1",
+            "voice": "alloy",
+            "start": 1.66,
+            "end": 3.22
+          },
+          {
+            "turn": "u2",
+            "voice": "onyx",
+            "start": 1.37,
+            "end": 2.75
+          },
+          {
+            "turn": "u2",
+            "voice": "onyx",
+            "start": 3.07,
+            "end": 3.67
+          },
+          {
+            "turn": "u4",
+            "voice": "alloy",
+            "start": 4.51,
+            "end": 4.95
+          },
+          {
+            "turn": "u4",
+            "voice": "alloy",
+            "start": 5.41,
+            "end": 7.69
+          },
+          {
+            "turn": "u5",
+            "voice": "onyx",
+            "start": 8.48,
+            "end": 10.84
+          }
+        ],
+        "predicted": [
+          {
+            "speaker": "A",
+            "start": 0,
+            "end": 1.3,
+            "text": "Welcome to the robot club."
+          },
+          {
+            "speaker": "B",
+            "start": 1.3,
+            "end": 1.65,
+            "text": "Great-I"
+          },
+          {
+            "speaker": "A",
+            "start": 1.65,
+            "end": 1.75,
+            "text": "Today"
+          },
+          {
+            "speaker": "B",
+            "start": 1.75,
+            "end": 2.2,
+            "text": "brought we the will battery"
+          },
+          {
+            "speaker": "A",
+            "start": 2.2,
+            "end": 2.9,
+            "text": "build packs a small rover."
+          },
+          {
+            "speaker": "B",
+            "start": 2.9,
+            "end": 3.55,
+            "text": "and the wheels."
+          },
+          {
+            "speaker": "A",
+            "start": 4.45,
+            "end": 4.9,
+            "text": "Perfect."
+          },
+          {
+            "speaker": "A",
+            "start": 5.4,
+            "end": 6.45,
+            "text": "Let us start with the chassis,"
+          },
+          {
+            "speaker": "A",
+            "start": 6.8,
+            "end": 7.5,
+            "text": "then test the motors."
+          },
+          {
+            "speaker": "B",
+            "start": 8.4,
+            "end": 10.75,
+            "text": "Should we label each cable before we connect them?"
+          }
+        ],
+        "score": {
+          "mapping": {
+            "A": "alloy",
+            "B": "onyx"
+          },
+          "coverage": 0.9175076064908727,
+          "accuracyWhenCovered": 0.8428143092037086,
+          "attribution": 0.773288539553753,
+          "detectedSpeakers": 2,
+          "expectedSpeakers": 2,
+          "predictedSegments": 10,
+          "speechIntervals": 7,
+          "meanStartErrorSeconds": 0.059624999999999484,
+          "overlapSeconds": 1.24,
+          "speechSeconds": 9.859999999999998
+        },
+        "errors": {
+          "wer": 0.2926829268292683,
+          "substitutions": 0,
+          "deletions": 6,
+          "insertions": 6,
+          "referenceWords": 41,
+          "hypothesisWords": 41
+        },
+        "text": "Welcome to the robot club. Great-I Today brought we the will battery build packs a small rover. and the wheels. Perfect. Let us start with the chassis, then test the motors. Should we label each cable before we connect them?"
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "Three conversations were assembled with known ground truth",
+      "passed": true,
+      "detail": "4 turns in 7 speech stretches, 13.89s; 6 turns in 9 speech stretches, 20.29s; 4 turns in 7 speech stretches, 11.29s"
+    },
+    {
+      "name": "Only the interruption scenario contains true overlapping speech",
+      "passed": true,
+      "detail": "0.00s overlap, 0.00s overlap, 1.24s overlap"
+    },
+    {
+      "name": "The model returned timed, labelled segments for every scenario",
+      "passed": true,
+      "detail": "6 segments, 11 segments, 10 segments"
+    },
+    {
+      "name": "Scores are valid proportions",
+      "passed": true,
+      "detail": "91% overall, 91% overall, 77% overall"
+    },
+    {
+      "name": "The easy two-speaker case confirms the timeline alignment works",
+      "passed": true,
+      "detail": "Overall 91% (a value near 50% would suggest misaligned time)."
+    },
+    {
+      "name": "Speaker counts are reported against the truth",
+      "passed": true,
+      "detail": "2 of 2, 3 of 3, 2 of 2"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "two-speakers-audio",
+      "file": "two-speakers-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 444666,
+      "sha256": "b015a5a933830d7b60ecb9ae68e17ef919494d7d3582deba72c1f6086ba85092",
+      "description": "Two speakers take turns: 13.89 seconds of 16 kHz mono audio assembled from synthetic speech turns."
+    },
+    {
+      "id": "two-speakers-timeline",
+      "file": "two-speakers-timeline.png",
+      "mime": "image/png",
+      "bytes": 2078,
+      "sha256": "0b852b4600c334919b862ac838e7493cdf67f963deecf5d7cb1dc3603ba2c587",
+      "description": "Two speakers take turns: true speech by voice above, the model's diarization below, colored by the voice each label was matched to."
+    },
+    {
+      "id": "three-speakers-audio",
+      "file": "three-speakers-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 649340,
+      "sha256": "d32acb00f51d9599f96b711aaf4465d2c905e5943129a481885aa43cc84d31e4",
+      "description": "Three speakers take turns: 20.29 seconds of 16 kHz mono audio assembled from synthetic speech turns."
+    },
+    {
+      "id": "three-speakers-timeline",
+      "file": "three-speakers-timeline.png",
+      "mime": "image/png",
+      "bytes": 2723,
+      "sha256": "4f7fd4a7bfb2f6667609fc29aec45a10d55f3f19111fd52eb199c20bf5389b76",
+      "description": "Three speakers take turns: true speech by voice above, the model's diarization below, colored by the voice each label was matched to."
+    },
+    {
+      "id": "interruption-audio",
+      "file": "interruption-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 361466,
+      "sha256": "cf62b9098bd03ee395fd30ae6e941449a383cb3d2537c9f09c335c0915b640c1",
+      "description": "Two speakers, and one interrupts: 11.29 seconds of 16 kHz mono audio assembled from synthetic speech turns."
+    },
+    {
+      "id": "interruption-timeline",
+      "file": "interruption-timeline.png",
+      "mime": "image/png",
+      "bytes": 2193,
+      "sha256": "280311bde3450a8aad128dcd638f501fe85d510f17a7e8fe98ed3d1df463d531",
+      "description": "Two speakers, and one interrupts: true speech by voice above, the model's diarization below, colored by the voice each label was matched to."
+    }
+  ],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-qn4z1aa",
+    "runId": "e526795c-40db-4b11-a7d9-278778184467"
+  }
+}

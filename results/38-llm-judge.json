@@ -1,0 +1,3432 @@
+{
+  "labId": "38-llm-judge",
+  "recordedAt": "2026-11-16T21:29:33.316Z",
+  "results": [
+    {
+      "label": "GPT-4o as the judge",
+      "kind": "experiment",
+      "request": {
+        "summary": "GPT-4o judged 20 prompts: six questions with one correct and one wrong answer (three where the wrong answer is longer), and four questions with two equally good answers, each shown in both orders. System instruction: \"You are a strict grader. You will see a question and two candidate answers. Decide which answer is better. An answer is better only if it is correct. If both answers are equally correct and equally good, reply tie. Respond with JSON only.\"",
+        "parameters": {
+          "judge": "GPT-4o",
+          "judgments": 20
+        }
+      },
+      "output": "Accuracy on questions with a right answer: 83%. Same verdict when the order was swapped: 100%.\nFooled when the wrong answer was longer: 33%.\nTwo equally good answers: said tie 100% of the time; among non-tie verdicts, picked the first-listed answer n/a; kept the same winner after swapping 100%.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "completed",
+      "latencyMs": 17374,
+      "usage": {
+        "input_tokens": 3706,
+        "output_tokens": 585,
+        "total_tokens": 4291
+      },
+      "apiRequests": 20,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 735,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 32,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 36,
+              "engine_ttlt_ms": 220,
+              "pre_inference_ms": 84,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 414,
+              "service_ttlt_ms": 595,
+              "user_visible_ttft_ms": 330
+            },
+            "prompt_tokens": 225,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 257
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 714,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 32,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 4,
+              "engine_ttft_ms": 37,
+              "engine_ttlt_ms": 184,
+              "pre_inference_ms": 71,
+              "service_tbt_ms": 5,
+              "service_ttft_ms": 424,
+              "service_ttlt_ms": 583,
+              "user_visible_ttft_ms": 353
+            },
+            "prompt_tokens": 225,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 257
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 733,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 27,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 38,
+              "engine_ttlt_ms": 187,
+              "pre_inference_ms": 94,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 447,
+              "service_ttlt_ms": 600,
+              "user_visible_ttft_ms": 353
+            },
+            "prompt_tokens": 187,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 214
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 852,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 29,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 51,
+              "engine_ttlt_ms": 271,
+              "pre_inference_ms": 131,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 508,
+              "service_ttlt_ms": 724,
+              "user_visible_ttft_ms": 377
+            },
+            "prompt_tokens": 187,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 216
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 787,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 34,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 46,
+              "engine_ttlt_ms": 226,
+              "pre_inference_ms": 119,
+              "service_tbt_ms": 5,
+              "service_ttft_ms": 481,
+              "service_ttlt_ms": 644,
+              "user_visible_ttft_ms": 362
+            },
+            "prompt_tokens": 192,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 226
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 749,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 34,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 36,
+              "engine_ttlt_ms": 222,
+              "pre_inference_ms": 98,
+              "service_tbt_ms": 5,
+              "service_ttft_ms": 430,
+              "service_ttlt_ms": 612,
+              "user_visible_ttft_ms": 332
+            },
+            "prompt_tokens": 192,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 226
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 700,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 29,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 40,
+              "engine_ttlt_ms": 240,
+              "pre_inference_ms": 61,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 403,
+              "service_ttlt_ms": 593,
+              "user_visible_ttft_ms": 342
+            },
+            "prompt_tokens": 200,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 229
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 743,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 29,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 42,
+              "engine_ttlt_ms": 224,
+              "pre_inference_ms": 80,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 440,
+              "service_ttlt_ms": 613,
+              "user_visible_ttft_ms": 359
+            },
+            "prompt_tokens": 200,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 229
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 818,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 38,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 32,
+              "engine_ttlt_ms": 288,
+              "pre_inference_ms": 76,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 426,
+              "service_ttlt_ms": 682,
+              "user_visible_ttft_ms": 350
+            },
+            "prompt_tokens": 197,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 235
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1310,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 34,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 8,
+              "engine_ttft_ms": 34,
+              "engine_ttlt_ms": 316,
+              "pre_inference_ms": 91,
+              "service_tbt_ms": 8,
+              "service_ttft_ms": 911,
+              "service_ttlt_ms": 1189,
+              "user_visible_ttft_ms": 819
+            },
+            "prompt_tokens": 197,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 231
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 672,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 30,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 40,
+              "engine_ttlt_ms": 201,
+              "pre_inference_ms": 63,
+              "service_tbt_ms": 5,
+              "service_ttft_ms": 403,
+              "service_ttlt_ms": 560,
+              "user_visible_ttft_ms": 340
+            },
+            "prompt_tokens": 193,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 223
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1121,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 31,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 29,
+              "engine_ttlt_ms": 201,
+              "pre_inference_ms": 72,
+              "service_tbt_ms": 5,
+              "service_ttft_ms": 828,
+              "service_ttlt_ms": 996,
+              "user_visible_ttft_ms": 757
+            },
+            "prompt_tokens": 193,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 224
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 741,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 23,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 34,
+              "engine_ttlt_ms": 211,
+              "pre_inference_ms": 91,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 426,
+              "service_ttlt_ms": 598,
+              "user_visible_ttft_ms": 334
+            },
+            "prompt_tokens": 160,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 183
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1179,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 24,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 31,
+              "engine_ttlt_ms": 180,
+              "pre_inference_ms": 76,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 909,
+              "service_ttlt_ms": 1056,
+              "user_visible_ttft_ms": 832
+            },
+            "prompt_tokens": 160,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 184
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1132,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 25,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 36,
+              "engine_ttlt_ms": 200,
+              "pre_inference_ms": 83,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 854,
+              "service_ttlt_ms": 1013,
+              "user_visible_ttft_ms": 771
+            },
+            "prompt_tokens": 163,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 188
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 747,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 25,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 38,
+              "engine_ttlt_ms": 220,
+              "pre_inference_ms": 70,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 468,
+              "service_ttlt_ms": 606,
+              "user_visible_ttft_ms": 398
+            },
+            "prompt_tokens": 163,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 188
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 785,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 26,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 9,
+              "engine_ttft_ms": 44,
+              "engine_ttlt_ms": 274,
+              "pre_inference_ms": 80,
+              "service_tbt_ms": 9,
+              "service_ttft_ms": 442,
+              "service_ttlt_ms": 669,
+              "user_visible_ttft_ms": 362
+            },
+            "prompt_tokens": 168,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 194
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 861,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 29,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 8,
+              "engine_ttft_ms": 31,
+              "engine_ttlt_ms": 260,
+              "pre_inference_ms": 95,
+              "service_tbt_ms": 8,
+              "service_ttft_ms": 438,
+              "service_ttlt_ms": 664,
+              "user_visible_ttft_ms": 343
+            },
+            "prompt_tokens": 168,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 197
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 737,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 27,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 31,
+              "engine_ttlt_ms": 239,
+              "pre_inference_ms": 77,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 414,
+              "service_ttlt_ms": 617,
+              "user_visible_ttft_ms": 338
+            },
+            "prompt_tokens": 168,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 195
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1251,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 27,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 113,
+              "engine_ttlt_ms": 297,
+              "pre_inference_ms": 86,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 938,
+              "service_ttlt_ms": 1118,
+              "user_visible_ttft_ms": 852
+            },
+            "prompt_tokens": 168,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 195
+          }
+        }
+      ],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "bars",
+          "title": "Judge scorecard (percent)",
+          "items": [
+            {
+              "label": "Accuracy where one answer is correct",
+              "value": 83.3,
+              "max": 100,
+              "detail": "83%"
+            },
+            {
+              "label": "Same verdict after swapping order",
+              "value": 100,
+              "max": 100,
+              "detail": "100%"
+            },
+            {
+              "label": "Fooled by a longer wrong answer",
+              "value": 33.3,
+              "max": 100,
+              "detail": "33%"
+            },
+            {
+              "label": "Calls equal answers a tie",
+              "value": 100,
+              "max": 100,
+              "detail": "100%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Every judgment",
+          "headers": [
+            "Question",
+            "Kind",
+            "Response 1",
+            "Response 2",
+            "Winner",
+            "Judge reason"
+          ],
+          "rows": [
+            [
+              "train",
+              "right answer; wrong answer is longer",
+              "correct",
+              "wrong",
+              "2 (wrong)",
+              "Response 2 correctly calculates the journey duration as 2 hours and 35 minutes, while Response 1 is incorrect."
+            ],
+            [
+              "train",
+              "right answer; wrong answer is longer",
+              "wrong",
+              "correct",
+              "1 (wrong)",
+              "Response 1 correctly calculates the journey time as 2 hours and 35 minutes, while Response 2 is incorrect."
+            ],
+            [
+              "pencils",
+              "right answer; correct answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "Response 2 correctly calculates the number of boxes needed and provides a clear explanation for the result."
+            ],
+            [
+              "pencils",
+              "right answer; correct answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "Response 1 correctly calculates the number of boxes needed, accounting for the leftover pencils requiring an additional box."
+            ],
+            [
+              "percent",
+              "right answer; wrong answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "Response 1 correctly calculates 15% of 240 as 36, while Response 2 incorrectly states it as 24."
+            ],
+            [
+              "percent",
+              "right answer; wrong answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "Response 2 correctly calculates 15% of 240 as 36, while Response 1 incorrectly states it as 24."
+            ],
+            [
+              "notebooks",
+              "right answer; correct answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "Response 2 correctly calculates the cost of 7 notebooks using the unit price derived from the given information."
+            ],
+            [
+              "notebooks",
+              "right answer; correct answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "Response 1 correctly calculates the cost of 7 notebooks, while Response 2 provides an incorrect answer."
+            ],
+            [
+              "decimals",
+              "right answer; wrong answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "Response 1 is correct; 0.8 is larger than 0.75. Response 2 incorrectly states 0.75 is larger."
+            ],
+            [
+              "decimals",
+              "right answer; wrong answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "Response 2 correctly identifies 0.8 as larger than 0.75, while Response 1 incorrectly states the opposite."
+            ],
+            [
+              "club",
+              "right answer; correct answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "Response 2 correctly calculates the number of students in the club, while Response 1 provides an incorrect answer."
+            ],
+            [
+              "club",
+              "right answer; correct answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "Response 1 correctly calculates the number of students in the robot club, while Response 2 provides an incorrect answer."
+            ],
+            [
+              "japan",
+              "equally good",
+              "a",
+              "b",
+              "tie",
+              "Both responses correctly state Tokyo as Japan's capital with equal clarity and accuracy."
+            ],
+            [
+              "japan",
+              "equally good",
+              "b",
+              "a",
+              "tie",
+              "Both responses correctly state Tokyo as the capital of Japan with equal clarity and accuracy."
+            ],
+            [
+              "minutes",
+              "equally good",
+              "a",
+              "b",
+              "tie",
+              "Both responses are correct and equally clear in stating that two hours equals 120 minutes."
+            ],
+            [
+              "minutes",
+              "equally good",
+              "b",
+              "a",
+              "tie",
+              "Both responses are correct and equally clear in stating that two hours equals 120 minutes."
+            ],
+            [
+              "product",
+              "equally good",
+              "a",
+              "b",
+              "tie",
+              "Both answers are correct and equally clear in presenting the result of 9 times 7."
+            ],
+            [
+              "product",
+              "equally good",
+              "b",
+              "a",
+              "tie",
+              "Both responses correctly state the product of 9 and 7 as 63 with equal clarity and accuracy."
+            ],
+            [
+              "planet",
+              "equally good",
+              "a",
+              "b",
+              "tie",
+              "Both responses correctly identify Jupiter as the largest planet in the solar system with equal clarity and accuracy."
+            ],
+            [
+              "planet",
+              "equally good",
+              "b",
+              "a",
+              "tie",
+              "Both responses correctly identify Jupiter as the largest planet in the solar system with equal clarity and accuracy."
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "For right-or-wrong pairs, a correct judge always chooses the response labelled \"correct\", whichever position it is in. For equal pairs there is no right winner, so a fair judge should say tie or at least stay consistent when the order is swapped."
+        }
+      ],
+      "measurements": {
+        "judge": "GPT-4o",
+        "summary": {
+          "judgments": 20,
+          "accuracy": 0.8333333333333334,
+          "truthConsistency": 1,
+          "foolishWhenWrongIsLonger": 0.3333333333333333,
+          "accuracyWhenCorrectIsLonger": 1,
+          "equalTieRate": 1,
+          "equalFirstSlotShare": null,
+          "equalConsistency": 1,
+          "firstSlotShareOverall": 0.5
+        },
+        "judgments": [
+          {
+            "pair": "train",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "wrong",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "wrong",
+            "reason": "Response 2 correctly calculates the journey duration as 2 hours and 35 minutes, while Response 1 is incorrect."
+          },
+          {
+            "pair": "train",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "wrong",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "wrong",
+            "reason": "Response 1 correctly calculates the journey time as 2 hours and 35 minutes, while Response 2 is incorrect."
+          },
+          {
+            "pair": "pencils",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "correct",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "Response 2 correctly calculates the number of boxes needed and provides a clear explanation for the result."
+          },
+          {
+            "pair": "pencils",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "correct",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "Response 1 correctly calculates the number of boxes needed, accounting for the leftover pencils requiring an additional box."
+          },
+          {
+            "pair": "percent",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "wrong",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "Response 1 correctly calculates 15% of 240 as 36, while Response 2 incorrectly states it as 24."
+          },
+          {
+            "pair": "percent",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "wrong",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "Response 2 correctly calculates 15% of 240 as 36, while Response 1 incorrectly states it as 24."
+          },
+          {
+            "pair": "notebooks",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "correct",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "Response 2 correctly calculates the cost of 7 notebooks using the unit price derived from the given information."
+          },
+          {
+            "pair": "notebooks",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "correct",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "Response 1 correctly calculates the cost of 7 notebooks, while Response 2 provides an incorrect answer."
+          },
+          {
+            "pair": "decimals",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "wrong",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "Response 1 is correct; 0.8 is larger than 0.75. Response 2 incorrectly states 0.75 is larger."
+          },
+          {
+            "pair": "decimals",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "wrong",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "Response 2 correctly identifies 0.8 as larger than 0.75, while Response 1 incorrectly states the opposite."
+          },
+          {
+            "pair": "club",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "correct",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "Response 2 correctly calculates the number of students in the club, while Response 1 provides an incorrect answer."
+          },
+          {
+            "pair": "club",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "correct",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "Response 1 correctly calculates the number of students in the robot club, while Response 2 provides an incorrect answer."
+          },
+          {
+            "pair": "japan",
+            "kind": "equal",
+            "swapped": false,
+            "longer": null,
+            "slots": [
+              "a",
+              "b"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses correctly state Tokyo as Japan's capital with equal clarity and accuracy."
+          },
+          {
+            "pair": "japan",
+            "kind": "equal",
+            "swapped": true,
+            "longer": null,
+            "slots": [
+              "b",
+              "a"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses correctly state Tokyo as the capital of Japan with equal clarity and accuracy."
+          },
+          {
+            "pair": "minutes",
+            "kind": "equal",
+            "swapped": false,
+            "longer": null,
+            "slots": [
+              "a",
+              "b"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses are correct and equally clear in stating that two hours equals 120 minutes."
+          },
+          {
+            "pair": "minutes",
+            "kind": "equal",
+            "swapped": true,
+            "longer": null,
+            "slots": [
+              "b",
+              "a"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses are correct and equally clear in stating that two hours equals 120 minutes."
+          },
+          {
+            "pair": "product",
+            "kind": "equal",
+            "swapped": false,
+            "longer": null,
+            "slots": [
+              "a",
+              "b"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both answers are correct and equally clear in presenting the result of 9 times 7."
+          },
+          {
+            "pair": "product",
+            "kind": "equal",
+            "swapped": true,
+            "longer": null,
+            "slots": [
+              "b",
+              "a"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses correctly state the product of 9 and 7 as 63 with equal clarity and accuracy."
+          },
+          {
+            "pair": "planet",
+            "kind": "equal",
+            "swapped": false,
+            "longer": null,
+            "slots": [
+              "a",
+              "b"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses correctly identify Jupiter as the largest planet in the solar system with equal clarity and accuracy."
+          },
+          {
+            "pair": "planet",
+            "kind": "equal",
+            "swapped": true,
+            "longer": null,
+            "slots": [
+              "b",
+              "a"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses correctly identify Jupiter as the largest planet in the solar system with equal clarity and accuracy."
+          }
+        ]
+      }
+    },
+    {
+      "label": "GPT-5-mini as the judge",
+      "kind": "experiment",
+      "request": {
+        "summary": "GPT-5-mini judged 20 prompts: six questions with one correct and one wrong answer (three where the wrong answer is longer), and four questions with two equally good answers, each shown in both orders. System instruction: \"You are a strict grader. You will see a question and two candidate answers. Decide which answer is better. An answer is better only if it is correct. If both answers are equally correct and equally good, reply tie. Respond with JSON only.\"",
+        "parameters": {
+          "judge": "GPT-5-mini",
+          "judgments": 20
+        }
+      },
+      "output": "Accuracy on questions with a right answer: 100%. Same verdict when the order was swapped: 100%.\nFooled when the wrong answer was longer: 0%.\nTwo equally good answers: said tie 100% of the time; among non-tie verdicts, picked the first-listed answer n/a; kept the same winner after swapping 100%.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 26329,
+      "usage": {
+        "input_tokens": 3666,
+        "output_tokens": 1142,
+        "total_tokens": 4808
+      },
+      "apiRequests": 20,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1664,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 114,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 64,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 29,
+              "engine_ttlt_ms": 1000,
+              "pre_inference_ms": 137,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 203,
+              "service_ttlt_ms": 1168,
+              "user_visible_ttft_ms": 66
+            },
+            "prompt_tokens": 223,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 337
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1676,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 120,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 64,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 33,
+              "engine_ttlt_ms": 1077,
+              "pre_inference_ms": 120,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 211,
+              "service_ttlt_ms": 1245,
+              "user_visible_ttft_ms": 91
+            },
+            "prompt_tokens": 223,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 343
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1988,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 46,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 26,
+              "engine_ttlt_ms": 645,
+              "pre_inference_ms": 120,
+              "service_tbt_ms": 9,
+              "service_ttft_ms": 686,
+              "service_ttlt_ms": 1527,
+              "user_visible_ttft_ms": 566
+            },
+            "prompt_tokens": 185,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 231
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1206,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 47,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 25,
+              "engine_ttlt_ms": 682,
+              "pre_inference_ms": 77,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 138,
+              "service_ttlt_ms": 788,
+              "user_visible_ttft_ms": 61
+            },
+            "prompt_tokens": 185,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 232
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1132,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 41,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 29,
+              "engine_ttlt_ms": 613,
+              "pre_inference_ms": 80,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 199,
+              "service_ttlt_ms": 777,
+              "user_visible_ttft_ms": 118
+            },
+            "prompt_tokens": 190,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 231
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1542,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 50,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 8,
+              "engine_ttft_ms": 60,
+              "engine_ttlt_ms": 852,
+              "pre_inference_ms": 84,
+              "service_tbt_ms": 8,
+              "service_ttft_ms": 302,
+              "service_ttlt_ms": 1056,
+              "user_visible_ttft_ms": 218
+            },
+            "prompt_tokens": 190,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 240
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1437,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 118,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 64,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 33,
+              "engine_ttlt_ms": 754,
+              "pre_inference_ms": 79,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 208,
+              "service_ttlt_ms": 925,
+              "user_visible_ttft_ms": 129
+            },
+            "prompt_tokens": 198,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 316
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1244,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 49,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 32,
+              "engine_ttlt_ms": 646,
+              "pre_inference_ms": 85,
+              "service_tbt_ms": 5,
+              "service_ttft_ms": 155,
+              "service_ttlt_ms": 761,
+              "user_visible_ttft_ms": 71
+            },
+            "prompt_tokens": 198,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 247
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1304,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 51,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 28,
+              "engine_ttlt_ms": 765,
+              "pre_inference_ms": 90,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 167,
+              "service_ttlt_ms": 889,
+              "user_visible_ttft_ms": 77
+            },
+            "prompt_tokens": 195,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 246
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1112,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 110,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 64,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 22,
+              "engine_ttlt_ms": 637,
+              "pre_inference_ms": 99,
+              "service_tbt_ms": 5,
+              "service_ttft_ms": 158,
+              "service_ttlt_ms": 768,
+              "user_visible_ttft_ms": 59
+            },
+            "prompt_tokens": 195,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 305
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1248,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 49,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 28,
+              "engine_ttlt_ms": 600,
+              "pre_inference_ms": 73,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 195,
+              "service_ttlt_ms": 773,
+              "user_visible_ttft_ms": 122
+            },
+            "prompt_tokens": 191,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 240
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1001,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 52,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 19,
+              "engine_ttlt_ms": 576,
+              "pre_inference_ms": 73,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 127,
+              "service_ttlt_ms": 679,
+              "user_visible_ttft_ms": 53
+            },
+            "prompt_tokens": 191,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 243
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 848,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 35,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 43,
+              "engine_ttlt_ms": 381,
+              "pre_inference_ms": 89,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 189,
+              "service_ttlt_ms": 503,
+              "user_visible_ttft_ms": 101
+            },
+            "prompt_tokens": 158,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 193
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 2115,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 36,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 20,
+              "engine_ttlt_ms": 337,
+              "pre_inference_ms": 131,
+              "service_tbt_ms": 9,
+              "service_ttft_ms": 1379,
+              "service_ttlt_ms": 1853,
+              "user_visible_ttft_ms": 1248
+            },
+            "prompt_tokens": 158,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 194
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 784,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 35,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 30,
+              "engine_ttlt_ms": 406,
+              "pre_inference_ms": 80,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 228,
+              "service_ttlt_ms": 586,
+              "user_visible_ttft_ms": 147
+            },
+            "prompt_tokens": 161,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 196
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 725,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 35,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 30,
+              "engine_ttlt_ms": 398,
+              "pre_inference_ms": 81,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 224,
+              "service_ttlt_ms": 559,
+              "user_visible_ttft_ms": 143
+            },
+            "prompt_tokens": 161,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 196
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1799,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 38,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 33,
+              "engine_ttlt_ms": 404,
+              "pre_inference_ms": 108,
+              "service_tbt_ms": 9,
+              "service_ttft_ms": 735,
+              "service_ttlt_ms": 1280,
+              "user_visible_ttft_ms": 627
+            },
+            "prompt_tokens": 166,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 204
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1415,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 36,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 28,
+              "engine_ttlt_ms": 395,
+              "pre_inference_ms": 298,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 482,
+              "service_ttlt_ms": 849,
+              "user_visible_ttft_ms": 185
+            },
+            "prompt_tokens": 166,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 202
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 842,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 40,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 22,
+              "engine_ttlt_ms": 383,
+              "pre_inference_ms": 80,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 132,
+              "service_ttlt_ms": 488,
+              "user_visible_ttft_ms": 51
+            },
+            "prompt_tokens": 166,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 206
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1238,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 40,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 30,
+              "engine_ttlt_ms": 420,
+              "pre_inference_ms": 203,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 460,
+              "service_ttlt_ms": 833,
+              "user_visible_ttft_ms": 257
+            },
+            "prompt_tokens": 166,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 206
+          }
+        }
+      ],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "bars",
+          "title": "Judge scorecard (percent)",
+          "items": [
+            {
+              "label": "Accuracy where one answer is correct",
+              "value": 100,
+              "max": 100,
+              "detail": "100%"
+            },
+            {
+              "label": "Same verdict after swapping order",
+              "value": 100,
+              "max": 100,
+              "detail": "100%"
+            },
+            {
+              "label": "Fooled by a longer wrong answer",
+              "value": 0,
+              "max": 100,
+              "detail": "0%"
+            },
+            {
+              "label": "Calls equal answers a tie",
+              "value": 100,
+              "max": 100,
+              "detail": "100%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Every judgment",
+          "headers": [
+            "Question",
+            "Kind",
+            "Response 1",
+            "Response 2",
+            "Winner",
+            "Judge reason"
+          ],
+          "rows": [
+            [
+              "train",
+              "right answer; wrong answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "14:20 to 17:05 is 2 hours 45 minutes; Response 2 miscomputed the minutes (should be 45)."
+            ],
+            [
+              "train",
+              "right answer; wrong answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "Actual duration is 2 hours 45 minutes (14:20→16:20 = 2h; 16:20→17:05 = 45 min)."
+            ],
+            [
+              "pencils",
+              "right answer; correct answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "Nine boxes are needed since 8 boxes hold 96 pencils, leaving 4 remaining, so a ninth box is required."
+            ],
+            [
+              "pencils",
+              "right answer; correct answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "100/12 requires 9 boxes since 8 boxes hold only 96 pencils; a ninth box needed for remaining 4."
+            ],
+            [
+              "percent",
+              "right answer; wrong answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "Response 1 correctly computes 0.15×240=36; Response 2 is incorrect."
+            ],
+            [
+              "percent",
+              "right answer; wrong answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "15% of 240 = 0.15×240 = 36, so Response 2 is correct and Response 1 is incorrect."
+            ],
+            [
+              "notebooks",
+              "right answer; correct answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "Unit price 4.50/3 = 1.50; 7×1.50 = 10.50, so Response 2 is correct."
+            ],
+            [
+              "notebooks",
+              "right answer; correct answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "Correct unit price calculation: $4.50/3=$1.50, and $1.50×7=$10.50."
+            ],
+            [
+              "decimals",
+              "right answer; wrong answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "Response 1 is correct: 0.8 (0.80) is greater than 0.75; Response 2 incorrectly compares digits."
+            ],
+            [
+              "decimals",
+              "right answer; wrong answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "0.8 > 0.75; Response 2 is correct. Response 1 gives wrong comparison and flawed reasoning."
+            ],
+            [
+              "club",
+              "right answer; correct answer is longer",
+              "wrong",
+              "correct",
+              "2 (correct)",
+              "3/7 of 28 equals 3×(28/7)=3×4=12, so Response 2 is correct."
+            ],
+            [
+              "club",
+              "right answer; correct answer is longer",
+              "correct",
+              "wrong",
+              "1 (correct)",
+              "3/7 of 28 = 3×(28÷7) = 3×4 = 12, so Response 1 is correct."
+            ],
+            [
+              "japan",
+              "equally good",
+              "a",
+              "b",
+              "tie",
+              "Both responses are correct and equivalent statements that Tokyo is Japan's capital."
+            ],
+            [
+              "japan",
+              "equally good",
+              "b",
+              "a",
+              "tie",
+              "Both responses state the same correct fact: Tokyo is the capital of Japan."
+            ],
+            [
+              "minutes",
+              "equally good",
+              "a",
+              "b",
+              "tie",
+              "Both answers are correct and equivalent: two hours equals 120 minutes."
+            ],
+            [
+              "minutes",
+              "equally good",
+              "b",
+              "a",
+              "tie",
+              "Both responses are correct and equivalent: two hours equals 120 minutes."
+            ],
+            [
+              "product",
+              "equally good",
+              "a",
+              "b",
+              "tie",
+              "Both responses are equally correct and clear, giving the same correct result: 63."
+            ],
+            [
+              "product",
+              "equally good",
+              "b",
+              "a",
+              "tie",
+              "Both responses are correct and equivalent statements that 9×7=63."
+            ],
+            [
+              "planet",
+              "equally good",
+              "a",
+              "b",
+              "tie",
+              "Both responses are identical in correctness and clarity: Jupiter is the largest planet in the solar system."
+            ],
+            [
+              "planet",
+              "equally good",
+              "b",
+              "a",
+              "tie",
+              "Both responses are correct, identical in meaning, and equally concise: Jupiter is the largest planet."
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "For right-or-wrong pairs, a correct judge always chooses the response labelled \"correct\", whichever position it is in. For equal pairs there is no right winner, so a fair judge should say tie or at least stay consistent when the order is swapped."
+        }
+      ],
+      "measurements": {
+        "judge": "GPT-5-mini",
+        "summary": {
+          "judgments": 20,
+          "accuracy": 1,
+          "truthConsistency": 1,
+          "foolishWhenWrongIsLonger": 0,
+          "accuracyWhenCorrectIsLonger": 1,
+          "equalTieRate": 1,
+          "equalFirstSlotShare": null,
+          "equalConsistency": 1,
+          "firstSlotShareOverall": 0.5
+        },
+        "judgments": [
+          {
+            "pair": "train",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "wrong",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "14:20 to 17:05 is 2 hours 45 minutes; Response 2 miscomputed the minutes (should be 45)."
+          },
+          {
+            "pair": "train",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "wrong",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "Actual duration is 2 hours 45 minutes (14:20→16:20 = 2h; 16:20→17:05 = 45 min)."
+          },
+          {
+            "pair": "pencils",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "correct",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "Nine boxes are needed since 8 boxes hold 96 pencils, leaving 4 remaining, so a ninth box is required."
+          },
+          {
+            "pair": "pencils",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "correct",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "100/12 requires 9 boxes since 8 boxes hold only 96 pencils; a ninth box needed for remaining 4."
+          },
+          {
+            "pair": "percent",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "wrong",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "Response 1 correctly computes 0.15×240=36; Response 2 is incorrect."
+          },
+          {
+            "pair": "percent",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "wrong",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "15% of 240 = 0.15×240 = 36, so Response 2 is correct and Response 1 is incorrect."
+          },
+          {
+            "pair": "notebooks",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "correct",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "Unit price 4.50/3 = 1.50; 7×1.50 = 10.50, so Response 2 is correct."
+          },
+          {
+            "pair": "notebooks",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "correct",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "Correct unit price calculation: $4.50/3=$1.50, and $1.50×7=$10.50."
+          },
+          {
+            "pair": "decimals",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "wrong",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "Response 1 is correct: 0.8 (0.80) is greater than 0.75; Response 2 incorrectly compares digits."
+          },
+          {
+            "pair": "decimals",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "wrong",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "0.8 > 0.75; Response 2 is correct. Response 1 gives wrong comparison and flawed reasoning."
+          },
+          {
+            "pair": "club",
+            "kind": "truth",
+            "swapped": false,
+            "longer": "correct",
+            "slots": [
+              "wrong",
+              "correct"
+            ],
+            "winnerSlot": "2",
+            "winnerContent": "correct",
+            "reason": "3/7 of 28 equals 3×(28/7)=3×4=12, so Response 2 is correct."
+          },
+          {
+            "pair": "club",
+            "kind": "truth",
+            "swapped": true,
+            "longer": "correct",
+            "slots": [
+              "correct",
+              "wrong"
+            ],
+            "winnerSlot": "1",
+            "winnerContent": "correct",
+            "reason": "3/7 of 28 = 3×(28÷7) = 3×4 = 12, so Response 1 is correct."
+          },
+          {
+            "pair": "japan",
+            "kind": "equal",
+            "swapped": false,
+            "longer": null,
+            "slots": [
+              "a",
+              "b"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses are correct and equivalent statements that Tokyo is Japan's capital."
+          },
+          {
+            "pair": "japan",
+            "kind": "equal",
+            "swapped": true,
+            "longer": null,
+            "slots": [
+              "b",
+              "a"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses state the same correct fact: Tokyo is the capital of Japan."
+          },
+          {
+            "pair": "minutes",
+            "kind": "equal",
+            "swapped": false,
+            "longer": null,
+            "slots": [
+              "a",
+              "b"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both answers are correct and equivalent: two hours equals 120 minutes."
+          },
+          {
+            "pair": "minutes",
+            "kind": "equal",
+            "swapped": true,
+            "longer": null,
+            "slots": [
+              "b",
+              "a"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses are correct and equivalent: two hours equals 120 minutes."
+          },
+          {
+            "pair": "product",
+            "kind": "equal",
+            "swapped": false,
+            "longer": null,
+            "slots": [
+              "a",
+              "b"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses are equally correct and clear, giving the same correct result: 63."
+          },
+          {
+            "pair": "product",
+            "kind": "equal",
+            "swapped": true,
+            "longer": null,
+            "slots": [
+              "b",
+              "a"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses are correct and equivalent statements that 9×7=63."
+          },
+          {
+            "pair": "planet",
+            "kind": "equal",
+            "swapped": false,
+            "longer": null,
+            "slots": [
+              "a",
+              "b"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses are identical in correctness and clarity: Jupiter is the largest planet in the solar system."
+          },
+          {
+            "pair": "planet",
+            "kind": "equal",
+            "swapped": true,
+            "longer": null,
+            "slots": [
+              "b",
+              "a"
+            ],
+            "winnerSlot": "tie",
+            "winnerContent": "tie",
+            "reason": "Both responses are correct, identical in meaning, and equally concise: Jupiter is the largest planet."
+          }
+        ]
+      }
+    },
+    {
+      "label": "Forced to choose between equally good answers",
+      "kind": "experiment",
+      "request": {
+        "summary": "Show each judge the four pairs of equally good answers, in both orders, but remove the tie option: \"You are a strict grader. You will see a question and two candidate answers. Decide which answer is better, even if they seem equally good. You must choose exactly one winner. Respond with JSON only.\" With no right answer, a fair judge picks each position about half the time and keeps the same winner after a swap.",
+        "parameters": {
+          "judgments": 16
+        }
+      },
+      "output": "GPT-4o: chose the first-listed answer 50% of the time; same winner after swapping for 50% of pairs; same position in both orders for 50% of pairs.\nGPT-5-mini: chose the first-listed answer 88% of the time; same winner after swapping for 25% of pairs; same position in both orders for 75% of pairs.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 22276,
+      "usage": {
+        "input_tokens": 2396,
+        "output_tokens": 598,
+        "total_tokens": 2994
+      },
+      "apiRequests": 16,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 4483,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 17,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 39,
+              "engine_ttlt_ms": 147,
+              "pre_inference_ms": 788,
+              "service_tbt_ms": 99,
+              "service_ttft_ms": 1566,
+              "service_ttlt_ms": 3252,
+              "user_visible_ttft_ms": 777
+            },
+            "prompt_tokens": 146,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 163
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 740,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 23,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 38,
+              "engine_ttlt_ms": 164,
+              "pre_inference_ms": 91,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 456,
+              "service_ttlt_ms": 594,
+              "user_visible_ttft_ms": 365
+            },
+            "prompt_tokens": 146,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 169
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1256,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 22,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 12,
+              "engine_ttft_ms": 33,
+              "engine_ttlt_ms": 314,
+              "pre_inference_ms": 78,
+              "service_tbt_ms": 13,
+              "service_ttft_ms": 864,
+              "service_ttlt_ms": 1140,
+              "user_visible_ttft_ms": 786
+            },
+            "prompt_tokens": 149,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 171
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 718,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 23,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 36,
+              "engine_ttlt_ms": 202,
+              "pre_inference_ms": 75,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 452,
+              "service_ttlt_ms": 586,
+              "user_visible_ttft_ms": 377
+            },
+            "prompt_tokens": 149,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 172
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1146,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 23,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 57,
+              "engine_ttlt_ms": 218,
+              "pre_inference_ms": 74,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 855,
+              "service_ttlt_ms": 1011,
+              "user_visible_ttft_ms": 780
+            },
+            "prompt_tokens": 154,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 177
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 777,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 20,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 36,
+              "engine_ttlt_ms": 162,
+              "pre_inference_ms": 131,
+              "service_tbt_ms": 8,
+              "service_ttft_ms": 485,
+              "service_ttlt_ms": 637,
+              "user_visible_ttft_ms": 354
+            },
+            "prompt_tokens": 154,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 174
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 813,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 21,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 11,
+              "engine_ttft_ms": 32,
+              "engine_ttlt_ms": 270,
+              "pre_inference_ms": 71,
+              "service_tbt_ms": 11,
+              "service_ttft_ms": 419,
+              "service_ttlt_ms": 657,
+              "user_visible_ttft_ms": 348
+            },
+            "prompt_tokens": 154,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 175
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1301,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 24,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 282,
+              "engine_ttlt_ms": 416,
+              "pre_inference_ms": 77,
+              "service_tbt_ms": 5,
+              "service_ttft_ms": 1051,
+              "service_ttlt_ms": 1182,
+              "user_visible_ttft_ms": 974
+            },
+            "prompt_tokens": 154,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 178
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1226,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 93,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 64,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 18,
+              "engine_ttlt_ms": 659,
+              "pre_inference_ms": 82,
+              "service_tbt_ms": 5,
+              "service_ttft_ms": 133,
+              "service_ttlt_ms": 769,
+              "user_visible_ttft_ms": 52
+            },
+            "prompt_tokens": 144,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 237
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1914,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 37,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 30,
+              "engine_ttlt_ms": 593,
+              "pre_inference_ms": 161,
+              "service_tbt_ms": 8,
+              "service_ttft_ms": 722,
+              "service_ttlt_ms": 1467,
+              "user_visible_ttft_ms": 561
+            },
+            "prompt_tokens": 144,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 181
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1434,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 38,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 25,
+              "engine_ttlt_ms": 549,
+              "pre_inference_ms": 82,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 533,
+              "service_ttlt_ms": 1096,
+              "user_visible_ttft_ms": 450
+            },
+            "prompt_tokens": 147,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 185
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 2020,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 41,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 28,
+              "engine_ttlt_ms": 581,
+              "pre_inference_ms": 98,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 1124,
+              "service_ttlt_ms": 1652,
+              "user_visible_ttft_ms": 1026
+            },
+            "prompt_tokens": 147,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 188
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 985,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 35,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 25,
+              "engine_ttlt_ms": 484,
+              "pre_inference_ms": 64,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 173,
+              "service_ttlt_ms": 628,
+              "user_visible_ttft_ms": 110
+            },
+            "prompt_tokens": 152,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 187
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1218,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 39,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 35,
+              "engine_ttlt_ms": 496,
+              "pre_inference_ms": 85,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 569,
+              "service_ttlt_ms": 1010,
+              "user_visible_ttft_ms": 484
+            },
+            "prompt_tokens": 152,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 191
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 895,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 40,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 5,
+              "engine_ttft_ms": 23,
+              "engine_ttlt_ms": 365,
+              "pre_inference_ms": 149,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 210,
+              "service_ttlt_ms": 632,
+              "user_visible_ttft_ms": 61
+            },
+            "prompt_tokens": 152,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 192
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1341,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 102,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 64,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 30,
+              "engine_ttlt_ms": 830,
+              "pre_inference_ms": 79,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 199,
+              "service_ttlt_ms": 993,
+              "user_visible_ttft_ms": 120
+            },
+            "prompt_tokens": 152,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 254
+          }
+        }
+      ],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "table",
+          "title": "Position bias when there is no right answer",
+          "headers": [
+            "Measurement",
+            "GPT-4o",
+            "GPT-5-mini"
+          ],
+          "rows": [
+            [
+              "Chose the first-listed answer",
+              "50%",
+              "88%"
+            ],
+            [
+              "Kept the same winner after swapping order",
+              "50%",
+              "25%"
+            ],
+            [
+              "Chose the same position in both orders (pure position bias)",
+              "50%",
+              "75%"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Every forced choice",
+          "headers": [
+            "Judge",
+            "Question",
+            "Response 1",
+            "Response 2",
+            "Winner",
+            "Reason"
+          ],
+          "rows": [
+            [
+              "GPT-4o",
+              "japan",
+              "a",
+              "b",
+              "1 (answer a)",
+              "Response 1 is more direct and concise."
+            ],
+            [
+              "GPT-4o",
+              "japan",
+              "b",
+              "a",
+              "1 (answer b)",
+              "Response 1 is more direct and concise in stating the capital of Japan."
+            ],
+            [
+              "GPT-4o",
+              "minutes",
+              "a",
+              "b",
+              "2 (answer b)",
+              "Response 2 is slightly more concise and direct in its phrasing."
+            ],
+            [
+              "GPT-4o",
+              "minutes",
+              "b",
+              "a",
+              "1 (answer b)",
+              "Response 1 is clearer and directly answers the question with a complete sentence."
+            ],
+            [
+              "GPT-4o",
+              "product",
+              "a",
+              "b",
+              "2 (answer b)",
+              "Response 2 is more formal and precise in phrasing the mathematical result."
+            ],
+            [
+              "GPT-4o",
+              "product",
+              "b",
+              "a",
+              "2 (answer a)",
+              "Response 2 is more concise and directly answers the question."
+            ],
+            [
+              "GPT-4o",
+              "planet",
+              "a",
+              "b",
+              "2 (answer b)",
+              "Response 2 is more direct and concise in its phrasing."
+            ],
+            [
+              "GPT-4o",
+              "planet",
+              "b",
+              "a",
+              "1 (answer b)",
+              "Response 1 is more direct and clearly answers the question without rephrasing."
+            ],
+            [
+              "GPT-5-mini",
+              "japan",
+              "a",
+              "b",
+              "1 (answer a)",
+              "Clear, direct, and concise statement."
+            ],
+            [
+              "GPT-5-mini",
+              "japan",
+              "b",
+              "a",
+              "1 (answer b)",
+              "Direct subject-first phrasing makes it slightly more formal and explicit as an answer."
+            ],
+            [
+              "GPT-5-mini",
+              "minutes",
+              "a",
+              "b",
+              "2 (answer b)",
+              "Both are correct, but Response 2 states the fact in a clear complete sentence."
+            ],
+            [
+              "GPT-5-mini",
+              "minutes",
+              "b",
+              "a",
+              "1 (answer b)",
+              "Both are correct, but Response 1 is a direct statement with numeric answer first, slightly clearer."
+            ],
+            [
+              "GPT-5-mini",
+              "product",
+              "a",
+              "b",
+              "1 (answer a)",
+              "More direct and concise phrasing: simple equation-style answer is clearer."
+            ],
+            [
+              "GPT-5-mini",
+              "product",
+              "b",
+              "a",
+              "1 (answer b)",
+              "Both correct, but Response 1 is slightly more formal and direct in stating the product."
+            ],
+            [
+              "GPT-5-mini",
+              "planet",
+              "a",
+              "b",
+              "1 (answer a)",
+              "Both are correct; Response 1 is concise and direct, so chosen as the better option."
+            ],
+            [
+              "GPT-5-mini",
+              "planet",
+              "b",
+              "a",
+              "1 (answer b)",
+              "Both correct; Response 1 is a slightly more direct, explicit declarative answer."
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "If a judge picks position 1 every time, it is reacting to where an answer appears, not to its quality. Averaging a verdict over both orders cancels that bias."
+        }
+      ],
+      "measurements": {
+        "judgments": {
+          "GPT-4o": [
+            {
+              "pair": "japan",
+              "kind": "forced",
+              "swapped": false,
+              "slots": [
+                "a",
+                "b"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "a",
+              "reason": "Response 1 is more direct and concise."
+            },
+            {
+              "pair": "japan",
+              "kind": "forced",
+              "swapped": true,
+              "slots": [
+                "b",
+                "a"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "b",
+              "reason": "Response 1 is more direct and concise in stating the capital of Japan."
+            },
+            {
+              "pair": "minutes",
+              "kind": "forced",
+              "swapped": false,
+              "slots": [
+                "a",
+                "b"
+              ],
+              "winnerSlot": "2",
+              "winnerContent": "b",
+              "reason": "Response 2 is slightly more concise and direct in its phrasing."
+            },
+            {
+              "pair": "minutes",
+              "kind": "forced",
+              "swapped": true,
+              "slots": [
+                "b",
+                "a"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "b",
+              "reason": "Response 1 is clearer and directly answers the question with a complete sentence."
+            },
+            {
+              "pair": "product",
+              "kind": "forced",
+              "swapped": false,
+              "slots": [
+                "a",
+                "b"
+              ],
+              "winnerSlot": "2",
+              "winnerContent": "b",
+              "reason": "Response 2 is more formal and precise in phrasing the mathematical result."
+            },
+            {
+              "pair": "product",
+              "kind": "forced",
+              "swapped": true,
+              "slots": [
+                "b",
+                "a"
+              ],
+              "winnerSlot": "2",
+              "winnerContent": "a",
+              "reason": "Response 2 is more concise and directly answers the question."
+            },
+            {
+              "pair": "planet",
+              "kind": "forced",
+              "swapped": false,
+              "slots": [
+                "a",
+                "b"
+              ],
+              "winnerSlot": "2",
+              "winnerContent": "b",
+              "reason": "Response 2 is more direct and concise in its phrasing."
+            },
+            {
+              "pair": "planet",
+              "kind": "forced",
+              "swapped": true,
+              "slots": [
+                "b",
+                "a"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "b",
+              "reason": "Response 1 is more direct and clearly answers the question without rephrasing."
+            }
+          ],
+          "GPT-5-mini": [
+            {
+              "pair": "japan",
+              "kind": "forced",
+              "swapped": false,
+              "slots": [
+                "a",
+                "b"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "a",
+              "reason": "Clear, direct, and concise statement."
+            },
+            {
+              "pair": "japan",
+              "kind": "forced",
+              "swapped": true,
+              "slots": [
+                "b",
+                "a"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "b",
+              "reason": "Direct subject-first phrasing makes it slightly more formal and explicit as an answer."
+            },
+            {
+              "pair": "minutes",
+              "kind": "forced",
+              "swapped": false,
+              "slots": [
+                "a",
+                "b"
+              ],
+              "winnerSlot": "2",
+              "winnerContent": "b",
+              "reason": "Both are correct, but Response 2 states the fact in a clear complete sentence."
+            },
+            {
+              "pair": "minutes",
+              "kind": "forced",
+              "swapped": true,
+              "slots": [
+                "b",
+                "a"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "b",
+              "reason": "Both are correct, but Response 1 is a direct statement with numeric answer first, slightly clearer."
+            },
+            {
+              "pair": "product",
+              "kind": "forced",
+              "swapped": false,
+              "slots": [
+                "a",
+                "b"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "a",
+              "reason": "More direct and concise phrasing: simple equation-style answer is clearer."
+            },
+            {
+              "pair": "product",
+              "kind": "forced",
+              "swapped": true,
+              "slots": [
+                "b",
+                "a"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "b",
+              "reason": "Both correct, but Response 1 is slightly more formal and direct in stating the product."
+            },
+            {
+              "pair": "planet",
+              "kind": "forced",
+              "swapped": false,
+              "slots": [
+                "a",
+                "b"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "a",
+              "reason": "Both are correct; Response 1 is concise and direct, so chosen as the better option."
+            },
+            {
+              "pair": "planet",
+              "kind": "forced",
+              "swapped": true,
+              "slots": [
+                "b",
+                "a"
+              ],
+              "winnerSlot": "1",
+              "winnerContent": "b",
+              "reason": "Both correct; Response 1 is a slightly more direct, explicit declarative answer."
+            }
+          ]
+        },
+        "summaries": {
+          "GPT-4o": {
+            "judgments": 8,
+            "firstSlotShare": 0.5,
+            "consistency": 0.5,
+            "sameSlotBothOrders": 0.5
+          },
+          "GPT-5-mini": {
+            "judgments": 8,
+            "firstSlotShare": 0.875,
+            "consistency": 0.25,
+            "sameSlotBothOrders": 0.75
+          }
+        }
+      }
+    },
+    {
+      "label": "The two judges compared",
+      "kind": "experiment",
+      "request": {
+        "summary": "No new API request: compare the two judges' recorded verdicts side by side."
+      },
+      "output": "Accuracy where one answer is correct: GPT-4o 83%, GPT-5-mini 100%\nSame verdict after swapping order (right-or-wrong pairs): GPT-4o 100%, GPT-5-mini 100%\nFooled when the wrong answer is longer: GPT-4o 33%, GPT-5-mini 0%\nAccurate when the correct answer is longer: GPT-4o 100%, GPT-5-mini 100%\nEqual answers with a tie option: called a tie: GPT-4o 100%, GPT-5-mini 100%\nEqual answers, forced choice: picked the first-listed one: GPT-4o 50%, GPT-5-mini 88%\nEqual answers, forced choice: same winner after swapping: GPT-4o 50%, GPT-5-mini 25%",
+      "outputSource": "computation",
+      "actualModel": "local-computation",
+      "finishReason": "completed",
+      "latencyMs": 0,
+      "usage": null,
+      "apiRequests": 0,
+      "apiCalls": [],
+      "artifacts": [],
+      "display": [
+        {
+          "type": "table",
+          "title": "Two judges, side by side",
+          "headers": [
+            "Check",
+            "GPT-4o",
+            "GPT-5-mini"
+          ],
+          "rows": [
+            [
+              "Accuracy where one answer is correct",
+              "83%",
+              "100%"
+            ],
+            [
+              "Same verdict after swapping order (right-or-wrong pairs)",
+              "100%",
+              "100%"
+            ],
+            [
+              "Fooled when the wrong answer is longer",
+              "33%",
+              "0%"
+            ],
+            [
+              "Accurate when the correct answer is longer",
+              "100%",
+              "100%"
+            ],
+            [
+              "Equal answers with a tie option: called a tie",
+              "100%",
+              "100%"
+            ],
+            [
+              "Equal answers, forced choice: picked the first-listed one",
+              "50%",
+              "88%"
+            ],
+            [
+              "Equal answers, forced choice: same winner after swapping",
+              "50%",
+              "25%"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "How to use a model as a grader responsibly: test it on answers whose truth you know, judge every comparison in both orders, require agreement, and keep a human-reviewed sample. A single verdict is a hint, not evidence."
+        }
+      ],
+      "measurements": {
+        "gpt4o": {
+          "judgments": 20,
+          "accuracy": 0.8333333333333334,
+          "truthConsistency": 1,
+          "foolishWhenWrongIsLonger": 0.3333333333333333,
+          "accuracyWhenCorrectIsLonger": 1,
+          "equalTieRate": 1,
+          "equalFirstSlotShare": null,
+          "equalConsistency": 1,
+          "firstSlotShareOverall": 0.5
+        },
+        "gpt5mini": {
+          "judgments": 20,
+          "accuracy": 1,
+          "truthConsistency": 1,
+          "foolishWhenWrongIsLonger": 0,
+          "accuracyWhenCorrectIsLonger": 1,
+          "equalTieRate": 1,
+          "equalFirstSlotShare": null,
+          "equalConsistency": 1,
+          "firstSlotShareOverall": 0.5
+        },
+        "forced": {
+          "GPT-4o": {
+            "judgments": 8,
+            "firstSlotShare": 0.5,
+            "consistency": 0.5,
+            "sameSlotBothOrders": 0.5
+          },
+          "GPT-5-mini": {
+            "judgments": 8,
+            "firstSlotShare": 0.875,
+            "consistency": 0.25,
+            "sameSlotBothOrders": 0.75
+          }
+        }
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "Each judge issued every planned judgment in both orders",
+      "passed": true,
+      "detail": "20 judgments each: 6 right-or-wrong questions and 4 equal questions, each in two orders."
+    },
+    {
+      "name": "Every pair appears with both orderings of its two answers",
+      "passed": true,
+      "detail": "10 pairs, each shown in both positions."
+    },
+    {
+      "name": "Both judges saw the same prompts",
+      "passed": true,
+      "detail": "Identical questions, answers, and order."
+    },
+    {
+      "name": "Scorecards are valid proportions",
+      "passed": true,
+      "detail": "GPT-4o: accuracy 83%; GPT-5-mini: accuracy 100%"
+    },
+    {
+      "name": "The forced-choice condition made every judge pick a position for all equal pairs in both orders",
+      "passed": true,
+      "detail": "16 forced verdicts; GPT-4o first-slot share 50%, GPT-5-mini 88%."
+    },
+    {
+      "name": "The comparison reuses recorded verdicts, with no hidden requests",
+      "passed": true,
+      "detail": "Zero additional API requests."
+    }
+  ],
+  "artifacts": [],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-qn4z1aa",
+    "runId": "e526795c-40db-4b11-a7d9-278778184467"
+  }
+}

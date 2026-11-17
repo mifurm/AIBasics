@@ -1,17 +1,16 @@
-import { readdir, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { runLab } from './run.mjs';
-import { labs, getLab } from '../lib/labs.mjs';
+import { selectLabs } from '../lib/selection.mjs';
 import { loadConfig } from '../lib/azure.mjs';
-import { persistRecord } from '../lib/azure-records.mjs';
+import { persistRecord, persistBlob } from '../lib/azure-records.mjs';
+import { sha256 } from '../lib/genai/artifacts.mjs';
 
 const runId = process.env.RUN_ID ?? randomUUID();
 if (!/^[a-zA-Z0-9-]{1,80}$/.test(runId)) throw new Error('Invalid run ID.');
-const selection = process.env.LAB_SELECTION ?? 'agents';
-const selected = selection === 'agents' ? labs.filter(lab => lab.cases[0].agent) :
-  selection === 'all' ? labs : [getLab(selection)];
+const selected = selectLabs(process.env.LAB_SELECTION ?? 'agents');
 const config = await loadConfig();
-const manifest = { runId, runtime: 'Azure Container Apps Job', startedAt: new Date().toISOString(), status: 'running', labs: [], records: [] };
+const manifest = { runId, runtime: 'Azure Container Apps Job', startedAt: new Date().toISOString(), status: 'running', labs: [], records: [], artifacts: [] };
 try {
   for (const lab of selected) {
     await runLab(lab.id, { config });
@@ -24,13 +23,25 @@ try {
   process.exitCode = 1;
   console.error(error);
 } finally {
-  for (const file of await readdir('results')) {
-    if (!selected.some(lab => file === `${lab.id}.json`)) continue;
-    const record = JSON.parse(await readFile(`results/${file}`, 'utf8'));
-    await persistRecord(runId, file.slice(0, -5), record);
+  for (const lab of selected) {
+    let record;
+    try {
+      record = JSON.parse(await readFile(`results/${lab.id}.json`, 'utf8'));
+    } catch (error) {
+      if (error.code === 'ENOENT') continue;
+      throw error;
+    }
+    await persistRecord(runId, lab.id, record);
+    for (const artifact of record.artifacts ?? []) {
+      const buffer = await readFile(`results/media/${lab.id}/${artifact.file}`);
+      if (sha256(buffer) !== artifact.sha256) throw new Error(`Artifact ${lab.id}/${artifact.file} changed after it was recorded.`);
+      const name = `${lab.id}--${artifact.id}`;
+      await persistBlob(runId, name, buffer);
+      manifest.artifacts.push({ lab: lab.id, id: artifact.id, name, file: artifact.file, sha256: artifact.sha256, bytes: artifact.bytes });
+    }
     manifest.records.push(record.labId);
   }
   manifest.finishedAt = new Date().toISOString();
   await persistRecord(runId, 'manifest', manifest);
-  console.log(JSON.stringify(manifest));
+  console.log(JSON.stringify({ ...manifest, artifacts: manifest.artifacts.length }));
 }

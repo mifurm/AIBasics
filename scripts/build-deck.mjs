@@ -93,7 +93,7 @@ for (let i = 0; i < labs.length; i++) {
   const tokens = record.results.reduce((sum, result) => sum + (result.usage?.total_tokens ?? 0) + (result.toolRequestUsage?.total_tokens ?? 0) +
     (result.extraRequests ?? []).reduce((extraSum, entry) => extraSum + entry.usage.total_tokens, 0), 0);
   const requests = record.results.reduce((sum, result) => sum +
-    (result.kind === 'computation' ? 0 : (result.toolTrace ? 2 : 1) + (result.extraRequests?.length ?? 0)), 0);
+    (result.kind === 'computation' ? 0 : result.kind === 'experiment' ? result.apiRequests : (result.toolTrace ? 2 : 1) + (result.extraRequests?.length ?? 0)), 0);
   totalTokens += tokens;
   representedRequests += requests;
   report.push(`| ${lab.id.slice(0, 2)}. ${lab.title} | ${record.status ?? 'completed'} | ${requests} | ${tokens}${record.status === 'blocked' ? ' (usage not reported)' : ''} |`);
@@ -117,10 +117,16 @@ for (let i = 0; i < labs.length; i++) {
   } else {
     s.addShape(pptx.ShapeType.roundRect, { x: 4.5, y: 1.7, w: 8.2, h: 4.61, fill: { color: C.white }, line: { color: 'D5E0E7' } });
     const last = record.results.at(-1);
-    body(s, last.kind === 'computation' ? 'MEASURED TEACHING-MODEL COMPUTATION' : 'ACTUAL AZURE OUTCOME', 4.8, 1.95, 7.6, 0.4, 14);
-    body(s, last.status === 'blocked' ? `HTTP ${last.error.status}: ${last.error.code}\nNo model answer was generated.\nThe second variant was not executed.` :
-      last.output.length > 650 ? `${last.output.slice(0, 650)}\n[Excerpt: full output in the gallery]` : last.output,
-      4.8, 2.55, 7.6, 2.9, 16);
+    const picture = lab.series === 'genai' ? record.results.flatMap(result => result.artifacts ?? []).find(artifact => artifact.mime === 'image/png') : undefined;
+    body(s, last.kind === 'computation' ? 'MEASURED TEACHING-MODEL COMPUTATION' : last.kind === 'experiment' ? 'MEASURED AZURE EXPERIMENT' : 'ACTUAL AZURE OUTCOME', 4.8, 1.95, 7.6, 0.4, 14);
+    const output = last.output ?? '';
+    const excerpt = output.length > (picture ? 330 : 650) ? `${output.slice(0, picture ? 330 : 650)}\n[Excerpt: full output in the gallery]` : output;
+    if (picture) {
+      s.addImage({ path: `results/media/${lab.id}/${picture.file}`, x: 4.8, y: 2.45, w: 3.5, h: 3.1, sizing: { type: 'contain', w: 3.5, h: 3.1 } });
+      body(s, excerpt, 8.5, 2.45, 4.0, 3.1, 12);
+    } else {
+      body(s, last.status === 'blocked' ? `HTTP ${last.error.status}: ${last.error.code}\nNo model answer was generated.\nThe second variant was not executed.` : excerpt, 4.8, 2.55, 7.6, 2.9, 16);
+    }
     body(s, 'Recording pending: integrated browser was hidden and the user was unavailable to reveal it.', 4.8, 5.65, 7.6, 0.48, 11);
   }
   if (lab.diagram) link(s, 'Open the transformer architecture', `${config.website}${lab.diagram}`, 0.6, 6.5, 3.8);
@@ -131,7 +137,7 @@ for (let i = 0; i < labs.length; i++) {
     lab.id === '09-grounding' ? 'First attempt omitted the citation and failed evaluation; retained separately and in the gallery. When recorded, the video includes that actual first attempt alongside the refined result.' : '',
     record.status === 'blocked' ? 'Azure returned HTTP 400 content_filter; no model completion and no second variant. No filter bypass attempted.' : '',
     ...record.results.map(result => result.status === 'blocked' ? result.error.message :
-      `${result.label}: ${result.actualModel}; ${result.latencyMs} ms; ${result.kind === 'computation' ? 'no model API requests' : `${result.usage.total_tokens} API tokens`}. Actual output:\n${result.output}`),
+      `${result.label}: ${result.actualModel}; ${result.latencyMs} ms; ${result.kind === 'computation' ? 'no model API requests' : result.kind === 'experiment' ? `${result.apiRequests} Azure API request(s)` : `${result.usage.total_tokens} API tokens`}. Actual output:\n${result.output}`),
   ].filter(Boolean).join('\n\n'));
   detailed.push(`\n## ${lab.id.slice(0, 2)}. ${lab.title}\n\n${lab.concept}\n\nRecorded: ${record.recordedAt}\n\nCaution: ${lab.caveat}\n`);
   for (const result of record.results) {
@@ -142,9 +148,10 @@ for (let i = 0; i < labs.length; i++) {
       detailed.push(`\nModel: ${result.actualModel}; latency: ${result.latencyMs} ms; finish: ${result.finishReason}.\n\n` +
         (result.kind === 'computation' ? 'No model API requests. Toy training tokens are not API billing tokens.\n' : `Usage: \`${JSON.stringify(result.usage)}\`\n`) +
         `\n\`\`\`text\n${result.output}\n\`\`\`\n`);
+      if (result.artifacts?.length) detailed.push(`\nMedia artifacts: ${result.artifacts.map(artifact => `${artifact.file} (${artifact.bytes} bytes, sha256 ${artifact.sha256.slice(0, 12)}...)`).join('; ')}\n`);
       if (result.toolTrace) detailed.push(`\nTool trace: \`${JSON.stringify(result.toolTrace)}\`\n\nAdditional first-request usage: \`${JSON.stringify(result.toolRequestUsage)}\`\n`);
-      for (const key of ['comparison', 'computationTrace', 'memoryTrace', 'summaryTrace', 'toolSteps', 'retrievalTrace', 'agentTrace', 'extraRequests']) {
-        if (result[key]) detailed.push(`\n${key}:\n\n\`\`\`json\n${JSON.stringify(result[key], null, 2)}\n\`\`\`\n`);
+      for (const key of ['comparison', 'computationTrace', 'memoryTrace', 'summaryTrace', 'toolSteps', 'retrievalTrace', 'agentTrace', 'extraRequests', 'apiCalls']) {
+        if (result[key]?.length !== 0 && result[key]) detailed.push(`\n${key}:\n\n\`\`\`json\n${JSON.stringify(result[key], null, 2)}\n\`\`\`\n`);
       }
     }
   }

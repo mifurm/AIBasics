@@ -1,0 +1,1319 @@
+{
+  "labId": "37-video-frames",
+  "recordedAt": "2026-11-16T21:28:27.247Z",
+  "results": [
+    {
+      "label": "Six frames, in order: which way does the ball go?",
+      "kind": "experiment",
+      "request": {
+        "summary": "Prompt: \"These 6 frames come from a short video, shown in time order and labelled F1 to F6. A dashed vertical line marks the center of every frame. Return JSON with direction (the ball's overall direction: left_to_right, right_to_left, or stationary) and crossing_frame (the number of the first frame in which the center of the ball is already past the dashed line, in the direction the ball travels).\" Each model received the 6 frames as separate images (detail \"low\") plus this text, with a strict JSON schema.",
+        "parameters": {
+          "prompt": "These 6 frames come from a short video, shown in time order and labelled F1 to F6. A dashed vertical line marks the center of every frame. Return JSON with direction (the ball's overall direction: left_to_right, right_to_left, or stationary) and crossing_frame (the number of the first frame in which the center of the ball is already past the dashed line, in the direction the ball travels).",
+          "frames": 6,
+          "detail": "low",
+          "sheetSha256": "8fa20ec38b4583e22844089603d06201d370de8f0bacb94a5b67fa70ca60c075"
+        }
+      },
+      "output": "GPT-4o: direction: stationary (truth right_to_left); crossing_frame: 0 (truth 4). 769 input tokens for 6 frames.\nGPT-5-mini: direction: right_to_left (truth right_to_left); crossing_frame: 4 (truth 4). 602 input tokens for 6 frames.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 3384,
+      "usage": {
+        "input_tokens": 1371,
+        "output_tokens": 102,
+        "total_tokens": 1473
+      },
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1821,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 12,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 12,
+              "engine_ttft_ms": 311,
+              "engine_ttlt_ms": 473,
+              "pre_inference_ms": 236,
+              "service_tbt_ms": 13,
+              "service_ttft_ms": 1434,
+              "service_ttlt_ms": 1591,
+              "user_visible_ttft_ms": 1199
+            },
+            "prompt_tokens": 769,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 781
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1561,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 90,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 64,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 47,
+              "engine_ttlt_ms": 944,
+              "pre_inference_ms": 87,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 172,
+              "service_ttlt_ms": 1065,
+              "user_visible_ttft_ms": 85
+            },
+            "prompt_tokens": 602,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 692
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "six-frames",
+          "file": "six-frames.png",
+          "mime": "image/png",
+          "bytes": 6673,
+          "sha256": "8fa20ec38b4583e22844089603d06201d370de8f0bacb94a5b67fa70ca60c075",
+          "description": "Six frames, in order: which way does the ball go?: the 6 frames sent to the models, in the order sent. The ball moves from right to left across six frames."
+        }
+      ],
+      "display": [
+        {
+          "type": "image",
+          "artifact": "six-frames",
+          "caption": "The frames in the order sent. The ball moves from right to left across six frames.",
+          "alt": "Contact sheet of 6 frames: Six frames, in order: which way does the ball go?"
+        },
+        {
+          "type": "table",
+          "title": "Ground truth versus each model",
+          "headers": [
+            "Field",
+            "Truth",
+            "GPT-4o",
+            "Correct?",
+            "GPT-5-mini",
+            "Correct?"
+          ],
+          "rows": [
+            [
+              "direction",
+              "right_to_left",
+              "stationary",
+              "NO",
+              "right_to_left",
+              "yes"
+            ],
+            [
+              "crossing_frame",
+              4,
+              0,
+              "NO",
+              4,
+              "yes"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the frames cost",
+          "headers": [
+            "Model",
+            "Frames",
+            "Input tokens",
+            "Input tokens per frame",
+            "Output tokens",
+            "Reasoning tokens",
+            "Latency (ms)"
+          ],
+          "rows": [
+            [
+              "GPT-4o",
+              6,
+              769,
+              128.2,
+              12,
+              0,
+              1821
+            ],
+            [
+              "GPT-5-mini",
+              6,
+              602,
+              100.3,
+              90,
+              64,
+              1561
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "variant": "six",
+        "frames": 6,
+        "truth": {
+          "direction": "right_to_left",
+          "crossing_frame": 4
+        },
+        "sheetSha256": "8fa20ec38b4583e22844089603d06201d370de8f0bacb94a5b67fa70ca60c075",
+        "sheetPixelSha256": "2a875e30ce104aef8ca9206deae8844a8ecd11d52548f099d9d28b11e8ceb991",
+        "answers": [
+          {
+            "model": "GPT-4o",
+            "answer": {
+              "direction": "stationary",
+              "crossing_frame": 0
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "direction",
+                "truth": "right_to_left",
+                "answer": "stationary",
+                "correct": false
+              },
+              {
+                "field": "crossing_frame",
+                "truth": 4,
+                "answer": 0,
+                "correct": false
+              }
+            ],
+            "correct": 0,
+            "promptTokens": 769,
+            "completionTokens": 12,
+            "reasoningTokens": 0,
+            "latencyMs": 1821
+          },
+          {
+            "model": "GPT-5-mini",
+            "answer": {
+              "direction": "right_to_left",
+              "crossing_frame": 4
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "direction",
+                "truth": "right_to_left",
+                "answer": "right_to_left",
+                "correct": true
+              },
+              {
+                "field": "crossing_frame",
+                "truth": 4,
+                "answer": 4,
+                "correct": true
+              }
+            ],
+            "correct": 2,
+            "promptTokens": 602,
+            "completionTokens": 90,
+            "reasoningTokens": 64,
+            "latencyMs": 1561
+          }
+        ],
+        "tokenGrowth": null
+      }
+    },
+    {
+      "label": "Twelve frames of the same motion: more frames, more tokens",
+      "kind": "experiment",
+      "request": {
+        "summary": "Prompt: \"These 12 frames come from a short video, shown in time order and labelled F1 to F12. A dashed vertical line marks the center of every frame. Return JSON with direction (the ball's overall direction: left_to_right, right_to_left, or stationary) and crossing_frame (the number of the first frame in which the center of the ball is already past the dashed line, in the direction the ball travels).\" Each model received the 12 frames as separate images (detail \"low\") plus this text, with a strict JSON schema.",
+        "parameters": {
+          "prompt": "These 12 frames come from a short video, shown in time order and labelled F1 to F12. A dashed vertical line marks the center of every frame. Return JSON with direction (the ball's overall direction: left_to_right, right_to_left, or stationary) and crossing_frame (the number of the first frame in which the center of the ball is already past the dashed line, in the direction the ball travels).",
+          "frames": 12,
+          "detail": "low",
+          "sheetSha256": "dfcd257eb34f51a6bbbf8bf98bf6c9e678a8354fd203f52d10618ba6756fc14d"
+        }
+      },
+      "output": "GPT-4o: direction: right_to_left (truth right_to_left); crossing_frame: 6 (truth 7). 1393 input tokens for 12 frames.\nGPT-5-mini: direction: right_to_left (truth right_to_left); crossing_frame: 7 (truth 7). 1064 input tokens for 12 frames.\nGPT-4o: 769 input tokens for 6 frames, 1393 for 12; GPT-5-mini: 602 input tokens for 6 frames, 1064 for 12.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 3872,
+      "usage": {
+        "input_tokens": 2457,
+        "output_tokens": 167,
+        "total_tokens": 2624
+      },
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 2035,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 13,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 10,
+              "engine_ttft_ms": 273,
+              "engine_ttlt_ms": 420,
+              "pre_inference_ms": 493,
+              "service_tbt_ms": 11,
+              "service_ttft_ms": 1617,
+              "service_ttlt_ms": 1760,
+              "user_visible_ttft_ms": 1124
+            },
+            "prompt_tokens": 1393,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 1406
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 1836,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 154,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 128,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 50,
+              "engine_ttlt_ms": 1070,
+              "pre_inference_ms": 123,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 207,
+              "service_ttlt_ms": 1222,
+              "user_visible_ttft_ms": 84
+            },
+            "prompt_tokens": 1064,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 1218
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "twelve-frames",
+          "file": "twelve-frames.png",
+          "mime": "image/png",
+          "bytes": 14108,
+          "sha256": "dfcd257eb34f51a6bbbf8bf98bf6c9e678a8354fd203f52d10618ba6756fc14d",
+          "description": "Twelve frames of the same motion: more frames, more tokens: the 12 frames sent to the models, in the order sent. The same right-to-left motion, sampled twice as densely."
+        }
+      ],
+      "display": [
+        {
+          "type": "image",
+          "artifact": "twelve-frames",
+          "caption": "The frames in the order sent. The same right-to-left motion, sampled twice as densely.",
+          "alt": "Contact sheet of 12 frames: Twelve frames of the same motion: more frames, more tokens"
+        },
+        {
+          "type": "table",
+          "title": "Ground truth versus each model",
+          "headers": [
+            "Field",
+            "Truth",
+            "GPT-4o",
+            "Correct?",
+            "GPT-5-mini",
+            "Correct?"
+          ],
+          "rows": [
+            [
+              "direction",
+              "right_to_left",
+              "right_to_left",
+              "yes",
+              "right_to_left",
+              "yes"
+            ],
+            [
+              "crossing_frame",
+              7,
+              6,
+              "NO",
+              7,
+              "yes"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the frames cost",
+          "headers": [
+            "Model",
+            "Frames",
+            "Input tokens",
+            "Input tokens per frame",
+            "Output tokens",
+            "Reasoning tokens",
+            "Latency (ms)"
+          ],
+          "rows": [
+            [
+              "GPT-4o",
+              12,
+              1393,
+              116.1,
+              13,
+              0,
+              2035
+            ],
+            [
+              "GPT-5-mini",
+              12,
+              1064,
+              88.7,
+              154,
+              128,
+              1836
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "More frames cost more input tokens, roughly in proportion. GPT-4o: 769 input tokens for 6 frames, 1393 for 12; GPT-5-mini: 602 input tokens for 6 frames, 1064 for 12."
+        }
+      ],
+      "measurements": {
+        "variant": "twelve",
+        "frames": 12,
+        "truth": {
+          "direction": "right_to_left",
+          "crossing_frame": 7
+        },
+        "sheetSha256": "dfcd257eb34f51a6bbbf8bf98bf6c9e678a8354fd203f52d10618ba6756fc14d",
+        "sheetPixelSha256": "151ca6add1f54955268905ae9793f0a18ba04c5c28c7f42146a64dd7341b219e",
+        "answers": [
+          {
+            "model": "GPT-4o",
+            "answer": {
+              "direction": "right_to_left",
+              "crossing_frame": 6
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "direction",
+                "truth": "right_to_left",
+                "answer": "right_to_left",
+                "correct": true
+              },
+              {
+                "field": "crossing_frame",
+                "truth": 7,
+                "answer": 6,
+                "correct": false
+              }
+            ],
+            "correct": 1,
+            "promptTokens": 1393,
+            "completionTokens": 13,
+            "reasoningTokens": 0,
+            "latencyMs": 2035
+          },
+          {
+            "model": "GPT-5-mini",
+            "answer": {
+              "direction": "right_to_left",
+              "crossing_frame": 7
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "direction",
+                "truth": "right_to_left",
+                "answer": "right_to_left",
+                "correct": true
+              },
+              {
+                "field": "crossing_frame",
+                "truth": 7,
+                "answer": 7,
+                "correct": true
+              }
+            ],
+            "correct": 2,
+            "promptTokens": 1064,
+            "completionTokens": 154,
+            "reasoningTokens": 128,
+            "latencyMs": 1836
+          }
+        ],
+        "tokenGrowth": [
+          {
+            "model": "GPT-4o",
+            "six": 769,
+            "twelve": 1393
+          },
+          {
+            "model": "GPT-5-mini",
+            "six": 602,
+            "twelve": 1064
+          }
+        ]
+      }
+    },
+    {
+      "label": "Six shuffled frames: restore the order",
+      "kind": "experiment",
+      "request": {
+        "summary": "Prompt: \"These six frames come from a short video but are shuffled and labelled A to F. In the original video a ball rolls steadily from the left edge toward the right edge. Return JSON with order: the six letters in the order the frames happened, earliest first, using each letter exactly once (for example \"CAFBED\").\" Each model received the 6 frames as separate images (detail \"low\") plus this text, with a strict JSON schema.",
+        "parameters": {
+          "prompt": "These six frames come from a short video but are shuffled and labelled A to F. In the original video a ball rolls steadily from the left edge toward the right edge. Return JSON with order: the six letters in the order the frames happened, earliest first, using each letter exactly once (for example \"CAFBED\").",
+          "frames": 6,
+          "detail": "low",
+          "sheetSha256": "5366c370eb706e7e49cb02f92cb54b49685427fa43059732873cb5a1e881c32a"
+        }
+      },
+      "output": "GPT-4o: exact order: CEFABD (truth ECFABD); letters in the right position: 4 (truth 6); pairs in the right order (of 15): 14 (truth 15). 726 input tokens for 6 frames.\nGPT-5-mini: exact order: ECFABD (truth ECFABD); letters in the right position: 6 (truth 6); pairs in the right order (of 15): 15 (truth 15). 559 input tokens for 6 frames.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 4549,
+      "usage": {
+        "input_tokens": 1285,
+        "output_tokens": 219,
+        "total_tokens": 1504
+      },
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 2413,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 7,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 319,
+              "engine_ttlt_ms": 367,
+              "pre_inference_ms": 351,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 2084,
+              "service_ttlt_ms": 2128,
+              "user_visible_ttft_ms": 1734
+            },
+            "prompt_tokens": 726,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 733
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 2134,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 212,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 192,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 46,
+              "engine_ttlt_ms": 1427,
+              "pre_inference_ms": 98,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 179,
+              "service_ttlt_ms": 1555,
+              "user_visible_ttft_ms": 81
+            },
+            "prompt_tokens": 559,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 771
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "shuffled-frames",
+          "file": "shuffled-frames.png",
+          "mime": "image/png",
+          "bytes": 6516,
+          "sha256": "5366c370eb706e7e49cb02f92cb54b49685427fa43059732873cb5a1e881c32a",
+          "description": "Six shuffled frames: restore the order: the 6 frames sent to the models, in the order sent. Frames are shuffled; the letters carry no time information."
+        }
+      ],
+      "display": [
+        {
+          "type": "image",
+          "artifact": "shuffled-frames",
+          "caption": "The frames in the order sent. Frames are shuffled; the letters carry no time information.",
+          "alt": "Contact sheet of 6 frames: Six shuffled frames: restore the order"
+        },
+        {
+          "type": "table",
+          "title": "Ground truth versus each model",
+          "headers": [
+            "Field",
+            "Truth",
+            "GPT-4o",
+            "Correct?",
+            "GPT-5-mini",
+            "Correct?"
+          ],
+          "rows": [
+            [
+              "exact order",
+              "ECFABD",
+              "CEFABD",
+              "NO",
+              "ECFABD",
+              "yes"
+            ],
+            [
+              "letters in the right position",
+              6,
+              4,
+              "NO",
+              6,
+              "yes"
+            ],
+            [
+              "pairs in the right order (of 15)",
+              15,
+              14,
+              "NO",
+              15,
+              "yes"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the frames cost",
+          "headers": [
+            "Model",
+            "Frames",
+            "Input tokens",
+            "Input tokens per frame",
+            "Output tokens",
+            "Reasoning tokens",
+            "Latency (ms)"
+          ],
+          "rows": [
+            [
+              "GPT-4o",
+              6,
+              726,
+              121,
+              7,
+              0,
+              2413
+            ],
+            [
+              "GPT-5-mini",
+              6,
+              559,
+              93.2,
+              212,
+              192,
+              2134
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "variant": "shuffled",
+        "frames": 6,
+        "truth": {
+          "order": "ECFABD"
+        },
+        "sheetSha256": "5366c370eb706e7e49cb02f92cb54b49685427fa43059732873cb5a1e881c32a",
+        "sheetPixelSha256": "a709631f35af90fe521e1ed663d19ab7e9ff98ca8c6dbcb7068c3d674d114cbc",
+        "answers": [
+          {
+            "model": "GPT-4o",
+            "answer": {
+              "order": "CEFABD"
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "exact order",
+                "truth": "ECFABD",
+                "answer": "CEFABD",
+                "correct": false
+              },
+              {
+                "field": "letters in the right position",
+                "truth": 6,
+                "answer": 4,
+                "correct": false
+              },
+              {
+                "field": "pairs in the right order (of 15)",
+                "truth": 15,
+                "answer": 14,
+                "correct": false
+              }
+            ],
+            "correct": 0,
+            "promptTokens": 726,
+            "completionTokens": 7,
+            "reasoningTokens": 0,
+            "latencyMs": 2413
+          },
+          {
+            "model": "GPT-5-mini",
+            "answer": {
+              "order": "ECFABD"
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "exact order",
+                "truth": "ECFABD",
+                "answer": "ECFABD",
+                "correct": true
+              },
+              {
+                "field": "letters in the right position",
+                "truth": 6,
+                "answer": 6,
+                "correct": true
+              },
+              {
+                "field": "pairs in the right order (of 15)",
+                "truth": 15,
+                "answer": 15,
+                "correct": true
+              }
+            ],
+            "correct": 3,
+            "promptTokens": 559,
+            "completionTokens": 212,
+            "reasoningTokens": 192,
+            "latencyMs": 2134
+          }
+        ],
+        "tokenGrowth": null
+      }
+    },
+    {
+      "label": "A wheel turning slowly between frames",
+      "kind": "experiment",
+      "request": {
+        "summary": "Prompt: \"These six frames are consecutive samples from a video of a spinning wheel with three identical spokes, shown in time order and labelled F1 to F6. Return JSON with rotation: clockwise, counterclockwise, or unclear.\" Each model received the 6 frames as separate images (detail \"low\") plus this text, with a strict JSON schema.",
+        "parameters": {
+          "prompt": "These six frames are consecutive samples from a video of a spinning wheel with three identical spokes, shown in time order and labelled F1 to F6. Return JSON with rotation: clockwise, counterclockwise, or unclear.",
+          "frames": 6,
+          "detail": "low",
+          "sheetSha256": "1ac0f45cd3ad57efd06e9617e50ace75f78e8b783cbdecdfda0e9617a9c4a8f6"
+        }
+      },
+      "output": "GPT-4o: matches how we generated it: clockwise (truth clockwise); matches what the frames show: clockwise (truth clockwise). 716 input tokens for 6 frames.\nGPT-5-mini: matches how we generated it: clockwise (truth clockwise); matches what the frames show: clockwise (truth clockwise). 550 input tokens for 6 frames.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 5093,
+      "usage": {
+        "input_tokens": 1266,
+        "output_tokens": 344,
+        "total_tokens": 1610
+      },
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 2140,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 6,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 8,
+              "engine_ttft_ms": 409,
+              "engine_ttlt_ms": 464,
+              "pre_inference_ms": 264,
+              "service_tbt_ms": 9,
+              "service_ttft_ms": 1688,
+              "service_ttlt_ms": 1739,
+              "user_visible_ttft_ms": 1424
+            },
+            "prompt_tokens": 716,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 722
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 2952,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 338,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 320,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 7,
+              "engine_ttft_ms": 42,
+              "engine_ttlt_ms": 2413,
+              "pre_inference_ms": 107,
+              "service_tbt_ms": 7,
+              "service_ttft_ms": 183,
+              "service_ttlt_ms": 2549,
+              "user_visible_ttft_ms": 76
+            },
+            "prompt_tokens": 550,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 888
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "wheel-dense-frames",
+          "file": "wheel-dense-frames.png",
+          "mime": "image/png",
+          "bytes": 10256,
+          "sha256": "1ac0f45cd3ad57efd06e9617e50ace75f78e8b783cbdecdfda0e9617a9c4a8f6",
+          "description": "A wheel turning slowly between frames: the 6 frames sent to the models, in the order sent. Generated at 20 degrees clockwise per frame. The spokes repeat every 120 degrees, so these frames show the true motion."
+        }
+      ],
+      "display": [
+        {
+          "type": "image",
+          "artifact": "wheel-dense-frames",
+          "caption": "The frames in the order sent. Generated at 20 degrees clockwise per frame. The spokes repeat every 120 degrees, so these frames show the true motion.",
+          "alt": "Contact sheet of 6 frames: A wheel turning slowly between frames"
+        },
+        {
+          "type": "table",
+          "title": "Ground truth versus each model",
+          "headers": [
+            "Field",
+            "Truth",
+            "GPT-4o",
+            "Correct?",
+            "GPT-5-mini",
+            "Correct?"
+          ],
+          "rows": [
+            [
+              "matches how we generated it",
+              "clockwise",
+              "clockwise",
+              "yes",
+              "clockwise",
+              "yes"
+            ],
+            [
+              "matches what the frames show",
+              "clockwise",
+              "clockwise",
+              "yes",
+              "clockwise",
+              "yes"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the frames cost",
+          "headers": [
+            "Model",
+            "Frames",
+            "Input tokens",
+            "Input tokens per frame",
+            "Output tokens",
+            "Reasoning tokens",
+            "Latency (ms)"
+          ],
+          "rows": [
+            [
+              "GPT-4o",
+              6,
+              716,
+              119.3,
+              6,
+              0,
+              2140
+            ],
+            [
+              "GPT-5-mini",
+              6,
+              550,
+              91.7,
+              338,
+              320,
+              2952
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "variant": "wheel-dense",
+        "frames": 6,
+        "truth": {
+          "generated": "clockwise",
+          "apparent": "clockwise",
+          "degreesPerFrame": 20
+        },
+        "sheetSha256": "1ac0f45cd3ad57efd06e9617e50ace75f78e8b783cbdecdfda0e9617a9c4a8f6",
+        "sheetPixelSha256": "0eece95b12a91f27b0d70620b1a29448fd794ede06a433614075449a409719c8",
+        "answers": [
+          {
+            "model": "GPT-4o",
+            "answer": {
+              "rotation": "clockwise"
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "matches how we generated it",
+                "truth": "clockwise",
+                "answer": "clockwise",
+                "correct": true
+              },
+              {
+                "field": "matches what the frames show",
+                "truth": "clockwise",
+                "answer": "clockwise",
+                "correct": true
+              }
+            ],
+            "correct": 2,
+            "promptTokens": 716,
+            "completionTokens": 6,
+            "reasoningTokens": 0,
+            "latencyMs": 2140
+          },
+          {
+            "model": "GPT-5-mini",
+            "answer": {
+              "rotation": "clockwise"
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "matches how we generated it",
+                "truth": "clockwise",
+                "answer": "clockwise",
+                "correct": true
+              },
+              {
+                "field": "matches what the frames show",
+                "truth": "clockwise",
+                "answer": "clockwise",
+                "correct": true
+              }
+            ],
+            "correct": 2,
+            "promptTokens": 550,
+            "completionTokens": 338,
+            "reasoningTokens": 320,
+            "latencyMs": 2952
+          }
+        ],
+        "tokenGrowth": null
+      }
+    },
+    {
+      "label": "The same wheel sampled too sparsely",
+      "kind": "experiment",
+      "request": {
+        "summary": "Prompt: \"These six frames are consecutive samples from a video of a spinning wheel with three identical spokes, shown in time order and labelled F1 to F6. Return JSON with rotation: clockwise, counterclockwise, or unclear.\" Each model received the 6 frames as separate images (detail \"low\") plus this text, with a strict JSON schema.",
+        "parameters": {
+          "prompt": "These six frames are consecutive samples from a video of a spinning wheel with three identical spokes, shown in time order and labelled F1 to F6. Return JSON with rotation: clockwise, counterclockwise, or unclear.",
+          "frames": 6,
+          "detail": "low",
+          "sheetSha256": "bc4c42e6701c371f20e4a30aa3b81f1608af37a32c1c5ffe97877bd9c0f95e52"
+        }
+      },
+      "output": "GPT-4o: matches how we generated it: clockwise (truth clockwise); matches what the frames show: clockwise (truth counterclockwise). 716 input tokens for 6 frames.\nGPT-5-mini: matches how we generated it: clockwise (truth clockwise); matches what the frames show: clockwise (truth counterclockwise). 550 input tokens for 6 frames.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07",
+      "finishReason": "completed",
+      "latencyMs": 4925,
+      "usage": {
+        "input_tokens": 1266,
+        "output_tokens": 280,
+        "total_tokens": 1546
+      },
+      "apiRequests": 2,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 2381,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 6,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 405,
+              "engine_ttlt_ms": 447,
+              "pre_inference_ms": 277,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 2032,
+              "service_ttlt_ms": 2070,
+              "user_visible_ttft_ms": 1755
+            },
+            "prompt_tokens": 716,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 722
+          }
+        },
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-5-mini",
+          "latencyMs": 2542,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-5-mini-2025-08-07",
+          "usage": {
+            "completion_tokens": 274,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 256,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 6,
+              "engine_ttft_ms": 49,
+              "engine_ttlt_ms": 1898,
+              "pre_inference_ms": 116,
+              "service_tbt_ms": 6,
+              "service_ttft_ms": 195,
+              "service_ttlt_ms": 2039,
+              "user_visible_ttft_ms": 79
+            },
+            "prompt_tokens": 550,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 824
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "wheel-sparse-frames",
+          "file": "wheel-sparse-frames.png",
+          "mime": "image/png",
+          "bytes": 10251,
+          "sha256": "bc4c42e6701c371f20e4a30aa3b81f1608af37a32c1c5ffe97877bd9c0f95e52",
+          "description": "The same wheel sampled too sparsely: the 6 frames sent to the models, in the order sent. Generated at 100 degrees clockwise per frame. The spokes repeat every 120 degrees, so these frames are identical to a wheel turning 20 degrees counterclockwise per frame."
+        }
+      ],
+      "display": [
+        {
+          "type": "image",
+          "artifact": "wheel-sparse-frames",
+          "caption": "The frames in the order sent. Generated at 100 degrees clockwise per frame. The spokes repeat every 120 degrees, so these frames are identical to a wheel turning 20 degrees counterclockwise per frame.",
+          "alt": "Contact sheet of 6 frames: The same wheel sampled too sparsely"
+        },
+        {
+          "type": "table",
+          "title": "Ground truth versus each model",
+          "headers": [
+            "Field",
+            "Truth",
+            "GPT-4o",
+            "Correct?",
+            "GPT-5-mini",
+            "Correct?"
+          ],
+          "rows": [
+            [
+              "matches how we generated it",
+              "clockwise",
+              "clockwise",
+              "yes",
+              "clockwise",
+              "yes"
+            ],
+            [
+              "matches what the frames show",
+              "counterclockwise",
+              "clockwise",
+              "NO",
+              "clockwise",
+              "NO"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "What the frames cost",
+          "headers": [
+            "Model",
+            "Frames",
+            "Input tokens",
+            "Input tokens per frame",
+            "Output tokens",
+            "Reasoning tokens",
+            "Latency (ms)"
+          ],
+          "rows": [
+            [
+              "GPT-4o",
+              6,
+              716,
+              119.3,
+              6,
+              0,
+              2381
+            ],
+            [
+              "GPT-5-mini",
+              6,
+              550,
+              91.7,
+              274,
+              256,
+              2542
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Aliasing: Generated at 100 degrees clockwise per frame. The spokes repeat every 120 degrees, so these frames are identical to a wheel turning 20 degrees counterclockwise per frame. The frames alone cannot say which happened. An answer of \"clockwise\" matches how we generated the clip but is not supported by the frames, and \"counterclockwise\" is what the frames literally show. Compare the answers above with the slowly turning wheel: if a model also errs there, its answers are weak evidence either way. The fix is a higher frame rate, not a bigger model."
+        }
+      ],
+      "measurements": {
+        "variant": "wheel-sparse",
+        "frames": 6,
+        "truth": {
+          "generated": "clockwise",
+          "apparent": "counterclockwise",
+          "degreesPerFrame": 100
+        },
+        "sheetSha256": "bc4c42e6701c371f20e4a30aa3b81f1608af37a32c1c5ffe97877bd9c0f95e52",
+        "sheetPixelSha256": "608fad4d1d2bd928d57cb4c6af290cbecf336b9b8095d51e390c274f36e25b84",
+        "answers": [
+          {
+            "model": "GPT-4o",
+            "answer": {
+              "rotation": "clockwise"
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "matches how we generated it",
+                "truth": "clockwise",
+                "answer": "clockwise",
+                "correct": true
+              },
+              {
+                "field": "matches what the frames show",
+                "truth": "counterclockwise",
+                "answer": "clockwise",
+                "correct": false
+              }
+            ],
+            "correct": 1,
+            "promptTokens": 716,
+            "completionTokens": 6,
+            "reasoningTokens": 0,
+            "latencyMs": 2381
+          },
+          {
+            "model": "GPT-5-mini",
+            "answer": {
+              "rotation": "clockwise"
+            },
+            "parseError": null,
+            "rows": [
+              {
+                "field": "matches how we generated it",
+                "truth": "clockwise",
+                "answer": "clockwise",
+                "correct": true
+              },
+              {
+                "field": "matches what the frames show",
+                "truth": "counterclockwise",
+                "answer": "clockwise",
+                "correct": false
+              }
+            ],
+            "correct": 1,
+            "promptTokens": 550,
+            "completionTokens": 274,
+            "reasoningTokens": 256,
+            "latencyMs": 2542
+          }
+        ],
+        "tokenGrowth": null
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "Every clip is redrawn pixel-for-pixel, so the ground truth is exact",
+      "passed": true,
+      "detail": "Seeded drawing reproduces the pixel hash of all five recorded contact sheets."
+    },
+    {
+      "name": "Every model returned parseable JSON for every clip",
+      "passed": true,
+      "detail": "10 of 10 answers parsed against the strict schema."
+    },
+    {
+      "name": "More frames cost more input tokens",
+      "passed": true,
+      "detail": "GPT-4o 769 to 1393; GPT-5-mini 602 to 1064."
+    },
+    {
+      "name": "The shuffled clip really is shuffled",
+      "passed": true,
+      "detail": "Chronological order of the lettered frames: ECFABD."
+    },
+    {
+      "name": "The sparse wheel really is aliased while the dense wheel is not",
+      "passed": true,
+      "detail": "Sparse: generated clockwise, frames show counterclockwise."
+    },
+    {
+      "name": "Correctness is reported per field for both models",
+      "passed": true,
+      "detail": "six: GPT-4o 0/2, GPT-5-mini 2/2; twelve: GPT-4o 1/2, GPT-5-mini 2/2; shuffled: GPT-4o 0/3, GPT-5-mini 3/3; wheel-dense: GPT-4o 2/2, GPT-5-mini 2/2; wheel-sparse: GPT-4o 1/2, GPT-5-mini 1/2"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "six-frames",
+      "file": "six-frames.png",
+      "mime": "image/png",
+      "bytes": 6673,
+      "sha256": "8fa20ec38b4583e22844089603d06201d370de8f0bacb94a5b67fa70ca60c075",
+      "description": "Six frames, in order: which way does the ball go?: the 6 frames sent to the models, in the order sent. The ball moves from right to left across six frames."
+    },
+    {
+      "id": "twelve-frames",
+      "file": "twelve-frames.png",
+      "mime": "image/png",
+      "bytes": 14108,
+      "sha256": "dfcd257eb34f51a6bbbf8bf98bf6c9e678a8354fd203f52d10618ba6756fc14d",
+      "description": "Twelve frames of the same motion: more frames, more tokens: the 12 frames sent to the models, in the order sent. The same right-to-left motion, sampled twice as densely."
+    },
+    {
+      "id": "shuffled-frames",
+      "file": "shuffled-frames.png",
+      "mime": "image/png",
+      "bytes": 6516,
+      "sha256": "5366c370eb706e7e49cb02f92cb54b49685427fa43059732873cb5a1e881c32a",
+      "description": "Six shuffled frames: restore the order: the 6 frames sent to the models, in the order sent. Frames are shuffled; the letters carry no time information."
+    },
+    {
+      "id": "wheel-dense-frames",
+      "file": "wheel-dense-frames.png",
+      "mime": "image/png",
+      "bytes": 10256,
+      "sha256": "1ac0f45cd3ad57efd06e9617e50ace75f78e8b783cbdecdfda0e9617a9c4a8f6",
+      "description": "A wheel turning slowly between frames: the 6 frames sent to the models, in the order sent. Generated at 20 degrees clockwise per frame. The spokes repeat every 120 degrees, so these frames show the true motion."
+    },
+    {
+      "id": "wheel-sparse-frames",
+      "file": "wheel-sparse-frames.png",
+      "mime": "image/png",
+      "bytes": 10251,
+      "sha256": "bc4c42e6701c371f20e4a30aa3b81f1608af37a32c1c5ffe97877bd9c0f95e52",
+      "description": "The same wheel sampled too sparsely: the 6 frames sent to the models, in the order sent. Generated at 100 degrees clockwise per frame. The spokes repeat every 120 degrees, so these frames are identical to a wheel turning 20 degrees counterclockwise per frame."
+    }
+  ],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-qn4z1aa",
+    "runId": "e526795c-40db-4b11-a7d9-278778184467"
+  }
+}

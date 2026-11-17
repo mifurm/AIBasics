@@ -14,11 +14,22 @@ try {
   } });
   const config = await loadConfig();
   await stat('site/index.html');
-  const allowed = new Set(['index.html', '404.html', 'app.js', 'style.css', 'results.json', 'transformer.svg']);
+  const allowed = new Set(['index.html', '404.html', 'app.js', 'style.css', 'results.json', 'transformer.svg', 'media']);
   const entries = await readdir('site');
   if (entries.some(entry => !allowed.has(entry))) throw new Error('Unexpected site file; refusing to publish unreviewed content.');
   staging = await mkdtemp(path.join(tmpdir(), 'ai-basics-publish-'));
-  for (const entry of entries) await copyFile(path.join('site', entry), path.join(staging, entry));
+  for (const entry of entries.filter(entry => entry !== 'media')) await copyFile(path.join('site', entry), path.join(staging, entry));
+  if (entries.includes('media')) {
+    const known = new Set(labs.map(lab => lab.id));
+    for (const labId of await readdir('site/media')) {
+      if (!known.has(labId)) throw new Error(`Unexpected media directory: ${labId}`);
+      await mkdir(path.join(staging, 'media', labId), { recursive: true });
+      for (const file of await readdir(path.join('site/media', labId))) {
+        if (!/^[a-z0-9]+(-[a-z0-9]+)*\.(png|wav|svg)$/.test(file)) throw new Error(`Unexpected media file; refusing to publish: ${labId}/${file}`);
+        await copyFile(path.join('site/media', labId, file), path.join(staging, 'media', labId, file));
+      }
+    }
+  }
   if (values['media-directory']) {
     await mkdir(path.join(staging, 'recordings'));
     for (const lab of labs) {

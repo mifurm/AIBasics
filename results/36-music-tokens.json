@@ -1,0 +1,1141 @@
+{
+  "labId": "36-music-tokens",
+  "recordedAt": "2026-11-16T21:34:15.786Z",
+  "results": [
+    {
+      "label": "Random notes (the baseline)",
+      "kind": "experiment",
+      "request": {
+        "summary": "Draw 30 melodies by choosing every pitch (or rest) and duration uniformly at random until 32 eighth-note slots are filled. The first (seed 100) is rendered to audio."
+      },
+      "output": "D4:2 G4:4 G4:3 C4:3 E4:3 A4:1 D4:1 F4:4 C4:3 E4:1 B4:3 C5:1 A4:3\nThis melody: 17% stepwise, 25% large leaps, ends on the tonic: no.\nAudio check: 13 of 13 notes measured within 50 cents of the written pitch.\nAcross 30 melodies: 34% stepwise, 10.57 distinct tokens, 0% of 4-token runs copied from the nine training tunes.",
+      "outputSource": "computation",
+      "actualModel": "local-computation",
+      "finishReason": "completed",
+      "latencyMs": 129,
+      "usage": null,
+      "apiRequests": 0,
+      "apiCalls": [],
+      "artifacts": [
+        {
+          "id": "random-audio",
+          "file": "random-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 256044,
+          "sha256": "040f7491b206e3019d5019db4ff3aef23e0dc62a7687c58fc58d5329a6ef4c02",
+          "description": "Random notes (the baseline): 8 seconds, 120 beats per minute, 16 kHz mono."
+        },
+        {
+          "id": "random-piano-roll",
+          "file": "random-piano-roll.png",
+          "mime": "image/png",
+          "bytes": 1771,
+          "sha256": "5f7f25ef798a85c774843447eca6978374bab232460d93c62991a7c150b45ec8",
+          "description": "Piano roll of the melody for Random notes (the baseline): pitch up, time to the right, four bars."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "random-audio",
+          "caption": "Random notes (the baseline). 32 eighth notes at 120 beats per minute is 8 seconds."
+        },
+        {
+          "type": "image",
+          "artifact": "random-piano-roll",
+          "caption": "Piano roll: higher notes are higher up, time runs left to right, vertical lines mark bars, and the gray line is a rest.",
+          "alt": "Piano roll for Random notes (the baseline)"
+        },
+        {
+          "type": "code",
+          "title": "The melody as tokens (PITCH:eighth-note-duration)",
+          "text": "D4:2 G4:4 G4:3 C4:3 E4:3 A4:1 D4:1 F4:4 C4:3 E4:1 B4:3 C5:1 A4:3"
+        },
+        {
+          "type": "table",
+          "title": "Music-theory measurements (mean of 30 melodies)",
+          "headers": [
+            "Composer",
+            "Stepwise motion",
+            "Large leaps (4+ steps)",
+            "Range (scale steps)",
+            "Ends on tonic",
+            "Repeated note pairs",
+            "Distinct tokens",
+            "Copied from training (4-token runs)"
+          ],
+          "rows": [
+            [
+              "Random notes (the baseline)",
+              "34%",
+              "30%",
+              6.5,
+              "30%",
+              "6%",
+              10.57,
+              "0%"
+            ],
+            [
+              "Nine training tunes",
+              "88%",
+              "4%",
+              3.67,
+              "56%",
+              "32%",
+              6.56,
+              "not applicable"
+            ]
+          ]
+        },
+        {
+          "type": "bars",
+          "title": "Variety: distinct tokens per melody (mean)",
+          "items": [
+            {
+              "label": "Random notes (the baseline)",
+              "value": 10.57,
+              "max": 12,
+              "detail": 10.57
+            },
+            {
+              "label": "Nine training tunes",
+              "value": 6.56,
+              "max": 12,
+              "detail": 6.56
+            }
+          ]
+        },
+        {
+          "type": "bars",
+          "title": "Stepwise motion (mean)",
+          "items": [
+            {
+              "label": "Random notes (the baseline)",
+              "value": 34.1,
+              "max": 100,
+              "detail": "34%"
+            },
+            {
+              "label": "Nine training tunes",
+              "value": 88.3,
+              "max": 100,
+              "detail": "88%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Audio verification: does the sound match the notes?",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Notes checked by pitch tracking",
+              13
+            ],
+            [
+              "Within 50 cents of the written pitch",
+              13
+            ],
+            [
+              "Worst error (cents)",
+              0.13
+            ]
+          ]
+        }
+      ],
+      "measurements": {
+        "tokens": "D4:2 G4:4 G4:3 C4:3 E4:3 A4:1 D4:1 F4:4 C4:3 E4:1 B4:3 C5:1 A4:3",
+        "events": [
+          {
+            "pitch": "D4",
+            "duration": 2
+          },
+          {
+            "pitch": "G4",
+            "duration": 4
+          },
+          {
+            "pitch": "G4",
+            "duration": 3
+          },
+          {
+            "pitch": "C4",
+            "duration": 3
+          },
+          {
+            "pitch": "E4",
+            "duration": 3
+          },
+          {
+            "pitch": "A4",
+            "duration": 1
+          },
+          {
+            "pitch": "D4",
+            "duration": 1
+          },
+          {
+            "pitch": "F4",
+            "duration": 4
+          },
+          {
+            "pitch": "C4",
+            "duration": 3
+          },
+          {
+            "pitch": "E4",
+            "duration": 1
+          },
+          {
+            "pitch": "B4",
+            "duration": 3
+          },
+          {
+            "pitch": "C5",
+            "duration": 1
+          },
+          {
+            "pitch": "A4",
+            "duration": 3
+          }
+        ],
+        "features": {
+          "events": 13,
+          "uniqueTokens": 12,
+          "stepwiseRatio": 0.16666666666666666,
+          "leapRatio": 0.25,
+          "rangeSteps": 7,
+          "endsOnTonic": false,
+          "repetition": 0.08333333333333337,
+          "restShare": 0,
+          "rhythmVariety": 4
+        },
+        "statistics": {
+          "samples": 30,
+          "mean": {
+            "events": 12.633333333333333,
+            "uniqueTokens": 10.566666666666666,
+            "stepwiseRatio": 0.341482313982314,
+            "leapRatio": 0.29538396788396787,
+            "rangeSteps": 6.5,
+            "endsOnTonic": 0.3,
+            "repetition": 0.06073065823065823,
+            "restShare": 0.09375,
+            "rhythmVariety": 3.8
+          },
+          "copied": 0
+        },
+        "render": {
+          "checked": 13,
+          "verified": 13,
+          "worstCents": 0.13
+        },
+        "seed": 100
+      }
+    },
+    {
+      "label": "A next-note model trained on nine tunes, low temperature",
+      "kind": "experiment",
+      "request": {
+        "summary": "Train a next-note (bigram) model on nine public-domain phrases and sample 30 melodies at temperature 0.7. The first (seed 200) is rendered."
+      },
+      "output": "C4:2 D4:2 C4:2 D4:2 E4:2 D4:2 E4:2 E4:2 C4:2 C4:2 D4:2 E4:2 C4:2 C4:2 E4:2 C4:2\nThis melody: 73% stepwise, 0% large leaps, ends on the tonic: yes.\nAudio check: 16 of 16 notes measured within 50 cents of the written pitch.\nAcross 30 melodies: 88% stepwise, 6.3 distinct tokens, 25% of 4-token runs copied from the nine training tunes.\nTraining: count which note event follows each note event in nine simplified public-domain phrases, then sample the next event in proportion to those counts. This is the same idea as Lab 00 with a much shorter memory and a vocabulary of notes instead of words.",
+      "outputSource": "computation",
+      "actualModel": "local-computation",
+      "finishReason": "completed",
+      "latencyMs": 48,
+      "usage": null,
+      "apiRequests": 0,
+      "apiCalls": [],
+      "artifacts": [
+        {
+          "id": "bigram-low-audio",
+          "file": "bigram-low-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 256044,
+          "sha256": "dc9781602c7f4a2dd5c0a80d0a670e9af4c242daf6ad1984f3a6fbc45561d5b2",
+          "description": "A next-note model trained on nine tunes, low temperature: 8 seconds, 120 beats per minute, 16 kHz mono."
+        },
+        {
+          "id": "bigram-low-piano-roll",
+          "file": "bigram-low-piano-roll.png",
+          "mime": "image/png",
+          "bytes": 1685,
+          "sha256": "3101b92f69f61e305c91bd0ec907d6a74bafd593dcb09ead9b6c75939904391f",
+          "description": "Piano roll of the melody for A next-note model trained on nine tunes, low temperature: pitch up, time to the right, four bars."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "bigram-low-audio",
+          "caption": "A next-note model trained on nine tunes, low temperature. 32 eighth notes at 120 beats per minute is 8 seconds."
+        },
+        {
+          "type": "image",
+          "artifact": "bigram-low-piano-roll",
+          "caption": "Piano roll: higher notes are higher up, time runs left to right, vertical lines mark bars, and the gray line is a rest.",
+          "alt": "Piano roll for A next-note model trained on nine tunes, low temperature"
+        },
+        {
+          "type": "code",
+          "title": "The melody as tokens (PITCH:eighth-note-duration)",
+          "text": "C4:2 D4:2 C4:2 D4:2 E4:2 D4:2 E4:2 E4:2 C4:2 C4:2 D4:2 E4:2 C4:2 C4:2 E4:2 C4:2"
+        },
+        {
+          "type": "table",
+          "title": "Music-theory measurements (mean of 30 melodies)",
+          "headers": [
+            "Composer",
+            "Stepwise motion",
+            "Large leaps (4+ steps)",
+            "Range (scale steps)",
+            "Ends on tonic",
+            "Repeated note pairs",
+            "Distinct tokens",
+            "Copied from training (4-token runs)"
+          ],
+          "rows": [
+            [
+              "A next-note model trained on nine tunes, low temperature",
+              "88%",
+              "4%",
+              3.83,
+              "33%",
+              "36%",
+              6.3,
+              "25%"
+            ],
+            [
+              "Nine training tunes",
+              "88%",
+              "4%",
+              3.67,
+              "56%",
+              "32%",
+              6.56,
+              "not applicable"
+            ]
+          ]
+        },
+        {
+          "type": "bars",
+          "title": "Variety: distinct tokens per melody (mean)",
+          "items": [
+            {
+              "label": "A next-note model trained on nine tunes, low temperature",
+              "value": 6.3,
+              "max": 12,
+              "detail": 6.3
+            },
+            {
+              "label": "Nine training tunes",
+              "value": 6.56,
+              "max": 12,
+              "detail": 6.56
+            }
+          ]
+        },
+        {
+          "type": "bars",
+          "title": "Stepwise motion (mean)",
+          "items": [
+            {
+              "label": "A next-note model trained on nine tunes, low temperature",
+              "value": 87.7,
+              "max": 100,
+              "detail": "88%"
+            },
+            {
+              "label": "Nine training tunes",
+              "value": 88.3,
+              "max": 100,
+              "detail": "88%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Audio verification: does the sound match the notes?",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Notes checked by pitch tracking",
+              16
+            ],
+            [
+              "Within 50 cents of the written pitch",
+              16
+            ],
+            [
+              "Worst error (cents)",
+              0.02
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Training: count which note event follows each note event in nine simplified public-domain phrases, then sample the next event in proportion to those counts. This is the same idea as Lab 00 with a much shorter memory and a vocabulary of notes instead of words."
+        }
+      ],
+      "measurements": {
+        "tokens": "C4:2 D4:2 C4:2 D4:2 E4:2 D4:2 E4:2 E4:2 C4:2 C4:2 D4:2 E4:2 C4:2 C4:2 E4:2 C4:2",
+        "events": [
+          {
+            "pitch": "C4",
+            "duration": 2
+          },
+          {
+            "pitch": "D4",
+            "duration": 2
+          },
+          {
+            "pitch": "C4",
+            "duration": 2
+          },
+          {
+            "pitch": "D4",
+            "duration": 2
+          },
+          {
+            "pitch": "E4",
+            "duration": 2
+          },
+          {
+            "pitch": "D4",
+            "duration": 2
+          },
+          {
+            "pitch": "E4",
+            "duration": 2
+          },
+          {
+            "pitch": "E4",
+            "duration": 2
+          },
+          {
+            "pitch": "C4",
+            "duration": 2
+          },
+          {
+            "pitch": "C4",
+            "duration": 2
+          },
+          {
+            "pitch": "D4",
+            "duration": 2
+          },
+          {
+            "pitch": "E4",
+            "duration": 2
+          },
+          {
+            "pitch": "C4",
+            "duration": 2
+          },
+          {
+            "pitch": "C4",
+            "duration": 2
+          },
+          {
+            "pitch": "E4",
+            "duration": 2
+          },
+          {
+            "pitch": "C4",
+            "duration": 2
+          }
+        ],
+        "features": {
+          "events": 16,
+          "uniqueTokens": 3,
+          "stepwiseRatio": 0.7333333333333333,
+          "leapRatio": 0,
+          "rangeSteps": 2,
+          "endsOnTonic": true,
+          "repetition": 0.4666666666666667,
+          "restShare": 0,
+          "rhythmVariety": 1
+        },
+        "statistics": {
+          "samples": 30,
+          "mean": {
+            "events": 15.266666666666667,
+            "uniqueTokens": 6.3,
+            "stepwiseRatio": 0.8773471947156158,
+            "leapRatio": 0.042176833887360196,
+            "rangeSteps": 3.8333333333333335,
+            "endsOnTonic": 0.3333333333333333,
+            "repetition": 0.3578329078329079,
+            "restShare": 0.029166666666666667,
+            "rhythmVariety": 2.2
+          },
+          "copied": 0.25146965779318714
+        },
+        "render": {
+          "checked": 16,
+          "verified": 16,
+          "worstCents": 0.02
+        },
+        "seed": 200,
+        "temperature": 0.7
+      }
+    },
+    {
+      "label": "The same model, high temperature",
+      "kind": "experiment",
+      "request": {
+        "summary": "Sample 30 melodies from the same trained model at temperature 1.6, which flattens its next-token probabilities. The first (seed 300) is rendered."
+      },
+      "output": "E4:2 E4:2 C4:2 D4:2 D4:2 E4:4 D4:2 C4:2 G4:1 A4:1 G4:1 F4:1 E4:2 D4:4 E4:2 D4:2\nThis melody: 87% stepwise, 7% large leaps, ends on the tonic: no.\nAudio check: 16 of 16 notes measured within 50 cents of the written pitch.\nAcross 30 melodies: 85% stepwise, 7.47 distinct tokens, 22% of 4-token runs copied from the nine training tunes.\nHigher temperature flattens the model's next-note probabilities, so it picks less common continuations more often. It can only choose among continuations it has seen, so it adds variety but cannot invent a style it never learned.",
+      "outputSource": "computation",
+      "actualModel": "local-computation",
+      "finishReason": "completed",
+      "latencyMs": 45,
+      "usage": null,
+      "apiRequests": 0,
+      "apiCalls": [],
+      "artifacts": [
+        {
+          "id": "bigram-high-audio",
+          "file": "bigram-high-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 256044,
+          "sha256": "1ca99a874678e394ce0f178ec2c88772de0b51dbeae5dff226b20a5a765e9481",
+          "description": "The same model, high temperature: 8 seconds, 120 beats per minute, 16 kHz mono."
+        },
+        {
+          "id": "bigram-high-piano-roll",
+          "file": "bigram-high-piano-roll.png",
+          "mime": "image/png",
+          "bytes": 1742,
+          "sha256": "ca1a06e4e4bbf7bb0afd1e5753b0c9dd2f27e890822530931440983e7f968f6a",
+          "description": "Piano roll of the melody for The same model, high temperature: pitch up, time to the right, four bars."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "bigram-high-audio",
+          "caption": "The same model, high temperature. 32 eighth notes at 120 beats per minute is 8 seconds."
+        },
+        {
+          "type": "image",
+          "artifact": "bigram-high-piano-roll",
+          "caption": "Piano roll: higher notes are higher up, time runs left to right, vertical lines mark bars, and the gray line is a rest.",
+          "alt": "Piano roll for The same model, high temperature"
+        },
+        {
+          "type": "code",
+          "title": "The melody as tokens (PITCH:eighth-note-duration)",
+          "text": "E4:2 E4:2 C4:2 D4:2 D4:2 E4:4 D4:2 C4:2 G4:1 A4:1 G4:1 F4:1 E4:2 D4:4 E4:2 D4:2"
+        },
+        {
+          "type": "table",
+          "title": "Music-theory measurements (mean of 30 melodies)",
+          "headers": [
+            "Composer",
+            "Stepwise motion",
+            "Large leaps (4+ steps)",
+            "Range (scale steps)",
+            "Ends on tonic",
+            "Repeated note pairs",
+            "Distinct tokens",
+            "Copied from training (4-token runs)"
+          ],
+          "rows": [
+            [
+              "The same model, high temperature",
+              "85%",
+              "5%",
+              4.07,
+              "20%",
+              "29%",
+              7.47,
+              "22%"
+            ],
+            [
+              "Nine training tunes",
+              "88%",
+              "4%",
+              3.67,
+              "56%",
+              "32%",
+              6.56,
+              "not applicable"
+            ]
+          ]
+        },
+        {
+          "type": "bars",
+          "title": "Variety: distinct tokens per melody (mean)",
+          "items": [
+            {
+              "label": "The same model, high temperature",
+              "value": 7.47,
+              "max": 12,
+              "detail": 7.47
+            },
+            {
+              "label": "Nine training tunes",
+              "value": 6.56,
+              "max": 12,
+              "detail": 6.56
+            }
+          ]
+        },
+        {
+          "type": "bars",
+          "title": "Stepwise motion (mean)",
+          "items": [
+            {
+              "label": "The same model, high temperature",
+              "value": 84.8,
+              "max": 100,
+              "detail": "85%"
+            },
+            {
+              "label": "Nine training tunes",
+              "value": 88.3,
+              "max": 100,
+              "detail": "88%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Audio verification: does the sound match the notes?",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Notes checked by pitch tracking",
+              16
+            ],
+            [
+              "Within 50 cents of the written pitch",
+              16
+            ],
+            [
+              "Worst error (cents)",
+              0.1
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Higher temperature flattens the model's next-note probabilities, so it picks less common continuations more often. It can only choose among continuations it has seen, so it adds variety but cannot invent a style it never learned."
+        }
+      ],
+      "measurements": {
+        "tokens": "E4:2 E4:2 C4:2 D4:2 D4:2 E4:4 D4:2 C4:2 G4:1 A4:1 G4:1 F4:1 E4:2 D4:4 E4:2 D4:2",
+        "events": [
+          {
+            "pitch": "E4",
+            "duration": 2
+          },
+          {
+            "pitch": "E4",
+            "duration": 2
+          },
+          {
+            "pitch": "C4",
+            "duration": 2
+          },
+          {
+            "pitch": "D4",
+            "duration": 2
+          },
+          {
+            "pitch": "D4",
+            "duration": 2
+          },
+          {
+            "pitch": "E4",
+            "duration": 4
+          },
+          {
+            "pitch": "D4",
+            "duration": 2
+          },
+          {
+            "pitch": "C4",
+            "duration": 2
+          },
+          {
+            "pitch": "G4",
+            "duration": 1
+          },
+          {
+            "pitch": "A4",
+            "duration": 1
+          },
+          {
+            "pitch": "G4",
+            "duration": 1
+          },
+          {
+            "pitch": "F4",
+            "duration": 1
+          },
+          {
+            "pitch": "E4",
+            "duration": 2
+          },
+          {
+            "pitch": "D4",
+            "duration": 4
+          },
+          {
+            "pitch": "E4",
+            "duration": 2
+          },
+          {
+            "pitch": "D4",
+            "duration": 2
+          }
+        ],
+        "features": {
+          "events": 16,
+          "uniqueTokens": 8,
+          "stepwiseRatio": 0.8666666666666667,
+          "leapRatio": 0.06666666666666667,
+          "rangeSteps": 5,
+          "endsOnTonic": false,
+          "repetition": 0.19999999999999996,
+          "restShare": 0,
+          "rhythmVariety": 3
+        },
+        "statistics": {
+          "samples": 30,
+          "mean": {
+            "events": 15,
+            "uniqueTokens": 7.466666666666667,
+            "stepwiseRatio": 0.848373067564244,
+            "leapRatio": 0.05312370907959143,
+            "rangeSteps": 4.066666666666666,
+            "endsOnTonic": 0.2,
+            "repetition": 0.2885514839191309,
+            "restShare": 0.025,
+            "rhythmVariety": 2.8333333333333335
+          },
+          "copied": 0.21952122195543247
+        },
+        "render": {
+          "checked": 16,
+          "verified": 16,
+          "worstCents": 0.1
+        },
+        "seed": 300,
+        "temperature": 1.6
+      }
+    },
+    {
+      "label": "GPT-4o composing from written instructions",
+      "kind": "experiment",
+      "request": {
+        "summary": "Ask GPT-4o (temperature 1, 5 samples in one request) for a melody in the same token format: \"Compose a simple, singable 4-bar melody in C major as a list of note events. Write each event as PITCH:DURATION, separated by single spaces. Allowed pitches: C4 D4 E4 F4 G4 A4 B4 C5, and R for a rest. Allowed durations, in eighth notes: 1, 2, 3 or 4. The durations must add up to exactly 32. Finish on C4 or C5. Reply with only the events on one line, with no explanation.\" The first usable melody is rendered; any that miss 32 slots are cut or padded with a rest."
+      },
+      "output": "C4:4 E4:4 F4:4 G4:4 A4:4 G4:4 F4:4 C5:4\nThis melody: 71% stepwise, 14% large leaps, ends on the tonic: yes.\nAudio check: 8 of 8 notes measured within 50 cents of the written pitch.\nAcross 5 melodies: 55% stepwise, 7.2 distinct tokens, 3% of 4-token runs copied from the nine training tunes.\nGPT-4o wrote 5 melodies. 4 used only allowed tokens and summed to exactly 32 slots; the others were 36 slots.",
+      "outputSource": "azure-and-computation",
+      "actualModel": "gpt-4o-2024-11-20",
+      "finishReason": "completed",
+      "latencyMs": 97,
+      "usage": {
+        "input_tokens": 117,
+        "output_tokens": 180,
+        "total_tokens": 297
+      },
+      "apiRequests": 1,
+      "apiCalls": [
+        {
+          "operation": "chat.completions",
+          "deployment": "gpt-4o",
+          "latencyMs": 1298,
+          "attempts": 1,
+          "waitedMs": 0,
+          "model": "gpt-4o-2024-11-20",
+          "usage": {
+            "completion_tokens": 180,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "latency_checkpoint": {
+              "engine_tbt_ms": 2,
+              "engine_ttft_ms": 34,
+              "engine_ttlt_ms": 440,
+              "pre_inference_ms": 45,
+              "service_tbt_ms": 2,
+              "service_ttft_ms": 391,
+              "service_ttlt_ms": 829,
+              "user_visible_ttft_ms": 346
+            },
+            "prompt_tokens": 117,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 297
+          }
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "gpt4o-audio",
+          "file": "gpt4o-audio.wav",
+          "mime": "audio/wav",
+          "bytes": 256044,
+          "sha256": "b3109d2abe4ccb1bf6c73ad6aefcbad260ca9f7c4bd5ef37a6df2042cff758b6",
+          "description": "GPT-4o composing from written instructions: 8 seconds, 120 beats per minute, 16 kHz mono."
+        },
+        {
+          "id": "gpt4o-piano-roll",
+          "file": "gpt4o-piano-roll.png",
+          "mime": "image/png",
+          "bytes": 1689,
+          "sha256": "97aed19aa403111d5134191a3458c73b0e044b81269f60dba3b8b08f9cd46b34",
+          "description": "Piano roll of the melody for GPT-4o composing from written instructions: pitch up, time to the right, four bars."
+        }
+      ],
+      "display": [
+        {
+          "type": "audio",
+          "artifact": "gpt4o-audio",
+          "caption": "GPT-4o composing from written instructions. 32 eighth notes at 120 beats per minute is 8 seconds."
+        },
+        {
+          "type": "image",
+          "artifact": "gpt4o-piano-roll",
+          "caption": "Piano roll: higher notes are higher up, time runs left to right, vertical lines mark bars, and the gray line is a rest.",
+          "alt": "Piano roll for GPT-4o composing from written instructions"
+        },
+        {
+          "type": "code",
+          "title": "The melody as tokens (PITCH:eighth-note-duration)",
+          "text": "C4:4 E4:4 F4:4 G4:4 A4:4 G4:4 F4:4 C5:4"
+        },
+        {
+          "type": "table",
+          "title": "Music-theory measurements (mean of 5 melodies)",
+          "headers": [
+            "Composer",
+            "Stepwise motion",
+            "Large leaps (4+ steps)",
+            "Range (scale steps)",
+            "Ends on tonic",
+            "Repeated note pairs",
+            "Distinct tokens",
+            "Copied from training (4-token runs)"
+          ],
+          "rows": [
+            [
+              "GPT-4o composing from written instructions",
+              "55%",
+              "11%",
+              6.4,
+              "80%",
+              "0%",
+              7.2,
+              "3%"
+            ],
+            [
+              "Nine training tunes",
+              "88%",
+              "4%",
+              3.67,
+              "56%",
+              "32%",
+              6.56,
+              "not applicable"
+            ]
+          ]
+        },
+        {
+          "type": "bars",
+          "title": "Variety: distinct tokens per melody (mean)",
+          "items": [
+            {
+              "label": "GPT-4o composing from written instructions",
+              "value": 7.2,
+              "max": 12,
+              "detail": 7.2
+            },
+            {
+              "label": "Nine training tunes",
+              "value": 6.56,
+              "max": 12,
+              "detail": 6.56
+            }
+          ]
+        },
+        {
+          "type": "bars",
+          "title": "Stepwise motion (mean)",
+          "items": [
+            {
+              "label": "GPT-4o composing from written instructions",
+              "value": 55.3,
+              "max": 100,
+              "detail": "55%"
+            },
+            {
+              "label": "Nine training tunes",
+              "value": 88.3,
+              "max": 100,
+              "detail": "88%"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Audio verification: does the sound match the notes?",
+          "headers": [
+            "Measurement",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Notes checked by pitch tracking",
+              8
+            ],
+            [
+              "Within 50 cents of the written pitch",
+              8
+            ],
+            [
+              "Worst error (cents)",
+              0.12
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "GPT-4o wrote 5 melodies. 4 used only allowed tokens and summed to exactly 32 slots; the others were 36 slots."
+        }
+      ],
+      "measurements": {
+        "tokens": "C4:4 E4:4 F4:4 G4:4 A4:4 G4:4 F4:4 C5:4",
+        "events": [
+          {
+            "pitch": "C4",
+            "duration": 4
+          },
+          {
+            "pitch": "E4",
+            "duration": 4
+          },
+          {
+            "pitch": "F4",
+            "duration": 4
+          },
+          {
+            "pitch": "G4",
+            "duration": 4
+          },
+          {
+            "pitch": "A4",
+            "duration": 4
+          },
+          {
+            "pitch": "G4",
+            "duration": 4
+          },
+          {
+            "pitch": "F4",
+            "duration": 4
+          },
+          {
+            "pitch": "C5",
+            "duration": 4
+          }
+        ],
+        "features": {
+          "events": 8,
+          "uniqueTokens": 6,
+          "stepwiseRatio": 0.7142857142857143,
+          "leapRatio": 0.14285714285714285,
+          "rangeSteps": 7,
+          "endsOnTonic": true,
+          "repetition": 0,
+          "restShare": 0,
+          "rhythmVariety": 1
+        },
+        "statistics": {
+          "samples": 5,
+          "mean": {
+            "events": 8.8,
+            "uniqueTokens": 7.2,
+            "stepwiseRatio": 0.5528571428571428,
+            "leapRatio": 0.10714285714285714,
+            "rangeSteps": 6.4,
+            "endsOnTonic": 0.8,
+            "repetition": 0,
+            "restShare": 0,
+            "rhythmVariety": 1.4
+          },
+          "copied": 0.025,
+          "written": 5,
+          "exactlyValid": 4
+        },
+        "render": {
+          "checked": 8,
+          "verified": 8,
+          "worstCents": 0.12
+        },
+        "prompt": "Compose a simple, singable 4-bar melody in C major as a list of note events. Write each event as PITCH:DURATION, separated by single spaces. Allowed pitches: C4 D4 E4 F4 G4 A4 B4 C5, and R for a rest. Allowed durations, in eighth notes: 1, 2, 3 or 4. The durations must add up to exactly 32. Finish on C4 or C5. Reply with only the events on one line, with no explanation.",
+        "attempts": [
+          {
+            "raw": "C4:4 E4:4 F4:4 G4:4 A4:4 G4:4 F4:4 C5:4",
+            "rejected": [],
+            "slots": 32,
+            "exact": true
+          },
+          {
+            "raw": "C4:4 E4:4 G4:4 F4:4 A4:4 G4:4 B4:4 C5:4",
+            "rejected": [],
+            "slots": 32,
+            "exact": true
+          },
+          {
+            "raw": "C4:4 E4:4 G4:4 A4:2 F4:2 D4:4 E4:4 C5:4 C4:4",
+            "rejected": [],
+            "slots": 32,
+            "exact": true
+          },
+          {
+            "raw": "C4:4 D4:4 E4:4 G4:4 A4:2 B4:2 C5:4 G4:2 F4:2 E4:2 D4:2 C4:4",
+            "rejected": [],
+            "slots": 36,
+            "exact": false
+          },
+          {
+            "raw": "E4:4 G4:4 F4:4 D4:4 E4:4 F4:4 G4:4 C4:4",
+            "rejected": [],
+            "slots": 32,
+            "exact": true
+          }
+        ],
+        "repaired": false
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "The training tunes are valid 32-slot phrases",
+      "passed": true,
+      "detail": "9 phrases of 32 eighth-note slots."
+    },
+    {
+      "name": "Every rendered melody fills exactly four bars",
+      "passed": true,
+      "detail": "32 slots, 8 seconds each."
+    },
+    {
+      "name": "The audio matches the written notes under pitch tracking",
+      "passed": true,
+      "detail": "13/13 (worst 0.13 cents); 16/16 (worst 0.02 cents); 16/16 (worst 0.1 cents); 8/8 (worst 0.12 cents)"
+    },
+    {
+      "name": "Random and trained melodies are reproducible from their seeds",
+      "passed": true,
+      "detail": "Re-running the seeded composers reproduces the exact tokens."
+    },
+    {
+      "name": "The trained model moves more stepwise than random notes",
+      "passed": true,
+      "detail": "88% versus 34% over 30 melodies each."
+    },
+    {
+      "name": "Higher temperature adds variety and copies less from the training tunes",
+      "passed": true,
+      "detail": "Distinct tokens 6.3 to 7.47; copied runs 25% to 22%."
+    },
+    {
+      "name": "GPT-4o output was parsed and its validity reported",
+      "passed": true,
+      "detail": "4 of 5 followed the format exactly."
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "random-audio",
+      "file": "random-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 256044,
+      "sha256": "040f7491b206e3019d5019db4ff3aef23e0dc62a7687c58fc58d5329a6ef4c02",
+      "description": "Random notes (the baseline): 8 seconds, 120 beats per minute, 16 kHz mono."
+    },
+    {
+      "id": "random-piano-roll",
+      "file": "random-piano-roll.png",
+      "mime": "image/png",
+      "bytes": 1771,
+      "sha256": "5f7f25ef798a85c774843447eca6978374bab232460d93c62991a7c150b45ec8",
+      "description": "Piano roll of the melody for Random notes (the baseline): pitch up, time to the right, four bars."
+    },
+    {
+      "id": "bigram-low-audio",
+      "file": "bigram-low-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 256044,
+      "sha256": "dc9781602c7f4a2dd5c0a80d0a670e9af4c242daf6ad1984f3a6fbc45561d5b2",
+      "description": "A next-note model trained on nine tunes, low temperature: 8 seconds, 120 beats per minute, 16 kHz mono."
+    },
+    {
+      "id": "bigram-low-piano-roll",
+      "file": "bigram-low-piano-roll.png",
+      "mime": "image/png",
+      "bytes": 1685,
+      "sha256": "3101b92f69f61e305c91bd0ec907d6a74bafd593dcb09ead9b6c75939904391f",
+      "description": "Piano roll of the melody for A next-note model trained on nine tunes, low temperature: pitch up, time to the right, four bars."
+    },
+    {
+      "id": "bigram-high-audio",
+      "file": "bigram-high-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 256044,
+      "sha256": "1ca99a874678e394ce0f178ec2c88772de0b51dbeae5dff226b20a5a765e9481",
+      "description": "The same model, high temperature: 8 seconds, 120 beats per minute, 16 kHz mono."
+    },
+    {
+      "id": "bigram-high-piano-roll",
+      "file": "bigram-high-piano-roll.png",
+      "mime": "image/png",
+      "bytes": 1742,
+      "sha256": "ca1a06e4e4bbf7bb0afd1e5753b0c9dd2f27e890822530931440983e7f968f6a",
+      "description": "Piano roll of the melody for The same model, high temperature: pitch up, time to the right, four bars."
+    },
+    {
+      "id": "gpt4o-audio",
+      "file": "gpt4o-audio.wav",
+      "mime": "audio/wav",
+      "bytes": 256044,
+      "sha256": "b3109d2abe4ccb1bf6c73ad6aefcbad260ca9f7c4bd5ef37a6df2042cff758b6",
+      "description": "GPT-4o composing from written instructions: 8 seconds, 120 beats per minute, 16 kHz mono."
+    },
+    {
+      "id": "gpt4o-piano-roll",
+      "file": "gpt4o-piano-roll.png",
+      "mime": "image/png",
+      "bytes": 1689,
+      "sha256": "97aed19aa403111d5134191a3458c73b0e044b81269f60dba3b8b08f9cd46b34",
+      "description": "Piano roll of the melody for GPT-4o composing from written instructions: pitch up, time to the right, four bars."
+    }
+  ],
+  "execution": {
+    "runtime": "Azure Container Apps Job",
+    "executionName": "aibasics-agents-zgfkrl6mqqsly-ukc2dy5",
+    "runId": "5bb97af9-1bed-42c9-92c9-02af1271427b"
+  }
+}

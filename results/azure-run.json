@@ -1,14 +1,15 @@
 {
-  "runId": "e5ca849c-9f9a-4c59-8d9f-56a38d429cfd",
+  "runId": "5bb97af9-1bed-42c9-92c9-02af1271427b",
   "runtime": "Azure Container Apps Job",
-  "startedAt": "2026-11-16T19:21:34.138Z",
+  "startedAt": "2026-11-16T21:34:13.510Z",
   "status": "completed",
   "labs": [
-    "12-models"
+    "36-music-tokens"
   ],
   "records": [
-    "12-models"
+    "36-music-tokens"
   ],
-  "finishedAt": "2026-11-16T19:21:56.921Z",
-  "executionName": "aibasics-agents-zgfkrl6mqqsly-lxlph05"
+  "artifacts": 8,
+  "finishedAt": "2026-11-16T21:34:16.592Z",
+  "executionName": "aibasics-agents-zgfkrl6mqqsly-ukc2dy5"
 }

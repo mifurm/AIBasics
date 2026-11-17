@@ -35,10 +35,20 @@ Recording is pending: the integrated browser remained hidden and the user was un
 | 26. Approve the exact action | completed | 6 | 2961 |
 | 27. Check the result, not the claim | completed | 3 | 1577 |
 | 28. Evaluate the answer and the path | completed | 7 | 3648 |
+| 29. Tokens: learned chunks, uneven costs | completed | 27 | 601 |
+| 30. The model's real probabilities | completed | 8 | 470 |
+| 31. Meaning as geometry | completed | 2 | 748 |
+| 32. From prompt to pixels | completed | 6 | 1950 |
+| 33. What a vision model sees | completed | 8 | 4691 |
+| 34. Sound is samples: speech out, speech in | completed | 9 | 0 |
+| 35. Who spoke when | completed | 9 | 1884 |
+| 36. Music is tokens | completed | 1 | 297 |
+| 37. Video is frames over time | completed | 10 | 8757 |
+| 38. Can a model grade a model? | completed | 56 | 12093 |
 
-Final records represent 119 attempted requests and 38691 reported tokens.
+Final records represent 255 attempted requests and 70182 reported tokens.
 
-The retained failed grounding attempt adds 2 requests and 160 tokens. Total captured execution: 121 attempted requests and 38851 reported tokens. The blocked request supplied no usage; these totals are not a billing statement.
+The retained failed grounding attempt adds 2 requests and 160 tokens. Total captured execution: 257 attempted requests and 70342 reported tokens. The blocked request supplied no usage; these totals are not a billing statement.
 
 Latency is wall-clock request time from this machine; tool latency sums both model requests. Token usage includes tool-request tokens and reported reasoning tokens. Cost depends on current per-model pricing and storage/egress.
 
@@ -7668,13 +7678,6 @@ agentTrace:
 ```
 
 
-extraRequests:
-
-```json
-[]
-```
-
-
 - Passed / observed: Variant 1: execution budgets respected: {"requests":3,"tools":2}
 
 
@@ -11786,6 +11789,5244 @@ extraRequests:
 
 
 - Passed / observed: Trace rubric distinguishes an unauthorized attempt: {"answerCorrect":true,"pathPassed":false,"authorizationHeld":true}
+
+
+## 29. Tokens: learned chunks, uneven costs
+
+Models read learned chunks of text, not words or letters. A tokenizer learns frequent pieces from data, so the same meaning can cost very different numbers of tokens across languages and formats.
+
+Recorded: 2026-11-16T21:25:20.004Z
+
+Caution: The toy tokenizer learns from eleven words; real tokenizers learn from enormous corpora. Token counts here are measured from Azure usage after subtracting a calibrated chat-message overhead. They are not prices or a ranking of languages.
+
+
+### Toy BPE learns merges from eleven words
+
+
+Model: local-computation; latency: 1 ms; finish: completed.
+
+Usage: `null`
+
+```text
+Learned 18 merges. Most frequent first merge: "b + o" (17 occurrences).
+robots -> robot | s</w>
+learners (unseen) -> learn | e | r | s</w>
+playful (unseen) -> play | f | u | l | </w>
+zebra (unseen) -> z | e | b | r | a | </w>
+```
+
+
+### The same sentence in eight languages (GPT-4o)
+
+
+Model: gpt-4o-2024-11-20; latency: 6820 ms; finish: completed.
+
+Usage: `{"input_tokens":160,"output_tokens":9,"total_tokens":169}`
+
+```text
+English: 9 tokens for 38 characters (1x English)
+Polish: 11 tokens for 29 characters (1.22x English)
+German: 11 tokens for 45 characters (1.22x English)
+Spanish: 12 tokens for 37 characters (1.33x English)
+Russian: 14 tokens for 33 characters (1.56x English)
+Japanese: 12 tokens for 14 characters (1.33x English)
+Arabic: 14 tokens for 36 characters (1.56x English)
+Hindi: 13 tokens for 30 characters (1.44x English)
+```
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 924,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 25,
+        "engine_ttlt_ms": 26,
+        "pre_inference_ms": 148,
+        "service_ttft_ms": 500,
+        "service_ttlt_ms": 500,
+        "user_visible_ttft_ms": 352
+      },
+      "prompt_tokens": 8,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 9
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 637,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 37,
+        "engine_ttlt_ms": 38,
+        "pre_inference_ms": 88,
+        "service_ttft_ms": 441,
+        "service_ttlt_ms": 441,
+        "user_visible_ttft_ms": 353
+      },
+      "prompt_tokens": 16,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 17
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 605,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 54,
+        "engine_ttlt_ms": 55,
+        "pre_inference_ms": 91,
+        "service_ttft_ms": 446,
+        "service_ttlt_ms": 446,
+        "user_visible_ttft_ms": 355
+      },
+      "prompt_tokens": 18,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 19
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 586,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 31,
+        "engine_ttlt_ms": 32,
+        "pre_inference_ms": 85,
+        "service_ttft_ms": 441,
+        "service_ttlt_ms": 441,
+        "user_visible_ttft_ms": 356
+      },
+      "prompt_tokens": 18,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 19
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1012,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 30,
+        "engine_ttlt_ms": 31,
+        "pre_inference_ms": 82,
+        "service_ttft_ms": 888,
+        "service_ttlt_ms": 888,
+        "user_visible_ttft_ms": 806
+      },
+      "prompt_tokens": 19,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 20
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 967,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_ttft_ms": 28,
+        "engine_ttlt_ms": 28,
+        "pre_inference_ms": 77,
+        "service_ttft_ms": 832,
+        "service_ttlt_ms": 832,
+        "user_visible_ttft_ms": 755
+      },
+      "prompt_tokens": 21,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 22
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 954,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_ttft_ms": 31,
+        "engine_ttlt_ms": 31,
+        "pre_inference_ms": 47,
+        "service_ttft_ms": 838,
+        "service_ttlt_ms": 838,
+        "user_visible_ttft_ms": 791
+      },
+      "prompt_tokens": 19,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 20
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 573,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 34,
+        "engine_ttlt_ms": 35,
+        "pre_inference_ms": 67,
+        "service_ttft_ms": 427,
+        "service_ttlt_ms": 427,
+        "user_visible_ttft_ms": 360
+      },
+      "prompt_tokens": 21,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 22
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 553,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 31,
+        "engine_ttlt_ms": 32,
+        "pre_inference_ms": 82,
+        "service_ttft_ms": 426,
+        "service_ttlt_ms": 426,
+        "user_visible_ttft_ms": 344
+      },
+      "prompt_tokens": 20,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 21
+    }
+  }
+]
+```
+
+
+### Numbers, code, emoji, and whitespace (GPT-4o)
+
+
+Model: gpt-4o-2024-11-20; latency: 6358 ms; finish: completed.
+
+Usage: `{"input_tokens":128,"output_tokens":9,"total_tokens":137}`
+
+```text
+Date: 6 tokens for 10 characters (1.67 characters/token)
+Sixteen digits: 6 tokens for 16 characters (2.67 characters/token)
+Number in words: 7 tokens for 44 characters (6.29 characters/token)
+Code: 20 tokens for 43 characters (2.15 characters/token)
+Five emoji: 5 tokens for 5 characters (1 characters/token)
+Twenty letter a: 3 tokens for 20 characters (6.67 characters/token)
+URL: 14 tokens for 31 characters (2.21 characters/token)
+Ten spaces: 3 tokens for 12 characters (4 characters/token)
+```
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 498,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_ttft_ms": 23,
+        "engine_ttlt_ms": 23,
+        "pre_inference_ms": 45,
+        "service_ttft_ms": 377,
+        "service_ttlt_ms": 377,
+        "user_visible_ttft_ms": 332
+      },
+      "prompt_tokens": 8,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 9
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 978,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_ttft_ms": 27,
+        "engine_ttlt_ms": 27,
+        "pre_inference_ms": 85,
+        "service_ttft_ms": 838,
+        "service_ttlt_ms": 838,
+        "user_visible_ttft_ms": 753
+      },
+      "prompt_tokens": 13,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 14
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 994,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 35,
+        "engine_ttlt_ms": 36,
+        "pre_inference_ms": 108,
+        "service_ttft_ms": 875,
+        "service_ttlt_ms": 875,
+        "user_visible_ttft_ms": 767
+      },
+      "prompt_tokens": 13,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 14
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 516,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 33,
+        "engine_ttlt_ms": 34,
+        "pre_inference_ms": 48,
+        "service_ttft_ms": 402,
+        "service_ttlt_ms": 402,
+        "user_visible_ttft_ms": 354
+      },
+      "prompt_tokens": 14,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 15
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 617,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_ttft_ms": 37,
+        "engine_ttlt_ms": 37,
+        "pre_inference_ms": 127,
+        "service_ttft_ms": 459,
+        "service_ttlt_ms": 459,
+        "user_visible_ttft_ms": 331
+      },
+      "prompt_tokens": 27,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 28
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 565,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_ttft_ms": 30,
+        "engine_ttlt_ms": 30,
+        "pre_inference_ms": 87,
+        "service_ttft_ms": 434,
+        "service_ttlt_ms": 434,
+        "user_visible_ttft_ms": 347
+      },
+      "prompt_tokens": 12,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 13
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 622,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_ttft_ms": 34,
+        "engine_ttlt_ms": 34,
+        "pre_inference_ms": 96,
+        "service_ttft_ms": 487,
+        "service_ttlt_ms": 487,
+        "user_visible_ttft_ms": 391
+      },
+      "prompt_tokens": 10,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 11
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 986,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_ttft_ms": 28,
+        "engine_ttlt_ms": 28,
+        "pre_inference_ms": 70,
+        "service_ttft_ms": 874,
+        "service_ttlt_ms": 874,
+        "user_visible_ttft_ms": 804
+      },
+      "prompt_tokens": 21,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 22
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 575,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 34,
+        "engine_ttlt_ms": 35,
+        "pre_inference_ms": 82,
+        "service_ttft_ms": 442,
+        "service_ttlt_ms": 442,
+        "user_visible_ttft_ms": 360
+      },
+      "prompt_tokens": 10,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 11
+    }
+  }
+]
+```
+
+
+### Does another model count the same? (GPT-5-mini)
+
+
+Model: gpt-5-mini-2025-08-07; latency: 7496 ms; finish: completed.
+
+Usage: `{"input_tokens":151,"output_tokens":144,"total_tokens":295}`
+
+```text
+8 of 8 sentence counts equal GPT-4o.
+English: GPT-4o 9, GPT-5-mini 9
+Polish: GPT-4o 11, GPT-5-mini 11
+German: GPT-4o 11, GPT-5-mini 11
+Spanish: GPT-4o 12, GPT-5-mini 12
+Russian: GPT-4o 14, GPT-5-mini 14
+Japanese: GPT-4o 12, GPT-5-mini 12
+Arabic: GPT-4o 14, GPT-5-mini 14
+Hindi: GPT-4o 13, GPT-5-mini 13
+```
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 785,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 16,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 16,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 21,
+        "engine_ttlt_ms": 104,
+        "pre_inference_ms": 93,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 372,
+        "service_ttlt_ms": 482,
+        "user_visible_ttft_ms": 279
+      },
+      "prompt_tokens": 7,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 23
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 829,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 16,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 16,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 31,
+        "engine_ttlt_ms": 122,
+        "pre_inference_ms": 111,
+        "service_tbt_ms": 2,
+        "service_ttft_ms": 467,
+        "service_ttlt_ms": 496,
+        "user_visible_ttft_ms": 356
+      },
+      "prompt_tokens": 15,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 31
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1113,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 16,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 16,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 27,
+        "engine_ttlt_ms": 123,
+        "pre_inference_ms": 104,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 695,
+        "service_ttlt_ms": 799,
+        "user_visible_ttft_ms": 591
+      },
+      "prompt_tokens": 17,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 33
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 914,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 16,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 16,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 26,
+        "engine_ttlt_ms": 134,
+        "pre_inference_ms": 79,
+        "service_tbt_ms": 8,
+        "service_ttft_ms": 344,
+        "service_ttlt_ms": 466,
+        "user_visible_ttft_ms": 265
+      },
+      "prompt_tokens": 17,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 33
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 822,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 16,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 16,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 25,
+        "engine_ttlt_ms": 115,
+        "pre_inference_ms": 63,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 329,
+        "service_ttlt_ms": 438,
+        "user_visible_ttft_ms": 266
+      },
+      "prompt_tokens": 18,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 34
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 843,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 16,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 16,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 21,
+        "engine_ttlt_ms": 103,
+        "pre_inference_ms": 68,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 345,
+        "service_ttlt_ms": 455,
+        "user_visible_ttft_ms": 277
+      },
+      "prompt_tokens": 20,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 36
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 667,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 16,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 16,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 26,
+        "engine_ttlt_ms": 113,
+        "pre_inference_ms": 65,
+        "service_tbt_ms": 4,
+        "service_ttft_ms": 205,
+        "service_ttlt_ms": 271,
+        "user_visible_ttft_ms": 139
+      },
+      "prompt_tokens": 18,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 34
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 786,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 16,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 16,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 22,
+        "engine_ttlt_ms": 104,
+        "pre_inference_ms": 80,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 360,
+        "service_ttlt_ms": 451,
+        "user_visible_ttft_ms": 280
+      },
+      "prompt_tokens": 20,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 36
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 735,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 16,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 16,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 21,
+        "engine_ttlt_ms": 103,
+        "pre_inference_ms": 79,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 354,
+        "service_ttlt_ms": 463,
+        "user_visible_ttft_ms": 274
+      },
+      "prompt_tokens": 19,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 35
+    }
+  }
+]
+```
+
+
+- Passed / observed: Toy BPE learned every requested merge deterministically: 18 merges.
+
+
+- Passed / observed: Most frequent pair counts never increase: 17, 17, 17, 17, 13, 13, 13, 13, 12, 12, 12, 12, 12, 12, 11, 8, 8, 8
+
+
+- Passed / observed: Segmentations reconstruct each word: Joined pieces equal the word plus end marker.
+
+
+- Passed / observed: Calibrated overhead is a small constant for both models: GPT-4o 7, GPT-5-mini 6
+
+
+- Passed / observed: Every probe has a positive measured token count: All token counts are positive integers.
+
+
+- Passed / observed: Probe sets are complete: 8 sentences and 8 format probes.
+
+
+- Passed / observed: Same-meaning ratios are reported, not asserted: English 1x, Polish 1.22x, German 1.22x, Spanish 1.33x, Russian 1.56x, Japanese 1.33x, Arabic 1.56x, Hindi 1.44x
+
+
+## 30. The model's real probabilities
+
+At every step a language model scores every possible next token. Sampling picks from that distribution; temperature reshapes it. Lab 00 showed this in a toy; here it is in a production model.
+
+Recorded: 2026-11-16T21:25:31.693Z
+
+Caution: Probabilities describe the model's next-token scores, not factual truth or calibrated confidence. Only the top 10 alternatives are returned, so a small tail is missing. Reasoning models do not return log probabilities.
+
+
+### Four prompts, four real next-token distributions
+
+
+Model: gpt-4o-2024-11-20; latency: 2728 ms; finish: completed.
+
+Usage: `{"input_tokens":91,"output_tokens":4,"total_tokens":95}`
+
+```text
+A confident answer: sampled "Paris"; top choice "Paris" at 100.00%; entropy 0.00 bits over the top 10.
+A "random" choice from 1 to 10: sampled "7"; top choice "7" at 98.36%; entropy 0.15 bits over the top 10.
+A "random" choice from 1 to 100: sampled "47"; top choice "47" at 36.75%; entropy 2.54 bits over the top 10.
+An open-ended story start: sampled "Rust"; top choice "The" at 20.42%; entropy 2.95 bits over the top 10.
+```
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 544,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 40,
+        "engine_ttlt_ms": 41,
+        "pre_inference_ms": 68,
+        "service_ttft_ms": 423,
+        "service_ttlt_ms": 423,
+        "user_visible_ttft_ms": 356
+      },
+      "prompt_tokens": 19,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 20
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 957,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 34,
+        "engine_ttlt_ms": 35,
+        "pre_inference_ms": 74,
+        "service_ttft_ms": 846,
+        "service_ttlt_ms": 846,
+        "user_visible_ttft_ms": 772
+      },
+      "prompt_tokens": 25,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 26
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 603,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 52,
+        "engine_ttlt_ms": 53,
+        "pre_inference_ms": 79,
+        "service_ttft_ms": 472,
+        "service_ttlt_ms": 472,
+        "user_visible_ttft_ms": 394
+      },
+      "prompt_tokens": 25,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 26
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 621,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 1,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 35,
+        "engine_ttlt_ms": 36,
+        "pre_inference_ms": 112,
+        "service_ttft_ms": 466,
+        "service_ttlt_ms": 466,
+        "user_visible_ttft_ms": 354
+      },
+      "prompt_tokens": 22,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 23
+    }
+  }
+]
+```
+
+
+### Temperature reshapes the same probabilities
+
+
+Model: gpt-4o-2024-11-20; latency: 8887 ms; finish: completed.
+
+Usage: `{"input_tokens":75,"output_tokens":300,"total_tokens":375}`
+
+```text
+T=0.3: predicted top 86.51%, sampled top 82.00%, distance between prediction and 100 samples 0.069 (0 identical, 1 disjoint).
+T=1: predicted top 38.08%, sampled top 43.00%, distance between prediction and 100 samples 0.120 (0 identical, 1 disjoint).
+T=2: predicted top 22.87%, sampled top 16.00%, distance between prediction and 100 samples 0.311 (0 identical, 1 disjoint).
+```
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 2794,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 100,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 34,
+        "engine_ttlt_ms": 154,
+        "pre_inference_ms": 100,
+        "service_tbt_ms": 4,
+        "service_ttft_ms": 451,
+        "service_ttlt_ms": 890,
+        "user_visible_ttft_ms": 351
+      },
+      "prompt_tokens": 25,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 125
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 3003,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 100,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 37,
+        "engine_ttlt_ms": 156,
+        "pre_inference_ms": 66,
+        "service_tbt_ms": 4,
+        "service_ttft_ms": 872,
+        "service_ttlt_ms": 1291,
+        "user_visible_ttft_ms": 806
+      },
+      "prompt_tokens": 25,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 125
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 3083,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 100,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 1,
+        "engine_ttft_ms": 34,
+        "engine_ttlt_ms": 156,
+        "pre_inference_ms": 41,
+        "service_tbt_ms": 4,
+        "service_ttft_ms": 812,
+        "service_ttlt_ms": 1230,
+        "user_visible_ttft_ms": 771
+      },
+      "prompt_tokens": 25,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 125
+    }
+  }
+]
+```
+
+
+### A reasoning model does not expose its distribution
+
+
+Model: gpt-5-mini; latency: 60 ms; finish: completed.
+
+Usage: `null`
+
+```text
+Azure refused with HTTP 400 unsupported_parameter: Azure request failed (400): unsupported_parameter: Unsupported parameter: 'logprobs' is not supported with this model.
+```
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "model": "gpt-5-mini",
+    "latencyMs": 59,
+    "attempts": 1,
+    "waitedMs": 0,
+    "usage": null,
+    "httpStatus": 400,
+    "error": "unsupported_parameter"
+  }
+]
+```
+
+
+- Passed / observed: Each prompt returned ten ordered, valid probabilities: capital: 100.00% covered; number10: 100.00% covered; number100: 96.49% covered; story: 75.65% covered
+
+
+- Passed / observed: The factual question is sharper than the spread-out random choice: 0.000 < 2.544 bits
+
+
+- Passed / observed: Every temperature drew the planned number of samples: 100 samples at each temperature.
+
+
+- Passed / observed: Predicted distributions are normalized and sharper at lower temperature: T=0.3: 86.51%, T=1: 38.08%, T=2: 22.87%
+
+
+- Passed / observed: Prediction-versus-sample distances are measured: T=0.3: 0.069, T=1: 0.120, T=2: 0.311
+
+
+- Passed / observed: Real samples are more concentrated at low temperature than at high temperature: Leading token share 82.00% at T=0.3 versus 16.00% at T=2.
+
+
+- Passed / observed: Samples at temperature 1 match the reported probabilities: Distance 0.120 (0 identical, 1 disjoint) from 100 samples.
+
+
+- Passed / observed: The reasoning-model outcome is a real acceptance or Azure's documented refusal, not an unrelated failure: {"accepted":false,"status":400,"code":"unsupported_parameter","message":"Azure request failed (400): unsupported_parameter: Unsupported parameter: 'logprobs' is not supported with this model."}
+
+
+## 31. Meaning as geometry
+
+An embedding turns text into a point in a high-dimensional space where similar meanings are close. That geometry is what retrieval, clustering, and cross-language search measure.
+
+Recorded: 2026-11-16T21:25:33.953Z
+
+Caution: The 2D map is a projection that discards most of the information, so distances in it are only hints. Cosine similarity values are model-specific and are not probabilities. These are twelve hand-written sentences, not a benchmark.
+
+
+### Embed 24 sentences and draw the map
+
+
+Model: text-embedding-3-small; latency: 1871 ms; finish: completed.
+
+Usage: `{"input_tokens":374,"output_tokens":0,"total_tokens":374}`
+
+```text
+1536-dimensional vectors, 28 inputs.
+For 83% of the 24 sentences, the nearest other sentence (not counting its own translation) shares its topic.
+Mean cosine within a topic 0.28 versus between topics 0.164.
+The map's two axes keep 22.0% of the variance.
+```
+
+
+Media artifacts: sentence-map.svg (6454 bytes, sha256 73d64ca82ef6...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "embeddings",
+    "deployment": "text-embedding-3-small",
+    "latencyMs": 1173,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "text-embedding-3-small",
+    "usage": {
+      "prompt_tokens": 374,
+      "total_tokens": 374
+    },
+    "parameters": {}
+  }
+]
+```
+
+
+### Translations land next to each other
+
+
+Model: local-computation; latency: 0 ms; finish: completed.
+
+Usage: `null`
+
+```text
+English to Polish: the true translation is the closest Polish sentence for 100% of sentences. Polish to English: 100%.
+Mean translation cosine 0.556.
+```
+
+
+### Shared words versus shared meaning
+
+
+Model: local-computation; latency: 0 ms; finish: completed.
+
+Usage: `null`
+
+```text
+1. 0.544  Shares no key words, same meaning: "I would like to set up a savings account with a lender."
+2. 0.35  Shares the word and the meaning: "She deposited her paycheck at the bank."
+3. 0.137  Shares the word "bank", different meaning: "He fished from the muddy river bank."
+```
+
+
+### Shorter vectors: 256 dimensions instead of 1536
+
+
+Model: text-embedding-3-small; latency: 373 ms; finish: completed.
+
+Usage: `{"input_tokens":374,"output_tokens":0,"total_tokens":374}`
+
+```text
+256 numbers instead of 1536. Topic neighbours 83% (full 83%); translation retrieval 100% (full 100%).
+Correlation between full and short similarity scores: 0.952.
+```
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "embeddings",
+    "deployment": "text-embedding-3-small",
+    "latencyMs": 344,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "text-embedding-3-small",
+    "usage": {
+      "prompt_tokens": 374,
+      "total_tokens": 374
+    },
+    "parameters": {
+      "dimensions": 256
+    }
+  }
+]
+```
+
+
+- Passed / observed: Vectors are complete and unit length: 1536 and 256 dimensions; norms 1.000-1.000.
+
+
+- Passed / observed: The sentence map is a real two-component projection: Variance kept: 0.121, 0.099.
+
+
+- Passed / observed: Same-topic sentences are closer than different-topic sentences: 0.280 > 0.164; neighbours 83%.
+
+
+- Passed / observed: Language leaves a measurable signature alongside topic: {"sameLanguageSameTopic":0.337,"sameLanguageOtherTopic":0.219,"otherLanguageSameTopic":0.224,"otherLanguageOtherTopic":0.109}
+
+
+- Passed / observed: Translations are retrieved across languages: 100% and 100%.
+
+
+- Passed / observed: Shared meaning outranks a shared word: trap 0.137, paraphrase 0.544, both 0.350
+
+
+- Passed / observed: Shorter vectors keep most of the similarity structure: Correlation 0.952.
+
+
+## 32. From prompt to pixels
+
+An image model turns a text prompt into pixels. The prompt guides the result but does not fully control it: the same prompt gives different images, and unspecified details are chosen by the model. You can measure what you asked for.
+
+Recorded: 2026-11-16T21:26:12.909Z
+
+Caution: Two samples are not a statistical test, and simple color checks only test simple prompts. A model that describes an image can be wrong too. Generated images may carry provenance metadata; this does not prove how they were used.
+
+
+### The specific prompt, first sample
+
+
+Model: gpt-image-1.5 + gpt-4o-2024-11-20; latency: 12235 ms; finish: completed.
+
+Usage: `{"input_tokens":183,"output_tokens":440,"total_tokens":623}`
+
+```text
+Image: 1024x1024, 189737 bytes.
+Pixel checks matched 6 of 6 targets.
+GPT-4o describes it as: The image shows a red circle on the left and a blue square on the right, both centered on a white background.
+```
+
+
+Media artifacts: specific-sample-one.png (189737 bytes, sha256 e1206d23983d...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "images.generate",
+    "deployment": "gpt-image-1.5",
+    "latencyMs": 9754,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-image-1.5",
+    "usage": {
+      "input_tokens": 47,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 47
+      },
+      "output_tokens": 416,
+      "output_tokens_details": {
+        "image_tokens": 272,
+        "text_tokens": 144
+      },
+      "total_tokens": 463
+    },
+    "parameters": {
+      "size": "1024x1024",
+      "quality": "low"
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1843,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 24,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 8,
+        "engine_ttft_ms": 181,
+        "engine_ttlt_ms": 390,
+        "pre_inference_ms": 131,
+        "service_tbt_ms": 8,
+        "service_ttft_ms": 1287,
+        "service_ttlt_ms": 1491,
+        "user_visible_ttft_ms": 1156
+      },
+      "prompt_tokens": 136,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 160
+    }
+  }
+]
+```
+
+
+### The same specific prompt, second sample
+
+
+Model: gpt-image-1.5 + gpt-4o-2024-11-20; latency: 11653 ms; finish: completed.
+
+Usage: `{"input_tokens":183,"output_tokens":441,"total_tokens":624}`
+
+```text
+Image: 1024x1024, 215012 bytes.
+Pixel checks matched 6 of 6 targets.
+Versus sample one: mean pixel difference 7.6 of 255; 4.9% of pixels differ visibly.
+GPT-4o describes it as: The image shows a red circle on the left and a blue square on the right, both centered on a white background.
+```
+
+
+Media artifacts: specific-sample-two.png (215012 bytes, sha256 8a239d99f22b...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "images.generate",
+    "deployment": "gpt-image-1.5",
+    "latencyMs": 8776,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-image-1.5",
+    "usage": {
+      "input_tokens": 47,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 47
+      },
+      "output_tokens": 417,
+      "output_tokens_details": {
+        "image_tokens": 272,
+        "text_tokens": 145
+      },
+      "total_tokens": 464
+    },
+    "parameters": {
+      "size": "1024x1024",
+      "quality": "low"
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1828,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 24,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 10,
+        "engine_ttft_ms": 179,
+        "engine_ttlt_ms": 424,
+        "pre_inference_ms": 100,
+        "service_tbt_ms": 10,
+        "service_ttft_ms": 1289,
+        "service_ttlt_ms": 1529,
+        "user_visible_ttft_ms": 1189
+      },
+      "prompt_tokens": 136,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 160
+    }
+  }
+]
+```
+
+
+### A vague prompt leaves the choices to the model
+
+
+Model: gpt-image-1.5 + gpt-4o-2024-11-20; latency: 15057 ms; finish: completed.
+
+Usage: `{"input_tokens":149,"output_tokens":554,"total_tokens":703}`
+
+```text
+Image: 1024x1024, 1414392 bytes (gallery copy: 422755 bytes at 512x512).
+Dominant colors: purple 40.0%, pink 27.4%, blue 17.5%, white 4.4%.
+GPT-4o describes it as: The image features a vibrant arrangement of 3D geometric shapes, including spheres, cubes, cones, pyramids, and toruses in glowing gradients of pink, purple, blue, and orange, scattered dynamically against a dark purple background.
+```
+
+
+Media artifacts: vague-sample.png (422755 bytes, sha256 d01f1ed32e2c...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "images.generate",
+    "deployment": "gpt-image-1.5",
+    "latencyMs": 10260,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-image-1.5",
+    "usage": {
+      "input_tokens": 13,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 13
+      },
+      "output_tokens": 507,
+      "output_tokens_details": {
+        "image_tokens": 272,
+        "text_tokens": 235
+      },
+      "total_tokens": 520
+    },
+    "parameters": {
+      "size": "1024x1024",
+      "quality": "low"
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 2679,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 47,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 8,
+        "engine_ttft_ms": 414,
+        "engine_ttlt_ms": 780,
+        "pre_inference_ms": 179,
+        "service_tbt_ms": 8,
+        "service_ttft_ms": 1578,
+        "service_ttlt_ms": 1939,
+        "user_visible_ttft_ms": 1399
+      },
+      "prompt_tokens": 136,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 183
+    }
+  }
+]
+```
+
+
+- Passed / observed: Three images were generated at the requested size: 189737 bytes, 215012 bytes, 1414392 bytes
+
+
+- Passed / observed: Every image call reports usage and every description is non-empty: 463 image tokens, 464 image tokens, 520 image tokens
+
+
+- Passed / observed: The two specific samples were compared pixel by pixel: Mean difference 7.6 of 255; identical bytes: false.
+
+
+- Passed / observed: Target checks are recorded for the specific prompt, not used to hide failures: Sample 1: 6/6 matched; Sample 2: 6/6 matched
+
+
+- Passed / observed: The vague prompt was analysed without specific targets: purple, pink, blue, white
+
+
+## 33. What a vision model sees
+
+A vision model turns an image into tokens before it reasons about it. Because we draw the images ourselves, we know the right answers exactly and can measure where models miscount, misread, or lose tiny detail. Images cost tokens too.
+
+Recorded: 2026-11-16T21:26:29.150Z
+
+Caution: These are three synthetic images and one run per model, not a benchmark. A model can be right by luck and wrong on the next run. Counting many similar objects and reading tiny text are known weak spots; real photographs behave differently.
+
+
+### Count colored shapes
+
+
+Model: gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07; latency: 6230 ms; finish: completed.
+
+Usage: `{"input_tokens":799,"output_tokens":565,"total_tokens":1364}`
+
+```text
+GPT-4o: 1/3 correct. red_circles 5 (truth 6) WRONG; blue_squares 5 (truth 4) WRONG; green_triangles 4 (truth 4) OK. 398 input tokens.
+GPT-5-mini: 3/3 correct. red_circles 6 (truth 6) OK; blue_squares 4 (truth 4) OK; green_triangles 4 (truth 4) OK. 401 input tokens.
+```
+
+
+Media artifacts: shapes-scene.png (4277 bytes, sha256 f1dc91511ed3...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1945,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 20,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 150,
+        "engine_ttlt_ms": 287,
+        "pre_inference_ms": 134,
+        "service_tbt_ms": 9,
+        "service_ttft_ms": 1532,
+        "service_ttlt_ms": 1705,
+        "user_visible_ttft_ms": 1398
+      },
+      "prompt_tokens": 398,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 418
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 4284,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 545,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 512,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 54,
+        "engine_ttlt_ms": 3659,
+        "pre_inference_ms": 124,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 230,
+        "service_ttlt_ms": 3809,
+        "user_visible_ttft_ms": 106
+      },
+      "prompt_tokens": 401,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 946
+    }
+  }
+]
+```
+
+
+### Read a bar chart
+
+
+Model: gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07; latency: 3143 ms; finish: completed.
+
+Usage: `{"input_tokens":755,"output_tokens":42,"total_tokens":797}`
+
+```text
+GPT-4o: 2/2 correct. tallest_bar B (truth B) OK; value_of_c (within 5) 60 (truth 55) OK. 415 input tokens.
+GPT-5-mini: 2/2 correct. tallest_bar B (truth B) OK; value_of_c (within 5) 55 (truth 55) OK. 340 input tokens.
+```
+
+
+Media artifacts: bar-chart.png (3653 bytes, sha256 c929487c4dc8...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 2098,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 14,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 37,
+        "engine_ttft_ms": 248,
+        "engine_ttlt_ms": 800,
+        "pre_inference_ms": 99,
+        "service_tbt_ms": 39,
+        "service_ttft_ms": 1373,
+        "service_ttlt_ms": 1921,
+        "user_visible_ttft_ms": 1274
+      },
+      "prompt_tokens": 415,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 429
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1043,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 28,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 50,
+        "engine_ttlt_ms": 508,
+        "pre_inference_ms": 75,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 151,
+        "service_ttlt_ms": 606,
+        "user_visible_ttft_ms": 77
+      },
+      "prompt_tokens": 340,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 368
+    }
+  }
+]
+```
+
+
+### Read a large and a tiny code (low image detail)
+
+
+Model: gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07; latency: 2775 ms; finish: completed.
+
+Usage: `{"input_tokens":564,"output_tokens":108,"total_tokens":672}`
+
+```text
+GPT-4o: 1/2 correct. large_code R4X9 (truth R4X9) OK; small_code MX75 (truth M7K2P5) WRONG. 182 input tokens.
+GPT-5-mini: 1/2 correct. large_code R4X9 (truth R4X9) OK; small_code RX2P5 (truth M7K2P5) WRONG. 382 input tokens.
+```
+
+
+Media artifacts: text-sample.png (6777 bytes, sha256 b35fb0faa358...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1298,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 15,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 9,
+        "engine_ttft_ms": 58,
+        "engine_ttlt_ms": 204,
+        "pre_inference_ms": 105,
+        "service_tbt_ms": 10,
+        "service_ttft_ms": 936,
+        "service_ttlt_ms": 1081,
+        "user_visible_ttft_ms": 831
+      },
+      "prompt_tokens": 182,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 197
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1475,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 93,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 64,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 72,
+        "engine_ttlt_ms": 968,
+        "pre_inference_ms": 146,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 255,
+        "service_ttlt_ms": 1147,
+        "user_visible_ttft_ms": 109
+      },
+      "prompt_tokens": 382,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 475
+    }
+  }
+]
+```
+
+
+### Read a large and a tiny code (high image detail)
+
+
+Model: gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07; latency: 3216 ms; finish: completed.
+
+Usage: `{"input_tokens":1747,"output_tokens":111,"total_tokens":1858}`
+
+```text
+GPT-4o: 1/2 correct. large_code R4X9 (truth R4X9) OK; small_code MX2PS (truth M7K2P5) WRONG. 981 input tokens.
+GPT-5-mini: 2/2 correct. large_code R4X9 (truth R4X9) OK; small_code M7K2P5 (truth M7K2P5) OK. 766 input tokens.
+```
+
+
+Media artifacts: text-sample.png (6777 bytes, sha256 b35fb0faa358...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1682,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 16,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 9,
+        "engine_ttft_ms": 204,
+        "engine_ttlt_ms": 365,
+        "pre_inference_ms": 194,
+        "service_tbt_ms": 10,
+        "service_ttft_ms": 1195,
+        "service_ttlt_ms": 1351,
+        "user_visible_ttft_ms": 1001
+      },
+      "prompt_tokens": 981,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 997
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1532,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 95,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 64,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 84,
+        "engine_ttlt_ms": 932,
+        "pre_inference_ms": 85,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 197,
+        "service_ttlt_ms": 1050,
+        "user_visible_ttft_ms": 112
+      },
+      "prompt_tokens": 766,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 861
+    }
+  }
+]
+```
+
+
+- Passed / observed: Images are redrawn pixel-for-pixel, so the ground truth is exact: Seeded drawing reproduces every recorded pixel hash and shape count.
+
+
+- Passed / observed: Every model returned parseable JSON for every task: 8 of 8 answers parsed against the strict schema.
+
+
+- Passed / observed: Both models saw identical images and prompts: One request per model per task, same image and wording.
+
+
+- Passed / observed: Low image detail costs fewer input tokens than high detail: GPT-4o: 182 (low) versus 981 (high) input tokens for the same image.
+
+
+- Passed / observed: Correctness is reported per field, not summarized away: shapes: GPT-4o 1/3, GPT-5-mini 3/3; chart: GPT-4o 2/2, GPT-5-mini 2/2; text-low: GPT-4o 1/2, GPT-5-mini 1/2; text-high: GPT-4o 1/2, GPT-5-mini 2/2
+
+
+## 34. Sound is samples: speech out, speech in
+
+Sound is a long list of numbers: amplitude samples taken many thousand times per second. A text-to-speech model generates them, a speech-recognition model turns them back into words, and the round trip lets us measure how much survives.
+
+Recorded: 2026-11-16T21:27:36.430Z
+
+Caution: The speech is synthetic, one sentence, one run per condition. White noise is a simplified model of real noise; real recordings add accents, music, echo, and overlapping talkers. Pitch and speaking-rate numbers are rough signal measurements.
+
+
+### Voice alloy, normal speed
+
+
+Model: tts + whisper; latency: 2465 ms; finish: completed.
+
+Usage: `null`
+
+```text
+6.213 s of audio, 2.9 words/s.
+Heard: "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil."
+Word error rate 0% (0 substituted, 0 missed, 0 extra of 18 words).
+```
+
+
+Media artifacts: alloy-normal-audio.wav (298244 bytes, sha256 2df2260e971f...); alloy-normal-spectrogram.png (134663 bytes, sha256 bd8401772614...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "audio.speech",
+    "deployment": "tts",
+    "latencyMs": 1032,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "tts",
+    "usage": null,
+    "billedCharacters": 100,
+    "parameters": {
+      "voice": "alloy",
+      "speed": 1,
+      "format": "wav"
+    }
+  },
+  {
+    "operation": "audio.transcriptions",
+    "deployment": "whisper",
+    "latencyMs": 472,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "whisper",
+    "usage": null,
+    "audioSeconds": 6.210000038146973
+  }
+]
+```
+
+
+### Voice alloy, 1.5 times faster
+
+
+Model: tts + whisper; latency: 2038 ms; finish: completed.
+
+Usage: `null`
+
+```text
+4.067 s of audio, 4.43 words/s.
+Heard: "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil."
+Word error rate 0% (0 substituted, 0 missed, 0 extra of 18 words).
+```
+
+
+Media artifacts: alloy-fast-audio.wav (195244 bytes, sha256 f4e98471f931...); alloy-fast-spectrogram.png (98801 bytes, sha256 d6e81f8b210b...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "audio.speech",
+    "deployment": "tts",
+    "latencyMs": 1081,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "tts",
+    "usage": null,
+    "billedCharacters": 100,
+    "parameters": {
+      "voice": "alloy",
+      "speed": 1.5,
+      "format": "wav"
+    }
+  },
+  {
+    "operation": "audio.transcriptions",
+    "deployment": "whisper",
+    "latencyMs": 413,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "whisper",
+    "usage": null,
+    "audioSeconds": 4.059999942779541
+  }
+]
+```
+
+
+### Voice onyx, normal speed
+
+
+Model: tts + whisper; latency: 2219 ms; finish: completed.
+
+Usage: `null`
+
+```text
+5.85 s of audio, 3.08 words/s.
+Heard: "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil."
+Word error rate 0% (0 substituted, 0 missed, 0 extra of 18 words).
+```
+
+
+Media artifacts: onyx-normal-audio.wav (280844 bytes, sha256 ec473bc0040f...); onyx-normal-spectrogram.png (98103 bytes, sha256 769e598df031...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "audio.speech",
+    "deployment": "tts",
+    "latencyMs": 988,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "tts",
+    "usage": null,
+    "billedCharacters": 100,
+    "parameters": {
+      "voice": "onyx",
+      "speed": 1,
+      "format": "wav"
+    }
+  },
+  {
+    "operation": "audio.transcriptions",
+    "deployment": "whisper",
+    "latencyMs": 428,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "whisper",
+    "usage": null,
+    "audioSeconds": 5.849999904632568
+  }
+]
+```
+
+
+### Alloy with noise at 10 dB signal-to-noise
+
+
+Model: whisper; latency: 57687 ms; finish: completed.
+
+Usage: `null`
+
+```text
+6.213 s of audio, 2.9 words/s. Measured signal-to-noise ratio 9.99 dB.
+Heard: "The Robot Club meets on Tuesday at four in the afternoon. Please bring three notebooks and a pencil."
+Word error rate 0% (0 substituted, 0 missed, 0 extra of 18 words).
+```
+
+
+Media artifacts: noise-10-audio.wav (298244 bytes, sha256 f4cff67fabfd...); noise-10-spectrogram.png (249811 bytes, sha256 36a338861ed5...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "audio.transcriptions",
+    "deployment": "whisper",
+    "latencyMs": 667,
+    "attempts": 2,
+    "waitedMs": 56000,
+    "model": "whisper",
+    "usage": null,
+    "audioSeconds": 6.210000038146973
+  }
+]
+```
+
+
+### Alloy with noise at 0 dB signal-to-noise
+
+
+Model: whisper; latency: 1388 ms; finish: completed.
+
+Usage: `null`
+
+```text
+6.213 s of audio, 2.9 words/s. Measured signal-to-noise ratio 0.01 dB.
+Heard: "Robot Club meets on Tuesday at 4 in the afternoon. Please bring three notebooks and a pencil."
+Word error rate 6% (0 substituted, 1 missed, 0 extra of 18 words).
+```
+
+
+Media artifacts: noise-0-audio.wav (298244 bytes, sha256 f5173eeabcf5...); noise-0-spectrogram.png (213190 bytes, sha256 15b7715099cd...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "audio.transcriptions",
+    "deployment": "whisper",
+    "latencyMs": 428,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "whisper",
+    "usage": null,
+    "audioSeconds": 6.210000038146973
+  }
+]
+```
+
+
+### Alloy with noise at -10 dB signal-to-noise
+
+
+Model: whisper; latency: 1401 ms; finish: completed.
+
+Usage: `null`
+
+```text
+6.213 s of audio, 2.9 words/s. Measured signal-to-noise ratio -10.01 dB.
+Heard: "Robots that make me feel better are always me. Please don't make me feel better than I am."
+Word error rate 100% (18 substituted, 0 missed, 0 extra of 18 words).
+```
+
+
+Media artifacts: noise-minus-10-audio.wav (298244 bytes, sha256 888731fd770b...); noise-minus-10-spectrogram.png (252655 bytes, sha256 136b898f7768...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "audio.transcriptions",
+    "deployment": "whisper",
+    "latencyMs": 418,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "whisper",
+    "usage": null,
+    "audioSeconds": 6.210000038146973
+  }
+]
+```
+
+
+- Passed / observed: Six recordings were measured and transcribed: 6 audio files, 6 spectrograms, 6 transcripts.
+
+
+- Passed / observed: Synthesized audio is real mono 16-bit speech of plausible length: 6.213s at 24000 Hz, 4.067s at 24000 Hz, 5.85s at 24000 Hz
+
+
+- Passed / observed: Asking for 1.5 times speed shortens the audio by roughly that factor: Duration ratio 0.65 (ideal 0.67).
+
+
+- Passed / observed: Clean speech is recognized almost perfectly: 0%, 0%, 0%
+
+
+- Passed / observed: Noise was added at the requested signal-to-noise ratios: 10 dB -> 9.99 dB, 0 dB -> 0.01 dB, -10 dB -> -10.01 dB
+
+
+- Passed / observed: Noisy-speech error rates are reported, not assumed: 10 dB: 0%, 0 dB: 6%, -10 dB: 100%
+
+
+- Passed / observed: Pitch is measured for both voices: alloy 147.1 Hz, onyx 92.6 Hz
+
+
+## 35. Who spoke when
+
+Speech recognition says what was said. Diarization adds who said it and when, by grouping stretches of audio that sound like the same voice. Because we build the conversation ourselves, we know the right answer and can score the model.
+
+Recorded: 2026-11-16T21:27:59.526Z
+
+Caution: Voices come from a synthetic speech model, there are only three, and each scenario was run once. Speaker labels such as A and B are arbitrary, so we match them to voices by overlap in time. Real meetings have background noise, similar voices, and more speakers.
+
+
+### Two speakers take turns
+
+
+Model: tts + gpt-4o-transcribe-diarize; latency: 5896 ms; finish: completed.
+
+Usage: `{"input_tokens":138,"output_tokens":429,"total_tokens":567}`
+
+```text
+2 real speakers; the model found 2.
+It covered 91% of the true speaking time, and 100% of that covered time went to the correct speaker (91% of all speech correctly attributed).
+Mean error in where each turn starts: 0.06 s.
+Transcript word error rate: 0%.
+```
+
+
+Media artifacts: two-speakers-audio.wav (444666 bytes, sha256 b015a5a93383...); two-speakers-timeline.png (2078 bytes, sha256 0b852b4600c3...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "audio.speech",
+    "deployment": "tts",
+    "latencyMs": 975,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "tts",
+    "usage": null,
+    "billedCharacters": 61,
+    "parameters": {
+      "voice": "alloy",
+      "speed": 1,
+      "format": "wav"
+    }
+  },
+  {
+    "operation": "audio.speech",
+    "deployment": "tts",
+    "latencyMs": 902,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "tts",
+    "usage": null,
+    "billedCharacters": 50,
+    "parameters": {
+      "voice": "onyx",
+      "speed": 1,
+      "format": "wav"
+    }
+  },
+  {
+    "operation": "audio.speech",
+    "deployment": "tts",
+    "latencyMs": 971,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "tts",
+    "usage": null,
+    "billedCharacters": 49,
+    "parameters": {
+      "voice": "nova",
+      "speed": 1,
+      "format": "wav"
+    }
+  },
+  {
+    "operation": "audio.speech",
+    "deployment": "tts",
+    "latencyMs": 908,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "tts",
+    "usage": null,
+    "billedCharacters": 61,
+    "parameters": {
+      "voice": "alloy",
+      "speed": 1,
+      "format": "wav"
+    }
+  },
+  {
+    "operation": "audio.speech",
+    "deployment": "tts",
+    "latencyMs": 856,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "tts",
+    "usage": null,
+    "billedCharacters": 50,
+    "parameters": {
+      "voice": "onyx",
+      "speed": 1,
+      "format": "wav"
+    }
+  },
+  {
+    "operation": "audio.speech",
+    "deployment": "tts",
+    "latencyMs": 1119,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "tts",
+    "usage": null,
+    "billedCharacters": 45,
+    "parameters": {
+      "voice": "nova",
+      "speed": 1,
+      "format": "wav"
+    }
+  },
+  {
+    "operation": "audio.diarization",
+    "deployment": "gpt-4o-transcribe-diarize",
+    "latencyMs": 5839,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-transcribe-diarize",
+    "usage": {
+      "type": "tokens",
+      "total_tokens": 567,
+      "input_tokens": 138,
+      "input_token_details": {
+        "text_tokens": 0,
+        "audio_tokens": 138
+      },
+      "output_tokens": 429
+    },
+    "audioSeconds": 13.894458333333333
+  }
+]
+```
+
+
+### Three speakers take turns
+
+
+Model: gpt-4o-transcribe-diarize; latency: 6306 ms; finish: completed.
+
+Usage: `{"input_tokens":202,"output_tokens":619,"total_tokens":821}`
+
+```text
+3 real speakers; the model found 3.
+It covered 91% of the true speaking time, and 100% of that covered time went to the correct speaker (91% of all speech correctly attributed).
+Mean error in where each turn starts: 0.07 s.
+Transcript word error rate: 0%.
+```
+
+
+Media artifacts: three-speakers-audio.wav (649340 bytes, sha256 d32acb00f51d...); three-speakers-timeline.png (2723 bytes, sha256 4f7fd4a7bfb2...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "audio.diarization",
+    "deployment": "gpt-4o-transcribe-diarize",
+    "latencyMs": 6217,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-transcribe-diarize",
+    "usage": {
+      "type": "tokens",
+      "total_tokens": 821,
+      "input_tokens": 202,
+      "input_token_details": {
+        "text_tokens": 0,
+        "audio_tokens": 202
+      },
+      "output_tokens": 619
+    },
+    "audioSeconds": 20.2905
+  }
+]
+```
+
+
+### Two speakers, and one interrupts
+
+
+Model: gpt-4o-transcribe-diarize; latency: 5051 ms; finish: completed.
+
+Usage: `{"input_tokens":112,"output_tokens":384,"total_tokens":496}`
+
+```text
+2 real speakers; the model found 2.
+It covered 92% of the true speaking time, and 84% of that covered time went to the correct speaker (77% of all speech correctly attributed).
+Mean error in where each turn starts: 0.06 s.
+Transcript word error rate: 29%.
+```
+
+
+Media artifacts: interruption-audio.wav (361466 bytes, sha256 cf62b9098bd0...); interruption-timeline.png (2193 bytes, sha256 280311bde345...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "audio.diarization",
+    "deployment": "gpt-4o-transcribe-diarize",
+    "latencyMs": 5018,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-transcribe-diarize",
+    "usage": {
+      "type": "tokens",
+      "total_tokens": 496,
+      "input_tokens": 112,
+      "input_token_details": {
+        "text_tokens": 0,
+        "audio_tokens": 112
+      },
+      "output_tokens": 384
+    },
+    "audioSeconds": 11.294458333333333
+  }
+]
+```
+
+
+- Passed / observed: Three conversations were assembled with known ground truth: 4 turns in 7 speech stretches, 13.89s; 6 turns in 9 speech stretches, 20.29s; 4 turns in 7 speech stretches, 11.29s
+
+
+- Passed / observed: Only the interruption scenario contains true overlapping speech: 0.00s overlap, 0.00s overlap, 1.24s overlap
+
+
+- Passed / observed: The model returned timed, labelled segments for every scenario: 6 segments, 11 segments, 10 segments
+
+
+- Passed / observed: Scores are valid proportions: 91% overall, 91% overall, 77% overall
+
+
+- Passed / observed: The easy two-speaker case confirms the timeline alignment works: Overall 91% (a value near 50% would suggest misaligned time).
+
+
+- Passed / observed: Speaker counts are reported against the truth: 2 of 2, 3 of 3, 2 of 2
+
+
+## 36. Music is tokens
+
+A melody can be written as a sequence of note-event tokens. A model that predicts the next token can then compose, just as Lab 00 predicted words. Here three kinds of composer are measured with the same music-theory yardstick, and every melody is rendered to real audio that we check by pitch tracking.
+
+Recorded: 2026-11-16T21:34:15.786Z
+
+Caution: Azure offers no music-generation model in this subscription, so this lab uses symbolic notes, a tiny statistical model, and GPT-4o prompted to write notes; it is not how audio models like MusicGen or Lyria work. The corpus is nine simplified public-domain phrases, the synthesizer is a basic harmonic tone generator, and these measurements do not judge whether a melody is beautiful.
+
+
+### Random notes (the baseline)
+
+
+Model: local-computation; latency: 129 ms; finish: completed.
+
+Usage: `null`
+
+```text
+D4:2 G4:4 G4:3 C4:3 E4:3 A4:1 D4:1 F4:4 C4:3 E4:1 B4:3 C5:1 A4:3
+This melody: 17% stepwise, 25% large leaps, ends on the tonic: no.
+Audio check: 13 of 13 notes measured within 50 cents of the written pitch.
+Across 30 melodies: 34% stepwise, 10.57 distinct tokens, 0% of 4-token runs copied from the nine training tunes.
+```
+
+
+Media artifacts: random-audio.wav (256044 bytes, sha256 040f7491b206...); random-piano-roll.png (1771 bytes, sha256 5f7f25ef798a...)
+
+
+### A next-note model trained on nine tunes, low temperature
+
+
+Model: local-computation; latency: 48 ms; finish: completed.
+
+Usage: `null`
+
+```text
+C4:2 D4:2 C4:2 D4:2 E4:2 D4:2 E4:2 E4:2 C4:2 C4:2 D4:2 E4:2 C4:2 C4:2 E4:2 C4:2
+This melody: 73% stepwise, 0% large leaps, ends on the tonic: yes.
+Audio check: 16 of 16 notes measured within 50 cents of the written pitch.
+Across 30 melodies: 88% stepwise, 6.3 distinct tokens, 25% of 4-token runs copied from the nine training tunes.
+Training: count which note event follows each note event in nine simplified public-domain phrases, then sample the next event in proportion to those counts. This is the same idea as Lab 00 with a much shorter memory and a vocabulary of notes instead of words.
+```
+
+
+Media artifacts: bigram-low-audio.wav (256044 bytes, sha256 dc9781602c7f...); bigram-low-piano-roll.png (1685 bytes, sha256 3101b92f69f6...)
+
+
+### The same model, high temperature
+
+
+Model: local-computation; latency: 45 ms; finish: completed.
+
+Usage: `null`
+
+```text
+E4:2 E4:2 C4:2 D4:2 D4:2 E4:4 D4:2 C4:2 G4:1 A4:1 G4:1 F4:1 E4:2 D4:4 E4:2 D4:2
+This melody: 87% stepwise, 7% large leaps, ends on the tonic: no.
+Audio check: 16 of 16 notes measured within 50 cents of the written pitch.
+Across 30 melodies: 85% stepwise, 7.47 distinct tokens, 22% of 4-token runs copied from the nine training tunes.
+Higher temperature flattens the model's next-note probabilities, so it picks less common continuations more often. It can only choose among continuations it has seen, so it adds variety but cannot invent a style it never learned.
+```
+
+
+Media artifacts: bigram-high-audio.wav (256044 bytes, sha256 1ca99a874678...); bigram-high-piano-roll.png (1742 bytes, sha256 ca1a06e4e4bb...)
+
+
+### GPT-4o composing from written instructions
+
+
+Model: gpt-4o-2024-11-20; latency: 97 ms; finish: completed.
+
+Usage: `{"input_tokens":117,"output_tokens":180,"total_tokens":297}`
+
+```text
+C4:4 E4:4 F4:4 G4:4 A4:4 G4:4 F4:4 C5:4
+This melody: 71% stepwise, 14% large leaps, ends on the tonic: yes.
+Audio check: 8 of 8 notes measured within 50 cents of the written pitch.
+Across 5 melodies: 55% stepwise, 7.2 distinct tokens, 3% of 4-token runs copied from the nine training tunes.
+GPT-4o wrote 5 melodies. 4 used only allowed tokens and summed to exactly 32 slots; the others were 36 slots.
+```
+
+
+Media artifacts: gpt4o-audio.wav (256044 bytes, sha256 b3109d2abe4c...); gpt4o-piano-roll.png (1689 bytes, sha256 97aed19aa403...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1298,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 180,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 2,
+        "engine_ttft_ms": 34,
+        "engine_ttlt_ms": 440,
+        "pre_inference_ms": 45,
+        "service_tbt_ms": 2,
+        "service_ttft_ms": 391,
+        "service_ttlt_ms": 829,
+        "user_visible_ttft_ms": 346
+      },
+      "prompt_tokens": 117,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 297
+    }
+  }
+]
+```
+
+
+- Passed / observed: The training tunes are valid 32-slot phrases: 9 phrases of 32 eighth-note slots.
+
+
+- Passed / observed: Every rendered melody fills exactly four bars: 32 slots, 8 seconds each.
+
+
+- Passed / observed: The audio matches the written notes under pitch tracking: 13/13 (worst 0.13 cents); 16/16 (worst 0.02 cents); 16/16 (worst 0.1 cents); 8/8 (worst 0.12 cents)
+
+
+- Passed / observed: Random and trained melodies are reproducible from their seeds: Re-running the seeded composers reproduces the exact tokens.
+
+
+- Passed / observed: The trained model moves more stepwise than random notes: 88% versus 34% over 30 melodies each.
+
+
+- Passed / observed: Higher temperature adds variety and copies less from the training tunes: Distinct tokens 6.3 to 7.47; copied runs 25% to 22%.
+
+
+- Passed / observed: GPT-4o output was parsed and its validity reported: 4 of 5 followed the format exactly.
+
+
+## 37. Video is frames over time
+
+A video model sees a video as a short list of still frames. How many frames you sample decides what it can know about motion and how many tokens you pay. Sample too sparsely and the video can be genuinely ambiguous, no matter how smart the model is.
+
+Recorded: 2026-11-16T21:28:27.247Z
+
+Caution: The video is drawn by our own code, so the right answers are exact, but there are only five tiny clips and one run per model. Azure's only video-generation model (Sora 2) passed its retirement date on 2026-11-02, so this lab studies video understanding from frames, not video generation.
+
+
+### Six frames, in order: which way does the ball go?
+
+
+Model: gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07; latency: 3384 ms; finish: completed.
+
+Usage: `{"input_tokens":1371,"output_tokens":102,"total_tokens":1473}`
+
+```text
+GPT-4o: direction: stationary (truth right_to_left); crossing_frame: 0 (truth 4). 769 input tokens for 6 frames.
+GPT-5-mini: direction: right_to_left (truth right_to_left); crossing_frame: 4 (truth 4). 602 input tokens for 6 frames.
+```
+
+
+Media artifacts: six-frames.png (6673 bytes, sha256 8fa20ec38b45...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1821,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 12,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 12,
+        "engine_ttft_ms": 311,
+        "engine_ttlt_ms": 473,
+        "pre_inference_ms": 236,
+        "service_tbt_ms": 13,
+        "service_ttft_ms": 1434,
+        "service_ttlt_ms": 1591,
+        "user_visible_ttft_ms": 1199
+      },
+      "prompt_tokens": 769,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 781
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1561,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 90,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 64,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 47,
+        "engine_ttlt_ms": 944,
+        "pre_inference_ms": 87,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 172,
+        "service_ttlt_ms": 1065,
+        "user_visible_ttft_ms": 85
+      },
+      "prompt_tokens": 602,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 692
+    }
+  }
+]
+```
+
+
+### Twelve frames of the same motion: more frames, more tokens
+
+
+Model: gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07; latency: 3872 ms; finish: completed.
+
+Usage: `{"input_tokens":2457,"output_tokens":167,"total_tokens":2624}`
+
+```text
+GPT-4o: direction: right_to_left (truth right_to_left); crossing_frame: 6 (truth 7). 1393 input tokens for 12 frames.
+GPT-5-mini: direction: right_to_left (truth right_to_left); crossing_frame: 7 (truth 7). 1064 input tokens for 12 frames.
+GPT-4o: 769 input tokens for 6 frames, 1393 for 12; GPT-5-mini: 602 input tokens for 6 frames, 1064 for 12.
+```
+
+
+Media artifacts: twelve-frames.png (14108 bytes, sha256 dfcd257eb34f...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 2035,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 13,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 10,
+        "engine_ttft_ms": 273,
+        "engine_ttlt_ms": 420,
+        "pre_inference_ms": 493,
+        "service_tbt_ms": 11,
+        "service_ttft_ms": 1617,
+        "service_ttlt_ms": 1760,
+        "user_visible_ttft_ms": 1124
+      },
+      "prompt_tokens": 1393,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 1406
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1836,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 154,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 128,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 50,
+        "engine_ttlt_ms": 1070,
+        "pre_inference_ms": 123,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 207,
+        "service_ttlt_ms": 1222,
+        "user_visible_ttft_ms": 84
+      },
+      "prompt_tokens": 1064,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 1218
+    }
+  }
+]
+```
+
+
+### Six shuffled frames: restore the order
+
+
+Model: gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07; latency: 4549 ms; finish: completed.
+
+Usage: `{"input_tokens":1285,"output_tokens":219,"total_tokens":1504}`
+
+```text
+GPT-4o: exact order: CEFABD (truth ECFABD); letters in the right position: 4 (truth 6); pairs in the right order (of 15): 14 (truth 15). 726 input tokens for 6 frames.
+GPT-5-mini: exact order: ECFABD (truth ECFABD); letters in the right position: 6 (truth 6); pairs in the right order (of 15): 15 (truth 15). 559 input tokens for 6 frames.
+```
+
+
+Media artifacts: shuffled-frames.png (6516 bytes, sha256 5366c370eb70...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 2413,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 7,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 319,
+        "engine_ttlt_ms": 367,
+        "pre_inference_ms": 351,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 2084,
+        "service_ttlt_ms": 2128,
+        "user_visible_ttft_ms": 1734
+      },
+      "prompt_tokens": 726,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 733
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 2134,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 212,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 192,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 46,
+        "engine_ttlt_ms": 1427,
+        "pre_inference_ms": 98,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 179,
+        "service_ttlt_ms": 1555,
+        "user_visible_ttft_ms": 81
+      },
+      "prompt_tokens": 559,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 771
+    }
+  }
+]
+```
+
+
+### A wheel turning slowly between frames
+
+
+Model: gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07; latency: 5093 ms; finish: completed.
+
+Usage: `{"input_tokens":1266,"output_tokens":344,"total_tokens":1610}`
+
+```text
+GPT-4o: matches how we generated it: clockwise (truth clockwise); matches what the frames show: clockwise (truth clockwise). 716 input tokens for 6 frames.
+GPT-5-mini: matches how we generated it: clockwise (truth clockwise); matches what the frames show: clockwise (truth clockwise). 550 input tokens for 6 frames.
+```
+
+
+Media artifacts: wheel-dense-frames.png (10256 bytes, sha256 1ac0f45cd3ad...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 2140,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 6,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 8,
+        "engine_ttft_ms": 409,
+        "engine_ttlt_ms": 464,
+        "pre_inference_ms": 264,
+        "service_tbt_ms": 9,
+        "service_ttft_ms": 1688,
+        "service_ttlt_ms": 1739,
+        "user_visible_ttft_ms": 1424
+      },
+      "prompt_tokens": 716,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 722
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 2952,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 338,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 320,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 42,
+        "engine_ttlt_ms": 2413,
+        "pre_inference_ms": 107,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 183,
+        "service_ttlt_ms": 2549,
+        "user_visible_ttft_ms": 76
+      },
+      "prompt_tokens": 550,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 888
+    }
+  }
+]
+```
+
+
+### The same wheel sampled too sparsely
+
+
+Model: gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07; latency: 4925 ms; finish: completed.
+
+Usage: `{"input_tokens":1266,"output_tokens":280,"total_tokens":1546}`
+
+```text
+GPT-4o: matches how we generated it: clockwise (truth clockwise); matches what the frames show: clockwise (truth counterclockwise). 716 input tokens for 6 frames.
+GPT-5-mini: matches how we generated it: clockwise (truth clockwise); matches what the frames show: clockwise (truth counterclockwise). 550 input tokens for 6 frames.
+```
+
+
+Media artifacts: wheel-sparse-frames.png (10251 bytes, sha256 bc4c42e6701c...)
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 2381,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 6,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 405,
+        "engine_ttlt_ms": 447,
+        "pre_inference_ms": 277,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 2032,
+        "service_ttlt_ms": 2070,
+        "user_visible_ttft_ms": 1755
+      },
+      "prompt_tokens": 716,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 722
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 2542,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 274,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 256,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 49,
+        "engine_ttlt_ms": 1898,
+        "pre_inference_ms": 116,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 195,
+        "service_ttlt_ms": 2039,
+        "user_visible_ttft_ms": 79
+      },
+      "prompt_tokens": 550,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 824
+    }
+  }
+]
+```
+
+
+- Passed / observed: Every clip is redrawn pixel-for-pixel, so the ground truth is exact: Seeded drawing reproduces the pixel hash of all five recorded contact sheets.
+
+
+- Passed / observed: Every model returned parseable JSON for every clip: 10 of 10 answers parsed against the strict schema.
+
+
+- Passed / observed: More frames cost more input tokens: GPT-4o 769 to 1393; GPT-5-mini 602 to 1064.
+
+
+- Passed / observed: The shuffled clip really is shuffled: Chronological order of the lettered frames: ECFABD.
+
+
+- Passed / observed: The sparse wheel really is aliased while the dense wheel is not: Sparse: generated clockwise, frames show counterclockwise.
+
+
+- Passed / observed: Correctness is reported per field for both models: six: GPT-4o 0/2, GPT-5-mini 2/2; twelve: GPT-4o 1/2, GPT-5-mini 2/2; shuffled: GPT-4o 0/3, GPT-5-mini 3/3; wheel-dense: GPT-4o 2/2, GPT-5-mini 2/2; wheel-sparse: GPT-4o 1/2, GPT-5-mini 1/2
+
+
+## 38. Can a model grade a model?
+
+Teams often use one model to grade another model's answers because human review is slow. A judge is itself a model with biases. Because we know the right answers, we can measure whether the judge is accurate, whether it favors the first response it reads, and whether it is fooled by a confident, longer answer.
+
+Recorded: 2026-11-16T21:29:33.316Z
+
+Caution: Six simple arithmetic pairs and four equal-quality pairs, one run per judge: enough to illustrate the checks, not to rank the models. Judges can also be wrong in ways that fit their own errors. Always keep a human-checked sample, and swap positions to expose bias.
+
+
+### GPT-4o as the judge
+
+
+Model: gpt-4o-2024-11-20; latency: 17374 ms; finish: completed.
+
+Usage: `{"input_tokens":3706,"output_tokens":585,"total_tokens":4291}`
+
+```text
+Accuracy on questions with a right answer: 83%. Same verdict when the order was swapped: 100%.
+Fooled when the wrong answer was longer: 33%.
+Two equally good answers: said tie 100% of the time; among non-tie verdicts, picked the first-listed answer n/a; kept the same winner after swapping 100%.
+```
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 735,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 32,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 36,
+        "engine_ttlt_ms": 220,
+        "pre_inference_ms": 84,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 414,
+        "service_ttlt_ms": 595,
+        "user_visible_ttft_ms": 330
+      },
+      "prompt_tokens": 225,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 257
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 714,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 32,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 4,
+        "engine_ttft_ms": 37,
+        "engine_ttlt_ms": 184,
+        "pre_inference_ms": 71,
+        "service_tbt_ms": 5,
+        "service_ttft_ms": 424,
+        "service_ttlt_ms": 583,
+        "user_visible_ttft_ms": 353
+      },
+      "prompt_tokens": 225,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 257
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 733,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 27,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 38,
+        "engine_ttlt_ms": 187,
+        "pre_inference_ms": 94,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 447,
+        "service_ttlt_ms": 600,
+        "user_visible_ttft_ms": 353
+      },
+      "prompt_tokens": 187,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 214
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 852,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 29,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 51,
+        "engine_ttlt_ms": 271,
+        "pre_inference_ms": 131,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 508,
+        "service_ttlt_ms": 724,
+        "user_visible_ttft_ms": 377
+      },
+      "prompt_tokens": 187,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 216
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 787,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 34,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 46,
+        "engine_ttlt_ms": 226,
+        "pre_inference_ms": 119,
+        "service_tbt_ms": 5,
+        "service_ttft_ms": 481,
+        "service_ttlt_ms": 644,
+        "user_visible_ttft_ms": 362
+      },
+      "prompt_tokens": 192,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 226
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 749,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 34,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 36,
+        "engine_ttlt_ms": 222,
+        "pre_inference_ms": 98,
+        "service_tbt_ms": 5,
+        "service_ttft_ms": 430,
+        "service_ttlt_ms": 612,
+        "user_visible_ttft_ms": 332
+      },
+      "prompt_tokens": 192,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 226
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 700,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 29,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 40,
+        "engine_ttlt_ms": 240,
+        "pre_inference_ms": 61,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 403,
+        "service_ttlt_ms": 593,
+        "user_visible_ttft_ms": 342
+      },
+      "prompt_tokens": 200,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 229
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 743,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 29,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 42,
+        "engine_ttlt_ms": 224,
+        "pre_inference_ms": 80,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 440,
+        "service_ttlt_ms": 613,
+        "user_visible_ttft_ms": 359
+      },
+      "prompt_tokens": 200,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 229
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 818,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 38,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 32,
+        "engine_ttlt_ms": 288,
+        "pre_inference_ms": 76,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 426,
+        "service_ttlt_ms": 682,
+        "user_visible_ttft_ms": 350
+      },
+      "prompt_tokens": 197,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 235
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1310,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 34,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 8,
+        "engine_ttft_ms": 34,
+        "engine_ttlt_ms": 316,
+        "pre_inference_ms": 91,
+        "service_tbt_ms": 8,
+        "service_ttft_ms": 911,
+        "service_ttlt_ms": 1189,
+        "user_visible_ttft_ms": 819
+      },
+      "prompt_tokens": 197,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 231
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 672,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 30,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 40,
+        "engine_ttlt_ms": 201,
+        "pre_inference_ms": 63,
+        "service_tbt_ms": 5,
+        "service_ttft_ms": 403,
+        "service_ttlt_ms": 560,
+        "user_visible_ttft_ms": 340
+      },
+      "prompt_tokens": 193,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 223
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1121,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 31,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 29,
+        "engine_ttlt_ms": 201,
+        "pre_inference_ms": 72,
+        "service_tbt_ms": 5,
+        "service_ttft_ms": 828,
+        "service_ttlt_ms": 996,
+        "user_visible_ttft_ms": 757
+      },
+      "prompt_tokens": 193,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 224
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 741,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 23,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 34,
+        "engine_ttlt_ms": 211,
+        "pre_inference_ms": 91,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 426,
+        "service_ttlt_ms": 598,
+        "user_visible_ttft_ms": 334
+      },
+      "prompt_tokens": 160,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 183
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1179,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 24,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 31,
+        "engine_ttlt_ms": 180,
+        "pre_inference_ms": 76,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 909,
+        "service_ttlt_ms": 1056,
+        "user_visible_ttft_ms": 832
+      },
+      "prompt_tokens": 160,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 184
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1132,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 25,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 36,
+        "engine_ttlt_ms": 200,
+        "pre_inference_ms": 83,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 854,
+        "service_ttlt_ms": 1013,
+        "user_visible_ttft_ms": 771
+      },
+      "prompt_tokens": 163,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 188
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 747,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 25,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 38,
+        "engine_ttlt_ms": 220,
+        "pre_inference_ms": 70,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 468,
+        "service_ttlt_ms": 606,
+        "user_visible_ttft_ms": 398
+      },
+      "prompt_tokens": 163,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 188
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 785,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 26,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 9,
+        "engine_ttft_ms": 44,
+        "engine_ttlt_ms": 274,
+        "pre_inference_ms": 80,
+        "service_tbt_ms": 9,
+        "service_ttft_ms": 442,
+        "service_ttlt_ms": 669,
+        "user_visible_ttft_ms": 362
+      },
+      "prompt_tokens": 168,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 194
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 861,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 29,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 8,
+        "engine_ttft_ms": 31,
+        "engine_ttlt_ms": 260,
+        "pre_inference_ms": 95,
+        "service_tbt_ms": 8,
+        "service_ttft_ms": 438,
+        "service_ttlt_ms": 664,
+        "user_visible_ttft_ms": 343
+      },
+      "prompt_tokens": 168,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 197
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 737,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 27,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 31,
+        "engine_ttlt_ms": 239,
+        "pre_inference_ms": 77,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 414,
+        "service_ttlt_ms": 617,
+        "user_visible_ttft_ms": 338
+      },
+      "prompt_tokens": 168,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 195
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1251,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 27,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 113,
+        "engine_ttlt_ms": 297,
+        "pre_inference_ms": 86,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 938,
+        "service_ttlt_ms": 1118,
+        "user_visible_ttft_ms": 852
+      },
+      "prompt_tokens": 168,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 195
+    }
+  }
+]
+```
+
+
+### GPT-5-mini as the judge
+
+
+Model: gpt-5-mini-2025-08-07; latency: 26329 ms; finish: completed.
+
+Usage: `{"input_tokens":3666,"output_tokens":1142,"total_tokens":4808}`
+
+```text
+Accuracy on questions with a right answer: 100%. Same verdict when the order was swapped: 100%.
+Fooled when the wrong answer was longer: 0%.
+Two equally good answers: said tie 100% of the time; among non-tie verdicts, picked the first-listed answer n/a; kept the same winner after swapping 100%.
+```
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1664,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 114,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 64,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 29,
+        "engine_ttlt_ms": 1000,
+        "pre_inference_ms": 137,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 203,
+        "service_ttlt_ms": 1168,
+        "user_visible_ttft_ms": 66
+      },
+      "prompt_tokens": 223,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 337
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1676,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 120,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 64,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 33,
+        "engine_ttlt_ms": 1077,
+        "pre_inference_ms": 120,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 211,
+        "service_ttlt_ms": 1245,
+        "user_visible_ttft_ms": 91
+      },
+      "prompt_tokens": 223,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 343
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1988,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 46,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 26,
+        "engine_ttlt_ms": 645,
+        "pre_inference_ms": 120,
+        "service_tbt_ms": 9,
+        "service_ttft_ms": 686,
+        "service_ttlt_ms": 1527,
+        "user_visible_ttft_ms": 566
+      },
+      "prompt_tokens": 185,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 231
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1206,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 47,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 25,
+        "engine_ttlt_ms": 682,
+        "pre_inference_ms": 77,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 138,
+        "service_ttlt_ms": 788,
+        "user_visible_ttft_ms": 61
+      },
+      "prompt_tokens": 185,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 232
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1132,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 41,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 29,
+        "engine_ttlt_ms": 613,
+        "pre_inference_ms": 80,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 199,
+        "service_ttlt_ms": 777,
+        "user_visible_ttft_ms": 118
+      },
+      "prompt_tokens": 190,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 231
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1542,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 50,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 8,
+        "engine_ttft_ms": 60,
+        "engine_ttlt_ms": 852,
+        "pre_inference_ms": 84,
+        "service_tbt_ms": 8,
+        "service_ttft_ms": 302,
+        "service_ttlt_ms": 1056,
+        "user_visible_ttft_ms": 218
+      },
+      "prompt_tokens": 190,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 240
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1437,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 118,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 64,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 33,
+        "engine_ttlt_ms": 754,
+        "pre_inference_ms": 79,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 208,
+        "service_ttlt_ms": 925,
+        "user_visible_ttft_ms": 129
+      },
+      "prompt_tokens": 198,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 316
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1244,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 49,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 32,
+        "engine_ttlt_ms": 646,
+        "pre_inference_ms": 85,
+        "service_tbt_ms": 5,
+        "service_ttft_ms": 155,
+        "service_ttlt_ms": 761,
+        "user_visible_ttft_ms": 71
+      },
+      "prompt_tokens": 198,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 247
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1304,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 51,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 28,
+        "engine_ttlt_ms": 765,
+        "pre_inference_ms": 90,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 167,
+        "service_ttlt_ms": 889,
+        "user_visible_ttft_ms": 77
+      },
+      "prompt_tokens": 195,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 246
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1112,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 110,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 64,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 22,
+        "engine_ttlt_ms": 637,
+        "pre_inference_ms": 99,
+        "service_tbt_ms": 5,
+        "service_ttft_ms": 158,
+        "service_ttlt_ms": 768,
+        "user_visible_ttft_ms": 59
+      },
+      "prompt_tokens": 195,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 305
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1248,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 49,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 28,
+        "engine_ttlt_ms": 600,
+        "pre_inference_ms": 73,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 195,
+        "service_ttlt_ms": 773,
+        "user_visible_ttft_ms": 122
+      },
+      "prompt_tokens": 191,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 240
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1001,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 52,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 19,
+        "engine_ttlt_ms": 576,
+        "pre_inference_ms": 73,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 127,
+        "service_ttlt_ms": 679,
+        "user_visible_ttft_ms": 53
+      },
+      "prompt_tokens": 191,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 243
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 848,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 35,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 43,
+        "engine_ttlt_ms": 381,
+        "pre_inference_ms": 89,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 189,
+        "service_ttlt_ms": 503,
+        "user_visible_ttft_ms": 101
+      },
+      "prompt_tokens": 158,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 193
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 2115,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 36,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 20,
+        "engine_ttlt_ms": 337,
+        "pre_inference_ms": 131,
+        "service_tbt_ms": 9,
+        "service_ttft_ms": 1379,
+        "service_ttlt_ms": 1853,
+        "user_visible_ttft_ms": 1248
+      },
+      "prompt_tokens": 158,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 194
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 784,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 35,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 30,
+        "engine_ttlt_ms": 406,
+        "pre_inference_ms": 80,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 228,
+        "service_ttlt_ms": 586,
+        "user_visible_ttft_ms": 147
+      },
+      "prompt_tokens": 161,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 196
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 725,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 35,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 30,
+        "engine_ttlt_ms": 398,
+        "pre_inference_ms": 81,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 224,
+        "service_ttlt_ms": 559,
+        "user_visible_ttft_ms": 143
+      },
+      "prompt_tokens": 161,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 196
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1799,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 38,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 33,
+        "engine_ttlt_ms": 404,
+        "pre_inference_ms": 108,
+        "service_tbt_ms": 9,
+        "service_ttft_ms": 735,
+        "service_ttlt_ms": 1280,
+        "user_visible_ttft_ms": 627
+      },
+      "prompt_tokens": 166,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 204
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1415,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 36,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 28,
+        "engine_ttlt_ms": 395,
+        "pre_inference_ms": 298,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 482,
+        "service_ttlt_ms": 849,
+        "user_visible_ttft_ms": 185
+      },
+      "prompt_tokens": 166,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 202
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 842,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 40,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 22,
+        "engine_ttlt_ms": 383,
+        "pre_inference_ms": 80,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 132,
+        "service_ttlt_ms": 488,
+        "user_visible_ttft_ms": 51
+      },
+      "prompt_tokens": 166,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 206
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1238,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 40,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 30,
+        "engine_ttlt_ms": 420,
+        "pre_inference_ms": 203,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 460,
+        "service_ttlt_ms": 833,
+        "user_visible_ttft_ms": 257
+      },
+      "prompt_tokens": 166,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 206
+    }
+  }
+]
+```
+
+
+### Forced to choose between equally good answers
+
+
+Model: gpt-4o-2024-11-20 + gpt-5-mini-2025-08-07; latency: 22276 ms; finish: completed.
+
+Usage: `{"input_tokens":2396,"output_tokens":598,"total_tokens":2994}`
+
+```text
+GPT-4o: chose the first-listed answer 50% of the time; same winner after swapping for 50% of pairs; same position in both orders for 50% of pairs.
+GPT-5-mini: chose the first-listed answer 88% of the time; same winner after swapping for 25% of pairs; same position in both orders for 75% of pairs.
+```
+
+
+apiCalls:
+
+```json
+[
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 4483,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 17,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 39,
+        "engine_ttlt_ms": 147,
+        "pre_inference_ms": 788,
+        "service_tbt_ms": 99,
+        "service_ttft_ms": 1566,
+        "service_ttlt_ms": 3252,
+        "user_visible_ttft_ms": 777
+      },
+      "prompt_tokens": 146,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 163
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 740,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 23,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 38,
+        "engine_ttlt_ms": 164,
+        "pre_inference_ms": 91,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 456,
+        "service_ttlt_ms": 594,
+        "user_visible_ttft_ms": 365
+      },
+      "prompt_tokens": 146,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 169
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1256,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 22,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 12,
+        "engine_ttft_ms": 33,
+        "engine_ttlt_ms": 314,
+        "pre_inference_ms": 78,
+        "service_tbt_ms": 13,
+        "service_ttft_ms": 864,
+        "service_ttlt_ms": 1140,
+        "user_visible_ttft_ms": 786
+      },
+      "prompt_tokens": 149,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 171
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 718,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 23,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 36,
+        "engine_ttlt_ms": 202,
+        "pre_inference_ms": 75,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 452,
+        "service_ttlt_ms": 586,
+        "user_visible_ttft_ms": 377
+      },
+      "prompt_tokens": 149,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 172
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1146,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 23,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 57,
+        "engine_ttlt_ms": 218,
+        "pre_inference_ms": 74,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 855,
+        "service_ttlt_ms": 1011,
+        "user_visible_ttft_ms": 780
+      },
+      "prompt_tokens": 154,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 177
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 777,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 20,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 36,
+        "engine_ttlt_ms": 162,
+        "pre_inference_ms": 131,
+        "service_tbt_ms": 8,
+        "service_ttft_ms": 485,
+        "service_ttlt_ms": 637,
+        "user_visible_ttft_ms": 354
+      },
+      "prompt_tokens": 154,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 174
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 813,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 21,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 11,
+        "engine_ttft_ms": 32,
+        "engine_ttlt_ms": 270,
+        "pre_inference_ms": 71,
+        "service_tbt_ms": 11,
+        "service_ttft_ms": 419,
+        "service_ttlt_ms": 657,
+        "user_visible_ttft_ms": 348
+      },
+      "prompt_tokens": 154,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 175
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-4o",
+    "latencyMs": 1301,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-4o-2024-11-20",
+    "usage": {
+      "completion_tokens": 24,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 282,
+        "engine_ttlt_ms": 416,
+        "pre_inference_ms": 77,
+        "service_tbt_ms": 5,
+        "service_ttft_ms": 1051,
+        "service_ttlt_ms": 1182,
+        "user_visible_ttft_ms": 974
+      },
+      "prompt_tokens": 154,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 178
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1226,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 93,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 64,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 18,
+        "engine_ttlt_ms": 659,
+        "pre_inference_ms": 82,
+        "service_tbt_ms": 5,
+        "service_ttft_ms": 133,
+        "service_ttlt_ms": 769,
+        "user_visible_ttft_ms": 52
+      },
+      "prompt_tokens": 144,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 237
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1914,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 37,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 30,
+        "engine_ttlt_ms": 593,
+        "pre_inference_ms": 161,
+        "service_tbt_ms": 8,
+        "service_ttft_ms": 722,
+        "service_ttlt_ms": 1467,
+        "user_visible_ttft_ms": 561
+      },
+      "prompt_tokens": 144,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 181
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1434,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 38,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 25,
+        "engine_ttlt_ms": 549,
+        "pre_inference_ms": 82,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 533,
+        "service_ttlt_ms": 1096,
+        "user_visible_ttft_ms": 450
+      },
+      "prompt_tokens": 147,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 185
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 2020,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 41,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 28,
+        "engine_ttlt_ms": 581,
+        "pre_inference_ms": 98,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 1124,
+        "service_ttlt_ms": 1652,
+        "user_visible_ttft_ms": 1026
+      },
+      "prompt_tokens": 147,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 188
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 985,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 35,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 25,
+        "engine_ttlt_ms": 484,
+        "pre_inference_ms": 64,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 173,
+        "service_ttlt_ms": 628,
+        "user_visible_ttft_ms": 110
+      },
+      "prompt_tokens": 152,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 187
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1218,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 39,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 35,
+        "engine_ttlt_ms": 496,
+        "pre_inference_ms": 85,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 569,
+        "service_ttlt_ms": 1010,
+        "user_visible_ttft_ms": 484
+      },
+      "prompt_tokens": 152,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 191
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 895,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 40,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 5,
+        "engine_ttft_ms": 23,
+        "engine_ttlt_ms": 365,
+        "pre_inference_ms": 149,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 210,
+        "service_ttlt_ms": 632,
+        "user_visible_ttft_ms": 61
+      },
+      "prompt_tokens": 152,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 192
+    }
+  },
+  {
+    "operation": "chat.completions",
+    "deployment": "gpt-5-mini",
+    "latencyMs": 1341,
+    "attempts": 1,
+    "waitedMs": 0,
+    "model": "gpt-5-mini-2025-08-07",
+    "usage": {
+      "completion_tokens": 102,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 64,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 6,
+        "engine_ttft_ms": 30,
+        "engine_ttlt_ms": 830,
+        "pre_inference_ms": 79,
+        "service_tbt_ms": 6,
+        "service_ttft_ms": 199,
+        "service_ttlt_ms": 993,
+        "user_visible_ttft_ms": 120
+      },
+      "prompt_tokens": 152,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 254
+    }
+  }
+]
+```
+
+
+### The two judges compared
+
+
+Model: local-computation; latency: 0 ms; finish: completed.
+
+Usage: `null`
+
+```text
+Accuracy where one answer is correct: GPT-4o 83%, GPT-5-mini 100%
+Same verdict after swapping order (right-or-wrong pairs): GPT-4o 100%, GPT-5-mini 100%
+Fooled when the wrong answer is longer: GPT-4o 33%, GPT-5-mini 0%
+Accurate when the correct answer is longer: GPT-4o 100%, GPT-5-mini 100%
+Equal answers with a tie option: called a tie: GPT-4o 100%, GPT-5-mini 100%
+Equal answers, forced choice: picked the first-listed one: GPT-4o 50%, GPT-5-mini 88%
+Equal answers, forced choice: same winner after swapping: GPT-4o 50%, GPT-5-mini 25%
+```
+
+
+- Passed / observed: Each judge issued every planned judgment in both orders: 20 judgments each: 6 right-or-wrong questions and 4 equal questions, each in two orders.
+
+
+- Passed / observed: Every pair appears with both orderings of its two answers: 10 pairs, each shown in both positions.
+
+
+- Passed / observed: Both judges saw the same prompts: Identical questions, answers, and order.
+
+
+- Passed / observed: Scorecards are valid proportions: GPT-4o: accuracy 83%; GPT-5-mini: accuracy 100%
+
+
+- Passed / observed: The forced-choice condition made every judge pick a position for all equal pairs in both orders: 16 forced verdicts; GPT-4o first-slot share 50%, GPT-5-mini 88%.
+
+
+- Passed / observed: The comparison reuses recorded verdicts, with no hidden requests: Zero additional API requests.
 
 
 ## Retained first grounding attempt
