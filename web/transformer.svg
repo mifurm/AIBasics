@@ -14,6 +14,7 @@
       .layer { fill: #def2ed; stroke: #19777b; stroke-width: 2; rx: 9; }
       .flow { fill: none; stroke: #19777b; stroke-width: 3; marker-end: url(#arrow); }
       .skip { fill: none; stroke: #526c7e; stroke-width: 2; }
+      .tag { fill: #136c74; font-size: 14px; font-weight: 700; text-anchor: end; }
     </style>
   </defs>
   <rect width="1400" height="920" fill="#f2f5f8"/>
@@ -83,4 +84,17 @@
   <path d="M750 816H800" fill="none" stroke="#a85c10" stroke-width="3" marker-end="url(#trainArrow)"/>
   <text x="1080" y="821">Backprop + Adam update all parameters</text>
   <text class="small" x="695" y="865">Teaching model, not GPT internals. Tiny-data memorization is not general language understanding.</text>
+
+  <!-- Tags such as #4 or #5-9 match the steps of the step-by-step walkthrough in the gallery and in lab 00. -->
+  <text class="tag" x="190" y="324">#1</text>
+  <text class="tag" x="440" y="324">#2-3</text>
+  <text class="tag" x="918" y="208">#4</text>
+  <text class="tag" x="920" y="266">#5-9</text>
+  <text class="tag" x="918" y="383">#10</text>
+  <text class="tag" x="918" y="453">#11</text>
+  <text class="tag" x="918" y="512">#12-13</text>
+  <text class="tag" x="918" y="618">#13</text>
+  <text class="tag" x="1360" y="366">#14-16</text>
+  <text class="tag" x="1360" y="563">#17</text>
+  <text class="small" x="700" y="908">Tags such as #4 or #5-9 mark the steps of the step-by-step walkthrough (all 17 steps, with equations).</text>
 </svg>

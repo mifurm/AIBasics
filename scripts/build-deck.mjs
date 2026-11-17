@@ -4,6 +4,7 @@ import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { labs } from '../lib/labs.mjs';
 import { loadConfig } from '../lib/azure.mjs';
+import { renderWalkthroughText } from '../lib/transformer-walkthrough-check.mjs';
 
 const { values } = parseArgs({ options: {
   'media-directory': { type: 'string' },
@@ -38,6 +39,31 @@ function body(s, text, x, y, w, h, fontSize = 20) {
 }
 function link(s, text, url, x, y, w = 7) {
   s.addText(text, { x, y, w, h: 0.34, fontSize: 13, color: C.teal, underline: true, hyperlink: { url } });
+}
+
+// Lab 00: one slide per group of steps, listing each step's plain-words title and its equation.
+function addWalkthroughSlides(record) {
+  const walkthroughs = record.results.map(result => result.computationTrace?.walkthrough).filter(Boolean);
+  const forward = walkthroughs.find(entry => entry.kind === 'forward');
+  const learning = walkthroughs.find(entry => entry.kind === 'learning');
+  if (!forward || !learning) throw new Error('Lab 00 results lack the step-by-step walkthroughs; rerun lab 00.');
+  const groups = [
+    ['Lab 00: one prediction, step by step (1 of 3)', forward.steps.slice(0, 9), 'Steps 1-9: get the words ready, then look back (attention)'],
+    ['Lab 00: one prediction, step by step (2 of 3)', forward.steps.slice(9), 'Steps 10-17: think alone, then predict'],
+    ['Lab 00: how the numbers are learned (3 of 3)', learning.steps, 'One training update, then repeat'],
+  ];
+  for (const [title, steps, kicker] of groups) {
+    const s = slide(title, `LAB 00 | ${kicker.toUpperCase()}`);
+    const header = ['Step', 'In plain words', 'The equation'].map(text => ({ text, options: { bold: true, fill: { color: C.pale }, color: C.ink } }));
+    const rows = [header, ...steps.map(step => [
+      { text: String(step.number), options: { align: 'center', bold: true } },
+      { text: step.title },
+      { text: step.headline, options: { fontFace: 'Cambria Math' } },
+    ])];
+    s.addTable(rows, { x: 0.5, y: 1.6, w: 12.3, colW: [0.8, 4.7, 6.8], fontFace: 'Aptos', fontSize: 12, color: C.ink, border: { type: 'solid', color: 'D5E0E7', pt: 0.75 }, valign: 'middle', rowH: 0.45 });
+    link(s, 'Open the full walkthrough with every number', `${config.website}#00-tiny-transformer`, 0.5, 6.6, 6);
+    s.addNotes(steps.map(step => `Step ${step.number}: ${step.title}\n${step.plain}`).join('\n\n'));
+  }
 }
 
 {
@@ -139,6 +165,7 @@ for (let i = 0; i < labs.length; i++) {
     ...record.results.map(result => result.status === 'blocked' ? result.error.message :
       `${result.label}: ${result.actualModel}; ${result.latencyMs} ms; ${result.kind === 'computation' ? 'no model API requests' : result.kind === 'experiment' ? `${result.apiRequests} Azure API request(s)` : `${result.usage.total_tokens} API tokens`}. Actual output:\n${result.output}`),
   ].filter(Boolean).join('\n\n'));
+  if (lab.id === '00-tiny-transformer') addWalkthroughSlides(record);
   detailed.push(`\n## ${lab.id.slice(0, 2)}. ${lab.title}\n\n${lab.concept}\n\nRecorded: ${record.recordedAt}\n\nCaution: ${lab.caveat}\n`);
   for (const result of record.results) {
     detailed.push(`\n### ${result.label}\n`);
@@ -151,7 +178,15 @@ for (let i = 0; i < labs.length; i++) {
       if (result.artifacts?.length) detailed.push(`\nMedia artifacts: ${result.artifacts.map(artifact => `${artifact.file} (${artifact.bytes} bytes, sha256 ${artifact.sha256.slice(0, 12)}...)`).join('; ')}\n`);
       if (result.toolTrace) detailed.push(`\nTool trace: \`${JSON.stringify(result.toolTrace)}\`\n\nAdditional first-request usage: \`${JSON.stringify(result.toolRequestUsage)}\`\n`);
       for (const key of ['comparison', 'computationTrace', 'memoryTrace', 'summaryTrace', 'toolSteps', 'retrievalTrace', 'agentTrace', 'extraRequests', 'apiCalls']) {
-        if (result[key]?.length !== 0 && result[key]) detailed.push(`\n${key}:\n\n\`\`\`json\n${JSON.stringify(result[key], null, 2)}\n\`\`\`\n`);
+        if (!(result[key]?.length !== 0 && result[key])) continue;
+        let value = result[key];
+        if (key === 'computationTrace' && value.walkthrough) {
+          // Readable text instead of another huge JSON dump; the full-precision numbers stay in the result JSON.
+          const { walkthrough, ...rest } = value;
+          detailed.push(`\nstep-by-step walkthrough (text rendering):\n\n\`\`\`text\n${renderWalkthroughText(walkthrough)}\n\`\`\`\n`);
+          value = rest;
+        }
+        detailed.push(`\n${key}:\n\n\`\`\`json\n${JSON.stringify(value, null, 2)}\n\`\`\`\n`);
       }
     }
   }

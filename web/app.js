@@ -119,10 +119,42 @@ function mediaUrl(lab, artifact) {
   return `./media/${encodeURIComponent(lab.id)}/${encodeURIComponent(artifact.file)}`;
 }
 
+// Equations are plain text such as "s_ij = (q_i · k_j) / √8". Single letters become variables (italic), longer
+// names such as exp or ReLU stay upright, and "_x" becomes a subscript. Everything is built from text nodes.
+function typeset(source) {
+  const fragment = document.createDocumentFragment();
+  const token = /([A-Za-z\u0391-\u03a9\u03b1-\u03c9]+)|_([A-Za-z0-9]+)|([^A-Za-z\u0391-\u03a9\u03b1-\u03c9_]+|_)/g;
+  for (const [, name, subscript, other] of source.matchAll(token)) {
+    if (name) fragment.append(name.length === 1 ? element('i', name) : element('span', name, 'fn'));
+    else if (subscript) {
+      const sub = element('sub');
+      for (const part of subscript.match(/[a-z]+|[^a-z]+/g)) sub.append(/^[a-z]+$/.test(part) ? element('i', part) : document.createTextNode(part));
+      fragment.append(sub);
+    } else fragment.append(document.createTextNode(other));
+  }
+  return fragment;
+}
+
+function equationBlock(source) {
+  const node = element('div', undefined, 'equation');
+  node.setAttribute('role', 'math');
+  node.setAttribute('aria-label', source);
+  const visual = element('span');
+  visual.setAttribute('aria-hidden', 'true');
+  visual.append(typeset(source));
+  node.append(visual);
+  return node;
+}
+
 function renderBlock(block, lab, artifacts) {
   const wrap = element('div', undefined, `block block-${block.type}`);
   if (block.type === 'text') wrap.append(element('p', block.text));
-  else if (block.type === 'code') {
+  else if (block.type === 'details') {
+    const details = element('details');
+    details.append(element('summary', block.title));
+    for (const inner of block.blocks) details.append(renderBlock(inner, lab, artifacts));
+    wrap.append(details);
+  } else if (block.type === 'code') {
     if (block.title) wrap.append(element('h4', block.title));
     wrap.append(element('pre', block.text, 'settings'));
   } else if (block.type === 'table') {
@@ -197,6 +229,103 @@ function showExperiment(lab, result) {
   return grid;
 }
 
+function showStep(step, lab) {
+  const card = element('section', undefined, 'step');
+  card.id = `step-${step.number}`;
+  const heading = element('h4', undefined, 'step-title');
+  heading.append(element('span', String(step.number), 'step-number'), element('span', step.title));
+  if (step.technical) heading.append(element('span', step.technical, 'step-technical'));
+  card.append(heading, element('p', step.plain, 'plain'), element('h5', 'The equation'));
+  for (const equation of step.equations) card.append(equationBlock(equation));
+  if (step.where?.length) {
+    const where = element('dl', undefined, 'where');
+    for (const [symbol, meaning] of step.where) {
+      const term = element('dt');
+      term.append(typeset(symbol));
+      where.append(term, element('dd', meaning));
+    }
+    card.append(where);
+  }
+  card.append(element('h5', 'With this run\'s numbers'));
+  for (const block of step.display) card.append(renderBlock(block, lab, new Map()));
+  if (step.notice) card.append(element('p', step.notice, 'notice'));
+  return card;
+}
+
+function showGlance(walkthrough) {
+  const section = element('section', undefined, 'glance');
+  section.append(element('h3', `All ${walkthrough.steps.length} steps at a glance`));
+  const grid = element('table', undefined, 'evidence-table');
+  const head = element('tr');
+  for (const heading of ['Step', 'In plain words', 'The equation']) {
+    const cell = element('th', heading);
+    cell.scope = 'col';
+    head.append(cell);
+  }
+  const thead = element('thead');
+  thead.append(head);
+  const tbody = element('tbody');
+  for (const step of walkthrough.steps) {
+    const row = element('tr');
+    const numberCell = element('td');
+    const link = element('a', String(step.number));
+    link.href = `#step-${step.number}`;
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      document.getElementById(`step-${step.number}`)?.scrollIntoView();
+    });
+    numberCell.append(link);
+    const equationCell = element('td', undefined, 'equation-cell');
+    equationCell.append(typeset(step.headline));
+    row.append(numberCell, element('td', step.title), equationCell);
+    tbody.append(row);
+  }
+  grid.append(thead, tbody);
+  const scroller = element('div', undefined, 'table-wrap');
+  scroller.append(grid);
+  section.append(scroller);
+  return section;
+}
+
+function showWalkthrough(lab, result) {
+  const walkthrough = result.computationTrace.walkthrough;
+  const root = element('div', undefined, 'walkthrough');
+  const summary = element('section');
+  const output = element('pre', result.output, 'output');
+  output.id = 'output';
+  summary.append(element('h3', walkthrough.title), output,
+    element('p', `${result.actualModel} | ${result.latencyMs} ms | No Azure OpenAI API requests. Toy tokens are not API billing tokens.`, 'metrics'));
+  const intro = element('div', undefined, 'intro');
+  for (const paragraph of walkthrough.intro) intro.append(element('p', paragraph));
+  summary.append(intro);
+  if (walkthrough.glossary?.length) {
+    const glossary = element('details', undefined, 'glossary');
+    glossary.open = true;
+    glossary.append(element('summary', 'Words you will meet'));
+    const list = element('dl');
+    for (const [term, meaning] of walkthrough.glossary) list.append(element('dt', term), element('dd', meaning));
+    glossary.append(list);
+    summary.append(glossary);
+  }
+  root.append(summary, showGlance(walkthrough));
+  for (const part of walkthrough.parts) {
+    root.append(element('h3', part.title, 'part-title'));
+    for (const number of part.steps) root.append(showStep(walkthrough.steps.find(step => step.number === number), lab));
+  }
+  if (walkthrough.wrapUp) {
+    const card = element('section', undefined, 'step wrap-up');
+    card.append(element('h4', walkthrough.wrapUp.title, 'step-title'), element('p', walkthrough.wrapUp.plain, 'plain'));
+    for (const block of walkthrough.wrapUp.display) card.append(renderBlock(block, lab, new Map()));
+    card.append(element('p', `Caution: ${walkthrough.wrapUp.caution}`, 'notice'));
+    root.append(element('h3', 'Putting it together', 'part-title'), card);
+  }
+  const raw = element('details');
+  raw.append(element('summary', 'Inspect every recorded number at full precision'),
+    element('pre', JSON.stringify(Object.fromEntries(walkthrough.steps.map(step => [step.id, step.data])), null, 2), 'settings'));
+  root.append(raw);
+  return root;
+}
+
 function showDiscussion(lab) {
   const discussion = element('aside', undefined, 'discussion');
   discussion.append(element('strong', 'Ask the class'), element('p', lab.question), element('p', `Important: ${lab.caveat}`), element('p', `Try it: ${lab.exercise}`));
@@ -244,6 +373,12 @@ function showLab(index, selectedCase = 0) {
     link.href = image.src;
     figure.append(image, link);
     main.append(figure);
+    const guided = lab.results.findIndex(entry => entry.computationTrace?.walkthrough?.kind === 'forward');
+    if (guided >= 0 && selectedCase !== guided) {
+      const jump = element('button', 'Start here: follow one prediction through every step, with equations and plain words', 'jump');
+      jump.addEventListener('click', () => showLab(index, guided));
+      main.append(jump);
+    }
   }
   if (lab.modelComparison) {
     showModelComparison(lab, selectedCase, index);
@@ -265,6 +400,11 @@ function showLab(index, selectedCase = 0) {
   const result = lab.results[selectedCase];
   if (result.kind === 'experiment') {
     main.append(showExperiment(lab, result));
+    showDiscussion(lab);
+    return;
+  }
+  if (result.kind === 'computation' && result.computationTrace?.walkthrough) {
+    main.append(showWalkthrough(lab, result));
     showDiscussion(lab);
     return;
   }

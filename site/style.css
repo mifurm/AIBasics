@@ -50,4 +50,35 @@ footer { padding: 18px 36px; font-size: 12px; color: #526c7e; }
 .bar-row { display: grid; grid-template-columns: minmax(130px, 1.3fr) 3fr minmax(60px, auto); gap: 10px; align-items: center; font-size: 12px; margin: 6px 0; }
 .bar-track { background: #e5ecf1; border-radius: 6px; height: 14px; overflow: hidden; }
 .bar-fill { background: #19777b; height: 100%; }
+.jump { display: block; width: 100%; margin: 0 0 18px; padding: 14px 18px; border: 0; border-radius: 10px; background: #19777b; color: #fff; font: inherit; font-size: 16px; font-weight: 700; text-align: left; cursor: pointer; }
+.jump:hover { background: #136c74; }
+.walkthrough > section, .walkthrough > details { margin-top: 18px; }
+.walkthrough details { margin: 12px 0; }
+.walkthrough summary { font-size: 13px; font-weight: 700; cursor: pointer; color: #136c74; }
+.walkthrough pre.settings { max-height: none; }
+.walkthrough .intro p { font-size: 16px; line-height: 1.6; margin: 10px 0; }
+.glossary dl { margin: 8px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; font-size: 14px; line-height: 1.5; }
+.glossary dt { font-weight: 700; }
+.glossary dd, .where dd { margin: 0; }
+.part-title { margin: 30px 0 0; padding-bottom: 6px; border-bottom: 2px solid #19777b; font-size: 20px; text-transform: none; letter-spacing: 0; color: #152c40; }
+.step { margin-top: 16px; border-left: 5px solid #19777b; scroll-margin-top: 14px; }
+.step-title { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 0 0 6px; font-size: 19px; }
+.step-number { display: inline-grid; place-items: center; min-width: 32px; height: 32px; padding: 0 6px; border-radius: 16px; background: #112b43; color: #fff; font-size: 15px; }
+.step-technical { font-size: 12px; font-weight: 400; color: #526c7e; }
+.step h5 { margin: 16px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #19777b; }
+.plain { margin: 8px 0 4px; font-size: 16px; line-height: 1.6; }
+.equation { margin: 6px 0; padding: 4px 14px; overflow-x: auto; white-space: nowrap; background: #f2f5f8; border: 1px solid #d5e0e7; border-radius: 8px; font: 21px/1.9 "Cambria Math", "STIX Two Math", "Latin Modern Math", Georgia, "Times New Roman", serif; }
+.equation i { font-style: italic; }
+.equation .fn { font-style: normal; }
+.equation sub, .where sub, .equation-cell sub { font-size: 0.68em; line-height: 0; }
+.where { margin: 10px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; font-size: 14px; line-height: 1.5; }
+.where dt { font: 16px/1.5 "Cambria Math", "STIX Two Math", Georgia, serif; white-space: nowrap; }
+.notice { margin: 14px 0 0; padding: 10px 14px; background: #def2ed; border-left: 4px solid #19777b; border-radius: 4px; font-size: 14px; line-height: 1.5; }
+.equation-cell { font: 16px/1.5 "Cambria Math", "STIX Two Math", Georgia, serif; }
+.glance .evidence-table { overflow-wrap: normal; word-break: normal; }
+.glance th:first-child, .glance td:first-child { white-space: nowrap; }
+.glance td:nth-child(2) { min-width: 11em; }
+.equation-cell i, .where i { font-style: italic; }
+.equation-cell .fn, .where .fn { font-style: normal; }
+.wrap-up { border-left-color: #d27818; }
 @media (max-width: 850px) { .layout, .comparison { grid-template-columns: 1fr; } nav { display: flex; overflow: auto; } nav button { min-width: 180px; } main { padding: 18px; } }

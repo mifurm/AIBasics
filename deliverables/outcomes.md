@@ -54,9 +54,9 @@ Latency is wall-clock request time from this machine; tool latency sums both mod
 
 ## 00. How a tiny transformer predicts a token
 
-A decoder-only transformer turns token IDs into vectors, mixes earlier context with causal attention, and predicts the next token. Training changes weights; prompting does not.
+A decoder-only transformer turns token IDs into vectors, mixes earlier context with causal attention, and predicts the next token. Training changes weights; prompting does not. Pick "Follow one prediction through every step" to see each equation, what it does in plain words, and the real numbers.
 
-Recorded: 2026-11-16T17:54:56.743Z
+Recorded: 2026-11-17T11:33:12.763Z
 
 Caution: This 833-parameter teaching model memorizes two fictional sentences. It uses word tokens, one attention head, and one block, not GPT internals or useful general language understanding.
 
@@ -64,7 +64,7 @@ Caution: This 833-parameter teaching model memorizes two fictional sentences. It
 ### Train weights, then compare two contexts
 
 
-Model: tiny-transformer-1-block-1-head; latency: 2480 ms; finish: completed.
+Model: tiny-transformer-1-block-1-head; latency: 3242 ms; finish: completed.
 
 No model API requests. Toy training tokens are not API billing tokens.
 
@@ -2770,10 +2770,854 @@ computationTrace:
 ```
 
 
+### Follow one prediction through every step (equations and plain words)
+
+
+Model: tiny-transformer-1-block-1-head; latency: 14 ms; finish: completed.
+
+No model API requests. Toy training tokens are not API billing tokens.
+
+```text
+Followed "<bos> the robot is" through 17 steps of the trained model. Every step shows its equation, what it does in plain words, and this run's numbers.
+Step 8: "is" gives 93.00% of its attention to "robot".
+Step 16: next-word probabilities: blue 99.92%, green 0.0252%, and so on.
+Step 17: the greedy choice is "blue".
+The same steps on "<bos> the plant is" end with "green" (99.90%).
+Every equation was recomputed with plain numbers: the largest difference from the model's own forward pass is 2.7e-15, and 96 relations hold on the recorded numbers.
+```
+
+
+step-by-step walkthrough (text rendering):
+
+```text
+FOLLOW ONE PREDICTION THROUGH EVERY STEP
+====================================================================================================
+We follow one sentence, "<bos> the robot is", through the trained model. The model's job is to guess
+the next word. There are 17 steps. Each step has three parts: what happens in plain words, the
+equation, and the real numbers from this run (not made-up examples).
+
+We watch the last word, "is", because that is the word whose output predicts the next word. In the
+equations, i is the word that is asking (here "is") and j is a word it looks at. We count from 1 on
+this page ("the first number"); the dictionary IDs start at 0 because that is how the code counts.
+Numbers are rounded to 3 decimals for display, so doing the arithmetic by hand may differ in the
+last digit; the equations were checked with the full-precision numbers.
+
+Words you will meet:
+  Vector: a list of numbers. In this lab every word is described by a list of 8 numbers.
+  Learned table (weights): numbers that started out random and were nudged, during training, until
+  the predictions improved. This model has 833 of them in total.
+  Dot product: multiply two lists number by number, then add up the products. The result is large
+  when the two lists "point the same way".
+  Softmax: a recipe that turns any list of scores into shares that are positive and add up to 100%.
+  Residual (shortcut): adding a step's input back onto its output, so that the step only has to add
+  what is new.
+  ReLU: keeps a number if it is positive and turns it into 0 if it is negative.
+  Logit: a raw score for a word, before it is turned into a probability.
+
+----------------------------------------------------------------------------------------------------
+PART 1: GET THE WORDS READY
+----------------------------------------------------------------------------------------------------
+
+STEP 1 of 17: Turn the words into ID numbers   [Tokenization]
+  In plain words:
+    A computer cannot read words, only numbers. This toy model knows exactly 9 words, kept in a
+    dictionary, and every word has an ID: its place in the dictionary, counting from 0. So "<bos>
+    the robot is" becomes the IDs 0, 1, 2, 4. The word "<bos>" is a special marker meaning
+    "beginning of sentence".
+  The equation:
+    id_i = index(word_i)
+  Where:
+    word_i — the i-th word of the sentence
+    index(…) — the place of a word in the dictionary, counting from 0
+    id_i — the ID number that stands for word i
+  With this run's numbers:
+    The dictionary: the only words this model knows:
+      Word  <bos>  the  robot  plant  is  blue  green  .  <eos>
+      ----  -----  ---  -----  -----  --  ----  -----  -  -----
+      ID        0    1      2      3   4     5      6  7      8
+
+    Your sentence:
+      Place  Word   ID
+      -----  -----  --
+      1      <bos>   0
+      2      the     1
+      3      robot   2
+      4      is      4
+
+STEP 2 of 17: Look up each word's vector   [Token embedding]
+  In plain words:
+    Each ID picks out one row of a big table called E. That row is a list of 8 numbers, the word's
+    "vector". Nobody typed these numbers in: they started out random, and training nudged them until
+    they helped to predict the next word.
+  The equation:
+    e_i = E[id_i]
+  Where:
+    E — a learned table with one row of 8 numbers for each of the 9 dictionary words
+    e_i — the row picked for word i: a list of 8 numbers
+  With this run's numbers:
+    The vector e of each word (the row of E picked by its ID):
+      Word (ID)  #1      #2      #3      #4      #5      #6      #7      #8
+      ---------  ------  ------  ------  ------  ------  ------  ------  ------
+      <bos> (0)  -0.311  -0.118  -0.126  -0.157  -0.169  -0.311   0.214  -0.027
+      the (1)     0.002   0.496   0.332  -0.153   0.222   0.031   0.104  -0.350
+      robot (2)  -0.222   0.001   0.213   0.373   0.009   0.095  -0.215   0.041
+      is (4)      0.166   0.140  -0.029   0.020   0.051   0.102   0.244  -0.233
+
+STEP 3 of 17: Add the word's place in the sentence   [Position embedding]
+  In plain words:
+    Word order matters: "robot is blue" does not mean the same as "blue is robot". So each place in
+    the sentence (first word, second word, ...) also has its own list of 8 numbers, taken from a
+    second learned table called P. We add the place list to the word list, number by number. The
+    result, x, describes the word in its place.
+  The equation:
+    x_i = e_i + p_i
+    x_i[k] = e_i[k] + p_i[k]
+  Where:
+    p_i — the row of the table P for place i (place 4 for "is")
+    x_i — the starting vector of word i, in its place
+    k — which of the 8 numbers, from 1 to 8
+  With this run's numbers:
+    Adding for "is", word 4 of 4:
+      Vector              #1     #2     #3      #4     #5      #6     #7     #8
+      ------------------  -----  -----  ------  -----  ------  -----  -----  ------
+      e: its word vector  0.166  0.140  -0.029  0.020   0.051  0.102  0.244  -0.233
+      p: place 4          0.225  0.122  -0.234  0.022  -0.070  0.019  0.296  -0.155
+      x = e + p           0.391  0.262  -0.263  0.042  -0.019  0.121  0.540  -0.388
+
+    The starting vector x of every word:
+      Word   #1      #2      #3      #4      #5      #6      #7      #8
+      -----  ------  ------  ------  ------  ------  ------  ------  ------
+      <bos>  -0.676  -0.174  -0.241  -0.125  -0.292  -0.548   0.341   0.176
+      the     0.007   0.922   0.601  -0.169   0.348  -0.221   0.021  -0.521
+      robot  -0.233   0.074   0.187   0.677  -0.206   0.172  -0.588   0.455
+      is      0.391   0.262  -0.263   0.042  -0.019   0.121   0.540  -0.388
+
+----------------------------------------------------------------------------------------------------
+PART 2: LOOK BACK AT THE EARLIER WORDS (ATTENTION)
+----------------------------------------------------------------------------------------------------
+
+STEP 4 of 17: Rescale the numbers (like setting the volume)   [Layer normalization]
+  In plain words:
+    The 8 numbers in x can be big or small, which makes learning unstable. So they are rescaled:
+    subtract their average (so they centre on 0), divide by their typical spread (so a normal size
+    is about 1), then apply a learned stretch g and a learned shift β to each number. It is like
+    setting every word to the same volume before it speaks. ε is a tiny number that only prevents
+    dividing by zero.
+  The equation:
+    μ = (x[1] + x[2] + … + x[8]) / 8
+    σ² = ((x[1] − μ)² + (x[2] − μ)² + … + (x[8] − μ)²) / 8
+    n[k] = g[k] · (x[k] − μ) / √(σ² + ε) + β[k]
+  Where:
+    μ — the average of the 8 numbers
+    σ² — how spread out the 8 numbers are (the variance)
+    ε — a tiny number, 0.00001, that only stops a division by zero
+    g[k], β[k] — a learned stretch and a learned shift for the k-th number (this step has its own pair)
+  With this run's numbers:
+    For "is": average μ = 0.086, variance σ² = 0.0863, so √(σ² + ε) = 0.2939.
+
+    The recipe applied to each of the 8 numbers:
+      k  x[k]    x[k] − μ  ÷ √(σ² + ε)  g[k]   β[k]    n[k]
+      -  ------  --------  -----------  -----  ------  ------
+      1   0.391     0.305        1.037  1.145   0.036   1.224
+      2   0.262     0.176        0.599  0.814  -0.172   0.316
+      3  -0.263    -0.349       -1.187  0.988  -0.079  -1.251
+      4   0.042    -0.043       -0.147  0.992   0.026  -0.120
+      5  -0.019    -0.105       -0.357  1.084  -0.017  -0.405
+      6   0.121     0.036        0.121  0.891   0.107   0.215
+      7   0.540     0.454        1.546  1.125   0.166   1.905
+      8  -0.388    -0.474       -1.613  1.054   0.014  -1.687
+
+  Notice: After the first part of the recipe (before g and β) the 8 numbers have average 0.000 and
+  variance 1.000: every word is brought to the same "volume".
+
+STEP 5 of 17: Make a Query, a Key and a Value for every word   [Linear projections]
+  In plain words:
+    Now every word makes three new lists of 8 numbers from n, each with its own learned table. Think
+    of a library. The Query is the question a word asks: "what am I looking for?". The Key is the
+    label on a book's spine: "what do I contain?". The Value is the content of the book: "what I
+    will hand over if you pick me". Each new number is a weighted sum of the 8 numbers in n, plus an
+    offset.
+  The equation:
+    q_i = W_Q · n_i + b_Q
+    k_i = W_K · n_i + b_K
+    v_i = W_V · n_i + b_V
+    q_i[j] = W_Q[j,1]·n_i[1] + W_Q[j,2]·n_i[2] + … + W_Q[j,8]·n_i[8] + b_Q[j]
+  Where:
+    W_Q, W_K, W_V — three learned tables, each with 8 rows of 8 numbers
+    b_Q, b_K, b_V — learned offsets, 8 numbers each
+    W_Q[j,k] — the number in row j, column k of W_Q
+    q_i[j] — the j-th number of the Query of word i
+  With this run's numbers:
+    Worked example: the first number of each vector for "is":
+      q[1] = 0.026×1.224 + 0.249×0.316 + (-0.383)×(-1.251) + (-0.108)×(-0.120) + (-0.071)×(-0.405) +
+      0.071×0.215 + 0.239×1.905 + (-0.255)×(-1.687) + 0.080 = 1.613
+      k[1] = (-0.157)×1.224 + 0.012×0.316 + 0.137×(-1.251) + 0.497×(-0.120) + (-0.172)×(-0.405) +
+      0.134×0.215 + (-0.172)×1.905 + (-0.070)×(-1.687) + 0.000 = -0.532
+      v[1] = (-0.304)×1.224 + (-0.238)×0.316 + 0.057×(-1.251) + 0.384×(-0.120) + 0.283×(-0.405) +
+      (-0.079)×0.215 + (-0.334)×1.905 + (-0.225)×(-1.687) + 0.025 = -0.928
+
+    The Query, Key and Value of every word:
+      Queries q: what each word is looking for:
+        Word   #1      #2      #3      #4      #5      #6      #7      #8
+        -----  ------  ------  ------  ------  ------  ------  ------  ------
+        <bos>   0.205   0.388   0.442  -0.055  -0.627   0.563   0.050  -0.277
+        the     0.371  -0.314   0.179   0.438   0.030  -0.614  -0.306  -0.044
+        robot  -0.871  -0.085   0.964  -0.945   0.582  -0.123  -0.024   0.122
+        is      1.613   0.178  -1.110   1.135  -1.317   0.645   0.771  -0.835
+
+      Keys k: what each word contains:
+        Word   #1      #2      #3      #4      #5      #6      #7      #8
+        -----  ------  ------  ------  ------  ------  ------  ------  ------
+        <bos>  -0.146   0.049  -0.273  -0.347   0.515   0.648   0.296   0.446
+        the    -0.169  -0.524   0.752  -0.346   0.369  -0.553  -0.389   0.400
+        robot   1.393   0.481  -1.414   0.910  -1.229   1.136   0.878  -0.381
+        is     -0.532  -0.258   0.842  -0.325   0.508  -0.509  -0.406  -0.074
+
+      Values v: what each word hands over:
+        Word   #1      #2      #3      #4      #5      #6      #7      #8
+        -----  ------  ------  ------  ------  ------  ------  ------  ------
+        <bos>  -0.346   0.416   0.098   0.865  -0.008   0.383   1.188   1.779
+        the     0.184   0.690   0.477   0.452   0.101  -0.913  -0.444  -0.734
+        robot   1.059   0.556   0.158  -0.824   0.608   0.023   0.158   0.392
+        is     -0.928  -0.442  -0.913   0.410  -0.380   0.665  -0.492  -0.566
+
+
+STEP 6 of 17: Compare the question with every label   [Attention scores]
+  In plain words:
+    Now "is" asks: which of the words so far matter for me? Its Query is compared with the Key of
+    every word it may look at, including itself. "Compared" means a dot product: multiply the two
+    lists number by number and add up the results. A big positive result means a good match.
+    Dividing by √8 ≈ 2.83 keeps the scores from growing too large.
+  The equation:
+    s_ij = (q_i · k_j) / √8
+    q_i · k_j = q_i[1]·k_j[1] + q_i[2]·k_j[2] + … + q_i[8]·k_j[8]
+  Where:
+    i — the word that is asking: here "is"
+    j — a word being looked at
+    s_ij — the score of word j for word i: how well i's question matches j's label
+    √8 — 2.828, the square root of the vector length
+  With this run's numbers:
+    Worked example: "is" compared with "robot":
+      q·k = 1.613×1.393 + 0.178×0.481 + (-1.110)×(-1.414) + 1.135×0.910 + (-1.317)×(-1.229) +
+      0.645×1.136 + 0.771×0.878 + (-0.835)×(-0.381) = 8.284
+      score = 8.284 ÷ 2.828 = 2.929
+
+    How well "is"'s Query matches each Key:
+      Word looked at  q · k (sum of 8 products)  ÷ √8 = score s
+      --------------  -------------------------  --------------
+      <bos>                              -0.722          -0.255
+      the                                -3.068          -1.085
+      robot                               8.284           2.929
+      is                                 -3.458          -1.223
+
+  Notice: The best match for "is" is "robot", with score 2.929.
+
+STEP 7 of 17: Hide the future   [Causal mask]
+  In plain words:
+    While it learns to predict the next word, a word must never see the words that come after it, or
+    it could simply copy the answer. So every score for a later word is replaced by −∞
+    ("impossible"). The next step turns that into exactly 0% attention. Read each row of the table
+    as: this word looks at these words.
+  The equation:
+    s_ij = −∞  whenever j > i
+  Where:
+    j > i — word j comes after word i in the sentence
+    −∞ — minus infinity: so small that exp(−∞) = 0
+  With this run's numbers:
+    Scores s for every pair of words:
+      Asking word ↓ / looked at →  <bos>   the          robot        is
+      ---------------------------  ------  -----------  -----------  -----------
+      <bos>                        -0.064  −∞ (hidden)  −∞ (hidden)  −∞ (hidden)
+      the                          -0.270        0.190  −∞ (hidden)  −∞ (hidden)
+      robot                         0.161        0.560       -1.556  −∞ (hidden)
+      is                           -0.255       -1.085        2.929       -1.223
+
+  Notice: The last word can see all 4 words, but "<bos>" can see only itself. Another experiment in
+  this lab changes a future word and shows that nothing before it changes.
+
+STEP 8 of 17: Turn the scores into attention percentages   [Softmax]
+  In plain words:
+    Scores can be any size, even negative. Softmax turns a list of scores into shares that are all
+    positive and add up to 100%. First each score s becomes exp(s), which means e (about 2.718)
+    raised to the power s: always positive, and it rewards big scores. Then each result is divided
+    by the total of all of them. A hidden word has exp(−∞) = 0, so its share is exactly 0%. These
+    shares are called attention weights.
+  The equation:
+    α_ij = exp(s_ij) / (exp(s_i1) + exp(s_i2) + … + exp(s_ii))
+  Where:
+    α_ij — the attention weight: the share of word i's attention that goes to word j
+    exp(s) — e (about 2.718) raised to the power s
+  With this run's numbers:
+    Attention of "is":
+      Word looked at  Score s  exp(s)  Share = exp(s) ÷ total
+      --------------  -------  ------  ----------------------
+      <bos>            -0.255   0.775                   3.85%
+      the              -1.085   0.338                   1.68%
+      robot             2.929  18.704                  93.00%
+      is               -1.223   0.294                   1.46%
+      Total                    20.112                    100%
+
+    Where "is" looks:
+      <bos>  #                               3.85%
+      the    #                               1.68%
+      robot  ############################    93.00%
+      is                                     1.46%
+
+    Implementation detail: real code subtracts the biggest score before taking exp(), so that large
+    scores cannot overflow. The shares come out identical.
+
+    Attention shares of every word (each row adds up to 100%):
+      Attention weights α:
+        Asking word ↓ / looked at →  <bos>    the          robot        is
+        ---------------------------  -------  -----------  -----------  -----------
+        <bos>                        100.00%  0% (hidden)  0% (hidden)  0% (hidden)
+        the                           38.71%       61.29%  0% (hidden)  0% (hidden)
+        robot                         37.45%       55.82%        6.73%  0% (hidden)
+        is                             3.85%        1.68%       93.00%        1.46%
+
+
+  Notice: "is" gives 93.00% of its attention to "robot".
+
+STEP 9 of 17: Blend the Values using those percentages   [Weighted sum of Values]
+  In plain words:
+    Each word carries a Value: the information it will hand over. "is" now builds a new list of 8
+    numbers by blending the Values of the words it looked at, in proportion to the attention shares:
+    93.00% of the Value of "robot", plus smaller amounts of the others. "is" now carries information
+    gathered from the words it paid attention to.
+  The equation:
+    m_i = α_i1·v_1 + α_i2·v_2 + … + α_ii·v_i
+  Where:
+    m_i — the blended list of 8 numbers for word i
+    v_j — the Value of word j (step 5); every one of its 8 numbers is multiplied by α_ij
+  With this run's numbers:
+    The blend for "is": each row is share × Value:
+      Word looked at       #1      #2      #3      #4      #5      #6      #7      #8
+      -------------------  ------  ------  ------  ------  ------  ------  ------  ------
+      <bos> (3.85%)        -0.013   0.016   0.004   0.033   0.000   0.015   0.046   0.069
+      the (1.68%)           0.003   0.012   0.008   0.008   0.002  -0.015  -0.007  -0.012
+      robot (93.00%)        0.985   0.517   0.147  -0.766   0.565   0.021   0.147   0.364
+      is (1.46%)           -0.014  -0.006  -0.013   0.006  -0.006   0.010  -0.007  -0.008
+      m = sum of the rows   0.961   0.538   0.145  -0.719   0.561   0.031   0.178   0.412
+
+STEP 10 of 17: Tidy the blend and add a shortcut   [Output projection and residual connection]
+  In plain words:
+    The blend is passed through one more learned table, W_O, to tidy it up; call the result o. Then
+    comes a shortcut: o is added onto the starting vector x from step 3. This is called a residual
+    connection. The word keeps everything it already knew and only adds what attention found.
+  The equation:
+    o_i = W_O · m_i + b_O
+    r_i = x_i + o_i
+  Where:
+    W_O, b_O — a learned table (8 rows of 8 numbers) and 8 learned offsets
+    o_i — the tidied blend
+    r_i — the word's vector after attention: what it knew before plus what attention found
+  With this run's numbers:
+    Worked example: the first number of o for "is":
+      o[1] = 0.228×0.961 + (-0.024)×0.538 + 0.033×0.145 + (-0.195)×(-0.719) + 0.030×0.561 +
+      0.010×0.031 + (-0.419)×0.178 + (-0.390)×0.412 + (-0.037) = 0.096
+
+    Adding the shortcut:
+      Vector                           #1     #2     #3      #4      #5      #6      #7     #8
+      -------------------------------  -----  -----  ------  ------  ------  ------  -----  ------
+      m: the blend (step 9)            0.961  0.538   0.145  -0.719   0.561   0.031  0.178   0.412
+      o = W_O · m + b_O                0.096  0.055  -0.137   0.591  -0.644  -0.114  0.156   0.498
+      x: the starting vector (step 3)  0.391  0.262  -0.263   0.042  -0.019   0.121  0.540  -0.388
+      r = x + o                        0.487  0.316  -0.400   0.633  -0.664   0.008  0.696   0.110
+
+----------------------------------------------------------------------------------------------------
+PART 3: THINK ALONE (FEED-FORWARD NETWORK)
+----------------------------------------------------------------------------------------------------
+
+STEP 11 of 17: Rescale again   [Layer normalization (second)]
+  In plain words:
+    The same rescaling recipe as step 4, now applied to r, with its own learned g and β. It prepares
+    the numbers for the next stage.
+  The equation:
+    μ = (r[1] + r[2] + … + r[8]) / 8
+    σ² = ((r[1] − μ)² + (r[2] − μ)² + … + (r[8] − μ)²) / 8
+    u[k] = g[k] · (r[k] − μ) / √(σ² + ε) + β[k]
+  Where:
+    μ — the average of the 8 numbers
+    σ² — how spread out the 8 numbers are (the variance)
+    ε — a tiny number, 0.00001, that only stops a division by zero
+    g[k], β[k] — a learned stretch and a learned shift for the k-th number (this step has its own pair)
+  With this run's numbers:
+    For "is": average μ = 0.148, variance σ² = 0.2075, so √(σ² + ε) = 0.4555.
+
+    The recipe applied to each of the 8 numbers:
+      k  r[k]    r[k] − μ  ÷ √(σ² + ε)  g[k]   β[k]    u[k]
+      -  ------  --------  -----------  -----  ------  ------
+      1   0.487     0.339        0.743  0.854  -0.088   0.547
+      2   0.316     0.168        0.369  1.072   0.143   0.539
+      3  -0.400    -0.549       -1.204  1.086  -0.235  -1.543
+      4   0.633     0.485        1.065  1.095  -0.102   1.064
+      5  -0.664    -0.812       -1.782  1.210   0.042  -2.115
+      6   0.008    -0.141       -0.309  0.890   0.062  -0.213
+      7   0.696     0.548        1.203  1.000  -0.030   1.172
+      8   0.110    -0.038       -0.084  1.026   0.139   0.052
+
+STEP 12 of 17: Think alone: 16 detectors, then switch the negative ones off   [Feed-forward network, first layer + ReLU]
+  In plain words:
+    Now each word thinks on its own, without looking at other words. The 8 numbers are expanded into
+    16 "detectors". Each detector is a weighted sum of the 8 numbers plus its own offset. Then ReLU
+    switches off every detector that came out negative: it keeps positive numbers and turns negative
+    ones into 0. This on/off behaviour lets the network do more than simple sums.
+  The equation:
+    z[j] = W_1[j,1]·u[1] + W_1[j,2]·u[2] + … + W_1[j,8]·u[8] + b_1[j]
+    h[j] = ReLU(z[j]) = max(0, z[j])
+  Where:
+    W_1, b_1 — a learned table (16 rows of 8 numbers) and 16 learned offsets
+    z[j] — the value of detector j before ReLU
+    h[j] — the value of detector j after ReLU
+    max(0, z) — the larger of 0 and z
+  With this run's numbers:
+    Worked example: detector 9, the strongest one:
+      z[9] = 0.108×0.547 + (-0.077)×0.539 + (-0.006)×(-1.543) + (-0.023)×1.064 + (-0.400)×(-2.115) +
+      (-0.357)×(-0.213) + 0.437×1.172 + 0.231×0.052 + 0.158 = 1.608
+      h[9] = max(0, 1.608) = 1.608
+
+    All 16 detectors for "is":
+      Detector j  Before ReLU z[j]  After ReLU h[j]  State
+      ----------  ----------------  ---------------  ----------------
+      1                      0.176            0.176  on
+      2                      1.532            1.532  on
+      3                      0.167            0.167  on
+      4                     -0.869            0.000  switched off (0)
+      5                     -0.994            0.000  switched off (0)
+      6                     -0.705            0.000  switched off (0)
+      7                     -0.177            0.000  switched off (0)
+      8                     -0.578            0.000  switched off (0)
+      9                      1.608            1.608  on
+      10                     0.918            0.918  on
+      11                    -0.676            0.000  switched off (0)
+      12                    -0.519            0.000  switched off (0)
+      13                    -0.288            0.000  switched off (0)
+      14                     0.830            0.830  on
+      15                     0.292            0.292  on
+      16                    -1.344            0.000  switched off (0)
+
+  Notice: ReLU switched off 9 of the 16 detectors.
+
+STEP 13 of 17: Squeeze back to 8 numbers and add a second shortcut   [Feed-forward network, second layer + residual connection]
+  In plain words:
+    The 16 detector values are squeezed back into 8 numbers by another learned table, W_2. Call the
+    result f: the new information produced by thinking. Another shortcut adds f onto r, so the word
+    keeps what it had and gains what it worked out.
+  The equation:
+    f_i = W_2 · h_i + b_2
+    y_i = r_i + f_i
+  Where:
+    W_2, b_2 — a learned table (8 rows of 16 numbers) and 8 learned offsets
+    f_i — what the thinking step found
+    y_i — the word's vector after the whole block
+  With this run's numbers:
+    Worked example: the first number of f for "is":
+      f[1] = (-0.015)×0.176 + 0.094×1.532 + 0.012×0.167 + 0.126×0.000 + 0.235×0.000 + (-0.175)×0.000
+      + 0.114×0.000 + 0.018×0.000 + 0.148×1.608 + 0.068×0.918 + 0.242×0.000 + 0.159×0.000 +
+      (-0.463)×0.000 + 0.107×0.830 + (-0.099)×0.292 + 0.286×0.000 + 0.004 = 0.508
+
+    Adding the second shortcut:
+      Vector                        #1     #2      #3      #4     #5      #6     #7      #8
+      ----------------------------  -----  ------  ------  -----  ------  -----  ------  ------
+      r: before thinking (step 10)  0.487   0.316  -0.400  0.633  -0.664  0.008   0.696   0.110
+      f = W_2 · h + b_2             0.508  -0.192   0.163  0.193  -0.271  0.281  -0.055  -0.933
+      y = r + f                     0.995   0.125  -0.238  0.827  -0.935  0.289   0.641  -0.824
+
+----------------------------------------------------------------------------------------------------
+PART 4: PREDICT THE NEXT WORD
+----------------------------------------------------------------------------------------------------
+
+STEP 14 of 17: One last rescale   [Final layer normalization]
+  In plain words:
+    The same rescaling recipe once more, applied to y with its own learned g and β, so that the
+    final scoring always receives numbers of a similar size. The result, t, is the model's final
+    summary of the word "is" in its context.
+  The equation:
+    μ = (y[1] + y[2] + … + y[8]) / 8
+    σ² = ((y[1] − μ)² + (y[2] − μ)² + … + (y[8] − μ)²) / 8
+    t[k] = g[k] · (y[k] − μ) / √(σ² + ε) + β[k]
+  Where:
+    μ — the average of the 8 numbers
+    σ² — how spread out the 8 numbers are (the variance)
+    ε — a tiny number, 0.00001, that only stops a division by zero
+    g[k], β[k] — a learned stretch and a learned shift for the k-th number (this step has its own pair)
+  With this run's numbers:
+    For "is": average μ = 0.110, variance σ² = 0.4618, so √(σ² + ε) = 0.6796.
+
+    The recipe applied to each of the 8 numbers:
+      k  y[k]    y[k] − μ  ÷ √(σ² + ε)  g[k]   β[k]    t[k]
+      -  ------  --------  -----------  -----  ------  ------
+      1   0.995     0.885        1.302  2.094   0.372   3.100
+      2   0.125     0.015        0.022  1.932   0.243   0.285
+      3  -0.238    -0.348       -0.512  1.874   0.071  -0.887
+      4   0.827     0.717        1.054  1.998   0.133   2.239
+      5  -0.935    -1.045       -1.537  1.992  -0.037  -3.100
+      6   0.289     0.179        0.263  2.072  -0.598  -0.052
+      7   0.641     0.531        0.781  1.957  -0.063   1.466
+      8  -0.824    -0.934       -1.374  2.030  -0.369  -3.158
+
+STEP 15 of 17: Give every dictionary word a score   [Linear readout (logits)]
+  In plain words:
+    Now the model must decide which dictionary word comes next. Each of the 9 words has its own row
+    of 8 learned numbers in a table called W_R. Multiplying t by a row and adding up (plus a learned
+    offset) gives that word's score: higher means "more likely to come next". These raw scores are
+    called logits.
+  The equation:
+    z[w] = W_R[w,1]·t[1] + W_R[w,2]·t[2] + … + W_R[w,8]·t[8] + b_R[w]
+  Where:
+    w — a word of the dictionary
+    W_R, b_R — a learned table (9 rows of 8 numbers) and 9 learned offsets
+    z[w] — the score (logit) of word w
+  With this run's numbers:
+    Worked example: the score of "blue", the highest:
+      z[blue] = 0.588×3.100 + 0.036×0.285 + (-0.392)×(-0.887) + 0.504×2.239 + (-0.733)×(-3.100) +
+      (-0.024)×(-0.052) + 0.488×1.466 + (-0.520)×(-3.158) + 0.072 = 8.014
+
+    One score for every dictionary word:
+      Word   Score z (logit)
+      -----  ---------------
+      <bos>           -3.956
+      the             -0.774
+      robot           -1.618
+      plant           -1.572
+      is              -0.541
+      blue             8.014
+      green           -0.272
+      .               -4.147
+      <eos>           -2.025
+
+  Notice: "blue" has the highest score, 8.014.
+
+STEP 16 of 17: Turn the scores into probabilities   [Softmax]
+  In plain words:
+    Softmax again, exactly as in step 8, but now over all 9 dictionary words. Each score becomes a
+    probability: positive, and all 9 together add up to 100%.
+  The equation:
+    P(w) = exp(z[w]) / (exp(z[1]) + exp(z[2]) + … + exp(z[9]))
+  Where:
+    P(w) — the probability that word w comes next
+    z[1] … z[9] — the scores of the nine dictionary words
+  With this run's numbers:
+    From scores to probabilities:
+      Word   Score z  exp(z)  Probability P
+      -----  -------  ------  -------------
+      <bos>   -3.956   0.019        0.0006%
+      the     -0.774   0.461        0.0152%
+      robot   -1.618   0.198        0.0066%
+      plant   -1.572   0.208        0.0069%
+      is      -0.541   0.582        0.0192%
+      blue     8.014  3023.8         99.92%
+      green   -0.272   0.762        0.0252%
+      .       -4.147   0.016        0.0005%
+      <eos>   -2.025   0.132        0.0044%
+
+    Probability of each possible next word:
+      <bos>                                  0.0006%
+      the                                    0.0152%
+      robot                                  0.0066%
+      plant                                  0.0069%
+      is                                     0.0192%
+      blue   ##############################  99.92%
+      green                                  0.0252%
+      .                                      0.0005%
+      <eos>                                  0.0044%
+
+  Notice: "blue" gets 99.92%.
+
+STEP 17 of 17: Pick the next word, then repeat   [Greedy decoding]
+  In plain words:
+    This lab uses the simplest rule, called greedy decoding: choose the word with the highest
+    probability. Here that is "blue" (99.92%). The chosen word is added to the sentence and the
+    whole sequence of steps starts again, to find the word after that, until the special word
+    "<eos>" ("end of sentence") is chosen. Chat models usually sample from the probabilities instead
+    (see the temperature labs). No number in the model changes while it writes: only training
+    changes them.
+  The equation:
+    next word = argmax_w P(w)
+  Where:
+    argmax_w P(w) — the word w that has the largest probability P(w)
+  With this run's numbers:
+    The three most probable next words:
+      Rank  Word   Probability
+      ----  -----  -----------
+      1     blue        99.92%
+      2     green      0.0252%
+      3     is         0.0192%
+
+    The sentence becomes: <bos> the robot is blue
+
+----------------------------------------------------------------------------------------------------
+WHY "ROBOT IS" GIVES "BLUE" BUT "PLANT IS" GIVES "GREEN"
+----------------------------------------------------------------------------------------------------
+
+  The two sentences differ in just one word: word 3 has ID 2 in the first and ID 3 in the second.
+  Look at the word "is": its starting vector (step 3) and its Query (step 5) are exactly the same in
+  both sentences, so on its own it could not tell them apart. The only way it can learn which noun
+  came before is by looking back at it (steps 6 to 9). In step 8, "is" gives 93.00% of its attention
+  to "robot" in the first sentence and 85.65% to "plant" in the second. So the blend in step 9
+  differs, and so does everything after it: the scores flip and the winner changes from "blue" to
+  "green".
+
+  Where do the two sentences start to differ? (the word "is"; largest difference in any of its numbers):
+    Stage                              Largest difference between the two sentences
+    ---------------------------------  --------------------------------------------
+    Step 3: starting vector x                                                 0.000
+    Step 5: Query q                                                           0.000
+    Step 8: attention weights α                                               0.074
+    Step 9: blended vector m                                                  1.152
+    Step 13: vector y after the block                                         2.117
+    Step 16: probabilities P                                                  0.999
+
+  The same recipe on two sentences:
+    What we look at              "<bos> the robot is"  "<bos> the plant is"
+    ---------------------------  --------------------  --------------------
+    Word IDs                     0, 1, 2, 4            0, 1, 3, 4
+    Attention of "is" on word 1  3.85% ("<bos>")       7.90% ("<bos>")
+    Attention of "is" on word 2  1.68% ("the")         3.45% ("the")
+    Attention of "is" on word 3  93.00% ("robot")      85.65% ("plant")
+    Attention of "is" on word 4  1.46% ("is")          3.00% ("is")
+    Score z of "blue"                           8.014                 0.697
+    Probability of "blue"                      99.92%               0.0233%
+    Score z of "green"                         -0.272                 9.061
+    Probability of "green"                    0.0252%                99.90%
+    Chosen next word             "blue"                "green"
+
+  Caution: This toy model memorized two sentences. Attention weights show how information is mixed;
+  they are not a complete explanation of what a model "thinks".
+```
+
+
+computationTrace:
+
+```json
+{
+  "architecture": {
+    "family": "decoder-only, pre-layer-normalization",
+    "blocks": 1,
+    "heads": 1,
+    "embeddingWidth": 8,
+    "headWidth": 8,
+    "feedForwardWidth": 16,
+    "contextLength": 8,
+    "vocabulary": [
+      "<bos>",
+      "the",
+      "robot",
+      "plant",
+      "is",
+      "blue",
+      "green",
+      ".",
+      "<eos>"
+    ],
+    "parameters": 833,
+    "positionEncoding": "learned absolute position embeddings",
+    "activation": "ReLU",
+    "sequence": [
+      "word token IDs",
+      "token embedding + position embedding",
+      "LayerNorm -> Q/K/V -> scaled dot products -> causal mask -> softmax -> weighted V -> output projection -> residual add",
+      "LayerNorm -> linear 8-to-16 -> ReLU -> linear 16-to-8 -> residual add",
+      "final LayerNorm -> linear vocabulary readout -> softmax"
+    ]
+  }
+}
+```
+
+
+### See one training update (equations and plain words)
+
+
+Model: tiny-transformer-1-block-1-head; latency: 64 ms; finish: completed.
+
+No model API requests. Toy training tokens are not API billing tokens.
+
+```text
+One real training update of the untrained model on "<bos> the robot is blue . <eos>".
+Loss L = 2.3288 for this sentence; a model that guessed uniformly would score 2.197.
+Slope of L for the offset of "blue": -0.052146 by backpropagation, -0.052146 by nudging the number up and down.
+One update moves that number from 0.0000 to 0.0200, and the average loss over both training sentences falls from 2.2362 to 2.0161.
+After 400 updates the average loss is 0.1161.
+18 relations were re-derived from the recorded numbers.
+```
+
+
+step-by-step walkthrough (text rendering):
+
+```text
+SEE HOW THE NUMBERS ARE LEARNED
+====================================================================================================
+The step-by-step walkthrough uses a trained model. Here you can see how one training update works,
+with real numbers from this lab. The idea is: measure the mistake, work out which way to nudge each
+learned number, nudge, and repeat.
+
+Words you will meet:
+  Loss: one number that says how wrong the model is. Training tries to make it small.
+  Slope: how fast the loss changes when one learned number is increased a tiny bit.
+  Backpropagation: a way to compute the slope of every learned number at once, by applying the chain
+  rule backwards through all the steps.
+
+----------------------------------------------------------------------------------------------------
+ONE TRAINING UPDATE
+----------------------------------------------------------------------------------------------------
+
+STEP 1 of 4: Measure how wrong the model is   [Cross-entropy loss]
+  In plain words:
+    Training needs one number that says how wrong the model is. Before any training, the model reads
+    the training sentence "<bos> the robot is blue . <eos>". At each word it gives a probability to
+    every dictionary word as the next word. We look up the probability P it gave to the word that
+    really came next. If P is 100% the penalty −ln(P) is 0; the smaller P is, the bigger the penalty
+    (for 10% it is 2.30). The average penalty is the loss L. This untrained model is still almost
+    guessing, about 1 chance in 9 each time.
+  The equation:
+    penalty_t = −ln(P_t)
+    L = (penalty_1 + penalty_2 + … + penalty_N) / N
+  Where:
+    P_t — the probability the model gave to the word that really came next, at step t
+    N — the number of predictions: 6
+    ln — the natural logarithm: ln(1) = 0, and ln gets more negative as P gets smaller
+  With this run's numbers:
+    Each prediction of the untrained model:
+      t  The model reads            Real next word  Probability P it gave  Penalty −ln(P)
+      -  -------------------------  --------------  ---------------------  --------------
+      1  <bos>                      the                             7.10%           2.645
+      2  <bos> the                  robot                          10.82%           2.224
+      3  <bos> the robot            is                             11.44%           2.168
+      4  <bos> the robot is         blue                            6.13%           2.792
+      5  <bos> the robot is blue    .                              17.38%           1.750
+      6  <bos> the robot is blue .  <eos>                           9.13%           2.394
+
+    Loss L = (2.645 + 2.224 + 2.168 + 2.792 + 1.750 + 2.394) ÷ 6 = 2.3288
+
+  Notice: A model that guessed uniformly would have loss ln(9) = 2.197. For this one sentence L =
+  2.3288. (The training run reports the average over both training sentences: 2.2362.)
+
+STEP 2 of 4: Find which way to nudge a number   [Slope of the loss (backpropagation)]
+  In plain words:
+    To improve, we must know which way to change each learned number. Take one of them, w: the
+    offset added to the score of "blue" in the last learned table. If w went up by a tiny amount δ,
+    would the loss go up or down, and how fast? That is the slope of the loss. You can measure it by
+    brute force: nudge w up by δ, nudge it down by δ, and compare the two losses. Backpropagation
+    (the chain rule from school maths) gets the same slope exactly, for all 833 numbers at once.
+    Below, both ways agree.
+  The equation:
+    slope = ∂L/∂w ≈ (L(w + δ) − L(w − δ)) / (2δ)
+  Where:
+    w — the number we examine (here: the offset for "blue", currently 0.000)
+    δ — a tiny nudge, 0.00001
+    L(w + δ) — the loss measured after nudging w up by δ
+    ∂L/∂w — the slope of the loss with respect to w, as computed by backpropagation
+  With this run's numbers:
+    Two ways to find the same slope:
+      Quantity                                        Value
+      ----------------------------------------------  ----------
+      w (current value)                                   0.0000
+      L(w + δ)                                        2.32878913
+      L(w − δ)                                        2.32879017
+      Slope by nudging: (L(w + δ) − L(w − δ)) ÷ (2δ)   -0.052146
+      Slope by backpropagation                         -0.052146
+      Difference                                        8.42e-12
+
+  Notice: The slope is negative: to lower the loss, training must increase this number.
+
+STEP 3 of 4: Nudge every number a little   [Gradient step (Adam)]
+  In plain words:
+    Now w is nudged a little in the direction that lowers the loss. The simplest rule is: new w = w
+    − η × slope, where η = 0.02 is the learning rate (the size of a nudge). This lab uses a
+    refinement called Adam, which also looks at how big the recent slopes were, so that every number
+    moves at a sensible pace. On the very first update it reduces to the rule below: a nudge of
+    almost exactly η, downhill, whatever the size of the slope. In the real training run all 833
+    numbers are nudged together.
+  The equation:
+    w_new = w − η · g / (|g| + 0.00000001)
+  Where:
+    w — the number being learned
+    g — the slope from step 2, limited to between −1 and 1
+    η — the learning rate, 0.02
+    |g| — the size of g, ignoring its sign
+  With this run's numbers:
+    One real update of w:
+      Quantity                                   Value
+      -----------------------------------------  ---------
+      w before                                    0.000000
+      slope g (limited to −1 … 1)                -0.052146
+      step = η · g / (|g| + 0.00000001)          -0.020000
+      w after = w before − step                   0.020000
+      w after in the real first training update   0.020000
+      Average loss before the update                2.2362
+      Average loss after the update                 2.0161
+
+  Notice: After this single update the average loss over both training sentences fell from 2.2362 to
+  2.0161.
+
+----------------------------------------------------------------------------------------------------
+THEN REPEAT
+----------------------------------------------------------------------------------------------------
+
+STEP 4 of 4: Repeat 400 times   [Training loop]
+  In plain words:
+    Learning is this loop, repeated: read a training sentence, measure the loss, find the slopes,
+    nudge all 833 numbers. This lab does it 400 times, alternating the two training sentences. The
+    loss falls from 2.2362 to 0.1161. The numbers it ends with are the ones used in the step-by-step
+    walkthrough, and nothing changes them afterwards.
+  The equation:
+    repeat 400 times:  L → slope of every w → w_new = w − nudge
+  Where:
+    400 — the number of updates (Adam, learning rate 0.02)
+  With this run's numbers:
+    Average loss while training:
+      Update  Average loss
+      ------  ------------
+      0             2.2362
+      100           0.1201
+      200           0.1172
+      300           0.1164
+      400           0.1161
+```
+
+
+computationTrace:
+
+```json
+{
+  "architecture": {
+    "family": "decoder-only, pre-layer-normalization",
+    "blocks": 1,
+    "heads": 1,
+    "embeddingWidth": 8,
+    "headWidth": 8,
+    "feedForwardWidth": 16,
+    "contextLength": 8,
+    "vocabulary": [
+      "<bos>",
+      "the",
+      "robot",
+      "plant",
+      "is",
+      "blue",
+      "green",
+      ".",
+      "<eos>"
+    ],
+    "parameters": 833,
+    "positionEncoding": "learned absolute position embeddings",
+    "activation": "ReLU",
+    "sequence": [
+      "word token IDs",
+      "token embedding + position embedding",
+      "LayerNorm -> Q/K/V -> scaled dot products -> causal mask -> softmax -> weighted V -> output projection -> residual add",
+      "LayerNorm -> linear 8-to-16 -> ReLU -> linear 16-to-8 -> residual add",
+      "final LayerNorm -> linear vocabulary readout -> softmax"
+    ]
+  }
+}
+```
+
+
 ### Test that future tokens cannot leak backward
 
 
-Model: tiny-transformer-1-block-1-head; latency: 13 ms; finish: completed.
+Model: tiny-transformer-1-block-1-head; latency: 19 ms; finish: completed.
 
 No model API requests. Toy training tokens are not API billing tokens.
 
@@ -5293,7 +6137,7 @@ computationTrace:
 ### Append one token and predict again
 
 
-Model: tiny-transformer-1-block-1-head; latency: 13 ms; finish: completed.
+Model: tiny-transformer-1-block-1-head; latency: 12 ms; finish: completed.
 
 No model API requests. Toy training tokens are not API billing tokens.
 
@@ -5541,13 +6385,25 @@ computationTrace:
 - Passed / observed: All displayed probabilities are normalized: Every displayed prediction distribution sums to 1.
 
 
+- Passed / observed: The step-by-step walkthrough shows plain words, an equation and real numbers for every step, and each equation reproduces the recorded numbers: 96 relations re-derived from the recorded numbers; largest error 2.22e-16.
+
+
+- Passed / observed: The plain-number walkthrough matches the transformer's own forward pass: Largest difference across every vector, score and probability: 2.66e-15.
+
+
+- Passed / observed: The walkthrough follows the same trained model as the first experiment: Its final probabilities equal the recorded robot-context prediction.
+
+
+- Passed / observed: The training-update walkthrough agrees with the real training: the slope matches a nudge test, one update lowers the loss, and the loss curve is the recorded one: 18 relations re-derived from the recorded numbers.
+
+
 - Passed / observed: Attention cannot look ahead: Masked difference: 0; deliberately unmasked control: 0.001428117840985177.
 
 
 - Passed / observed: Generation appends measured next-token predictions: <bos> the robot is blue . <eos>
 
 
-- Passed / observed: Prompting and generation leave weights unchanged: SHA-256 before/after the masked/unmasked probes and generation is identical.
+- Passed / observed: Prompting and generation leave weights unchanged: SHA-256 before/after the walkthrough, the masked/unmasked probes and generation is identical.
 
 
 - Passed / observed: Toy computation is not reported as API usage: Zero model API requests; toy training tokens are separate from API billing tokens.

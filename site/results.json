@@ -2,15 +2,23 @@
   {
     "id": "00-tiny-transformer",
     "title": "How a tiny transformer predicts a token",
-    "minutes": 10,
-    "concept": "A decoder-only transformer turns token IDs into vectors, mixes earlier context with causal attention, and predicts the next token. Training changes weights; prompting does not.",
+    "minutes": 15,
+    "concept": "A decoder-only transformer turns token IDs into vectors, mixes earlier context with causal attention, and predicts the next token. Training changes weights; prompting does not. Pick \"Follow one prediction through every step\" to see each equation, what it does in plain words, and the real numbers.",
     "question": "How can the same last word, \"is\", predict blue for a robot but green for a plant?",
     "caveat": "This 833-parameter teaching model memorizes two fictional sentences. It uses word tokens, one attention head, and one block, not GPT internals or useful general language understanding.",
-    "exercise": "Compare the robot and plant distributions, inspect the causal mask, then follow each generated token. Change the corpus and retrain before expecting new knowledge.",
+    "exercise": "Follow one prediction through every step and check an equation with a calculator, see how one training update works, then inspect the causal mask and each generated token. Change the corpus and retrain before expecting new knowledge.",
     "diagram": "transformer.svg",
     "cases": [
       {
         "label": "Train weights, then compare two contexts",
+        "computation": true
+      },
+      {
+        "label": "Follow one prediction through every step (equations and plain words)",
+        "computation": true
+      },
+      {
+        "label": "See one training update (equations and plain words)",
         "computation": true
       },
       {
@@ -23,7 +31,7 @@
       }
     ],
     "labId": "00-tiny-transformer",
-    "recordedAt": "2026-11-16T17:54:56.743Z",
+    "recordedAt": "2026-11-17T11:33:12.763Z",
     "results": [
       {
         "label": "Train weights, then compare two contexts",
@@ -40,7 +48,7 @@
         "outputSource": "computation",
         "actualModel": "tiny-transformer-1-block-1-head",
         "finishReason": "completed",
-        "latencyMs": 2480,
+        "latencyMs": 3242,
         "usage": null,
         "apiRequests": 0,
         "computationTrace": {
@@ -2732,6 +2740,4005 @@
         }
       },
       {
+        "label": "Follow one prediction through every step (equations and plain words)",
+        "kind": "computation",
+        "request": {
+          "messages": [
+            {
+              "role": "user",
+              "content": "Follow one prediction through every step (equations and plain words)"
+            }
+          ]
+        },
+        "output": "Followed \"<bos> the robot is\" through 17 steps of the trained model. Every step shows its equation, what it does in plain words, and this run's numbers.\nStep 8: \"is\" gives 93.00% of its attention to \"robot\".\nStep 16: next-word probabilities: blue 99.92%, green 0.0252%, and so on.\nStep 17: the greedy choice is \"blue\".\nThe same steps on \"<bos> the plant is\" end with \"green\" (99.90%).\nEvery equation was recomputed with plain numbers: the largest difference from the model's own forward pass is 2.7e-15, and 96 relations hold on the recorded numbers.",
+        "outputSource": "computation",
+        "actualModel": "tiny-transformer-1-block-1-head",
+        "finishReason": "completed",
+        "latencyMs": 14,
+        "usage": null,
+        "apiRequests": 0,
+        "computationTrace": {
+          "architecture": {
+            "family": "decoder-only, pre-layer-normalization",
+            "blocks": 1,
+            "heads": 1,
+            "embeddingWidth": 8,
+            "headWidth": 8,
+            "feedForwardWidth": 16,
+            "contextLength": 8,
+            "vocabulary": [
+              "<bos>",
+              "the",
+              "robot",
+              "plant",
+              "is",
+              "blue",
+              "green",
+              ".",
+              "<eos>"
+            ],
+            "parameters": 833,
+            "positionEncoding": "learned absolute position embeddings",
+            "activation": "ReLU",
+            "sequence": [
+              "word token IDs",
+              "token embedding + position embedding",
+              "LayerNorm -> Q/K/V -> scaled dot products -> causal mask -> softmax -> weighted V -> output projection -> residual add",
+              "LayerNorm -> linear 8-to-16 -> ReLU -> linear 16-to-8 -> residual add",
+              "final LayerNorm -> linear vocabulary readout -> softmax"
+            ]
+          },
+          "walkthrough": {
+            "kind": "forward",
+            "title": "Follow one prediction through every step",
+            "sentence": "<bos> the robot is",
+            "words": [
+              "<bos>",
+              "the",
+              "robot",
+              "is"
+            ],
+            "ids": [
+              0,
+              1,
+              2,
+              4
+            ],
+            "focus": {
+              "place": 4,
+              "word": "is"
+            },
+            "intro": [
+              "We follow one sentence, \"<bos> the robot is\", through the trained model. The model's job is to guess the next word. There are 17 steps. Each step has three parts: what happens in plain words, the equation, and the real numbers from this run (not made-up examples).",
+              "We watch the last word, \"is\", because that is the word whose output predicts the next word. In the equations, i is the word that is asking (here \"is\") and j is a word it looks at. We count from 1 on this page (\"the first number\"); the dictionary IDs start at 0 because that is how the code counts. Numbers are rounded to 3 decimals for display, so doing the arithmetic by hand may differ in the last digit; the equations were checked with the full-precision numbers."
+            ],
+            "glossary": [
+              [
+                "Vector",
+                "a list of numbers. In this lab every word is described by a list of 8 numbers."
+              ],
+              [
+                "Learned table (weights)",
+                "numbers that started out random and were nudged, during training, until the predictions improved. This model has 833 of them in total."
+              ],
+              [
+                "Dot product",
+                "multiply two lists number by number, then add up the products. The result is large when the two lists \"point the same way\"."
+              ],
+              [
+                "Softmax",
+                "a recipe that turns any list of scores into shares that are positive and add up to 100%."
+              ],
+              [
+                "Residual (shortcut)",
+                "adding a step's input back onto its output, so that the step only has to add what is new."
+              ],
+              [
+                "ReLU",
+                "keeps a number if it is positive and turns it into 0 if it is negative."
+              ],
+              [
+                "Logit",
+                "a raw score for a word, before it is turned into a probability."
+              ]
+            ],
+            "parts": [
+              {
+                "title": "Part 1: Get the words ready",
+                "steps": [
+                  1,
+                  2,
+                  3
+                ]
+              },
+              {
+                "title": "Part 2: Look back at the earlier words (attention)",
+                "steps": [
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9,
+                  10
+                ]
+              },
+              {
+                "title": "Part 3: Think alone (feed-forward network)",
+                "steps": [
+                  11,
+                  12,
+                  13
+                ]
+              },
+              {
+                "title": "Part 4: Predict the next word",
+                "steps": [
+                  14,
+                  15,
+                  16,
+                  17
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "tokens",
+                "part": "prepare",
+                "number": 1,
+                "title": "Turn the words into ID numbers",
+                "technical": "Tokenization",
+                "plain": "A computer cannot read words, only numbers. This toy model knows exactly 9 words, kept in a dictionary, and every word has an ID: its place in the dictionary, counting from 0. So \"<bos> the robot is\" becomes the IDs 0, 1, 2, 4. The word \"<bos>\" is a special marker meaning \"beginning of sentence\".",
+                "headline": "id_i = index(word_i)",
+                "equations": [
+                  "id_i = index(word_i)"
+                ],
+                "where": [
+                  [
+                    "word_i",
+                    "the i-th word of the sentence"
+                  ],
+                  [
+                    "index(…)",
+                    "the place of a word in the dictionary, counting from 0"
+                  ],
+                  [
+                    "id_i",
+                    "the ID number that stands for word i"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "The dictionary: the only words this model knows",
+                    "headers": [
+                      "Word",
+                      "<bos>",
+                      "the",
+                      "robot",
+                      "plant",
+                      "is",
+                      "blue",
+                      "green",
+                      ".",
+                      "<eos>"
+                    ],
+                    "rows": [
+                      [
+                        "ID",
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8
+                      ]
+                    ]
+                  },
+                  {
+                    "type": "table",
+                    "title": "Your sentence",
+                    "headers": [
+                      "Place",
+                      "Word",
+                      "ID"
+                    ],
+                    "rows": [
+                      [
+                        1,
+                        "<bos>",
+                        0
+                      ],
+                      [
+                        2,
+                        "the",
+                        1
+                      ],
+                      [
+                        3,
+                        "robot",
+                        2
+                      ],
+                      [
+                        4,
+                        "is",
+                        4
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "words": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "is"
+                  ],
+                  "ids": [
+                    0,
+                    1,
+                    2,
+                    4
+                  ],
+                  "dictionary": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "plant",
+                    "is",
+                    "blue",
+                    "green",
+                    ".",
+                    "<eos>"
+                  ]
+                }
+              },
+              {
+                "id": "embed",
+                "part": "prepare",
+                "number": 2,
+                "title": "Look up each word's vector",
+                "technical": "Token embedding",
+                "plain": "Each ID picks out one row of a big table called E. That row is a list of 8 numbers, the word's \"vector\". Nobody typed these numbers in: they started out random, and training nudged them until they helped to predict the next word.",
+                "headline": "e_i = E[id_i]",
+                "equations": [
+                  "e_i = E[id_i]"
+                ],
+                "where": [
+                  [
+                    "E",
+                    "a learned table with one row of 8 numbers for each of the 9 dictionary words"
+                  ],
+                  [
+                    "e_i",
+                    "the row picked for word i: a list of 8 numbers"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "The vector e of each word (the row of E picked by its ID)",
+                    "headers": [
+                      "Word (ID)",
+                      "#1",
+                      "#2",
+                      "#3",
+                      "#4",
+                      "#5",
+                      "#6",
+                      "#7",
+                      "#8"
+                    ],
+                    "rows": [
+                      [
+                        "<bos> (0)",
+                        "-0.311",
+                        "-0.118",
+                        "-0.126",
+                        "-0.157",
+                        "-0.169",
+                        "-0.311",
+                        "0.214",
+                        "-0.027"
+                      ],
+                      [
+                        "the (1)",
+                        "0.002",
+                        "0.496",
+                        "0.332",
+                        "-0.153",
+                        "0.222",
+                        "0.031",
+                        "0.104",
+                        "-0.350"
+                      ],
+                      [
+                        "robot (2)",
+                        "-0.222",
+                        "0.001",
+                        "0.213",
+                        "0.373",
+                        "0.009",
+                        "0.095",
+                        "-0.215",
+                        "0.041"
+                      ],
+                      [
+                        "is (4)",
+                        "0.166",
+                        "0.140",
+                        "-0.029",
+                        "0.020",
+                        "0.051",
+                        "0.102",
+                        "0.244",
+                        "-0.233"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "words": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "is"
+                  ],
+                  "ids": [
+                    0,
+                    1,
+                    2,
+                    4
+                  ],
+                  "rows": [
+                    [
+                      -0.3109220738963806,
+                      -0.11791028572573181,
+                      -0.12604120022253593,
+                      -0.15731090886498728,
+                      -0.16912031715350062,
+                      -0.3108594975210162,
+                      0.21431927412447027,
+                      -0.027306081900005007
+                    ],
+                    [
+                      0.0017335799141676392,
+                      0.4963058335456889,
+                      0.33166932699559504,
+                      -0.15255277566104913,
+                      0.2219566662414017,
+                      0.031167554705651537,
+                      0.10449788697746605,
+                      -0.35049999184396835
+                    ],
+                    [
+                      -0.22222879494611952,
+                      0.001348799645587071,
+                      0.21284744184206328,
+                      0.37324545919335883,
+                      0.008671393415253243,
+                      0.09507801814933799,
+                      -0.21545518009771006,
+                      0.04107973079763952
+                    ],
+                    [
+                      0.1655036476093499,
+                      0.13998950738643096,
+                      -0.02909211523774908,
+                      0.020014557649174602,
+                      0.05084068004026883,
+                      0.10191234894794944,
+                      0.24408312904633048,
+                      -0.2331343889112315
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "position",
+                "part": "prepare",
+                "number": 3,
+                "title": "Add the word's place in the sentence",
+                "technical": "Position embedding",
+                "plain": "Word order matters: \"robot is blue\" does not mean the same as \"blue is robot\". So each place in the sentence (first word, second word, ...) also has its own list of 8 numbers, taken from a second learned table called P. We add the place list to the word list, number by number. The result, x, describes the word in its place.",
+                "headline": "x_i = e_i + p_i",
+                "equations": [
+                  "x_i = e_i + p_i",
+                  "x_i[k] = e_i[k] + p_i[k]"
+                ],
+                "where": [
+                  [
+                    "p_i",
+                    "the row of the table P for place i (place 4 for \"is\")"
+                  ],
+                  [
+                    "x_i",
+                    "the starting vector of word i, in its place"
+                  ],
+                  [
+                    "k",
+                    "which of the 8 numbers, from 1 to 8"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "Adding for \"is\", word 4 of 4",
+                    "headers": [
+                      "Vector",
+                      "#1",
+                      "#2",
+                      "#3",
+                      "#4",
+                      "#5",
+                      "#6",
+                      "#7",
+                      "#8"
+                    ],
+                    "rows": [
+                      [
+                        "e: its word vector",
+                        "0.166",
+                        "0.140",
+                        "-0.029",
+                        "0.020",
+                        "0.051",
+                        "0.102",
+                        "0.244",
+                        "-0.233"
+                      ],
+                      [
+                        "p: place 4",
+                        "0.225",
+                        "0.122",
+                        "-0.234",
+                        "0.022",
+                        "-0.070",
+                        "0.019",
+                        "0.296",
+                        "-0.155"
+                      ],
+                      [
+                        "x = e + p",
+                        "0.391",
+                        "0.262",
+                        "-0.263",
+                        "0.042",
+                        "-0.019",
+                        "0.121",
+                        "0.540",
+                        "-0.388"
+                      ]
+                    ]
+                  },
+                  {
+                    "type": "table",
+                    "title": "The starting vector x of every word",
+                    "headers": [
+                      "Word",
+                      "#1",
+                      "#2",
+                      "#3",
+                      "#4",
+                      "#5",
+                      "#6",
+                      "#7",
+                      "#8"
+                    ],
+                    "rows": [
+                      [
+                        "<bos>",
+                        "-0.676",
+                        "-0.174",
+                        "-0.241",
+                        "-0.125",
+                        "-0.292",
+                        "-0.548",
+                        "0.341",
+                        "0.176"
+                      ],
+                      [
+                        "the",
+                        "0.007",
+                        "0.922",
+                        "0.601",
+                        "-0.169",
+                        "0.348",
+                        "-0.221",
+                        "0.021",
+                        "-0.521"
+                      ],
+                      [
+                        "robot",
+                        "-0.233",
+                        "0.074",
+                        "0.187",
+                        "0.677",
+                        "-0.206",
+                        "0.172",
+                        "-0.588",
+                        "0.455"
+                      ],
+                      [
+                        "is",
+                        "0.391",
+                        "0.262",
+                        "-0.263",
+                        "0.042",
+                        "-0.019",
+                        "0.121",
+                        "0.540",
+                        "-0.388"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "words": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "is"
+                  ],
+                  "tokenRows": [
+                    [
+                      -0.3109220738963806,
+                      -0.11791028572573181,
+                      -0.12604120022253593,
+                      -0.15731090886498728,
+                      -0.16912031715350062,
+                      -0.3108594975210162,
+                      0.21431927412447027,
+                      -0.027306081900005007
+                    ],
+                    [
+                      0.0017335799141676392,
+                      0.4963058335456889,
+                      0.33166932699559504,
+                      -0.15255277566104913,
+                      0.2219566662414017,
+                      0.031167554705651537,
+                      0.10449788697746605,
+                      -0.35049999184396835
+                    ],
+                    [
+                      -0.22222879494611952,
+                      0.001348799645587071,
+                      0.21284744184206328,
+                      0.37324545919335883,
+                      0.008671393415253243,
+                      0.09507801814933799,
+                      -0.21545518009771006,
+                      0.04107973079763952
+                    ],
+                    [
+                      0.1655036476093499,
+                      0.13998950738643096,
+                      -0.02909211523774908,
+                      0.020014557649174602,
+                      0.05084068004026883,
+                      0.10191234894794944,
+                      0.24408312904633048,
+                      -0.2331343889112315
+                    ]
+                  ],
+                  "positionRows": [
+                    [
+                      -0.36491029145881754,
+                      -0.05574840126885891,
+                      -0.11531562379197681,
+                      0.03279716761802388,
+                      -0.12311243285970616,
+                      -0.2372553690112561,
+                      0.12632698222693475,
+                      0.20302317311465282
+                    ],
+                    [
+                      0.0049368534787447415,
+                      0.42523591124749605,
+                      0.26925592732904724,
+                      -0.016632736096678178,
+                      0.12581255106162448,
+                      -0.25215206384727173,
+                      -0.08357391751619966,
+                      -0.17087481073525504
+                    ],
+                    [
+                      -0.01088153766291824,
+                      0.07287632942647893,
+                      -0.025650757990418403,
+                      0.3034763786955102,
+                      -0.2150117143897098,
+                      0.07678251597596057,
+                      -0.37260746946179585,
+                      0.4141731881597008
+                    ],
+                    [
+                      0.22501202492296382,
+                      0.12173745054934906,
+                      -0.23399885900262643,
+                      0.022349325229206945,
+                      -0.07015316661462301,
+                      0.01930911489529146,
+                      0.2959216283539631,
+                      -0.15507435201357228
+                    ]
+                  ],
+                  "sums": [
+                    [
+                      -0.6758323653551981,
+                      -0.17365868699459072,
+                      -0.24135682401451275,
+                      -0.1245137412469634,
+                      -0.2922327500132068,
+                      -0.5481148665322724,
+                      0.340646256351405,
+                      0.17571709121464782
+                    ],
+                    [
+                      0.0066704333929123805,
+                      0.921541744793185,
+                      0.6009252543246423,
+                      -0.1691855117577273,
+                      0.3477692173030262,
+                      -0.2209845091416202,
+                      0.020923969461266387,
+                      -0.5213748025792234
+                    ],
+                    [
+                      -0.23311033260903777,
+                      0.07422512907206599,
+                      0.18719668385164487,
+                      0.6767218378888691,
+                      -0.20634032097445656,
+                      0.17186053412529856,
+                      -0.5880626495595059,
+                      0.4552529189573403
+                    ],
+                    [
+                      0.39051567253231373,
+                      0.26172695793578005,
+                      -0.26309097424037553,
+                      0.04236388287838155,
+                      -0.01931248657435418,
+                      0.1212214638432409,
+                      0.5400047574002935,
+                      -0.3882087409248038
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "norm1",
+                "part": "attend",
+                "number": 4,
+                "title": "Rescale the numbers (like setting the volume)",
+                "technical": "Layer normalization",
+                "plain": "The 8 numbers in x can be big or small, which makes learning unstable. So they are rescaled: subtract their average (so they centre on 0), divide by their typical spread (so a normal size is about 1), then apply a learned stretch g and a learned shift β to each number. It is like setting every word to the same volume before it speaks. ε is a tiny number that only prevents dividing by zero.",
+                "headline": "n[k] = g[k] · (x[k] − μ) / √(σ² + ε) + β[k]",
+                "equations": [
+                  "μ = (x[1] + x[2] + … + x[8]) / 8",
+                  "σ² = ((x[1] − μ)² + (x[2] − μ)² + … + (x[8] − μ)²) / 8",
+                  "n[k] = g[k] · (x[k] − μ) / √(σ² + ε) + β[k]"
+                ],
+                "where": [
+                  [
+                    "μ",
+                    "the average of the 8 numbers"
+                  ],
+                  [
+                    "σ²",
+                    "how spread out the 8 numbers are (the variance)"
+                  ],
+                  [
+                    "ε",
+                    "a tiny number, 0.00001, that only stops a division by zero"
+                  ],
+                  [
+                    "g[k], β[k]",
+                    "a learned stretch and a learned shift for the k-th number (this step has its own pair)"
+                  ]
+                ],
+                "notice": "After the first part of the recipe (before g and β) the 8 numbers have average 0.000 and variance 1.000: every word is brought to the same \"volume\".",
+                "display": [
+                  {
+                    "type": "text",
+                    "text": "For \"is\": average μ = 0.086, variance σ² = 0.0863, so √(σ² + ε) = 0.2939."
+                  },
+                  {
+                    "type": "table",
+                    "title": "The recipe applied to each of the 8 numbers",
+                    "headers": [
+                      "k",
+                      "x[k]",
+                      "x[k] − μ",
+                      "÷ √(σ² + ε)",
+                      "g[k]",
+                      "β[k]",
+                      "n[k]"
+                    ],
+                    "rows": [
+                      [
+                        1,
+                        "0.391",
+                        "0.305",
+                        "1.037",
+                        "1.145",
+                        "0.036",
+                        "1.224"
+                      ],
+                      [
+                        2,
+                        "0.262",
+                        "0.176",
+                        "0.599",
+                        "0.814",
+                        "-0.172",
+                        "0.316"
+                      ],
+                      [
+                        3,
+                        "-0.263",
+                        "-0.349",
+                        "-1.187",
+                        "0.988",
+                        "-0.079",
+                        "-1.251"
+                      ],
+                      [
+                        4,
+                        "0.042",
+                        "-0.043",
+                        "-0.147",
+                        "0.992",
+                        "0.026",
+                        "-0.120"
+                      ],
+                      [
+                        5,
+                        "-0.019",
+                        "-0.105",
+                        "-0.357",
+                        "1.084",
+                        "-0.017",
+                        "-0.405"
+                      ],
+                      [
+                        6,
+                        "0.121",
+                        "0.036",
+                        "0.121",
+                        "0.891",
+                        "0.107",
+                        "0.215"
+                      ],
+                      [
+                        7,
+                        "0.540",
+                        "0.454",
+                        "1.546",
+                        "1.125",
+                        "0.166",
+                        "1.905"
+                      ],
+                      [
+                        8,
+                        "-0.388",
+                        "-0.474",
+                        "-1.613",
+                        "1.054",
+                        "0.014",
+                        "-1.687"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "input": [
+                    0.39051567253231373,
+                    0.26172695793578005,
+                    -0.26309097424037553,
+                    0.04236388287838155,
+                    -0.01931248657435418,
+                    0.1212214638432409,
+                    0.5400047574002935,
+                    -0.3882087409248038
+                  ],
+                  "mean": 0.08565256660630952,
+                  "variance": 0.08633786661904172,
+                  "epsilon": 0.00001,
+                  "gain": [
+                    1.1450750908561733,
+                    0.813761704557781,
+                    0.9877565017634412,
+                    0.9918955416099197,
+                    1.0838650024242553,
+                    0.8911690231117643,
+                    1.1250174988840944,
+                    1.0543314303040556
+                  ],
+                  "offset": [
+                    0.03626181762245752,
+                    -0.1718930258719694,
+                    -0.07897701325378577,
+                    0.025962482655571998,
+                    -0.017374663371458775,
+                    0.10718171238125454,
+                    0.1658734443105795,
+                    0.01359848957426146
+                  ],
+                  "output": [
+                    1.224252491550148,
+                    0.3157113988768824,
+                    -1.2512540658850158,
+                    -0.12015914886542178,
+                    -0.40453790501010434,
+                    0.215052705424816,
+                    1.9053801134057498,
+                    -1.6866116261279898
+                  ]
+                }
+              },
+              {
+                "id": "qkv",
+                "part": "attend",
+                "number": 5,
+                "title": "Make a Query, a Key and a Value for every word",
+                "technical": "Linear projections",
+                "plain": "Now every word makes three new lists of 8 numbers from n, each with its own learned table. Think of a library. The Query is the question a word asks: \"what am I looking for?\". The Key is the label on a book's spine: \"what do I contain?\". The Value is the content of the book: \"what I will hand over if you pick me\". Each new number is a weighted sum of the 8 numbers in n, plus an offset.",
+                "headline": "q_i = W_Q · n_i + b_Q",
+                "equations": [
+                  "q_i = W_Q · n_i + b_Q",
+                  "k_i = W_K · n_i + b_K",
+                  "v_i = W_V · n_i + b_V",
+                  "q_i[j] = W_Q[j,1]·n_i[1] + W_Q[j,2]·n_i[2] + … + W_Q[j,8]·n_i[8] + b_Q[j]"
+                ],
+                "where": [
+                  [
+                    "W_Q, W_K, W_V",
+                    "three learned tables, each with 8 rows of 8 numbers"
+                  ],
+                  [
+                    "b_Q, b_K, b_V",
+                    "learned offsets, 8 numbers each"
+                  ],
+                  [
+                    "W_Q[j,k]",
+                    "the number in row j, column k of W_Q"
+                  ],
+                  [
+                    "q_i[j]",
+                    "the j-th number of the Query of word i"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "code",
+                    "title": "Worked example: the first number of each vector for \"is\"",
+                    "text": "q[1] = 0.026×1.224 + 0.249×0.316 + (-0.383)×(-1.251) + (-0.108)×(-0.120) + (-0.071)×(-0.405) + 0.071×0.215 + 0.239×1.905 + (-0.255)×(-1.687) + 0.080 = 1.613\nk[1] = (-0.157)×1.224 + 0.012×0.316 + 0.137×(-1.251) + 0.497×(-0.120) + (-0.172)×(-0.405) + 0.134×0.215 + (-0.172)×1.905 + (-0.070)×(-1.687) + 0.000 = -0.532\nv[1] = (-0.304)×1.224 + (-0.238)×0.316 + 0.057×(-1.251) + 0.384×(-0.120) + 0.283×(-0.405) + (-0.079)×0.215 + (-0.334)×1.905 + (-0.225)×(-1.687) + 0.025 = -0.928"
+                  },
+                  {
+                    "type": "details",
+                    "title": "The Query, Key and Value of every word",
+                    "blocks": [
+                      {
+                        "type": "table",
+                        "title": "Queries q: what each word is looking for",
+                        "headers": [
+                          "Word",
+                          "#1",
+                          "#2",
+                          "#3",
+                          "#4",
+                          "#5",
+                          "#6",
+                          "#7",
+                          "#8"
+                        ],
+                        "rows": [
+                          [
+                            "<bos>",
+                            "0.205",
+                            "0.388",
+                            "0.442",
+                            "-0.055",
+                            "-0.627",
+                            "0.563",
+                            "0.050",
+                            "-0.277"
+                          ],
+                          [
+                            "the",
+                            "0.371",
+                            "-0.314",
+                            "0.179",
+                            "0.438",
+                            "0.030",
+                            "-0.614",
+                            "-0.306",
+                            "-0.044"
+                          ],
+                          [
+                            "robot",
+                            "-0.871",
+                            "-0.085",
+                            "0.964",
+                            "-0.945",
+                            "0.582",
+                            "-0.123",
+                            "-0.024",
+                            "0.122"
+                          ],
+                          [
+                            "is",
+                            "1.613",
+                            "0.178",
+                            "-1.110",
+                            "1.135",
+                            "-1.317",
+                            "0.645",
+                            "0.771",
+                            "-0.835"
+                          ]
+                        ]
+                      },
+                      {
+                        "type": "table",
+                        "title": "Keys k: what each word contains",
+                        "headers": [
+                          "Word",
+                          "#1",
+                          "#2",
+                          "#3",
+                          "#4",
+                          "#5",
+                          "#6",
+                          "#7",
+                          "#8"
+                        ],
+                        "rows": [
+                          [
+                            "<bos>",
+                            "-0.146",
+                            "0.049",
+                            "-0.273",
+                            "-0.347",
+                            "0.515",
+                            "0.648",
+                            "0.296",
+                            "0.446"
+                          ],
+                          [
+                            "the",
+                            "-0.169",
+                            "-0.524",
+                            "0.752",
+                            "-0.346",
+                            "0.369",
+                            "-0.553",
+                            "-0.389",
+                            "0.400"
+                          ],
+                          [
+                            "robot",
+                            "1.393",
+                            "0.481",
+                            "-1.414",
+                            "0.910",
+                            "-1.229",
+                            "1.136",
+                            "0.878",
+                            "-0.381"
+                          ],
+                          [
+                            "is",
+                            "-0.532",
+                            "-0.258",
+                            "0.842",
+                            "-0.325",
+                            "0.508",
+                            "-0.509",
+                            "-0.406",
+                            "-0.074"
+                          ]
+                        ]
+                      },
+                      {
+                        "type": "table",
+                        "title": "Values v: what each word hands over",
+                        "headers": [
+                          "Word",
+                          "#1",
+                          "#2",
+                          "#3",
+                          "#4",
+                          "#5",
+                          "#6",
+                          "#7",
+                          "#8"
+                        ],
+                        "rows": [
+                          [
+                            "<bos>",
+                            "-0.346",
+                            "0.416",
+                            "0.098",
+                            "0.865",
+                            "-0.008",
+                            "0.383",
+                            "1.188",
+                            "1.779"
+                          ],
+                          [
+                            "the",
+                            "0.184",
+                            "0.690",
+                            "0.477",
+                            "0.452",
+                            "0.101",
+                            "-0.913",
+                            "-0.444",
+                            "-0.734"
+                          ],
+                          [
+                            "robot",
+                            "1.059",
+                            "0.556",
+                            "0.158",
+                            "-0.824",
+                            "0.608",
+                            "0.023",
+                            "0.158",
+                            "0.392"
+                          ],
+                          [
+                            "is",
+                            "-0.928",
+                            "-0.442",
+                            "-0.913",
+                            "0.410",
+                            "-0.380",
+                            "0.665",
+                            "-0.492",
+                            "-0.566"
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "normalized": [
+                    1.224252491550148,
+                    0.3157113988768824,
+                    -1.2512540658850158,
+                    -0.12015914886542178,
+                    -0.40453790501010434,
+                    0.215052705424816,
+                    1.9053801134057498,
+                    -1.6866116261279898
+                  ],
+                  "examples": [
+                    {
+                      "symbol": "q",
+                      "row": [
+                        0.026348691449030005,
+                        0.2485435862776462,
+                        -0.38325787360402713,
+                        -0.10780348421387273,
+                        -0.07116661022645474,
+                        0.07133706012245386,
+                        0.2388180192022333,
+                        -0.25520749618391325
+                      ],
+                      "bias": 0.07987185839308625,
+                      "result": 1.6127097542253477
+                    },
+                    {
+                      "symbol": "k",
+                      "row": [
+                        -0.15723196018914526,
+                        0.012426437801901108,
+                        0.13686186779442938,
+                        0.49736884194040804,
+                        -0.17199571363390603,
+                        0.1343621004758113,
+                        -0.17246403246045403,
+                        -0.06967594331699761
+                      ],
+                      "bias": 4.808093481978173e-12,
+                      "result": -0.5322003989986765
+                    },
+                    {
+                      "symbol": "v",
+                      "row": [
+                        -0.3035534612417552,
+                        -0.23764440123946445,
+                        0.05745543887563787,
+                        0.38424332225827246,
+                        0.28300356791144826,
+                        -0.07925741705921815,
+                        -0.3336023012507527,
+                        -0.22498011744592805
+                      ],
+                      "bias": 0.024659874767455382,
+                      "result": -0.9277702561816165
+                    }
+                  ],
+                  "queries": [
+                    [
+                      0.20476195146780585,
+                      0.3877371830720058,
+                      0.4416121745937443,
+                      -0.05543977056682839,
+                      -0.6273821650685967,
+                      0.5626725144059743,
+                      0.05005700554174334,
+                      -0.2765041806162151
+                    ],
+                    [
+                      0.37139187770442256,
+                      -0.3139032098801626,
+                      0.17898433568340885,
+                      0.4377852025821974,
+                      0.030242937408337944,
+                      -0.6139151492709292,
+                      -0.30602608936063663,
+                      -0.04395122901962349
+                    ],
+                    [
+                      -0.8712294962481344,
+                      -0.08502387118479467,
+                      0.9640406062896054,
+                      -0.9454720069887818,
+                      0.581565224264841,
+                      -0.1231052973978034,
+                      -0.024481038846037827,
+                      0.12218336906502784
+                    ],
+                    [
+                      1.6127097542253477,
+                      0.17761060059411604,
+                      -1.1104076628605912,
+                      1.134539305006892,
+                      -1.3169623930536747,
+                      0.6454884134996477,
+                      0.7712957673070289,
+                      -0.8350351803917183
+                    ]
+                  ],
+                  "keys": [
+                    [
+                      -0.14570149404498467,
+                      0.04931288557228179,
+                      -0.2730800402985085,
+                      -0.34662052297916984,
+                      0.515426307630013,
+                      0.6476451218073895,
+                      0.2955381892213455,
+                      0.4461031983261737
+                    ],
+                    [
+                      -0.16851671175549374,
+                      -0.5236305681021205,
+                      0.7516010417293199,
+                      -0.34577344167139534,
+                      0.3685563742679902,
+                      -0.553216784455557,
+                      -0.38865498614008825,
+                      0.39975776912586797
+                    ],
+                    [
+                      1.3934080441451853,
+                      0.4807340187687631,
+                      -1.4144747754981837,
+                      0.9098210186906607,
+                      -1.229215827443358,
+                      1.1364865893613725,
+                      0.8783425810148058,
+                      -0.38139911953052635
+                    ],
+                    [
+                      -0.5322003989986765,
+                      -0.2582825019695168,
+                      0.8418046041256019,
+                      -0.32545523920765185,
+                      0.5084883167832112,
+                      -0.5086534876710687,
+                      -0.4061110641002597,
+                      -0.07351005441950238
+                    ]
+                  ],
+                  "values": [
+                    [
+                      -0.3456549660587052,
+                      0.4157151441539122,
+                      0.09790905685782389,
+                      0.8652104424480662,
+                      -0.008177187153973003,
+                      0.38288999921892564,
+                      1.188271667679689,
+                      1.7791391295324526
+                    ],
+                    [
+                      0.18360944807483462,
+                      0.690325068559914,
+                      0.47711574929794853,
+                      0.4517445506141195,
+                      0.10142582228714289,
+                      -0.913444179452733,
+                      -0.4443703767571415,
+                      -0.7344534465185928
+                    ],
+                    [
+                      1.0593733661680427,
+                      0.555603280661486,
+                      0.15793593778594514,
+                      -0.8239467933012841,
+                      0.607961963460578,
+                      0.02307139690334825,
+                      0.15762445290905558,
+                      0.391505277829133
+                    ],
+                    [
+                      -0.9277702561816165,
+                      -0.44242673560973034,
+                      -0.913019268045286,
+                      0.4098086423423478,
+                      -0.37951899811551393,
+                      0.6651471717445461,
+                      -0.4922655461666985,
+                      -0.5663414511721848
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "scores",
+                "part": "attend",
+                "number": 6,
+                "title": "Compare the question with every label",
+                "technical": "Attention scores",
+                "plain": "Now \"is\" asks: which of the words so far matter for me? Its Query is compared with the Key of every word it may look at, including itself. \"Compared\" means a dot product: multiply the two lists number by number and add up the results. A big positive result means a good match. Dividing by √8 ≈ 2.83 keeps the scores from growing too large.",
+                "headline": "s_ij = (q_i · k_j) / √8",
+                "equations": [
+                  "s_ij = (q_i · k_j) / √8",
+                  "q_i · k_j = q_i[1]·k_j[1] + q_i[2]·k_j[2] + … + q_i[8]·k_j[8]"
+                ],
+                "where": [
+                  [
+                    "i",
+                    "the word that is asking: here \"is\""
+                  ],
+                  [
+                    "j",
+                    "a word being looked at"
+                  ],
+                  [
+                    "s_ij",
+                    "the score of word j for word i: how well i's question matches j's label"
+                  ],
+                  [
+                    "√8",
+                    "2.828, the square root of the vector length"
+                  ]
+                ],
+                "notice": "The best match for \"is\" is \"robot\", with score 2.929.",
+                "display": [
+                  {
+                    "type": "code",
+                    "title": "Worked example: \"is\" compared with \"robot\"",
+                    "text": "q·k = 1.613×1.393 + 0.178×0.481 + (-1.110)×(-1.414) + 1.135×0.910 + (-1.317)×(-1.229) + 0.645×1.136 + 0.771×0.878 + (-0.835)×(-0.381) = 8.284\nscore = 8.284 ÷ 2.828 = 2.929"
+                  },
+                  {
+                    "type": "table",
+                    "title": "How well \"is\"'s Query matches each Key",
+                    "headers": [
+                      "Word looked at",
+                      "q · k (sum of 8 products)",
+                      "÷ √8 = score s"
+                    ],
+                    "rows": [
+                      [
+                        "<bos>",
+                        "-0.722",
+                        "-0.255"
+                      ],
+                      [
+                        "the",
+                        "-3.068",
+                        "-1.085"
+                      ],
+                      [
+                        "robot",
+                        "8.284",
+                        "2.929"
+                      ],
+                      [
+                        "is",
+                        "-3.458",
+                        "-1.223"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "words": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "is"
+                  ],
+                  "query": [
+                    1.6127097542253477,
+                    0.17761060059411604,
+                    -1.1104076628605912,
+                    1.134539305006892,
+                    -1.3169623930536747,
+                    0.6454884134996477,
+                    0.7712957673070289,
+                    -0.8350351803917183
+                  ],
+                  "keys": [
+                    [
+                      -0.14570149404498467,
+                      0.04931288557228179,
+                      -0.2730800402985085,
+                      -0.34662052297916984,
+                      0.515426307630013,
+                      0.6476451218073895,
+                      0.2955381892213455,
+                      0.4461031983261737
+                    ],
+                    [
+                      -0.16851671175549374,
+                      -0.5236305681021205,
+                      0.7516010417293199,
+                      -0.34577344167139534,
+                      0.3685563742679902,
+                      -0.553216784455557,
+                      -0.38865498614008825,
+                      0.39975776912586797
+                    ],
+                    [
+                      1.3934080441451853,
+                      0.4807340187687631,
+                      -1.4144747754981837,
+                      0.9098210186906607,
+                      -1.229215827443358,
+                      1.1364865893613725,
+                      0.8783425810148058,
+                      -0.38139911953052635
+                    ],
+                    [
+                      -0.5322003989986765,
+                      -0.2582825019695168,
+                      0.8418046041256019,
+                      -0.32545523920765185,
+                      0.5084883167832112,
+                      -0.5086534876710687,
+                      -0.4061110641002597,
+                      -0.07351005441950238
+                    ]
+                  ],
+                  "dots": [
+                    -0.7215543189648159,
+                    -3.067697656600452,
+                    8.283781078851131,
+                    -3.457984715452244
+                  ],
+                  "scale": 2.8284271247461903,
+                  "scores": [
+                    -0.25510797596723117,
+                    -1.08459490780613,
+                    2.9287588873602246,
+                    -1.2225822207678576
+                  ]
+                }
+              },
+              {
+                "id": "mask",
+                "part": "attend",
+                "number": 7,
+                "title": "Hide the future",
+                "technical": "Causal mask",
+                "plain": "While it learns to predict the next word, a word must never see the words that come after it, or it could simply copy the answer. So every score for a later word is replaced by −∞ (\"impossible\"). The next step turns that into exactly 0% attention. Read each row of the table as: this word looks at these words.",
+                "headline": "s_ij = −∞  whenever j > i",
+                "equations": [
+                  "s_ij = −∞  whenever j > i"
+                ],
+                "where": [
+                  [
+                    "j > i",
+                    "word j comes after word i in the sentence"
+                  ],
+                  [
+                    "−∞",
+                    "minus infinity: so small that exp(−∞) = 0"
+                  ]
+                ],
+                "notice": "The last word can see all 4 words, but \"<bos>\" can see only itself. Another experiment in this lab changes a future word and shows that nothing before it changes.",
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "Scores s for every pair of words",
+                    "headers": [
+                      "Asking word ↓ / looked at →",
+                      "<bos>",
+                      "the",
+                      "robot",
+                      "is"
+                    ],
+                    "rows": [
+                      [
+                        "<bos>",
+                        "-0.064",
+                        "−∞ (hidden)",
+                        "−∞ (hidden)",
+                        "−∞ (hidden)"
+                      ],
+                      [
+                        "the",
+                        "-0.270",
+                        "0.190",
+                        "−∞ (hidden)",
+                        "−∞ (hidden)"
+                      ],
+                      [
+                        "robot",
+                        "0.161",
+                        "0.560",
+                        "-1.556",
+                        "−∞ (hidden)"
+                      ],
+                      [
+                        "is",
+                        "-0.255",
+                        "-1.085",
+                        "2.929",
+                        "-1.223"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "words": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "is"
+                  ],
+                  "matrix": [
+                    [
+                      -0.06350009718781464,
+                      null,
+                      null,
+                      null
+                    ],
+                    [
+                      -0.2695047468395962,
+                      0.18988539700452317,
+                      null,
+                      null
+                    ],
+                    [
+                      0.1606911479011767,
+                      0.5598987380339374,
+                      -1.5561841802453542,
+                      null
+                    ],
+                    [
+                      -0.25510797596723117,
+                      -1.08459490780613,
+                      2.9287588873602246,
+                      -1.2225822207678576
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "softmax1",
+                "part": "attend",
+                "number": 8,
+                "title": "Turn the scores into attention percentages",
+                "technical": "Softmax",
+                "plain": "Scores can be any size, even negative. Softmax turns a list of scores into shares that are all positive and add up to 100%. First each score s becomes exp(s), which means e (about 2.718) raised to the power s: always positive, and it rewards big scores. Then each result is divided by the total of all of them. A hidden word has exp(−∞) = 0, so its share is exactly 0%. These shares are called attention weights.",
+                "headline": "α_ij = exp(s_ij) / (exp(s_i1) + exp(s_i2) + … + exp(s_ii))",
+                "equations": [
+                  "α_ij = exp(s_ij) / (exp(s_i1) + exp(s_i2) + … + exp(s_ii))"
+                ],
+                "where": [
+                  [
+                    "α_ij",
+                    "the attention weight: the share of word i's attention that goes to word j"
+                  ],
+                  [
+                    "exp(s)",
+                    "e (about 2.718) raised to the power s"
+                  ]
+                ],
+                "notice": "\"is\" gives 93.00% of its attention to \"robot\".",
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "Attention of \"is\"",
+                    "headers": [
+                      "Word looked at",
+                      "Score s",
+                      "exp(s)",
+                      "Share = exp(s) ÷ total"
+                    ],
+                    "rows": [
+                      [
+                        "<bos>",
+                        "-0.255",
+                        "0.775",
+                        "3.85%"
+                      ],
+                      [
+                        "the",
+                        "-1.085",
+                        "0.338",
+                        "1.68%"
+                      ],
+                      [
+                        "robot",
+                        "2.929",
+                        "18.704",
+                        "93.00%"
+                      ],
+                      [
+                        "is",
+                        "-1.223",
+                        "0.294",
+                        "1.46%"
+                      ],
+                      [
+                        "Total",
+                        "",
+                        "20.112",
+                        "100%"
+                      ]
+                    ]
+                  },
+                  {
+                    "type": "bars",
+                    "title": "Where \"is\" looks",
+                    "items": [
+                      {
+                        "label": "<bos>",
+                        "value": 3.8526,
+                        "max": 100,
+                        "detail": "3.85%"
+                      },
+                      {
+                        "label": "the",
+                        "value": 1.6808,
+                        "max": 100,
+                        "detail": "1.68%"
+                      },
+                      {
+                        "label": "robot",
+                        "value": 93.0024,
+                        "max": 100,
+                        "detail": "93.00%"
+                      },
+                      {
+                        "label": "is",
+                        "value": 1.4642,
+                        "max": 100,
+                        "detail": "1.46%"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "Implementation detail: real code subtracts the biggest score before taking exp(), so that large scores cannot overflow. The shares come out identical."
+                  },
+                  {
+                    "type": "details",
+                    "title": "Attention shares of every word (each row adds up to 100%)",
+                    "blocks": [
+                      {
+                        "type": "table",
+                        "title": "Attention weights α",
+                        "headers": [
+                          "Asking word ↓ / looked at →",
+                          "<bos>",
+                          "the",
+                          "robot",
+                          "is"
+                        ],
+                        "rows": [
+                          [
+                            "<bos>",
+                            "100.00%",
+                            "0% (hidden)",
+                            "0% (hidden)",
+                            "0% (hidden)"
+                          ],
+                          [
+                            "the",
+                            "38.71%",
+                            "61.29%",
+                            "0% (hidden)",
+                            "0% (hidden)"
+                          ],
+                          [
+                            "robot",
+                            "37.45%",
+                            "55.82%",
+                            "6.73%",
+                            "0% (hidden)"
+                          ],
+                          [
+                            "is",
+                            "3.85%",
+                            "1.68%",
+                            "93.00%",
+                            "1.46%"
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "words": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "is"
+                  ],
+                  "scores": [
+                    -0.25510797596723117,
+                    -1.08459490780613,
+                    2.9287588873602246,
+                    -1.2225822207678576
+                  ],
+                  "exps": [
+                    0.7748328301198295,
+                    0.3380386949990062,
+                    18.70440181543711,
+                    0.2944688008863392
+                  ],
+                  "total": 20.11174214144228,
+                  "weights": [
+                    0.038526390437515004,
+                    0.0168080265061893,
+                    0.930023947398112,
+                    0.014641635658183804
+                  ],
+                  "matrix": [
+                    [
+                      1,
+                      0,
+                      0,
+                      0
+                    ],
+                    [
+                      0.387130508659934,
+                      0.6128694913400661,
+                      0,
+                      0
+                    ],
+                    [
+                      0.37449402460430753,
+                      0.5582369072816775,
+                      0.06726906811401498,
+                      0
+                    ],
+                    [
+                      0.038526390437515004,
+                      0.0168080265061893,
+                      0.930023947398112,
+                      0.014641635658183804
+                    ]
+                  ]
+                }
+              },
+              {
+                "id": "blend",
+                "part": "attend",
+                "number": 9,
+                "title": "Blend the Values using those percentages",
+                "technical": "Weighted sum of Values",
+                "plain": "Each word carries a Value: the information it will hand over. \"is\" now builds a new list of 8 numbers by blending the Values of the words it looked at, in proportion to the attention shares: 93.00% of the Value of \"robot\", plus smaller amounts of the others. \"is\" now carries information gathered from the words it paid attention to.",
+                "headline": "m_i = α_i1·v_1 + α_i2·v_2 + … + α_ii·v_i",
+                "equations": [
+                  "m_i = α_i1·v_1 + α_i2·v_2 + … + α_ii·v_i"
+                ],
+                "where": [
+                  [
+                    "m_i",
+                    "the blended list of 8 numbers for word i"
+                  ],
+                  [
+                    "v_j",
+                    "the Value of word j (step 5); every one of its 8 numbers is multiplied by α_ij"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "The blend for \"is\": each row is share × Value",
+                    "headers": [
+                      "Word looked at",
+                      "#1",
+                      "#2",
+                      "#3",
+                      "#4",
+                      "#5",
+                      "#6",
+                      "#7",
+                      "#8"
+                    ],
+                    "rows": [
+                      [
+                        "<bos> (3.85%)",
+                        "-0.013",
+                        "0.016",
+                        "0.004",
+                        "0.033",
+                        "0.000",
+                        "0.015",
+                        "0.046",
+                        "0.069"
+                      ],
+                      [
+                        "the (1.68%)",
+                        "0.003",
+                        "0.012",
+                        "0.008",
+                        "0.008",
+                        "0.002",
+                        "-0.015",
+                        "-0.007",
+                        "-0.012"
+                      ],
+                      [
+                        "robot (93.00%)",
+                        "0.985",
+                        "0.517",
+                        "0.147",
+                        "-0.766",
+                        "0.565",
+                        "0.021",
+                        "0.147",
+                        "0.364"
+                      ],
+                      [
+                        "is (1.46%)",
+                        "-0.014",
+                        "-0.006",
+                        "-0.013",
+                        "0.006",
+                        "-0.006",
+                        "0.010",
+                        "-0.007",
+                        "-0.008"
+                      ],
+                      [
+                        "m = sum of the rows",
+                        "0.961",
+                        "0.538",
+                        "0.145",
+                        "-0.719",
+                        "0.561",
+                        "0.031",
+                        "0.178",
+                        "0.412"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "words": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "is"
+                  ],
+                  "weights": [
+                    0.038526390437515004,
+                    0.0168080265061893,
+                    0.930023947398112,
+                    0.014641635658183804
+                  ],
+                  "values": [
+                    [
+                      -0.3456549660587052,
+                      0.4157151441539122,
+                      0.09790905685782389,
+                      0.8652104424480662,
+                      -0.008177187153973003,
+                      0.38288999921892564,
+                      1.188271667679689,
+                      1.7791391295324526
+                    ],
+                    [
+                      0.18360944807483462,
+                      0.690325068559914,
+                      0.47711574929794853,
+                      0.4517445506141195,
+                      0.10142582228714289,
+                      -0.913444179452733,
+                      -0.4443703767571415,
+                      -0.7344534465185928
+                    ],
+                    [
+                      1.0593733661680427,
+                      0.555603280661486,
+                      0.15793593778594514,
+                      -0.8239467933012841,
+                      0.607961963460578,
+                      0.02307139690334825,
+                      0.15762445290905558,
+                      0.391505277829133
+                    ],
+                    [
+                      -0.9277702561816165,
+                      -0.44242673560973034,
+                      -0.913019268045286,
+                      0.4098086423423478,
+                      -0.37951899811551393,
+                      0.6651471717445461,
+                      -0.4922655461666985,
+                      -0.5663414511721848
+                    ]
+                  ],
+                  "contributions": [
+                    [
+                      -0.013316838179043673,
+                      0.016016003954461455,
+                      0.003772082551873379,
+                      0.03333343531636931,
+                      -0.00031503750497459605,
+                      0.014751369604528145,
+                      0.04577981821486477,
+                      0.06854380874702785
+                    ],
+                    [
+                      0.003086112470028608,
+                      0.01160300205024198,
+                      0.008019374160720287,
+                      0.007592934380748694,
+                      0.0017047679094143431,
+                      -0.015353193980165871,
+                      -0.00746898907109936,
+                      -0.012344712996646592
+                    ],
+                    [
+                      0.9852425997720285,
+                      0.5167243562681363,
+                      0.14688420429570734,
+                      -0.7662902491520764,
+                      0.5654191851255135,
+                      0.021456951620040517,
+                      0.1465945159009477,
+                      0.36410928391384484
+                    ],
+                    [
+                      -0.013584074065511079,
+                      -0.006477851068237286,
+                      -0.013368095471620735,
+                      0.006000268830751613,
+                      -0.005556778895766301,
+                      0.009738842547755052,
+                      -0.007207572774049658,
+                      -0.008292165186190224
+                    ]
+                  ],
+                  "mixed": [
+                    0.9614277999975024,
+                    0.5378655112046025,
+                    0.14530756553668026,
+                    -0.7193636106242067,
+                    0.5612521366341869,
+                    0.030593969792157845,
+                    0.17769777227066344,
+                    0.4120162144780358
+                  ]
+                }
+              },
+              {
+                "id": "shortcut1",
+                "part": "attend",
+                "number": 10,
+                "title": "Tidy the blend and add a shortcut",
+                "technical": "Output projection and residual connection",
+                "plain": "The blend is passed through one more learned table, W_O, to tidy it up; call the result o. Then comes a shortcut: o is added onto the starting vector x from step 3. This is called a residual connection. The word keeps everything it already knew and only adds what attention found.",
+                "headline": "r_i = x_i + (W_O · m_i + b_O)",
+                "equations": [
+                  "o_i = W_O · m_i + b_O",
+                  "r_i = x_i + o_i"
+                ],
+                "where": [
+                  [
+                    "W_O, b_O",
+                    "a learned table (8 rows of 8 numbers) and 8 learned offsets"
+                  ],
+                  [
+                    "o_i",
+                    "the tidied blend"
+                  ],
+                  [
+                    "r_i",
+                    "the word's vector after attention: what it knew before plus what attention found"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "code",
+                    "title": "Worked example: the first number of o for \"is\"",
+                    "text": "o[1] = 0.228×0.961 + (-0.024)×0.538 + 0.033×0.145 + (-0.195)×(-0.719) + 0.030×0.561 + 0.010×0.031 + (-0.419)×0.178 + (-0.390)×0.412 + (-0.037) = 0.096"
+                  },
+                  {
+                    "type": "table",
+                    "title": "Adding the shortcut",
+                    "headers": [
+                      "Vector",
+                      "#1",
+                      "#2",
+                      "#3",
+                      "#4",
+                      "#5",
+                      "#6",
+                      "#7",
+                      "#8"
+                    ],
+                    "rows": [
+                      [
+                        "m: the blend (step 9)",
+                        "0.961",
+                        "0.538",
+                        "0.145",
+                        "-0.719",
+                        "0.561",
+                        "0.031",
+                        "0.178",
+                        "0.412"
+                      ],
+                      [
+                        "o = W_O · m + b_O",
+                        "0.096",
+                        "0.055",
+                        "-0.137",
+                        "0.591",
+                        "-0.644",
+                        "-0.114",
+                        "0.156",
+                        "0.498"
+                      ],
+                      [
+                        "x: the starting vector (step 3)",
+                        "0.391",
+                        "0.262",
+                        "-0.263",
+                        "0.042",
+                        "-0.019",
+                        "0.121",
+                        "0.540",
+                        "-0.388"
+                      ],
+                      [
+                        "r = x + o",
+                        "0.487",
+                        "0.316",
+                        "-0.400",
+                        "0.633",
+                        "-0.664",
+                        "0.008",
+                        "0.696",
+                        "0.110"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "mixed": [
+                    0.9614277999975024,
+                    0.5378655112046025,
+                    0.14530756553668026,
+                    -0.7193636106242067,
+                    0.5612521366341869,
+                    0.030593969792157845,
+                    0.17769777227066344,
+                    0.4120162144780358
+                  ],
+                  "row": [
+                    0.22783178290098471,
+                    -0.023896513606433887,
+                    0.03260344550301398,
+                    -0.1950532304321435,
+                    0.02975214660020385,
+                    0.009586038175178078,
+                    -0.41873320417746845,
+                    -0.3900410255460129
+                  ],
+                  "bias": -0.03681307820050792,
+                  "projected": [
+                    0.09630989091477873,
+                    0.05470675020248733,
+                    -0.13730000800730507,
+                    0.5910888884613904,
+                    -0.6444038519109258,
+                    -0.11359856406613739,
+                    0.15610210999389418,
+                    0.49799769374159464
+                  ],
+                  "input": [
+                    0.39051567253231373,
+                    0.26172695793578005,
+                    -0.26309097424037553,
+                    0.04236388287838155,
+                    -0.01931248657435418,
+                    0.1212214638432409,
+                    0.5400047574002935,
+                    -0.3882087409248038
+                  ],
+                  "residual": [
+                    0.4868255634470925,
+                    0.3164337081382674,
+                    -0.4003909822476806,
+                    0.633452771339772,
+                    -0.6637163384852799,
+                    0.007622899777103509,
+                    0.6961068673941877,
+                    0.10978895281679085
+                  ]
+                }
+              },
+              {
+                "id": "norm2",
+                "part": "think",
+                "number": 11,
+                "title": "Rescale again",
+                "technical": "Layer normalization (second)",
+                "plain": "The same rescaling recipe as step 4, now applied to r, with its own learned g and β. It prepares the numbers for the next stage.",
+                "headline": "u[k] = g[k] · (r[k] − μ) / √(σ² + ε) + β[k]",
+                "equations": [
+                  "μ = (r[1] + r[2] + … + r[8]) / 8",
+                  "σ² = ((r[1] − μ)² + (r[2] − μ)² + … + (r[8] − μ)²) / 8",
+                  "u[k] = g[k] · (r[k] − μ) / √(σ² + ε) + β[k]"
+                ],
+                "where": [
+                  [
+                    "μ",
+                    "the average of the 8 numbers"
+                  ],
+                  [
+                    "σ²",
+                    "how spread out the 8 numbers are (the variance)"
+                  ],
+                  [
+                    "ε",
+                    "a tiny number, 0.00001, that only stops a division by zero"
+                  ],
+                  [
+                    "g[k], β[k]",
+                    "a learned stretch and a learned shift for the k-th number (this step has its own pair)"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "text",
+                    "text": "For \"is\": average μ = 0.148, variance σ² = 0.2075, so √(σ² + ε) = 0.4555."
+                  },
+                  {
+                    "type": "table",
+                    "title": "The recipe applied to each of the 8 numbers",
+                    "headers": [
+                      "k",
+                      "r[k]",
+                      "r[k] − μ",
+                      "÷ √(σ² + ε)",
+                      "g[k]",
+                      "β[k]",
+                      "u[k]"
+                    ],
+                    "rows": [
+                      [
+                        1,
+                        "0.487",
+                        "0.339",
+                        "0.743",
+                        "0.854",
+                        "-0.088",
+                        "0.547"
+                      ],
+                      [
+                        2,
+                        "0.316",
+                        "0.168",
+                        "0.369",
+                        "1.072",
+                        "0.143",
+                        "0.539"
+                      ],
+                      [
+                        3,
+                        "-0.400",
+                        "-0.549",
+                        "-1.204",
+                        "1.086",
+                        "-0.235",
+                        "-1.543"
+                      ],
+                      [
+                        4,
+                        "0.633",
+                        "0.485",
+                        "1.065",
+                        "1.095",
+                        "-0.102",
+                        "1.064"
+                      ],
+                      [
+                        5,
+                        "-0.664",
+                        "-0.812",
+                        "-1.782",
+                        "1.210",
+                        "0.042",
+                        "-2.115"
+                      ],
+                      [
+                        6,
+                        "0.008",
+                        "-0.141",
+                        "-0.309",
+                        "0.890",
+                        "0.062",
+                        "-0.213"
+                      ],
+                      [
+                        7,
+                        "0.696",
+                        "0.548",
+                        "1.203",
+                        "1.000",
+                        "-0.030",
+                        "1.172"
+                      ],
+                      [
+                        8,
+                        "0.110",
+                        "-0.038",
+                        "-0.084",
+                        "1.026",
+                        "0.139",
+                        "0.052"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "input": [
+                    0.4868255634470925,
+                    0.3164337081382674,
+                    -0.4003909822476806,
+                    0.633452771339772,
+                    -0.6637163384852799,
+                    0.007622899777103509,
+                    0.6961068673941877,
+                    0.10978895281679085
+                  ],
+                  "mean": 0.1482654302725317,
+                  "variance": 0.2075049427638871,
+                  "epsilon": 0.00001,
+                  "gain": [
+                    0.854002904994412,
+                    1.0723707599620118,
+                    1.0857602326729747,
+                    1.0945553428122394,
+                    1.210155043948916,
+                    0.8897531518562043,
+                    0.9996770650869695,
+                    1.0259840326758545
+                  ],
+                  "offset": [
+                    -0.08795544908540104,
+                    0.14298393127978828,
+                    -0.23487104508295792,
+                    -0.10206517075323356,
+                    0.0423967269177309,
+                    0.062092738997458444,
+                    -0.02974837955958569,
+                    0.13879827042492565
+                  ],
+                  "output": [
+                    0.5467474432483461,
+                    0.5388646527068239,
+                    -1.5425758005071661,
+                    1.0637306632085044,
+                    -2.1146651635608045,
+                    -0.21260907004239782,
+                    1.1724881478946516,
+                    0.05213975998395237
+                  ]
+                }
+              },
+              {
+                "id": "expand",
+                "part": "think",
+                "number": 12,
+                "title": "Think alone: 16 detectors, then switch the negative ones off",
+                "technical": "Feed-forward network, first layer + ReLU",
+                "plain": "Now each word thinks on its own, without looking at other words. The 8 numbers are expanded into 16 \"detectors\". Each detector is a weighted sum of the 8 numbers plus its own offset. Then ReLU switches off every detector that came out negative: it keeps positive numbers and turns negative ones into 0. This on/off behaviour lets the network do more than simple sums.",
+                "headline": "h[j] = ReLU( W_1[j,1]·u[1] + W_1[j,2]·u[2] + … + W_1[j,8]·u[8] + b_1[j] )",
+                "equations": [
+                  "z[j] = W_1[j,1]·u[1] + W_1[j,2]·u[2] + … + W_1[j,8]·u[8] + b_1[j]",
+                  "h[j] = ReLU(z[j]) = max(0, z[j])"
+                ],
+                "where": [
+                  [
+                    "W_1, b_1",
+                    "a learned table (16 rows of 8 numbers) and 16 learned offsets"
+                  ],
+                  [
+                    "z[j]",
+                    "the value of detector j before ReLU"
+                  ],
+                  [
+                    "h[j]",
+                    "the value of detector j after ReLU"
+                  ],
+                  [
+                    "max(0, z)",
+                    "the larger of 0 and z"
+                  ]
+                ],
+                "notice": "ReLU switched off 9 of the 16 detectors.",
+                "display": [
+                  {
+                    "type": "code",
+                    "title": "Worked example: detector 9, the strongest one",
+                    "text": "z[9] = 0.108×0.547 + (-0.077)×0.539 + (-0.006)×(-1.543) + (-0.023)×1.064 + (-0.400)×(-2.115) + (-0.357)×(-0.213) + 0.437×1.172 + 0.231×0.052 + 0.158 = 1.608\nh[9] = max(0, 1.608) = 1.608"
+                  },
+                  {
+                    "type": "table",
+                    "title": "All 16 detectors for \"is\"",
+                    "headers": [
+                      "Detector j",
+                      "Before ReLU z[j]",
+                      "After ReLU h[j]",
+                      "State"
+                    ],
+                    "rows": [
+                      [
+                        1,
+                        "0.176",
+                        "0.176",
+                        "on"
+                      ],
+                      [
+                        2,
+                        "1.532",
+                        "1.532",
+                        "on"
+                      ],
+                      [
+                        3,
+                        "0.167",
+                        "0.167",
+                        "on"
+                      ],
+                      [
+                        4,
+                        "-0.869",
+                        "0.000",
+                        "switched off (0)"
+                      ],
+                      [
+                        5,
+                        "-0.994",
+                        "0.000",
+                        "switched off (0)"
+                      ],
+                      [
+                        6,
+                        "-0.705",
+                        "0.000",
+                        "switched off (0)"
+                      ],
+                      [
+                        7,
+                        "-0.177",
+                        "0.000",
+                        "switched off (0)"
+                      ],
+                      [
+                        8,
+                        "-0.578",
+                        "0.000",
+                        "switched off (0)"
+                      ],
+                      [
+                        9,
+                        "1.608",
+                        "1.608",
+                        "on"
+                      ],
+                      [
+                        10,
+                        "0.918",
+                        "0.918",
+                        "on"
+                      ],
+                      [
+                        11,
+                        "-0.676",
+                        "0.000",
+                        "switched off (0)"
+                      ],
+                      [
+                        12,
+                        "-0.519",
+                        "0.000",
+                        "switched off (0)"
+                      ],
+                      [
+                        13,
+                        "-0.288",
+                        "0.000",
+                        "switched off (0)"
+                      ],
+                      [
+                        14,
+                        "0.830",
+                        "0.830",
+                        "on"
+                      ],
+                      [
+                        15,
+                        "0.292",
+                        "0.292",
+                        "on"
+                      ],
+                      [
+                        16,
+                        "-1.344",
+                        "0.000",
+                        "switched off (0)"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "normalized": [
+                    0.5467474432483461,
+                    0.5388646527068239,
+                    -1.5425758005071661,
+                    1.0637306632085044,
+                    -2.1146651635608045,
+                    -0.21260907004239782,
+                    1.1724881478946516,
+                    0.05213975998395237
+                  ],
+                  "unit": 8,
+                  "row": [
+                    0.10762533010161672,
+                    -0.0766008787114883,
+                    -0.006121788769242978,
+                    -0.023116717072567496,
+                    -0.40003926885670543,
+                    -0.3573793519821096,
+                    0.4372905442099356,
+                    0.23105344422506027
+                  ],
+                  "bias": 0.15848266376263892,
+                  "pre": [
+                    0.17555384225209159,
+                    1.5316703087217467,
+                    0.16684195589946596,
+                    -0.8691214475108037,
+                    -0.9936643297786957,
+                    -0.7049999976594237,
+                    -0.17735892146415805,
+                    -0.5779778297988182,
+                    1.6075986433317913,
+                    0.9183939624295704,
+                    -0.6755214187551963,
+                    -0.5191089936271686,
+                    -0.28798159974046245,
+                    0.8304962104623792,
+                    0.29204960632069626,
+                    -1.3440965133753389
+                  ],
+                  "hidden": [
+                    0.17555384225209159,
+                    1.5316703087217467,
+                    0.16684195589946596,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1.6075986433317913,
+                    0.9183939624295704,
+                    0,
+                    0,
+                    0,
+                    0.8304962104623792,
+                    0.29204960632069626,
+                    0
+                  ]
+                }
+              },
+              {
+                "id": "shortcut2",
+                "part": "think",
+                "number": 13,
+                "title": "Squeeze back to 8 numbers and add a second shortcut",
+                "technical": "Feed-forward network, second layer + residual connection",
+                "plain": "The 16 detector values are squeezed back into 8 numbers by another learned table, W_2. Call the result f: the new information produced by thinking. Another shortcut adds f onto r, so the word keeps what it had and gains what it worked out.",
+                "headline": "y_i = r_i + (W_2 · h_i + b_2)",
+                "equations": [
+                  "f_i = W_2 · h_i + b_2",
+                  "y_i = r_i + f_i"
+                ],
+                "where": [
+                  [
+                    "W_2, b_2",
+                    "a learned table (8 rows of 16 numbers) and 8 learned offsets"
+                  ],
+                  [
+                    "f_i",
+                    "what the thinking step found"
+                  ],
+                  [
+                    "y_i",
+                    "the word's vector after the whole block"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "code",
+                    "title": "Worked example: the first number of f for \"is\"",
+                    "text": "f[1] = (-0.015)×0.176 + 0.094×1.532 + 0.012×0.167 + 0.126×0.000 + 0.235×0.000 + (-0.175)×0.000 + 0.114×0.000 + 0.018×0.000 + 0.148×1.608 + 0.068×0.918 + 0.242×0.000 + 0.159×0.000 + (-0.463)×0.000 + 0.107×0.830 + (-0.099)×0.292 + 0.286×0.000 + 0.004 = 0.508"
+                  },
+                  {
+                    "type": "table",
+                    "title": "Adding the second shortcut",
+                    "headers": [
+                      "Vector",
+                      "#1",
+                      "#2",
+                      "#3",
+                      "#4",
+                      "#5",
+                      "#6",
+                      "#7",
+                      "#8"
+                    ],
+                    "rows": [
+                      [
+                        "r: before thinking (step 10)",
+                        "0.487",
+                        "0.316",
+                        "-0.400",
+                        "0.633",
+                        "-0.664",
+                        "0.008",
+                        "0.696",
+                        "0.110"
+                      ],
+                      [
+                        "f = W_2 · h + b_2",
+                        "0.508",
+                        "-0.192",
+                        "0.163",
+                        "0.193",
+                        "-0.271",
+                        "0.281",
+                        "-0.055",
+                        "-0.933"
+                      ],
+                      [
+                        "y = r + f",
+                        "0.995",
+                        "0.125",
+                        "-0.238",
+                        "0.827",
+                        "-0.935",
+                        "0.289",
+                        "0.641",
+                        "-0.824"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "hidden": [
+                    0.17555384225209159,
+                    1.5316703087217467,
+                    0.16684195589946596,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1.6075986433317913,
+                    0.9183939624295704,
+                    0,
+                    0,
+                    0,
+                    0.8304962104623792,
+                    0.29204960632069626,
+                    0
+                  ],
+                  "row": [
+                    -0.015434602931176175,
+                    0.0942437111750112,
+                    0.011837462810436128,
+                    0.12645081246980183,
+                    0.23495683865467504,
+                    -0.17531131638352032,
+                    0.11413102079255483,
+                    0.01831376346500678,
+                    0.14812551696354995,
+                    0.06794673353882881,
+                    0.2416941109591312,
+                    0.15879080654715902,
+                    -0.4633994640916888,
+                    0.10689730825783107,
+                    -0.09870201006809964,
+                    0.28606643772814094
+                  ],
+                  "bias": 0.0042730081817960045,
+                  "output": [
+                    0.5083688601678874,
+                    -0.1917349954313047,
+                    0.1628079838513701,
+                    0.193215786829717,
+                    -0.2708218845466378,
+                    0.2811865892155453,
+                    -0.05528716937337795,
+                    -0.9333912839789129
+                  ],
+                  "residual1": [
+                    0.4868255634470925,
+                    0.3164337081382674,
+                    -0.4003909822476806,
+                    0.633452771339772,
+                    -0.6637163384852799,
+                    0.007622899777103509,
+                    0.6961068673941877,
+                    0.10978895281679085
+                  ],
+                  "residual2": [
+                    0.9951944236149799,
+                    0.12469871270696267,
+                    -0.2375829983963105,
+                    0.8266685581694889,
+                    -0.9345382230319177,
+                    0.2888094889926488,
+                    0.6408196980208097,
+                    -0.8236023311621221
+                  ]
+                }
+              },
+              {
+                "id": "norm3",
+                "part": "predict",
+                "number": 14,
+                "title": "One last rescale",
+                "technical": "Final layer normalization",
+                "plain": "The same rescaling recipe once more, applied to y with its own learned g and β, so that the final scoring always receives numbers of a similar size. The result, t, is the model's final summary of the word \"is\" in its context.",
+                "headline": "t[k] = g[k] · (y[k] − μ) / √(σ² + ε) + β[k]",
+                "equations": [
+                  "μ = (y[1] + y[2] + … + y[8]) / 8",
+                  "σ² = ((y[1] − μ)² + (y[2] − μ)² + … + (y[8] − μ)²) / 8",
+                  "t[k] = g[k] · (y[k] − μ) / √(σ² + ε) + β[k]"
+                ],
+                "where": [
+                  [
+                    "μ",
+                    "the average of the 8 numbers"
+                  ],
+                  [
+                    "σ²",
+                    "how spread out the 8 numbers are (the variance)"
+                  ],
+                  [
+                    "ε",
+                    "a tiny number, 0.00001, that only stops a division by zero"
+                  ],
+                  [
+                    "g[k], β[k]",
+                    "a learned stretch and a learned shift for the k-th number (this step has its own pair)"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "text",
+                    "text": "For \"is\": average μ = 0.110, variance σ² = 0.4618, so √(σ² + ε) = 0.6796."
+                  },
+                  {
+                    "type": "table",
+                    "title": "The recipe applied to each of the 8 numbers",
+                    "headers": [
+                      "k",
+                      "y[k]",
+                      "y[k] − μ",
+                      "÷ √(σ² + ε)",
+                      "g[k]",
+                      "β[k]",
+                      "t[k]"
+                    ],
+                    "rows": [
+                      [
+                        1,
+                        "0.995",
+                        "0.885",
+                        "1.302",
+                        "2.094",
+                        "0.372",
+                        "3.100"
+                      ],
+                      [
+                        2,
+                        "0.125",
+                        "0.015",
+                        "0.022",
+                        "1.932",
+                        "0.243",
+                        "0.285"
+                      ],
+                      [
+                        3,
+                        "-0.238",
+                        "-0.348",
+                        "-0.512",
+                        "1.874",
+                        "0.071",
+                        "-0.887"
+                      ],
+                      [
+                        4,
+                        "0.827",
+                        "0.717",
+                        "1.054",
+                        "1.998",
+                        "0.133",
+                        "2.239"
+                      ],
+                      [
+                        5,
+                        "-0.935",
+                        "-1.045",
+                        "-1.537",
+                        "1.992",
+                        "-0.037",
+                        "-3.100"
+                      ],
+                      [
+                        6,
+                        "0.289",
+                        "0.179",
+                        "0.263",
+                        "2.072",
+                        "-0.598",
+                        "-0.052"
+                      ],
+                      [
+                        7,
+                        "0.641",
+                        "0.531",
+                        "0.781",
+                        "1.957",
+                        "-0.063",
+                        "1.466"
+                      ],
+                      [
+                        8,
+                        "-0.824",
+                        "-0.934",
+                        "-1.374",
+                        "2.030",
+                        "-0.369",
+                        "-3.158"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "input": [
+                    0.9951944236149799,
+                    0.12469871270696267,
+                    -0.2375829983963105,
+                    0.8266685581694889,
+                    -0.9345382230319177,
+                    0.2888094889926488,
+                    0.6408196980208097,
+                    -0.8236023311621221
+                  ],
+                  "mean": 0.11005841611431746,
+                  "variance": 0.46182859409805044,
+                  "epsilon": 0.00001,
+                  "gain": [
+                    2.0939927232531583,
+                    1.932351546083786,
+                    1.8742505292182192,
+                    1.997901600967297,
+                    1.9923530306469752,
+                    2.0722846733295546,
+                    1.9572260044041883,
+                    2.03030648850761
+                  ],
+                  "offset": [
+                    0.3723259207676181,
+                    0.24329562747925446,
+                    0.07147652369334319,
+                    0.13265097432883524,
+                    -0.03705315773537294,
+                    -0.5975085149447653,
+                    -0.06289483809270793,
+                    -0.36891229799773506
+                  ],
+                  "output": [
+                    3.0996708391553307,
+                    0.28492414095148977,
+                    -0.887292599457532,
+                    2.239395790826939,
+                    -3.099508805853546,
+                    -0.052437659927485614,
+                    1.465709544633326,
+                    -3.158278870331528
+                  ]
+                }
+              },
+              {
+                "id": "readout",
+                "part": "predict",
+                "number": 15,
+                "title": "Give every dictionary word a score",
+                "technical": "Linear readout (logits)",
+                "plain": "Now the model must decide which dictionary word comes next. Each of the 9 words has its own row of 8 learned numbers in a table called W_R. Multiplying t by a row and adding up (plus a learned offset) gives that word's score: higher means \"more likely to come next\". These raw scores are called logits.",
+                "headline": "z[w] = W_R[w,1]·t[1] + W_R[w,2]·t[2] + … + W_R[w,8]·t[8] + b_R[w]",
+                "equations": [
+                  "z[w] = W_R[w,1]·t[1] + W_R[w,2]·t[2] + … + W_R[w,8]·t[8] + b_R[w]"
+                ],
+                "where": [
+                  [
+                    "w",
+                    "a word of the dictionary"
+                  ],
+                  [
+                    "W_R, b_R",
+                    "a learned table (9 rows of 8 numbers) and 9 learned offsets"
+                  ],
+                  [
+                    "z[w]",
+                    "the score (logit) of word w"
+                  ]
+                ],
+                "notice": "\"blue\" has the highest score, 8.014.",
+                "display": [
+                  {
+                    "type": "code",
+                    "title": "Worked example: the score of \"blue\", the highest",
+                    "text": "z[blue] = 0.588×3.100 + 0.036×0.285 + (-0.392)×(-0.887) + 0.504×2.239 + (-0.733)×(-3.100) + (-0.024)×(-0.052) + 0.488×1.466 + (-0.520)×(-3.158) + 0.072 = 8.014"
+                  },
+                  {
+                    "type": "table",
+                    "title": "One score for every dictionary word",
+                    "headers": [
+                      "Word",
+                      "Score z (logit)"
+                    ],
+                    "rows": [
+                      [
+                        "<bos>",
+                        "-3.956"
+                      ],
+                      [
+                        "the",
+                        "-0.774"
+                      ],
+                      [
+                        "robot",
+                        "-1.618"
+                      ],
+                      [
+                        "plant",
+                        "-1.572"
+                      ],
+                      [
+                        "is",
+                        "-0.541"
+                      ],
+                      [
+                        "blue",
+                        "8.014"
+                      ],
+                      [
+                        "green",
+                        "-0.272"
+                      ],
+                      [
+                        ".",
+                        "-4.147"
+                      ],
+                      [
+                        "<eos>",
+                        "-2.025"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "word": "is",
+                  "final": [
+                    3.0996708391553307,
+                    0.28492414095148977,
+                    -0.887292599457532,
+                    2.239395790826939,
+                    -3.099508805853546,
+                    -0.052437659927485614,
+                    1.465709544633326,
+                    -3.158278870331528
+                  ],
+                  "rows": [
+                    [
+                      -0.505666982570972,
+                      -0.19162575691291805,
+                      -0.32608109715767775,
+                      -0.3924337848624082,
+                      0.027196260241729626,
+                      0.5438786558656643,
+                      0.03998824767777577,
+                      0.33331710327242725
+                    ],
+                    [
+                      -0.6509879096823296,
+                      -0.2855756024983673,
+                      -0.4829399764702061,
+                      0.6507382964923004,
+                      -0.32116652587898054,
+                      -0.8355246926666873,
+                      0.6438905409286945,
+                      0.902181179479876
+                    ],
+                    [
+                      -0.28841367788695493,
+                      0.4992158448421458,
+                      0.5380830064068258,
+                      -0.46752082603449113,
+                      0.04668886341758558,
+                      -0.2076337273229218,
+                      -0.3274531154264186,
+                      -0.4102173626411363
+                    ],
+                    [
+                      -0.3539283811207628,
+                      0.4323806728053953,
+                      0.44802618018547674,
+                      -0.5454307057207669,
+                      -0.02822250360949351,
+                      -0.2779480681434193,
+                      -0.40153202601886384,
+                      -0.47824004403557496
+                    ],
+                    [
+                      0.069476478672048,
+                      0.11437548089797041,
+                      0.39786775668251867,
+                      0.7196308530851366,
+                      -0.8460254316869118,
+                      0.48607544967389826,
+                      -0.8835744434487148,
+                      1.0393199450174484
+                    ],
+                    [
+                      0.5883668015361232,
+                      0.03617418719527577,
+                      -0.39184489570824693,
+                      0.5044562218601893,
+                      -0.7327601788729255,
+                      -0.024139718895681814,
+                      0.4875056992373567,
+                      -0.520353456202592
+                    ],
+                    [
+                      0.12028105868068611,
+                      0.005015767167782542,
+                      -0.7977126711392722,
+                      -0.5518770808845433,
+                      0.9858427370324511,
+                      -0.23871324417524,
+                      0.744299708281259,
+                      -0.5610693260881949
+                    ],
+                    [
+                      0.8362615551558539,
+                      -0.7855257190804573,
+                      -0.3809101490038869,
+                      -1.00248678829791,
+                      0.6164106887269541,
+                      -0.7938389838992823,
+                      0.45391524076831646,
+                      1.0305805953946516
+                    ],
+                    [
+                      0.8908105635101278,
+                      -0.8629840673880613,
+                      0.6174132093640717,
+                      -0.6205258213472185,
+                      0.6014899185356224,
+                      0.7190972596726988,
+                      -0.6163949430475013,
+                      0.006221687461179868
+                    ]
+                  ],
+                  "biases": [
+                    -0.6379290056374723,
+                    0.3054702564652267,
+                    -0.023865084385033087,
+                    -0.002655561156381714,
+                    -0.06631695428400583,
+                    0.07244574958152604,
+                    0.0622341321587211,
+                    -0.1500644943897552,
+                    0.22245220817365832
+                  ],
+                  "logits": [
+                    -3.9563262118717035,
+                    -0.7742875078607689,
+                    -1.6182101895710121,
+                    -1.5715499443755776,
+                    -0.5406123170744699,
+                    8.01427982185829,
+                    -0.27174182381531764,
+                    -4.147226433291821,
+                    -2.0247791948839775
+                  ]
+                }
+              },
+              {
+                "id": "probabilities",
+                "part": "predict",
+                "number": 16,
+                "title": "Turn the scores into probabilities",
+                "technical": "Softmax",
+                "plain": "Softmax again, exactly as in step 8, but now over all 9 dictionary words. Each score becomes a probability: positive, and all 9 together add up to 100%.",
+                "headline": "P(w) = exp(z[w]) / (exp(z[1]) + exp(z[2]) + … + exp(z[9]))",
+                "equations": [
+                  "P(w) = exp(z[w]) / (exp(z[1]) + exp(z[2]) + … + exp(z[9]))"
+                ],
+                "where": [
+                  [
+                    "P(w)",
+                    "the probability that word w comes next"
+                  ],
+                  [
+                    "z[1] … z[9]",
+                    "the scores of the nine dictionary words"
+                  ]
+                ],
+                "notice": "\"blue\" gets 99.92%.",
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "From scores to probabilities",
+                    "headers": [
+                      "Word",
+                      "Score z",
+                      "exp(z)",
+                      "Probability P"
+                    ],
+                    "rows": [
+                      [
+                        "<bos>",
+                        "-3.956",
+                        "0.019",
+                        "0.0006%"
+                      ],
+                      [
+                        "the",
+                        "-0.774",
+                        "0.461",
+                        "0.0152%"
+                      ],
+                      [
+                        "robot",
+                        "-1.618",
+                        "0.198",
+                        "0.0066%"
+                      ],
+                      [
+                        "plant",
+                        "-1.572",
+                        "0.208",
+                        "0.0069%"
+                      ],
+                      [
+                        "is",
+                        "-0.541",
+                        "0.582",
+                        "0.0192%"
+                      ],
+                      [
+                        "blue",
+                        "8.014",
+                        "3023.8",
+                        "99.92%"
+                      ],
+                      [
+                        "green",
+                        "-0.272",
+                        "0.762",
+                        "0.0252%"
+                      ],
+                      [
+                        ".",
+                        "-4.147",
+                        "0.016",
+                        "0.0005%"
+                      ],
+                      [
+                        "<eos>",
+                        "-2.025",
+                        "0.132",
+                        "0.0044%"
+                      ]
+                    ]
+                  },
+                  {
+                    "type": "bars",
+                    "title": "Probability of each possible next word",
+                    "items": [
+                      {
+                        "label": "<bos>",
+                        "value": 0.0006,
+                        "max": 100,
+                        "detail": "0.0006%"
+                      },
+                      {
+                        "label": "the",
+                        "value": 0.0152,
+                        "max": 100,
+                        "detail": "0.0152%"
+                      },
+                      {
+                        "label": "robot",
+                        "value": 0.0066,
+                        "max": 100,
+                        "detail": "0.0066%"
+                      },
+                      {
+                        "label": "plant",
+                        "value": 0.0069,
+                        "max": 100,
+                        "detail": "0.0069%"
+                      },
+                      {
+                        "label": "is",
+                        "value": 0.0192,
+                        "max": 100,
+                        "detail": "0.0192%"
+                      },
+                      {
+                        "label": "blue",
+                        "value": 99.9214,
+                        "max": 100,
+                        "detail": "99.92%"
+                      },
+                      {
+                        "label": "green",
+                        "value": 0.0252,
+                        "max": 100,
+                        "detail": "0.0252%"
+                      },
+                      {
+                        "label": ".",
+                        "value": 0.0005,
+                        "max": 100,
+                        "detail": "0.0005%"
+                      },
+                      {
+                        "label": "<eos>",
+                        "value": 0.0044,
+                        "max": 100,
+                        "detail": "0.0044%"
+                      }
+                    ]
+                  }
+                ],
+                "data": {
+                  "words": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "plant",
+                    "is",
+                    "blue",
+                    "green",
+                    ".",
+                    "<eos>"
+                  ],
+                  "logits": [
+                    -3.9563262118717035,
+                    -0.7742875078607689,
+                    -1.6182101895710121,
+                    -1.5715499443755776,
+                    -0.5406123170744699,
+                    8.01427982185829,
+                    -0.27174182381531764,
+                    -4.147226433291821,
+                    -2.0247791948839775
+                  ],
+                  "exps": [
+                    0.019133276937017614,
+                    0.46103214578621543,
+                    0.1982532174047726,
+                    0.20772297366404013,
+                    0.5823915348921914,
+                    3023.8309164332472,
+                    0.7620509791091109,
+                    0.015808200836933167,
+                    0.13202299132159967
+                  ],
+                  "total": 3026.2093317531994,
+                  "probabilities": [
+                    0.000006322522614763391,
+                    0.0001523464160092064,
+                    0.00006551206333433546,
+                    0.00006864131026378741,
+                    0.0001924491900746303,
+                    0.999214061203567,
+                    0.0002518170078695863,
+                    0.000005223763165046771,
+                    0.00004362652310146492
+                  ]
+                }
+              },
+              {
+                "id": "choose",
+                "part": "predict",
+                "number": 17,
+                "title": "Pick the next word, then repeat",
+                "technical": "Greedy decoding",
+                "plain": "This lab uses the simplest rule, called greedy decoding: choose the word with the highest probability. Here that is \"blue\" (99.92%). The chosen word is added to the sentence and the whole sequence of steps starts again, to find the word after that, until the special word \"<eos>\" (\"end of sentence\") is chosen. Chat models usually sample from the probabilities instead (see the temperature labs). No number in the model changes while it writes: only training changes them.",
+                "headline": "next word = argmax_w P(w)",
+                "equations": [
+                  "next word = argmax_w P(w)"
+                ],
+                "where": [
+                  [
+                    "argmax_w P(w)",
+                    "the word w that has the largest probability P(w)"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "The three most probable next words",
+                    "headers": [
+                      "Rank",
+                      "Word",
+                      "Probability"
+                    ],
+                    "rows": [
+                      [
+                        1,
+                        "blue",
+                        "99.92%"
+                      ],
+                      [
+                        2,
+                        "green",
+                        "0.0252%"
+                      ],
+                      [
+                        3,
+                        "is",
+                        "0.0192%"
+                      ]
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "The sentence becomes: <bos> the robot is blue"
+                  }
+                ],
+                "data": {
+                  "vocabulary": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "plant",
+                    "is",
+                    "blue",
+                    "green",
+                    ".",
+                    "<eos>"
+                  ],
+                  "probabilities": [
+                    0.000006322522614763391,
+                    0.0001523464160092064,
+                    0.00006551206333433546,
+                    0.00006864131026378741,
+                    0.0001924491900746303,
+                    0.999214061203567,
+                    0.0002518170078695863,
+                    0.000005223763165046771,
+                    0.00004362652310146492
+                  ],
+                  "chosen": "blue",
+                  "chosenProbability": 0.999214061203567,
+                  "sentenceBefore": "<bos> the robot is",
+                  "sentenceAfter": "<bos> the robot is blue"
+                }
+              }
+            ],
+            "wrapUp": {
+              "title": "Why \"robot is\" gives \"blue\" but \"plant is\" gives \"green\"",
+              "plain": "The two sentences differ in just one word: word 3 has ID 2 in the first and ID 3 in the second. Look at the word \"is\": its starting vector (step 3) and its Query (step 5) are exactly the same in both sentences, so on its own it could not tell them apart. The only way it can learn which noun came before is by looking back at it (steps 6 to 9). In step 8, \"is\" gives 93.00% of its attention to \"robot\" in the first sentence and 85.65% to \"plant\" in the second. So the blend in step 9 differs, and so does everything after it: the scores flip and the winner changes from \"blue\" to \"green\".",
+              "caution": "This toy model memorized two sentences. Attention weights show how information is mixed; they are not a complete explanation of what a model \"thinks\".",
+              "display": [
+                {
+                  "type": "table",
+                  "title": "Where do the two sentences start to differ? (the word \"is\"; largest difference in any of its numbers)",
+                  "headers": [
+                    "Stage",
+                    "Largest difference between the two sentences"
+                  ],
+                  "rows": [
+                    [
+                      "Step 3: starting vector x",
+                      "0.000"
+                    ],
+                    [
+                      "Step 5: Query q",
+                      "0.000"
+                    ],
+                    [
+                      "Step 8: attention weights α",
+                      "0.074"
+                    ],
+                    [
+                      "Step 9: blended vector m",
+                      "1.152"
+                    ],
+                    [
+                      "Step 13: vector y after the block",
+                      "2.117"
+                    ],
+                    [
+                      "Step 16: probabilities P",
+                      "0.999"
+                    ]
+                  ]
+                },
+                {
+                  "type": "table",
+                  "title": "The same recipe on two sentences",
+                  "headers": [
+                    "What we look at",
+                    "\"<bos> the robot is\"",
+                    "\"<bos> the plant is\""
+                  ],
+                  "rows": [
+                    [
+                      "Word IDs",
+                      "0, 1, 2, 4",
+                      "0, 1, 3, 4"
+                    ],
+                    [
+                      "Attention of \"is\" on word 1",
+                      "3.85% (\"<bos>\")",
+                      "7.90% (\"<bos>\")"
+                    ],
+                    [
+                      "Attention of \"is\" on word 2",
+                      "1.68% (\"the\")",
+                      "3.45% (\"the\")"
+                    ],
+                    [
+                      "Attention of \"is\" on word 3",
+                      "93.00% (\"robot\")",
+                      "85.65% (\"plant\")"
+                    ],
+                    [
+                      "Attention of \"is\" on word 4",
+                      "1.46% (\"is\")",
+                      "3.00% (\"is\")"
+                    ],
+                    [
+                      "Score z of \"blue\"",
+                      "8.014",
+                      "0.697"
+                    ],
+                    [
+                      "Probability of \"blue\"",
+                      "99.92%",
+                      "0.0233%"
+                    ],
+                    [
+                      "Score z of \"green\"",
+                      "-0.272",
+                      "9.061"
+                    ],
+                    [
+                      "Probability of \"green\"",
+                      "0.0252%",
+                      "99.90%"
+                    ],
+                    [
+                      "Chosen next word",
+                      "\"blue\"",
+                      "\"green\""
+                    ]
+                  ]
+                }
+              ],
+              "data": {
+                "sentences": [
+                  "<bos> the robot is",
+                  "<bos> the plant is"
+                ],
+                "ids": [
+                  [
+                    0,
+                    1,
+                    2,
+                    4
+                  ],
+                  [
+                    0,
+                    1,
+                    3,
+                    4
+                  ]
+                ],
+                "x": [
+                  [
+                    0.39051567253231373,
+                    0.26172695793578005,
+                    -0.26309097424037553,
+                    0.04236388287838155,
+                    -0.01931248657435418,
+                    0.1212214638432409,
+                    0.5400047574002935,
+                    -0.3882087409248038
+                  ],
+                  [
+                    0.39051567253231373,
+                    0.26172695793578005,
+                    -0.26309097424037553,
+                    0.04236388287838155,
+                    -0.01931248657435418,
+                    0.1212214638432409,
+                    0.5400047574002935,
+                    -0.3882087409248038
+                  ]
+                ],
+                "q": [
+                  [
+                    1.6127097542253477,
+                    0.17761060059411604,
+                    -1.1104076628605912,
+                    1.134539305006892,
+                    -1.3169623930536747,
+                    0.6454884134996477,
+                    0.7712957673070289,
+                    -0.8350351803917183
+                  ],
+                  [
+                    1.6127097542253477,
+                    0.17761060059411604,
+                    -1.1104076628605912,
+                    1.134539305006892,
+                    -1.3169623930536747,
+                    0.6454884134996477,
+                    0.7712957673070289,
+                    -0.8350351803917183
+                  ]
+                ],
+                "attention": [
+                  [
+                    0.038526390437515004,
+                    0.0168080265061893,
+                    0.930023947398112,
+                    0.014641635658183804
+                  ],
+                  [
+                    0.0790263590375614,
+                    0.03447707200977636,
+                    0.8564632555983416,
+                    0.030033313354320752
+                  ]
+                ],
+                "m": [
+                  [
+                    0.9614277999975024,
+                    0.5378655112046025,
+                    0.14530756553668026,
+                    -0.7193636106242067,
+                    0.5612521366341869,
+                    0.030593969792157845,
+                    0.17769777227066344,
+                    0.4120162144780358
+                  ],
+                  [
+                    -0.19085090922145104,
+                    -0.05167134210429692,
+                    -0.5731098272379431,
+                    -0.6563263351256987,
+                    0.044317684553506896,
+                    1.0211525154038177,
+                    0.30729384514983543,
+                    0.11572130663918584
+                  ]
+                ],
+                "y": [
+                  [
+                    0.9951944236149799,
+                    0.12469871270696267,
+                    -0.2375829983963105,
+                    0.8266685581694889,
+                    -0.9345382230319177,
+                    0.2888094889926488,
+                    0.6408196980208097,
+                    -0.8236023311621221
+                  ],
+                  [
+                    -0.07669845649133317,
+                    0.281094367606589,
+                    -0.7048208845227119,
+                    -0.1565705008497733,
+                    1.182595036454349,
+                    0.1446865408014989,
+                    0.8152672759822204,
+                    -0.72384083708553
+                  ]
+                ],
+                "logits": [
+                  [
+                    -3.9563262118717035,
+                    -0.7742875078607689,
+                    -1.6182101895710121,
+                    -1.5715499443755776,
+                    -0.5406123170744699,
+                    8.01427982185829,
+                    -0.27174182381531764,
+                    -4.147226433291821,
+                    -2.0247791948839775
+                  ],
+                  [
+                    -0.7353349001493892,
+                    -1.1662745468320437,
+                    0.28010114107141726,
+                    0.3392105956157984,
+                    -9.569796157761127,
+                    0.697494770009113,
+                    9.061459935094762,
+                    0.9253873354414593,
+                    -1.3007112748865601
+                  ]
+                ],
+                "probabilities": [
+                  [
+                    0.000006322522614763391,
+                    0.0001523464160092064,
+                    0.00006551206333433546,
+                    0.00006864131026378741,
+                    0.0001924491900746303,
+                    0.999214061203567,
+                    0.0002518170078695863,
+                    0.000005223763165046771,
+                    0.00004362652310146492
+                  ],
+                  [
+                    0.000055575941410786934,
+                    0.000036118700568112516,
+                    0.0001534211018451936,
+                    0.00016276312043270497,
+                    8.093363626893321e-9,
+                    0.00023289322094801834,
+                    0.9990351422269076,
+                    0.00029250233067592597,
+                    0.000031575263848067345
+                  ]
+                ],
+                "differences": {
+                  "x": 0,
+                  "q": 0,
+                  "attention": 0.07356069179977043,
+                  "m": 1.1522787092189535,
+                  "y": 2.1171332594862666,
+                  "probabilities": 0.998981167982619
+                },
+                "chosen": [
+                  "blue",
+                  "green"
+                ],
+                "mainProbabilities": [
+                  0.000006322522614763391,
+                  0.0001523464160092064,
+                  0.00006551206333433546,
+                  0.00006864131026378741,
+                  0.0001924491900746303,
+                  0.999214061203567,
+                  0.0002518170078695863,
+                  0.000005223763165046771,
+                  0.00004362652310146492
+                ]
+              }
+            },
+            "maxDifferenceFromModel": 2.6645352591003757e-15
+          }
+        }
+      },
+      {
+        "label": "See one training update (equations and plain words)",
+        "kind": "computation",
+        "request": {
+          "messages": [
+            {
+              "role": "user",
+              "content": "See one training update (equations and plain words)"
+            }
+          ]
+        },
+        "output": "One real training update of the untrained model on \"<bos> the robot is blue . <eos>\".\nLoss L = 2.3288 for this sentence; a model that guessed uniformly would score 2.197.\nSlope of L for the offset of \"blue\": -0.052146 by backpropagation, -0.052146 by nudging the number up and down.\nOne update moves that number from 0.0000 to 0.0200, and the average loss over both training sentences falls from 2.2362 to 2.0161.\nAfter 400 updates the average loss is 0.1161.\n18 relations were re-derived from the recorded numbers.",
+        "outputSource": "computation",
+        "actualModel": "tiny-transformer-1-block-1-head",
+        "finishReason": "completed",
+        "latencyMs": 64,
+        "usage": null,
+        "apiRequests": 0,
+        "computationTrace": {
+          "architecture": {
+            "family": "decoder-only, pre-layer-normalization",
+            "blocks": 1,
+            "heads": 1,
+            "embeddingWidth": 8,
+            "headWidth": 8,
+            "feedForwardWidth": 16,
+            "contextLength": 8,
+            "vocabulary": [
+              "<bos>",
+              "the",
+              "robot",
+              "plant",
+              "is",
+              "blue",
+              "green",
+              ".",
+              "<eos>"
+            ],
+            "parameters": 833,
+            "positionEncoding": "learned absolute position embeddings",
+            "activation": "ReLU",
+            "sequence": [
+              "word token IDs",
+              "token embedding + position embedding",
+              "LayerNorm -> Q/K/V -> scaled dot products -> causal mask -> softmax -> weighted V -> output projection -> residual add",
+              "LayerNorm -> linear 8-to-16 -> ReLU -> linear 16-to-8 -> residual add",
+              "final LayerNorm -> linear vocabulary readout -> softmax"
+            ]
+          },
+          "walkthrough": {
+            "kind": "learning",
+            "title": "See how the numbers are learned",
+            "sentence": "<bos> the robot is blue . <eos>",
+            "intro": [
+              "The step-by-step walkthrough uses a trained model. Here you can see how one training update works, with real numbers from this lab. The idea is: measure the mistake, work out which way to nudge each learned number, nudge, and repeat."
+            ],
+            "glossary": [
+              [
+                "Loss",
+                "one number that says how wrong the model is. Training tries to make it small."
+              ],
+              [
+                "Slope",
+                "how fast the loss changes when one learned number is increased a tiny bit."
+              ],
+              [
+                "Backpropagation",
+                "a way to compute the slope of every learned number at once, by applying the chain rule backwards through all the steps."
+              ]
+            ],
+            "parts": [
+              {
+                "title": "One training update",
+                "steps": [
+                  1,
+                  2,
+                  3
+                ]
+              },
+              {
+                "title": "Then repeat",
+                "steps": [
+                  4
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "id": "loss",
+                "part": "one",
+                "number": 1,
+                "title": "Measure how wrong the model is",
+                "technical": "Cross-entropy loss",
+                "plain": "Training needs one number that says how wrong the model is. Before any training, the model reads the training sentence \"<bos> the robot is blue . <eos>\". At each word it gives a probability to every dictionary word as the next word. We look up the probability P it gave to the word that really came next. If P is 100% the penalty −ln(P) is 0; the smaller P is, the bigger the penalty (for 10% it is 2.30). The average penalty is the loss L. This untrained model is still almost guessing, about 1 chance in 9 each time.",
+                "headline": "L = −(ln P_1 + ln P_2 + … + ln P_N) / N",
+                "equations": [
+                  "penalty_t = −ln(P_t)",
+                  "L = (penalty_1 + penalty_2 + … + penalty_N) / N"
+                ],
+                "where": [
+                  [
+                    "P_t",
+                    "the probability the model gave to the word that really came next, at step t"
+                  ],
+                  [
+                    "N",
+                    "the number of predictions: 6"
+                  ],
+                  [
+                    "ln",
+                    "the natural logarithm: ln(1) = 0, and ln gets more negative as P gets smaller"
+                  ]
+                ],
+                "notice": "A model that guessed uniformly would have loss ln(9) = 2.197. For this one sentence L = 2.3288. (The training run reports the average over both training sentences: 2.2362.)",
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "Each prediction of the untrained model",
+                    "headers": [
+                      "t",
+                      "The model reads",
+                      "Real next word",
+                      "Probability P it gave",
+                      "Penalty −ln(P)"
+                    ],
+                    "rows": [
+                      [
+                        1,
+                        "<bos>",
+                        "the",
+                        "7.10%",
+                        "2.645"
+                      ],
+                      [
+                        2,
+                        "<bos> the",
+                        "robot",
+                        "10.82%",
+                        "2.224"
+                      ],
+                      [
+                        3,
+                        "<bos> the robot",
+                        "is",
+                        "11.44%",
+                        "2.168"
+                      ],
+                      [
+                        4,
+                        "<bos> the robot is",
+                        "blue",
+                        "6.13%",
+                        "2.792"
+                      ],
+                      [
+                        5,
+                        "<bos> the robot is blue",
+                        ".",
+                        "17.38%",
+                        "1.750"
+                      ],
+                      [
+                        6,
+                        "<bos> the robot is blue .",
+                        "<eos>",
+                        "9.13%",
+                        "2.394"
+                      ]
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "Loss L = (2.645 + 2.224 + 2.168 + 2.792 + 1.750 + 2.394) ÷ 6 = 2.3288"
+                  }
+                ],
+                "data": {
+                  "sentence": "<bos> the robot is blue . <eos>",
+                  "inputs": [
+                    "<bos>",
+                    "the",
+                    "robot",
+                    "is",
+                    "blue",
+                    "."
+                  ],
+                  "targets": [
+                    "the",
+                    "robot",
+                    "is",
+                    "blue",
+                    ".",
+                    "<eos>"
+                  ],
+                  "probabilities": [
+                    0.07100867086429052,
+                    0.10819457873073851,
+                    0.11440151428145202,
+                    0.06127223038511798,
+                    0.17378102421651487,
+                    0.09130663413659382
+                  ],
+                  "penalties": [
+                    2.6449532845482917,
+                    2.2238240179771505,
+                    2.168040963398065,
+                    2.792428550342777,
+                    1.749959253834763,
+                    2.393531830969635
+                  ],
+                  "mean": 2.328789650178447
+                }
+              },
+              {
+                "id": "slope",
+                "part": "one",
+                "number": 2,
+                "title": "Find which way to nudge a number",
+                "technical": "Slope of the loss (backpropagation)",
+                "plain": "To improve, we must know which way to change each learned number. Take one of them, w: the offset added to the score of \"blue\" in the last learned table. If w went up by a tiny amount δ, would the loss go up or down, and how fast? That is the slope of the loss. You can measure it by brute force: nudge w up by δ, nudge it down by δ, and compare the two losses. Backpropagation (the chain rule from school maths) gets the same slope exactly, for all 833 numbers at once. Below, both ways agree.",
+                "headline": "slope = ∂L/∂w ≈ (L(w + δ) − L(w − δ)) / (2δ)",
+                "equations": [
+                  "slope = ∂L/∂w ≈ (L(w + δ) − L(w − δ)) / (2δ)"
+                ],
+                "where": [
+                  [
+                    "w",
+                    "the number we examine (here: the offset for \"blue\", currently 0.000)"
+                  ],
+                  [
+                    "δ",
+                    "a tiny nudge, 0.00001"
+                  ],
+                  [
+                    "L(w + δ)",
+                    "the loss measured after nudging w up by δ"
+                  ],
+                  [
+                    "∂L/∂w",
+                    "the slope of the loss with respect to w, as computed by backpropagation"
+                  ]
+                ],
+                "notice": "The slope is negative: to lower the loss, training must increase this number.",
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "Two ways to find the same slope",
+                    "headers": [
+                      "Quantity",
+                      "Value"
+                    ],
+                    "rows": [
+                      [
+                        "w (current value)",
+                        "0.0000"
+                      ],
+                      [
+                        "L(w + δ)",
+                        "2.32878913"
+                      ],
+                      [
+                        "L(w − δ)",
+                        "2.32879017"
+                      ],
+                      [
+                        "Slope by nudging: (L(w + δ) − L(w − δ)) ÷ (2δ)",
+                        "-0.052146"
+                      ],
+                      [
+                        "Slope by backpropagation",
+                        "-0.052146"
+                      ],
+                      [
+                        "Difference",
+                        "8.42e-12"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "parameter": "readout offset for \"blue\"",
+                  "value": 0,
+                  "delta": 0.00001,
+                  "lossUp": 2.3287891287265747,
+                  "lossDown": 2.3287901716402906,
+                  "numericSlope": -0.052145685791593614,
+                  "backpropSlope": -0.05214568578317253
+                }
+              },
+              {
+                "id": "update",
+                "part": "one",
+                "number": 3,
+                "title": "Nudge every number a little",
+                "technical": "Gradient step (Adam)",
+                "plain": "Now w is nudged a little in the direction that lowers the loss. The simplest rule is: new w = w − η × slope, where η = 0.02 is the learning rate (the size of a nudge). This lab uses a refinement called Adam, which also looks at how big the recent slopes were, so that every number moves at a sensible pace. On the very first update it reduces to the rule below: a nudge of almost exactly η, downhill, whatever the size of the slope. In the real training run all 833 numbers are nudged together.",
+                "headline": "w_new = w − η · g / (|g| + 0.00000001)",
+                "equations": [
+                  "w_new = w − η · g / (|g| + 0.00000001)"
+                ],
+                "where": [
+                  [
+                    "w",
+                    "the number being learned"
+                  ],
+                  [
+                    "g",
+                    "the slope from step 2, limited to between −1 and 1"
+                  ],
+                  [
+                    "η",
+                    "the learning rate, 0.02"
+                  ],
+                  [
+                    "|g|",
+                    "the size of g, ignoring its sign"
+                  ]
+                ],
+                "notice": "After this single update the average loss over both training sentences fell from 2.2362 to 2.0161.",
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "One real update of w",
+                    "headers": [
+                      "Quantity",
+                      "Value"
+                    ],
+                    "rows": [
+                      [
+                        "w before",
+                        "0.000000"
+                      ],
+                      [
+                        "slope g (limited to −1 … 1)",
+                        "-0.052146"
+                      ],
+                      [
+                        "step = η · g / (|g| + 0.00000001)",
+                        "-0.020000"
+                      ],
+                      [
+                        "w after = w before − step",
+                        "0.020000"
+                      ],
+                      [
+                        "w after in the real first training update",
+                        "0.020000"
+                      ],
+                      [
+                        "Average loss before the update",
+                        "2.2362"
+                      ],
+                      [
+                        "Average loss after the update",
+                        "2.0161"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "eta": 0.02,
+                  "epsilon": 1e-8,
+                  "gradient": -0.05214568578317253,
+                  "clipped": -0.05214568578317253,
+                  "mHat": -0.052145685783172545,
+                  "vHat": 0.0027191725457973597,
+                  "step": -0.019999996164592374,
+                  "before": 0,
+                  "after": 0.019999996164592374,
+                  "afterFromRun": 0.019999996164592374,
+                  "lossBefore": 2.236154732880687,
+                  "lossAfter": 2.016078628606008
+                }
+              },
+              {
+                "id": "repeat",
+                "part": "repeat",
+                "number": 4,
+                "title": "Repeat 400 times",
+                "technical": "Training loop",
+                "plain": "Learning is this loop, repeated: read a training sentence, measure the loss, find the slopes, nudge all 833 numbers. This lab does it 400 times, alternating the two training sentences. The loss falls from 2.2362 to 0.1161. The numbers it ends with are the ones used in the step-by-step walkthrough, and nothing changes them afterwards.",
+                "headline": "repeat 400 times: read, measure L, find slopes, nudge every w",
+                "equations": [
+                  "repeat 400 times:  L → slope of every w → w_new = w − nudge"
+                ],
+                "where": [
+                  [
+                    "400",
+                    "the number of updates (Adam, learning rate 0.02)"
+                  ]
+                ],
+                "display": [
+                  {
+                    "type": "table",
+                    "title": "Average loss while training",
+                    "headers": [
+                      "Update",
+                      "Average loss"
+                    ],
+                    "rows": [
+                      [
+                        0,
+                        "2.2362"
+                      ],
+                      [
+                        100,
+                        "0.1201"
+                      ],
+                      [
+                        200,
+                        "0.1172"
+                      ],
+                      [
+                        300,
+                        "0.1164"
+                      ],
+                      [
+                        400,
+                        "0.1161"
+                      ]
+                    ]
+                  }
+                ],
+                "data": {
+                  "updates": 400,
+                  "parameters": 833,
+                  "curve": [
+                    {
+                      "step": 0,
+                      "loss": 2.236154732880687
+                    },
+                    {
+                      "step": 100,
+                      "loss": 0.12007189092677734
+                    },
+                    {
+                      "step": 200,
+                      "loss": 0.11719606368558949
+                    },
+                    {
+                      "step": 300,
+                      "loss": 0.11642659987937495
+                    },
+                    {
+                      "step": 400,
+                      "loss": 0.11610772806776229
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
         "label": "Test that future tokens cannot leak backward",
         "kind": "computation",
         "request": {
@@ -2746,7 +6753,7 @@
         "outputSource": "computation",
         "actualModel": "tiny-transformer-1-block-1-head",
         "finishReason": "completed",
-        "latencyMs": 13,
+        "latencyMs": 19,
         "usage": null,
         "apiRequests": 0,
         "computationTrace": {
@@ -5264,7 +9271,7 @@
         "outputSource": "computation",
         "actualModel": "tiny-transformer-1-block-1-head",
         "finishReason": "completed",
-        "latencyMs": 13,
+        "latencyMs": 12,
         "usage": null,
         "apiRequests": 0,
         "computationTrace": {
@@ -5508,6 +9515,26 @@
         "detail": "Every displayed prediction distribution sums to 1."
       },
       {
+        "name": "The step-by-step walkthrough shows plain words, an equation and real numbers for every step, and each equation reproduces the recorded numbers",
+        "passed": true,
+        "detail": "96 relations re-derived from the recorded numbers; largest error 2.22e-16."
+      },
+      {
+        "name": "The plain-number walkthrough matches the transformer's own forward pass",
+        "passed": true,
+        "detail": "Largest difference across every vector, score and probability: 2.66e-15."
+      },
+      {
+        "name": "The walkthrough follows the same trained model as the first experiment",
+        "passed": true,
+        "detail": "Its final probabilities equal the recorded robot-context prediction."
+      },
+      {
+        "name": "The training-update walkthrough agrees with the real training: the slope matches a nudge test, one update lowers the loss, and the loss curve is the recorded one",
+        "passed": true,
+        "detail": "18 relations re-derived from the recorded numbers."
+      },
+      {
         "name": "Attention cannot look ahead",
         "passed": true,
         "detail": "Masked difference: 0; deliberately unmasked control: 0.001428117840985177."
@@ -5520,7 +9547,7 @@
       {
         "name": "Prompting and generation leave weights unchanged",
         "passed": true,
-        "detail": "SHA-256 before/after the masked/unmasked probes and generation is identical."
+        "detail": "SHA-256 before/after the walkthrough, the masked/unmasked probes and generation is identical."
       },
       {
         "name": "Toy computation is not reported as API usage",
@@ -5530,8 +9557,8 @@
     ],
     "execution": {
       "runtime": "Azure Container Apps Job",
-      "executionName": "aibasics-agents-zgfkrl6mqqsly-x8n3iik",
-      "runId": "456802b3-b261-439f-8f8c-6da2acd8d9b7"
+      "executionName": "aibasics-agents-zgfkrl6mqqsly-ps5hey8",
+      "runId": "b3e31e25-a3b1-41d9-b7fd-296dbf242dfb"
     },
     "recordingAvailable": false
   },

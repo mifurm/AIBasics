@@ -7,9 +7,18 @@ import { evaluate } from '../lib/evaluate.mjs';
 import { prepareExperiment, finishToolChain } from '../lib/experiments.mjs';
 import { runAgent } from '../lib/agent.mjs';
 import { runTransformerExperiment } from '../lib/transformer-lab.mjs';
+import { renderWalkthroughText } from '../lib/transformer-walkthrough-check.mjs';
 import { assessComparisonOutput } from '../lib/model-comparison.mjs';
 import { runGenaiLab } from '../lib/genai/runner.mjs';
 import { selectLabs, selectionGroups } from '../lib/selection.mjs';
+
+// The CPU demo prints every step, equation and number of a walkthrough. Azure runs only persist the record.
+export function printWalkthroughs(record) {
+  for (const result of record?.results ?? []) {
+    const walkthrough = result.computationTrace?.walkthrough;
+    if (walkthrough) console.log(`\n${renderWalkthroughText(walkthrough)}\n`);
+  }
+}
 
 export async function runLab(id, session) {
   const lab = getLab(id);
@@ -127,9 +136,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       const config = await loadConfig();
       const session = { config, token: await accessToken(config.subscriptionId) };
       const chosen = id === 'advanced' ? labs.filter(entry => Number(entry.id.slice(0, 2)) >= 13 && Number(entry.id.slice(0, 2)) <= 18) : selectLabs(id);
-      for (const lab of chosen) await runLab(lab.id, session);
+      for (const lab of chosen) printWalkthroughs(await runLab(lab.id, session));
     } else {
-      await runLab(id);
+      printWalkthroughs(await runLab(id));
     }
   } catch (error) {
     console.error(error.message);

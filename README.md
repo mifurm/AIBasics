@@ -1,6 +1,6 @@
 # AI Basics: thirty-nine small classroom labs
 
-For beginners; English; JavaScript/Node.js 22+. Allow 325-365 minutes for all labs.
+For beginners; English; JavaScript/Node.js 22+. Allow 330-370 minutes for all labs.
 Start with lab 00, then teach labs 1-7, 8-12, 13-18, 19-24, 25-28, 29-31 (inside a model), 32-35 (images and sound),
 and 36-38 (music, video, and evaluation) in eight lessons. Every lab has a
 script, a teacher-friendly README, and real Azure outputs after execution.
@@ -9,7 +9,7 @@ script, a teacher-friendly README, and real Azure outputs after execution.
 
 | Lab | Topic | Time |
 | --- | --- | --- |
-| [00](labs/00-tiny-transformer/readme.md) | Train and inspect a tiny causal transformer | 10 min |
+| [00](labs/00-tiny-transformer/readme.md) | Train a tiny causal transformer and follow every step, equation by equation | 15 min |
 | [01](labs/01-specificity/readme.md) | Specific prompts | 5 min |
 | [02](labs/02-roles/readme.md) | System/user roles | 5 min |
 | [03](labs/03-few-shot/readme.md) | Examples without retraining | 5 min |
@@ -122,17 +122,22 @@ syntheses, and nine transcriptions or diarizations. Caps reduce exposure; they a
 decoder-only transformer from seeded initialization on two fictional sentences.
 One block and one attention head expose token/position embeddings, causal
 attention, normalization, residual paths, a feed-forward network, logits, and
-next-token probabilities. Three experiments show training versus prompting,
-the causal boundary with an unmasked control, and one-token-at-a-time generation.
-Students inspect measured tables and vectors rather than implement matrix math.
+next-token probabilities. Five experiments show training versus prompting,
+a **step-by-step walkthrough of one prediction** (17 steps; each shows the equation, what happens in
+plain words, and the real numbers), **one training update** (loss, slope, and the
+first Adam step), the causal boundary with an unmasked control, and
+one-token-at-a-time generation. Students check equations against measured numbers
+rather than implement matrix math.
 
-The [architecture poster](web/transformer.svg) and a Mermaid version in the lab
+The [architecture poster](web/transformer.svg) (its tags such as `#5-9` match the
+walkthrough steps) and a Mermaid version in the lab
 README explain the same implemented architecture. It is not GPT internals or a
 useful general language model. The nine-token vocabulary is deliberately tiny
 and word-based, unlike typical subword LLM vocabularies.
 
 ```sh
 # CPU-only local preview: no Azure login, API call, or extra dependency.
+# Prints all five experiments and then the full step-by-step walkthroughs.
 npm run demo -- 00-tiny-transformer
 
 # After shared Azure setup, deploy the current source and train inside Azure.
@@ -488,12 +493,22 @@ confirmed the introductory tables, diagram rendering, and preserved lab IDs.
 
 The advanced GenAI labs (29-38) add tests for the media codecs (PNG, WAV, FFT), tokenization and probability maths,
 scoring (word error rate, diarization, judge bias), the Azure client's retries and request shapes, artifact validation,
-and a full run of every lab against a fake Azure client. The current suite passes 84 tests. One execution inside Azure
+and a full run of every lab against a fake Azure client. One execution inside Azure
 (`aibasics-agents-zgfkrl6mqqsly-qn4z1aa`, about 4 minutes 40 seconds) completed all ten labs: 136 Azure requests,
 38 media artifacts (6.1 MB), and 64 of 64 behavior checks passing; lab 36 was then re-run on its own after a wording
-fix. All 39 deployed lab records and all 38 media files were verified against the saved results, a browser check
-confirmed that the ten labs render with their images and audio and without console errors, and the draft deck has
-45 slides. Counts and findings describe those runs, not future cost or model behaviour.
+fix. All 39 deployed lab records and all 38 media files were verified against the saved results, and a browser check
+confirmed that the ten labs render with their images and audio and without console errors.
+
+Lab 00 was later extended with the step-by-step walkthrough (17 steps) and the training-update walkthrough (4 steps).
+Their tests check that the plain-number implementation equals the transformer's forward pass for every sentence
+length, that every worked example, sum, softmax and residual is re-derived from the recorded numbers, that 11
+different tampered numbers are caught, and that the console text lists every step and equation. Lab 00 was re-run
+inside Azure (`aibasics-agents-zgfkrl6mqqsly-ps5hey8`): five variants, 12 of 12 behavior checks, and 96 + 18
+relations re-derived from the recorded numbers (largest error 2e-16; largest difference from the model's own forward
+pass 2.7e-15). The current suite passes 88 tests. All 39 deployed lab records were verified again, the published
+gallery files are byte-identical to the reviewed build, a browser check at 1400 px found no overflow or console errors
+(31 typeset equations, 17-row overview table), and the draft deck has 48 slides, three of them listing the equations.
+Counts and findings describe those runs, not future cost or model behaviour.
 
 `npm run verify` checks every saved/deployed lab against the current evaluator.
 The draft deck includes one slide per lab and explicit recording-pending
