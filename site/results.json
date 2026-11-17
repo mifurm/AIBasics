@@ -31,7 +31,7 @@
       }
     ],
     "labId": "00-tiny-transformer",
-    "recordedAt": "2026-11-17T11:33:12.763Z",
+    "recordedAt": "2026-11-17T12:02:09.399Z",
     "results": [
       {
         "label": "Train weights, then compare two contexts",
@@ -48,7 +48,7 @@
         "outputSource": "computation",
         "actualModel": "tiny-transformer-1-block-1-head",
         "finishReason": "completed",
-        "latencyMs": 3242,
+        "latencyMs": 2983,
         "usage": null,
         "apiRequests": 0,
         "computationTrace": {
@@ -2754,7 +2754,7 @@
         "outputSource": "computation",
         "actualModel": "tiny-transformer-1-block-1-head",
         "finishReason": "completed",
-        "latencyMs": 14,
+        "latencyMs": 18,
         "usage": null,
         "apiRequests": 0,
         "computationTrace": {
@@ -2888,7 +2888,7 @@
                 "number": 1,
                 "title": "Turn the words into ID numbers",
                 "technical": "Tokenization",
-                "plain": "A computer cannot read words, only numbers. This toy model knows exactly 9 words, kept in a dictionary, and every word has an ID: its place in the dictionary, counting from 0. So \"<bos> the robot is\" becomes the IDs 0, 1, 2, 4. The word \"<bos>\" is a special marker meaning \"beginning of sentence\".",
+                "plain": "A computer cannot read words, only numbers. This toy model knows exactly 9 words, kept in a numbered dictionary, and every word has an ID: its place in that dictionary, counting from 0. So \"<bos> the robot is\" becomes the IDs 0, 1, 2, 4. An ID is only a label, like a locker number: 4 is not \"bigger\" or \"more important\" than 2. The word \"<bos>\" is a special marker meaning \"beginning of sentence\".",
                 "headline": "id_i = index(word_i)",
                 "equations": [
                   "id_i = index(word_i)"
@@ -6300,7 +6300,7 @@
         "outputSource": "computation",
         "actualModel": "tiny-transformer-1-block-1-head",
         "finishReason": "completed",
-        "latencyMs": 64,
+        "latencyMs": 73,
         "usage": null,
         "apiRequests": 0,
         "computationTrace": {
@@ -6753,7 +6753,7 @@
         "outputSource": "computation",
         "actualModel": "tiny-transformer-1-block-1-head",
         "finishReason": "completed",
-        "latencyMs": 19,
+        "latencyMs": 16,
         "usage": null,
         "apiRequests": 0,
         "computationTrace": {
@@ -9271,7 +9271,7 @@
         "outputSource": "computation",
         "actualModel": "tiny-transformer-1-block-1-head",
         "finishReason": "completed",
-        "latencyMs": 12,
+        "latencyMs": 16,
         "usage": null,
         "apiRequests": 0,
         "computationTrace": {
@@ -9557,8 +9557,8 @@
     ],
     "execution": {
       "runtime": "Azure Container Apps Job",
-      "executionName": "aibasics-agents-zgfkrl6mqqsly-ps5hey8",
-      "runId": "b3e31e25-a3b1-41d9-b7fd-296dbf242dfb"
+      "executionName": "aibasics-agents-zgfkrl6mqqsly-o7lqtxi",
+      "runId": "a1726ddc-6ee6-4b49-9b34-5a93c49ee479"
     },
     "recordingAvailable": false
   },

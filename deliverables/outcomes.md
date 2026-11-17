@@ -56,7 +56,7 @@ Latency is wall-clock request time from this machine; tool latency sums both mod
 
 A decoder-only transformer turns token IDs into vectors, mixes earlier context with causal attention, and predicts the next token. Training changes weights; prompting does not. Pick "Follow one prediction through every step" to see each equation, what it does in plain words, and the real numbers.
 
-Recorded: 2026-11-17T11:33:12.763Z
+Recorded: 2026-11-17T12:02:09.399Z
 
 Caution: This 833-parameter teaching model memorizes two fictional sentences. It uses word tokens, one attention head, and one block, not GPT internals or useful general language understanding.
 
@@ -64,7 +64,7 @@ Caution: This 833-parameter teaching model memorizes two fictional sentences. It
 ### Train weights, then compare two contexts
 
 
-Model: tiny-transformer-1-block-1-head; latency: 3242 ms; finish: completed.
+Model: tiny-transformer-1-block-1-head; latency: 2983 ms; finish: completed.
 
 No model API requests. Toy training tokens are not API billing tokens.
 
@@ -2773,7 +2773,7 @@ computationTrace:
 ### Follow one prediction through every step (equations and plain words)
 
 
-Model: tiny-transformer-1-block-1-head; latency: 14 ms; finish: completed.
+Model: tiny-transformer-1-block-1-head; latency: 18 ms; finish: completed.
 
 No model API requests. Toy training tokens are not API billing tokens.
 
@@ -2821,8 +2821,9 @@ PART 1: GET THE WORDS READY
 STEP 1 of 17: Turn the words into ID numbers   [Tokenization]
   In plain words:
     A computer cannot read words, only numbers. This toy model knows exactly 9 words, kept in a
-    dictionary, and every word has an ID: its place in the dictionary, counting from 0. So "<bos>
-    the robot is" becomes the IDs 0, 1, 2, 4. The word "<bos>" is a special marker meaning
+    numbered dictionary, and every word has an ID: its place in that dictionary, counting from 0. So
+    "<bos> the robot is" becomes the IDs 0, 1, 2, 4. An ID is only a label, like a locker number: 4
+    is not "bigger" or "more important" than 2. The word "<bos>" is a special marker meaning
     "beginning of sentence".
   The equation:
     id_i = index(word_i)
@@ -3428,7 +3429,7 @@ computationTrace:
 ### See one training update (equations and plain words)
 
 
-Model: tiny-transformer-1-block-1-head; latency: 64 ms; finish: completed.
+Model: tiny-transformer-1-block-1-head; latency: 73 ms; finish: completed.
 
 No model API requests. Toy training tokens are not API billing tokens.
 
@@ -3617,7 +3618,7 @@ computationTrace:
 ### Test that future tokens cannot leak backward
 
 
-Model: tiny-transformer-1-block-1-head; latency: 19 ms; finish: completed.
+Model: tiny-transformer-1-block-1-head; latency: 16 ms; finish: completed.
 
 No model API requests. Toy training tokens are not API billing tokens.
 
@@ -6137,7 +6138,7 @@ computationTrace:
 ### Append one token and predict again
 
 
-Model: tiny-transformer-1-block-1-head; latency: 12 ms; finish: completed.
+Model: tiny-transformer-1-block-1-head; latency: 16 ms; finish: completed.
 
 No model API requests. Toy training tokens are not API billing tokens.
 

@@ -163,8 +163,11 @@ Before/after fingerprints verify that inference did not change weights.
 
 Use the [full-size SVG](../../web/transformer.svg) as the classroom poster. It is
 also published with the gallery and linked from the teaching deck. Solid arrows
-show inference; the separate amber panel describes training. The step numbers
-in the diagram below and on the poster match the walkthrough.
+show inference; the separate amber panel describes training. The dictionary panel
+on the poster lists every word with its ID (an ID is the word's place in the
+nine-word dictionary, counting from 0), so the numbers in box 1 can be decoded.
+The step numbers in the diagram below and the `#` tags on the poster match the
+walkthrough.
 
 ```mermaid
 flowchart TD

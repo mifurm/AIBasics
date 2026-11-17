@@ -129,8 +129,8 @@ first Adam step), the causal boundary with an unmasked control, and
 one-token-at-a-time generation. Students check equations against measured numbers
 rather than implement matrix math.
 
-The [architecture poster](web/transformer.svg) (its tags such as `#5-9` match the
-walkthrough steps) and a Mermaid version in the lab
+The [architecture poster](web/transformer.svg) (its dictionary panel explains the word IDs, and its tags such as
+`#5-9` match the walkthrough steps) and a Mermaid version in the lab
 README explain the same implemented architecture. It is not GPT internals or a
 useful general language model. The nine-token vocabulary is deliberately tiny
 and word-based, unlike typical subword LLM vocabularies.
@@ -502,10 +502,11 @@ confirmed that the ten labs render with their images and audio and without conso
 Lab 00 was later extended with the step-by-step walkthrough (17 steps) and the training-update walkthrough (4 steps).
 Their tests check that the plain-number implementation equals the transformer's forward pass for every sentence
 length, that every worked example, sum, softmax and residual is re-derived from the recorded numbers, that 11
-different tampered numbers are caught, and that the console text lists every step and equation. Lab 00 was re-run
-inside Azure (`aibasics-agents-zgfkrl6mqqsly-ps5hey8`): five variants, 12 of 12 behavior checks, and 96 + 18
+different tampered numbers are caught, that the console text lists every step and equation, and that the poster's
+dictionary panel (which explains the word IDs) equals the model's real vocabulary. Lab 00 was re-run
+inside Azure (`aibasics-agents-zgfkrl6mqqsly-o7lqtxi`): five variants, 12 of 12 behavior checks, and 96 + 18
 relations re-derived from the recorded numbers (largest error 2e-16; largest difference from the model's own forward
-pass 2.7e-15). The current suite passes 88 tests. All 39 deployed lab records were verified again, the published
+pass 2.7e-15). The current suite passes 89 tests. All 39 deployed lab records were verified again, the published
 gallery files are byte-identical to the reviewed build, a browser check at 1400 px found no overflow or console errors
 (31 typeset equations, 17-row overview table), and the draft deck has 48 slides, three of them listing the equations.
 Counts and findings describe those runs, not future cost or model behaviour.

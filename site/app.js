@@ -368,10 +368,14 @@ function showLab(index, selectedCase = 0) {
     const figure = element('figure', undefined, 'architecture');
     const image = element('img');
     image.src = `./${lab.diagram}`;
-    image.alt = 'Tiny decoder-only transformer: token and position embeddings, one causal attention and feed-forward block with two residual paths, then next-token probabilities and a generation loop. A separate training loop updates weights.';
+    image.alt = 'Tiny decoder-only transformer: words become IDs from a nine-word dictionary, then token and position embeddings, one causal attention and feed-forward block with two residual paths, then next-token probabilities and a generation loop. Tags such as #5-9 match the walkthrough steps. A separate training loop updates weights.';
     const link = element('a', 'Open the architecture diagram at full size');
     link.href = image.src;
     figure.append(image, link);
+    const vocabulary = lab.results[0]?.computationTrace?.architecture?.vocabulary;
+    if (vocabulary) {
+      figure.append(element('figcaption', `How to read the picture: the IDs in box 1 are each word's place in the model's ${vocabulary.length}-word dictionary, counting from 0 (${vocabulary.map((word, id) => `${id} = ${word}`).join(', ')}). The small tags such as #5-9 are the step numbers of the step-by-step walkthrough.`));
+    }
     main.append(figure);
     const guided = lab.results.findIndex(entry => entry.computationTrace?.walkthrough?.kind === 'forward');
     if (guided >= 0 && selectedCase !== guided) {

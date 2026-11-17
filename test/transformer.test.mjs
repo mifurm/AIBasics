@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { createTinyTransformer, trainTinyTransformer, tokenize, vocabulary, generateTokens } from '../lib/tiny-transformer.mjs';
 import { runTransformerExperiment, evaluateTransformer } from '../lib/transformer-lab.mjs';
 import { referenceForward, maxDifferenceFromTrace } from '../lib/transformer-reference.mjs';
@@ -147,6 +148,16 @@ test('the console text lists every step with its equation and numbers, in order'
   assert.match(text, /WHY "ROBOT IS" GIVES "BLUE" BUT "PLANT IS" GIVES "GREEN"/);
   assert.match(renderWalkthroughText(learning), /slope = ∂L\/∂w ≈ \(L\(w \+ δ\) − L\(w − δ\)\) \/ \(2δ\)/);
   assert.ok(text.split('\n').every(line => line.length <= 140));
+});
+
+test('the poster explains the word IDs with the model\'s real dictionary and its real example', async () => {
+  const svg = await readFile(new URL('../web/transformer.svg', import.meta.url), 'utf8');
+  const plain = value => value.replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&amp;', '&');
+  const entries = [...svg.matchAll(/<text class="entry"[^>]*><tspan class="idnum">(\d+)<\/tspan>\s*([^<]+)<\/text>/g)].map(match => [Number(match[1]), plain(match[2]).trim()]);
+  assert.deepEqual(entries.sort((a, b) => a[0] - b[0]), vocabulary.map((word, id) => [id, word]));
+  const text = plain(svg);
+  const sentence = '<bos> the robot is';
+  assert.ok(text.includes(sentence) && text.includes(`IDs: ${tokenize(sentence).join(', ')}`));
 });
 
 test('token and context boundaries fail explicitly rather than substituting unknown IDs', () => {

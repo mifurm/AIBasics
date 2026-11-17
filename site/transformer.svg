@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title description">
   <title id="title">Lab 00: a tiny decoder-only transformer</title>
-  <desc id="description">Word tokens become IDs and eight-dimensional token plus position vectors. One pre-normalized block applies single-head causal self-attention with a residual connection, then a feed-forward network with a second residual. Final normalization and a vocabulary projection produce nine next-token probabilities. Greedy selection appends a token and repeats. Only the separate training loop updates weights.</desc>
+  <desc id="description">Words become ID numbers: an ID is the word's place, counting from 0, in a nine-word dictionary that the left panel lists, so the robot is, with a beginning-of-sentence marker, becomes 0, 1, 2, 4. The IDs select eight-dimensional token vectors that are added to position vectors. One pre-normalized block applies single-head causal self-attention with a residual connection, then a feed-forward network with a second residual. Final normalization and a vocabulary projection produce nine next-token probabilities. Greedy selection appends a token and repeats. Only the separate training loop updates weights. Tags such as #5-9 match the steps of the step-by-step walkthrough.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#19777b"/></marker>
     <marker id="trainArrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#a85c10"/></marker>
@@ -15,6 +15,8 @@
       .flow { fill: none; stroke: #19777b; stroke-width: 3; marker-end: url(#arrow); }
       .skip { fill: none; stroke: #526c7e; stroke-width: 2; }
       .tag { fill: #136c74; font-size: 14px; font-weight: 700; text-anchor: end; }
+      .entry { font-size: 19px; text-anchor: start; }
+      .idnum { fill: #136c74; font-weight: 700; }
     </style>
   </defs>
   <rect width="1400" height="920" fill="#f2f5f8"/>
@@ -23,10 +25,29 @@
 
   <rect class="box" x="20" y="170" width="180" height="160"/>
   <text class="heading" x="110" y="204">1. Tokenize</text>
-  <text x="110" y="240">the robot is</text>
-  <text x="110" y="273">IDs: 1, 2, 4</text>
-  <text class="small" x="110" y="306">Word-level toy tokens</text>
+  <text class="small" x="110" y="236">&lt;bos&gt; the robot is</text>
+  <text x="110" y="270">IDs: 0, 1, 2, 4</text>
+  <text class="small" x="110" y="300">(dictionary below)</text>
   <path class="flow" d="M200 245H230"/>
+
+  <!-- The dictionary behind the IDs. Keep these nine entries equal to the model's vocabulary (a test checks it). -->
+  <path d="M110 330V357" fill="none" stroke="#19777b" stroke-width="2" stroke-dasharray="5 4"/>
+  <rect class="box" x="20" y="357" width="430" height="296"/>
+  <text class="heading" x="235" y="390">The dictionary behind the IDs</text>
+  <text class="small" x="235" y="416">The model knows only these 9 words. A word's ID is its</text>
+  <text class="small" x="235" y="436">place in this list, counting from 0.</text>
+  <text class="entry" x="52" y="478"><tspan class="idnum">0</tspan> &lt;bos&gt;</text>
+  <text class="entry" x="192" y="478"><tspan class="idnum">1</tspan> the</text>
+  <text class="entry" x="332" y="478"><tspan class="idnum">2</tspan> robot</text>
+  <text class="entry" x="52" y="512"><tspan class="idnum">3</tspan> plant</text>
+  <text class="entry" x="192" y="512"><tspan class="idnum">4</tspan> is</text>
+  <text class="entry" x="332" y="512"><tspan class="idnum">5</tspan> blue</text>
+  <text class="entry" x="52" y="546"><tspan class="idnum">6</tspan> green</text>
+  <text class="entry" x="192" y="546"><tspan class="idnum">7</tspan> .</text>
+  <text class="entry" x="332" y="546"><tspan class="idnum">8</tspan> &lt;eos&gt;</text>
+  <text class="small" x="235" y="578">&lt;bos&gt; and &lt;eos&gt;: start and end of a sentence.</text>
+  <text class="heading" x="235" y="614">&lt;bos&gt; the robot is  -&gt;  0, 1, 2, 4</text>
+  <text class="small" x="235" y="640">IDs are labels, not amounts: 4 is not "more" than 2.</text>
 
   <rect class="box" x="230" y="170" width="220" height="160"/>
   <text class="heading" x="340" y="204">2. Embed + position</text>
