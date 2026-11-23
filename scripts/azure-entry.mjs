@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { runLab } from './run.mjs';
 import { selectLabs } from '../lib/selection.mjs';
 import { loadConfig } from '../lib/azure.mjs';
@@ -12,6 +13,9 @@ const selected = selectLabs(process.env.LAB_SELECTION ?? 'agents');
 const config = await loadConfig();
 const manifest = { runId, runtime: 'Azure Container Apps Job', startedAt: new Date().toISOString(), status: 'running', labs: [], records: [], artifacts: [] };
 try {
+  if (selected.some(lab => lab.id === '00a-tokens')) {
+    execFileSync('npm', ['ci', '--omit=dev', '--ignore-scripts', '--no-audit', '--no-fund'], { stdio: 'inherit' });
+  }
   for (const lab of selected) {
     await runLab(lab.id, { config });
     manifest.labs.push(lab.id);

@@ -9563,6 +9563,760 @@
     "recordingAvailable": false
   },
   {
+    "id": "00a-tokens",
+    "title": "What is a token? One sentence, three languages",
+    "minutes": 7,
+    "series": "foundations",
+    "concept": "A tokenizer turns text into a sequence of integer IDs. Each ID represents a learned chunk of bytes: often a word or part of a word, sometimes punctuation or part of a character. The model reads these IDs, not words directly.",
+    "question": "These sentences mean the same thing. Will Polish, English, and Spanish use the same number of tokens?",
+    "caveat": "Counts use OpenAI's o200k_base encoding (used by GPT-4o) via the community-maintained tiktoken JavaScript/WASM bindings. They count only the sentence, not chat formatting or generated output. One sentence is not a ranking of languages or a price estimate.",
+    "exercise": "Replace all three translations in lib/tokenizer-lab.mjs with another sentence of the same meaning, rerun, and compare the IDs, boundaries, and counts.",
+    "cases": [
+      {
+        "label": "One meaning, three languages, different token counts",
+        "experiment": true
+      }
+    ],
+    "labId": "00a-tokens",
+    "recordedAt": "2026-11-23T11:41:00.390Z",
+    "results": [
+      {
+        "label": "One meaning, three languages, different token counts",
+        "kind": "experiment",
+        "request": {
+          "summary": "Encode three translations of \"The cat sleeps on the warm windowsill.\" with OpenAI's o200k_base vocabulary using tiktoken JavaScript/WASM bindings. Decode each token to inspect its bytes, then decode the full sequence to verify the original text. This runs on the CPU without a model API request.",
+          "parameters": {
+            "encoding": "o200k_base",
+            "implementation": "tiktoken (JavaScript/WASM bindings)",
+            "modelExample": "gpt-4o"
+          }
+        },
+        "output": "Polish: 11 tokens\nKot śpi na ciepłym parapecie.\nPieces: \"Kot\" | \" ś\" | \"pi\" | \" na\" | \" c\" | \"iep\" | \"łym\" | \" parap\" | \"ec\" | \"ie\" | \".\"\nIDs: 180929, 21640, 3455, 898, 274, 57368, 169880, 71265, 1007, 396, 13\n\nEnglish: 9 tokens\nThe cat sleeps on the warm windowsill.\nPieces: \"The\" | \" cat\" | \" sleeps\" | \" on\" | \" the\" | \" warm\" | \" windows\" | \"ill\" | \".\"\nIDs: 976, 9059, 104072, 402, 290, 9144, 14387, 492, 13\n\nSpanish: 12 tokens\nEl gato duerme en el alféizar cálido.\nPieces: \"El\" | \" gato\" | \" duer\" | \"me\" | \" en\" | \" el\" | \" alf\" | \"é\" | \"izar\" | \" cál\" | \"ido\" | \".\"\nIDs: 4422, 99767, 116318, 1047, 469, 650, 76652, 377, 6552, 62609, 2295, 13",
+        "outputSource": "computation",
+        "actualModel": "local-computation",
+        "finishReason": "completed",
+        "latencyMs": 118,
+        "usage": null,
+        "apiRequests": 0,
+        "apiCalls": [],
+        "artifacts": [],
+        "display": [
+          {
+            "type": "text",
+            "text": "Lab 00 used a tiny word-based dictionary. A real OpenAI tokenizer has a much larger learned subword vocabulary. Tokenization is a fixed, reversible conversion, not translation or a model thinking about the meaning."
+          },
+          {
+            "type": "bars",
+            "title": "Tokens for the same meaning",
+            "items": [
+              {
+                "label": "Polish",
+                "value": 11,
+                "max": 12,
+                "detail": "11 tokens"
+              },
+              {
+                "label": "English",
+                "value": 9,
+                "max": 12,
+                "detail": "9 tokens"
+              },
+              {
+                "label": "Spanish",
+                "value": 12,
+                "max": 12,
+                "detail": "12 tokens"
+              }
+            ]
+          },
+          {
+            "type": "table",
+            "title": "Same meaning does not mean the same token count",
+            "headers": [
+              "Language",
+              "Sentence",
+              "Characters",
+              "UTF-8 bytes",
+              "Tokens",
+              "Relative to English"
+            ],
+            "rows": [
+              [
+                "Polish",
+                "Kot śpi na ciepłym parapecie.",
+                29,
+                31,
+                11,
+                "1.22x"
+              ],
+              [
+                "English",
+                "The cat sleeps on the warm windowsill.",
+                38,
+                38,
+                9,
+                "1.00x"
+              ],
+              [
+                "Spanish",
+                "El gato duerme en el alféizar cálido.",
+                37,
+                39,
+                12,
+                "1.33x"
+              ]
+            ]
+          },
+          {
+            "type": "text",
+            "text": "Read the pieces from left to right. Quotes make leading spaces visible: \" cat\" includes its space. A word can span several tokens; punctuation can be a token too. A single token can contain only part of a UTF-8 character, so its isolated text may show a replacement character. The byte column is exact; decode the whole sequence to recover the sentence."
+          },
+          {
+            "type": "table",
+            "title": "Polish: inspect every token",
+            "headers": [
+              "Position",
+              "Token ID",
+              "Text piece (quoted)",
+              "UTF-8 bytes (hex)"
+            ],
+            "rows": [
+              [
+                1,
+                180929,
+                "\"Kot\"",
+                "4b6f74"
+              ],
+              [
+                2,
+                21640,
+                "\" ś\"",
+                "20c59b"
+              ],
+              [
+                3,
+                3455,
+                "\"pi\"",
+                "7069"
+              ],
+              [
+                4,
+                898,
+                "\" na\"",
+                "206e61"
+              ],
+              [
+                5,
+                274,
+                "\" c\"",
+                "2063"
+              ],
+              [
+                6,
+                57368,
+                "\"iep\"",
+                "696570"
+              ],
+              [
+                7,
+                169880,
+                "\"łym\"",
+                "c582796d"
+              ],
+              [
+                8,
+                71265,
+                "\" parap\"",
+                "207061726170"
+              ],
+              [
+                9,
+                1007,
+                "\"ec\"",
+                "6563"
+              ],
+              [
+                10,
+                396,
+                "\"ie\"",
+                "6965"
+              ],
+              [
+                11,
+                13,
+                "\".\"",
+                "2e"
+              ]
+            ]
+          },
+          {
+            "type": "table",
+            "title": "English: inspect every token",
+            "headers": [
+              "Position",
+              "Token ID",
+              "Text piece (quoted)",
+              "UTF-8 bytes (hex)"
+            ],
+            "rows": [
+              [
+                1,
+                976,
+                "\"The\"",
+                "546865"
+              ],
+              [
+                2,
+                9059,
+                "\" cat\"",
+                "20636174"
+              ],
+              [
+                3,
+                104072,
+                "\" sleeps\"",
+                "20736c65657073"
+              ],
+              [
+                4,
+                402,
+                "\" on\"",
+                "206f6e"
+              ],
+              [
+                5,
+                290,
+                "\" the\"",
+                "20746865"
+              ],
+              [
+                6,
+                9144,
+                "\" warm\"",
+                "207761726d"
+              ],
+              [
+                7,
+                14387,
+                "\" windows\"",
+                "2077696e646f7773"
+              ],
+              [
+                8,
+                492,
+                "\"ill\"",
+                "696c6c"
+              ],
+              [
+                9,
+                13,
+                "\".\"",
+                "2e"
+              ]
+            ]
+          },
+          {
+            "type": "table",
+            "title": "Spanish: inspect every token",
+            "headers": [
+              "Position",
+              "Token ID",
+              "Text piece (quoted)",
+              "UTF-8 bytes (hex)"
+            ],
+            "rows": [
+              [
+                1,
+                4422,
+                "\"El\"",
+                "456c"
+              ],
+              [
+                2,
+                99767,
+                "\" gato\"",
+                "206761746f"
+              ],
+              [
+                3,
+                116318,
+                "\" duer\"",
+                "2064756572"
+              ],
+              [
+                4,
+                1047,
+                "\"me\"",
+                "6d65"
+              ],
+              [
+                5,
+                469,
+                "\" en\"",
+                "20656e"
+              ],
+              [
+                6,
+                650,
+                "\" el\"",
+                "20656c"
+              ],
+              [
+                7,
+                76652,
+                "\" alf\"",
+                "20616c66"
+              ],
+              [
+                8,
+                377,
+                "\"é\"",
+                "c3a9"
+              ],
+              [
+                9,
+                6552,
+                "\"izar\"",
+                "697a6172"
+              ],
+              [
+                10,
+                62609,
+                "\" cál\"",
+                "2063c3a16c"
+              ],
+              [
+                11,
+                2295,
+                "\"ido\"",
+                "69646f"
+              ],
+              [
+                12,
+                13,
+                "\".\"",
+                "2e"
+              ]
+            ]
+          },
+          {
+            "type": "text",
+            "text": "Frequent byte patterns can be stored in fewer chunks. Spelling, accents, spaces, and the tokenizer vocabulary all affect the count. The shortest sentence in characters need not be shortest in tokens. Different encodings can split the same text differently."
+          },
+          {
+            "type": "text",
+            "text": "Input and output limits are measured in tokens, not words. Counts affect context usage and, for token-billed APIs, cost. These are exact sentence counts, not estimated API usage; no chat overhead has been subtracted. Continue with lab 06 for output limits and lab 29 for BPE training and broader comparisons."
+          }
+        ],
+        "measurements": {
+          "encoding": "o200k_base",
+          "rows": [
+            {
+              "id": "pl",
+              "language": "Polish",
+              "text": "Kot śpi na ciepłym parapecie.",
+              "characters": 29,
+              "bytes": 31,
+              "tokens": 11,
+              "ids": [
+                180929,
+                21640,
+                3455,
+                898,
+                274,
+                57368,
+                169880,
+                71265,
+                1007,
+                396,
+                13
+              ],
+              "pieces": [
+                {
+                  "id": 180929,
+                  "bytes": [
+                    75,
+                    111,
+                    116
+                  ],
+                  "text": "Kot"
+                },
+                {
+                  "id": 21640,
+                  "bytes": [
+                    32,
+                    197,
+                    155
+                  ],
+                  "text": " ś"
+                },
+                {
+                  "id": 3455,
+                  "bytes": [
+                    112,
+                    105
+                  ],
+                  "text": "pi"
+                },
+                {
+                  "id": 898,
+                  "bytes": [
+                    32,
+                    110,
+                    97
+                  ],
+                  "text": " na"
+                },
+                {
+                  "id": 274,
+                  "bytes": [
+                    32,
+                    99
+                  ],
+                  "text": " c"
+                },
+                {
+                  "id": 57368,
+                  "bytes": [
+                    105,
+                    101,
+                    112
+                  ],
+                  "text": "iep"
+                },
+                {
+                  "id": 169880,
+                  "bytes": [
+                    197,
+                    130,
+                    121,
+                    109
+                  ],
+                  "text": "łym"
+                },
+                {
+                  "id": 71265,
+                  "bytes": [
+                    32,
+                    112,
+                    97,
+                    114,
+                    97,
+                    112
+                  ],
+                  "text": " parap"
+                },
+                {
+                  "id": 1007,
+                  "bytes": [
+                    101,
+                    99
+                  ],
+                  "text": "ec"
+                },
+                {
+                  "id": 396,
+                  "bytes": [
+                    105,
+                    101
+                  ],
+                  "text": "ie"
+                },
+                {
+                  "id": 13,
+                  "bytes": [
+                    46
+                  ],
+                  "text": "."
+                }
+              ],
+              "decoded": "Kot śpi na ciepłym parapecie."
+            },
+            {
+              "id": "en",
+              "language": "English",
+              "text": "The cat sleeps on the warm windowsill.",
+              "characters": 38,
+              "bytes": 38,
+              "tokens": 9,
+              "ids": [
+                976,
+                9059,
+                104072,
+                402,
+                290,
+                9144,
+                14387,
+                492,
+                13
+              ],
+              "pieces": [
+                {
+                  "id": 976,
+                  "bytes": [
+                    84,
+                    104,
+                    101
+                  ],
+                  "text": "The"
+                },
+                {
+                  "id": 9059,
+                  "bytes": [
+                    32,
+                    99,
+                    97,
+                    116
+                  ],
+                  "text": " cat"
+                },
+                {
+                  "id": 104072,
+                  "bytes": [
+                    32,
+                    115,
+                    108,
+                    101,
+                    101,
+                    112,
+                    115
+                  ],
+                  "text": " sleeps"
+                },
+                {
+                  "id": 402,
+                  "bytes": [
+                    32,
+                    111,
+                    110
+                  ],
+                  "text": " on"
+                },
+                {
+                  "id": 290,
+                  "bytes": [
+                    32,
+                    116,
+                    104,
+                    101
+                  ],
+                  "text": " the"
+                },
+                {
+                  "id": 9144,
+                  "bytes": [
+                    32,
+                    119,
+                    97,
+                    114,
+                    109
+                  ],
+                  "text": " warm"
+                },
+                {
+                  "id": 14387,
+                  "bytes": [
+                    32,
+                    119,
+                    105,
+                    110,
+                    100,
+                    111,
+                    119,
+                    115
+                  ],
+                  "text": " windows"
+                },
+                {
+                  "id": 492,
+                  "bytes": [
+                    105,
+                    108,
+                    108
+                  ],
+                  "text": "ill"
+                },
+                {
+                  "id": 13,
+                  "bytes": [
+                    46
+                  ],
+                  "text": "."
+                }
+              ],
+              "decoded": "The cat sleeps on the warm windowsill."
+            },
+            {
+              "id": "es",
+              "language": "Spanish",
+              "text": "El gato duerme en el alféizar cálido.",
+              "characters": 37,
+              "bytes": 39,
+              "tokens": 12,
+              "ids": [
+                4422,
+                99767,
+                116318,
+                1047,
+                469,
+                650,
+                76652,
+                377,
+                6552,
+                62609,
+                2295,
+                13
+              ],
+              "pieces": [
+                {
+                  "id": 4422,
+                  "bytes": [
+                    69,
+                    108
+                  ],
+                  "text": "El"
+                },
+                {
+                  "id": 99767,
+                  "bytes": [
+                    32,
+                    103,
+                    97,
+                    116,
+                    111
+                  ],
+                  "text": " gato"
+                },
+                {
+                  "id": 116318,
+                  "bytes": [
+                    32,
+                    100,
+                    117,
+                    101,
+                    114
+                  ],
+                  "text": " duer"
+                },
+                {
+                  "id": 1047,
+                  "bytes": [
+                    109,
+                    101
+                  ],
+                  "text": "me"
+                },
+                {
+                  "id": 469,
+                  "bytes": [
+                    32,
+                    101,
+                    110
+                  ],
+                  "text": " en"
+                },
+                {
+                  "id": 650,
+                  "bytes": [
+                    32,
+                    101,
+                    108
+                  ],
+                  "text": " el"
+                },
+                {
+                  "id": 76652,
+                  "bytes": [
+                    32,
+                    97,
+                    108,
+                    102
+                  ],
+                  "text": " alf"
+                },
+                {
+                  "id": 377,
+                  "bytes": [
+                    195,
+                    169
+                  ],
+                  "text": "é"
+                },
+                {
+                  "id": 6552,
+                  "bytes": [
+                    105,
+                    122,
+                    97,
+                    114
+                  ],
+                  "text": "izar"
+                },
+                {
+                  "id": 62609,
+                  "bytes": [
+                    32,
+                    99,
+                    195,
+                    161,
+                    108
+                  ],
+                  "text": " cál"
+                },
+                {
+                  "id": 2295,
+                  "bytes": [
+                    105,
+                    100,
+                    111
+                  ],
+                  "text": "ido"
+                },
+                {
+                  "id": 13,
+                  "bytes": [
+                    46
+                  ],
+                  "text": "."
+                }
+              ],
+              "decoded": "El gato duerme en el alféizar cálido."
+            }
+          ]
+        }
+      }
+    ],
+    "observations": [
+      {
+        "name": "All three original translations are present, in order",
+        "passed": true,
+        "detail": "Polish, English, Spanish"
+      },
+      {
+        "name": "Counts match the recorded IDs and pieces",
+        "passed": true,
+        "detail": "Polish: 11, English: 9, Spanish: 12"
+      },
+      {
+        "name": "Token bytes and full-sequence decoding recover the exact Unicode text",
+        "passed": true,
+        "detail": "Compare full UTF-8 bytes, not separately decoded token fragments."
+      },
+      {
+        "name": "This example demonstrates three different measured token counts",
+        "passed": true,
+        "detail": "An observation about these translations with o200k_base, not a rule about languages."
+      },
+      {
+        "name": "Tokenization used no model API requests",
+        "passed": true,
+        "detail": "CPU-only encoding and decoding; sentence tokens are not API billing usage."
+      }
+    ],
+    "artifacts": [],
+    "recordingAvailable": false
+  },
+  {
     "id": "01-specificity",
     "title": "From vague to useful",
     "minutes": 5,

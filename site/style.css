@@ -4,6 +4,11 @@ body { margin: 0; }
 header { background: #112b43; color: white; padding: 22px 36px; }
 header h1 { margin: 4px 0; font-size: 36px; }
 header p { margin: 6px 0 0; }
+.language-switch { margin-top: 12px; }
+.language-switch select { background: white; color: #152c40; }
+.practice-prompt { margin-top: 18px; padding: 14px 18px; border: 1px solid #19777b; border-radius: 8px; background: #def2ed; }
+.practice-prompt summary { cursor: pointer; font-weight: 700; margin-bottom: 12px; }
+.handout-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
 .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #19777b; }
 header .eyebrow { color: #a3e8dc; }
 .layout { display: grid; grid-template-columns: 245px 1fr; }

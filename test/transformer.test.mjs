@@ -66,7 +66,8 @@ test('actual training learns different contexts, generation preserves weights, a
   assert.equal(evaluateTransformer(damaged).filter(check => !check.passed).length, 3);
   assert.equal(labs[0].id, '00-tiny-transformer');
   assert.equal(labs[0].cases.length, results.length);
-  assert.equal(labs[1].id, '01-specificity');
+  assert.equal(labs[1].id, '00a-tokens');
+  assert.equal(labs[2].id, '01-specificity');
 });
 
 test('the plain-number forward pass equals the model for every legal sentence length, trained or not', () => {

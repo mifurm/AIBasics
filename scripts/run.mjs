@@ -33,6 +33,9 @@ export async function runLab(id, session) {
     if (failed.length) throw new Error(`Saved actual computations; checks failed: ${failed.map(check => check.name).join(', ')}`);
     return record;
   }
+  if (lab.id === '00a-tokens') {
+    return runGenaiLab(lab, { config: {} }, new URL('../results/', import.meta.url));
+  }
   const config = session?.config ?? await loadConfig();
   const token = session?.token ?? await accessToken(config.subscriptionId);
   if (lab.series === 'genai') return runGenaiLab(lab, { config, token }, new URL('../results/', import.meta.url));

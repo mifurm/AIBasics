@@ -1,5 +1,9 @@
 # 03 - Teach a pattern with examples
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** the gallery language selector switches teaching text and provides Polish practice-prompt translations. Original recorded prompts, model output, and metrics remain unchanged; translations are teaching aids, not fabricated Polish API outcomes.
+
 **5 minutes.** Demonstrate few-shot learning inside a request.
 
 1. Complete the [shared setup](../../README.md#setup-and-deploy).

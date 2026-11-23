@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { az, loadConfig } from '../lib/azure.mjs';
 import { labs } from '../lib/labs.mjs';
+import { isBasicLab } from '../web/i18n.mjs';
 
 let staging;
 try {
@@ -14,11 +15,17 @@ try {
   } });
   const config = await loadConfig();
   await stat('site/index.html');
-  const allowed = new Set(['index.html', '404.html', 'app.js', 'style.css', 'results.json', 'transformer.svg', 'media']);
+  const allowed = new Set(['index.html', '404.html', 'app.js', 'i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs',
+    'style.css', 'results.json', 'transformer.svg', 'transformer.pl.svg', 'handouts', 'media']);
   const entries = await readdir('site');
   if (entries.some(entry => !allowed.has(entry))) throw new Error('Unexpected site file; refusing to publish unreviewed content.');
   staging = await mkdtemp(path.join(tmpdir(), 'ai-basics-publish-'));
-  for (const entry of entries.filter(entry => entry !== 'media')) await copyFile(path.join('site', entry), path.join(staging, entry));
+  for (const entry of entries.filter(entry => !['media', 'handouts'].includes(entry))) await copyFile(path.join('site', entry), path.join(staging, entry));
+  const handouts = new Set(labs.filter(isBasicLab).flatMap(lab => ['en', 'pl'].map(language => `${lab.id}.${language}.md`)));
+  const handoutFiles = await readdir('site/handouts');
+  if (handoutFiles.length !== handouts.size || handoutFiles.some(file => !handouts.has(file))) throw new Error('Unexpected or missing bilingual handout; refusing to publish.');
+  await mkdir(path.join(staging, 'handouts'));
+  for (const file of handouts) await copyFile(path.join('site/handouts', file), path.join(staging, 'handouts', file));
   if (entries.includes('media')) {
     const known = new Set(labs.map(lab => lab.id));
     for (const labId of await readdir('site/media')) {
@@ -40,6 +47,16 @@ try {
   }
   if (values['include-deck']) {
     await copyFile('deliverables/AI-Basics.pptx', path.join(staging, 'AI-Basics.pptx'));
+    for (const file of ['AI-Basics-basic.pptx', 'AI-Basics-basic.pl.pptx']) {
+      try {
+        await stat(`deliverables/${file}`);
+      } catch (error) {
+        if (error.code !== 'ENOENT') throw error;
+        console.warn(`Optional bilingual deck is missing: ${file}; build it with --basic and --language en or pl.`);
+        continue;
+      }
+      await copyFile(`deliverables/${file}`, path.join(staging, file));
+    }
   }
   const token = az(['staticwebapp', 'secrets', 'list', '-g', config.resourceGroup, '-n', config.appName,
     '--subscription', config.subscriptionId]).properties.apiKey;

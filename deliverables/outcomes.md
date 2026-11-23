@@ -7,6 +7,7 @@ Recording is pending: the integrated browser remained hidden and the user was un
 | Lab | Status | Requests represented | Total tokens reported |
 | --- | --- | ---: | ---: |
 | 00. How a tiny transformer predicts a token | completed | 0 | 0 |
+| 00a. What is a token? One sentence, three languages | completed | 0 | 0 |
 | 01. From vague to useful | completed | 2 | 474 |
 | 02. Roles and instruction priority | completed | 2 | 210 |
 | 03. Teach a pattern with examples | completed | 2 | 82 |
@@ -6408,6 +6409,55 @@ computationTrace:
 
 
 - Passed / observed: Toy computation is not reported as API usage: Zero model API requests; toy training tokens are separate from API billing tokens.
+
+
+## 00a. What is a token? One sentence, three languages
+
+A tokenizer turns text into a sequence of integer IDs. Each ID represents a learned chunk of bytes: often a word or part of a word, sometimes punctuation or part of a character. The model reads these IDs, not words directly.
+
+Recorded: 2026-11-23T11:41:00.390Z
+
+Caution: Counts use OpenAI's o200k_base encoding (used by GPT-4o) via the community-maintained tiktoken JavaScript/WASM bindings. They count only the sentence, not chat formatting or generated output. One sentence is not a ranking of languages or a price estimate.
+
+
+### One meaning, three languages, different token counts
+
+
+Model: local-computation; latency: 118 ms; finish: completed.
+
+Usage: `null`
+
+```text
+Polish: 11 tokens
+Kot śpi na ciepłym parapecie.
+Pieces: "Kot" | " ś" | "pi" | " na" | " c" | "iep" | "łym" | " parap" | "ec" | "ie" | "."
+IDs: 180929, 21640, 3455, 898, 274, 57368, 169880, 71265, 1007, 396, 13
+
+English: 9 tokens
+The cat sleeps on the warm windowsill.
+Pieces: "The" | " cat" | " sleeps" | " on" | " the" | " warm" | " windows" | "ill" | "."
+IDs: 976, 9059, 104072, 402, 290, 9144, 14387, 492, 13
+
+Spanish: 12 tokens
+El gato duerme en el alféizar cálido.
+Pieces: "El" | " gato" | " duer" | "me" | " en" | " el" | " alf" | "é" | "izar" | " cál" | "ido" | "."
+IDs: 4422, 99767, 116318, 1047, 469, 650, 76652, 377, 6552, 62609, 2295, 13
+```
+
+
+- Passed / observed: All three original translations are present, in order: Polish, English, Spanish
+
+
+- Passed / observed: Counts match the recorded IDs and pieces: Polish: 11, English: 9, Spanish: 12
+
+
+- Passed / observed: Token bytes and full-sequence decoding recover the exact Unicode text: Compare full UTF-8 bytes, not separately decoded token fragments.
+
+
+- Passed / observed: This example demonstrates three different measured token counts: An observation about these translations with o200k_base, not a rule about languages.
+
+
+- Passed / observed: Tokenization used no model API requests: CPU-only encoding and decoding; sentence tokens are not API billing usage.
 
 
 ## 01. From vague to useful

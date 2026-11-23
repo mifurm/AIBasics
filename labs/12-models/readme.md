@@ -1,5 +1,9 @@
 # 12 - Same prompts, different models
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** the gallery language selector switches teaching text and provides Polish practice-prompt translations. Original recorded prompts, model output, and metrics remain unchanged; translations are teaching aids, not fabricated Polish API outcomes.
+
 **12 minutes.** Compare GPT-4o and GPT-5-mini using three familiar tasks and two
 prompt styles. This expands the original single scheduling question; no new
 model deployment or Azure service is required.

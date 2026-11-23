@@ -8,7 +8,7 @@ import { az, loadConfig } from '../lib/azure.mjs';
 import { findMediaDeployments } from '../lib/media-deployments.mjs';
 
 // Only what the job needs: the job never builds the gallery, deploys, or records videos.
-const RUNTIME_FILES = ['lib', 'scripts/azure-bootstrap.mjs', 'scripts/azure-entry.mjs', 'scripts/run.mjs', 'scripts/classroom-memory.mjs'];
+const RUNTIME_FILES = ['lib', 'package.json', 'package-lock.json', 'scripts/azure-bootstrap.mjs', 'scripts/azure-entry.mjs', 'scripts/run.mjs', 'scripts/classroom-memory.mjs'];
 
 let directory;
 try {

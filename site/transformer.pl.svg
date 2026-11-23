@@ -1,0 +1,121 @@
+<svg xml:lang="pl" xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title description">
+  <title id="title">Lab 00: mały transformer decoder-only</title>
+  <desc id="description">Słowa otrzymują identyfikatory według miejsca w dziewięcioelementowym słowniku, od 0. Zdanie ze znacznikiem początku: the robot is, otrzymuje identyfikatory 0, 1, 2, 4. Identyfikatory wybierają ośmiowymiarowe wektory tokenów, do których dodawane są wektory pozycji. Jeden blok stosuje normalizację, jednogłowicową uwagę przyczynową i połączenie rezydualne, a potem sieć feed-forward z drugim połączeniem rezydualnym. Końcowa normalizacja i projekcja na słownik dają dziewięć prawdopodobieństw. Wybór zachłanny dopisuje token i powtarza cykl. Tylko osobna pętla treningu zmienia wagi. Oznaczenia takie jak #5-9 odnoszą się do kroków opisu.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#19777b"/></marker>
+    <marker id="trainArrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#a85c10"/></marker>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #152c40; text-anchor: middle; font-size: 19px; }
+      .title { font-size: 30px; font-weight: 700; }
+      .subtitle { font-size: 17px; }
+      .heading { font-size: 20px; font-weight: 700; }
+      .small { font-size: 16px; }
+      .box { fill: #fff; stroke: #19777b; stroke-width: 2; rx: 12; }
+      .layer { fill: #def2ed; stroke: #19777b; stroke-width: 2; rx: 9; }
+      .flow { fill: none; stroke: #19777b; stroke-width: 3; marker-end: url(#arrow); }
+      .skip { fill: none; stroke: #526c7e; stroke-width: 2; }
+      .tag { fill: #136c74; font-size: 14px; font-weight: 700; text-anchor: end; }
+      .entry { font-size: 19px; text-anchor: start; }
+      .idnum { fill: #136c74; font-weight: 700; }
+    </style>
+  </defs>
+  <rect width="1400" height="920" fill="#f2f5f8"/>
+  <text class="title" x="700" y="36">Jak mały transformer przewiduje następny token</text>
+  <text class="subtitle" x="700" y="64">Model z lab 00: 1 blok | 1 głowica uwagi | wymiar 8 | słownik 9 | 833 uczone parametry</text>
+
+  <rect class="box" x="20" y="170" width="180" height="160"/>
+  <text class="heading" x="110" y="204">1. Tokenizacja</text>
+  <text class="small" x="110" y="236">&lt;bos&gt; the robot is</text>
+  <text x="110" y="270">ID: 0, 1, 2, 4</text>
+  <text class="small" x="110" y="300">(słownik poniżej)</text>
+  <path class="flow" d="M200 245H230"/>
+
+  <!-- The dictionary behind the IDs. Keep these nine entries equal to the model's vocabulary (a test checks it). -->
+  <path d="M110 330V357" fill="none" stroke="#19777b" stroke-width="2" stroke-dasharray="5 4"/>
+  <rect class="box" x="20" y="357" width="430" height="296"/>
+  <text class="heading" x="235" y="390">Słownik identyfikatorów</text>
+  <text class="small" x="235" y="416">Model zna tylko 9 pozycji. ID to miejsce słowa</text>
+  <text class="small" x="235" y="436">na tej liście, liczone od 0.</text>
+  <text class="entry" x="52" y="478"><tspan class="idnum">0</tspan> &lt;bos&gt;</text>
+  <text class="entry" x="192" y="478"><tspan class="idnum">1</tspan> the</text>
+  <text class="entry" x="332" y="478"><tspan class="idnum">2</tspan> robot</text>
+  <text class="entry" x="52" y="512"><tspan class="idnum">3</tspan> plant</text>
+  <text class="entry" x="192" y="512"><tspan class="idnum">4</tspan> is</text>
+  <text class="entry" x="332" y="512"><tspan class="idnum">5</tspan> blue</text>
+  <text class="entry" x="52" y="546"><tspan class="idnum">6</tspan> green</text>
+  <text class="entry" x="192" y="546"><tspan class="idnum">7</tspan> .</text>
+  <text class="entry" x="332" y="546"><tspan class="idnum">8</tspan> &lt;eos&gt;</text>
+  <text class="small" x="235" y="578">&lt;bos&gt; i &lt;eos&gt;: początek i koniec zdania.</text>
+  <text class="heading" x="235" y="614">&lt;bos&gt; the robot is  -&gt;  0, 1, 2, 4</text>
+  <text class="small" x="235" y="640">ID to etykiety, nie ilości: 4 nie jest „więcej” niż 2.</text>
+
+  <rect class="box" x="230" y="170" width="220" height="160"/>
+  <text class="heading" x="340" y="204">2. Wektory i pozycja</text>
+  <text x="340" y="240">Wektor tokenu</text>
+  <text x="340" y="273">+ wektor pozycji</text>
+  <text class="small" x="340" y="306">8 liczb na token</text>
+  <rect x="490" y="110" width="480" height="580" rx="18" fill="#e5ecf1" stroke="#526c7e" stroke-width="2"/>
+  <text class="heading" x="730" y="145">3. Jeden blok dekodera</text>
+  <path class="flow" d="M450 245H505V202H525"/>
+  <rect class="layer" x="525" y="180" width="400" height="45"/>
+  <text x="725" y="209">LayerNorm</text>
+  <path class="flow" d="M725 225V250"/>
+  <rect class="layer" x="525" y="250" width="400" height="85"/>
+  <text class="heading" x="725" y="280">Jedna głowica uwagi przyczynowej</text>
+  <text class="small" x="725" y="307">Q, K, V z wyuczonych projekcji liniowych</text>
+  <text class="small" x="725" y="327">softmax(Q K^T / sqrt(8) + mask) V -&gt; Wout</text>
+  <path class="flow" d="M725 335V355"/>
+  <rect class="box" x="525" y="355" width="400" height="45"/>
+  <text x="725" y="385">Dodaj wejście (połączenie rezydualne)</text>
+  <path class="skip" d="M470 245V155H945V377H925"/>
+  <text class="small" x="1120" y="128">Maska: oceny przyszłości = −∞</text>
+  <text class="small" x="1120" y="150">Uwaga dla przyszłych pozycji = 0</text>
+  <path class="flow" d="M725 400V425"/>
+  <rect class="layer" x="525" y="425" width="400" height="45"/>
+  <text x="725" y="455">LayerNorm</text>
+  <path class="flow" d="M725 470V490"/>
+  <rect class="layer" x="525" y="490" width="400" height="65"/>
+  <text class="heading" x="725" y="518">Sieć feed-forward</text>
+  <text class="small" x="725" y="543">Liniowo 8 -&gt; 16 | ReLU | Liniowo 16 -&gt; 8</text>
+  <path class="flow" d="M725 555V590"/>
+  <rect class="box" x="525" y="590" width="400" height="45"/>
+  <text x="725" y="620">Dodaj wejście (połączenie rezydualne)</text>
+  <path class="skip" d="M725 412H945V612H925"/>
+  <path class="flow" d="M725 635V711H982V275H1000"/>
+
+  <rect class="box" x="1000" y="180" width="370" height="195"/>
+  <text class="heading" x="1185" y="215">4. Predykcja na każdej pozycji</text>
+  <text x="1185" y="250">Końcowy LayerNorm</text>
+  <text x="1185" y="282">Projekcja liniowa -&gt; 9 logitów</text>
+  <text x="1185" y="314">Softmax -&gt; prawdopodobieństwa</text>
+  <text class="small" x="1185" y="349">Generowanie używa ostatniej pozycji</text>
+  <path class="flow" d="M1185 375V450"/>
+  <rect class="box" x="1000" y="450" width="370" height="120"/>
+  <text class="heading" x="1185" y="485">5. Wybierz i dopisz</text>
+  <text x="1185" y="518">Wybierz najbardziej prawdopodobny token</text>
+  <text class="small" x="1185" y="549">Stop po &lt;eos&gt; lub limicie tokenów</text>
+  <path class="flow" d="M1370 510H1385V85H110V170"/>
+  <text class="small" x="330" y="106">Powtarzaj z dłuższym kontekstem; wagi pozostają stałe</text>
+
+  <rect x="20" y="745" width="1350" height="145" rx="14" fill="#fff3df" stroke="#a85c10" stroke-width="2"/>
+  <text class="heading" x="695" y="779">Osobna pętla treningowa: tylko tutaj zmieniają się wagi</text>
+  <text x="230" y="821">Dwa fikcyjne zdania</text>
+  <path d="M380 816H430" fill="none" stroke="#a85c10" stroke-width="3" marker-end="url(#trainArrow)"/>
+  <text x="590" y="821">Docelowe tokeny i strata</text>
+  <path d="M750 816H800" fill="none" stroke="#a85c10" stroke-width="3" marker-end="url(#trainArrow)"/>
+  <text x="1080" y="821">Propagacja wsteczna i Adam zmieniają parametry</text>
+  <text class="small" x="695" y="865">Model dydaktyczny, nie wnętrze GPT. Zapamiętanie dwóch zdań nie jest ogólnym rozumieniem języka.</text>
+
+  <!-- Tags such as #4 or #5-9 match the steps of the step-by-step walkthrough in the gallery and in lab 00. -->
+  <text class="tag" x="190" y="324">#1</text>
+  <text class="tag" x="440" y="324">#2-3</text>
+  <text class="tag" x="918" y="208">#4</text>
+  <text class="tag" x="920" y="266">#5-9</text>
+  <text class="tag" x="918" y="383">#10</text>
+  <text class="tag" x="918" y="453">#11</text>
+  <text class="tag" x="918" y="512">#12-13</text>
+  <text class="tag" x="918" y="618">#13</text>
+  <text class="tag" x="1360" y="366">#14-16</text>
+  <text class="tag" x="1360" y="563">#17</text>
+  <text class="small" x="700" y="908">Oznaczenia #4 lub #5-9 odnoszą się do 17 kroków opisu z równaniami.</text>
+</svg>

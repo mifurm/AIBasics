@@ -15,6 +15,9 @@
     "deck": "node scripts/build-deck.mjs",
     "verify": "node scripts/verify.mjs"
   },
+  "dependencies": {
+    "tiktoken": "^1.0.22"
+  },
   "devDependencies": {
     "@azure/static-web-apps-cli": "^2.1.0",
     "pptxgenjs": "^4.0.1"

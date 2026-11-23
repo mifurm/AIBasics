@@ -3,12 +3,19 @@ import { createHash } from 'node:crypto';
 import { parseArgs } from 'node:util';
 import path from 'node:path';
 import { labs } from '../lib/labs.mjs';
+import { isBasicLab, validateTranslations, localizeDiagram } from '../web/i18n.mjs';
 
+validateTranslations(labs);
 await mkdir('site', { recursive: true });
+await mkdir('site/handouts', { recursive: true });
 await rm('site/media', { recursive: true, force: true });
 const { values } = parseArgs({ options: { 'media-directory': { type: 'string' } } });
 const records = [];
 for (const lab of labs) {
+  if (isBasicLab(lab)) {
+    await copyFile(`labs/${lab.id}/readme.md`, `site/handouts/${lab.id}.en.md`);
+    await copyFile(`labs/${lab.id}/readme.pl.md`, `site/handouts/${lab.id}.pl.md`);
+  }
   const record = JSON.parse(await readFile(`results/${lab.id}.json`, 'utf8'));
   if (record.status === 'failed' || record.observations.some(check => !check.passed) ||
       (record.status !== 'blocked' && record.results.length !== lab.cases.length)) {
@@ -31,7 +38,9 @@ for (const lab of labs) {
 await writeFile('site/results.json', JSON.stringify(records, null, 2) + '\n');
 await copyFile('web/index.html', 'site/index.html');
 await copyFile('web/app.js', 'site/app.js');
+for (const file of ['i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs']) await copyFile(`web/${file}`, `site/${file}`);
 await copyFile('web/style.css', 'site/style.css');
 await copyFile('web/transformer.svg', 'site/transformer.svg');
+await writeFile('site/transformer.pl.svg', localizeDiagram(await readFile('web/transformer.svg', 'utf8')));
 await writeFile('site/404.html', '<!doctype html><html lang="en"><title>Not found</title><a href="/">Return to AI Basics</a></html>\n');
-console.log(`Built gallery with ${records.length} real Azure lab records.`);
+console.log(`Built gallery with ${records.length} recorded lab outcomes.`);

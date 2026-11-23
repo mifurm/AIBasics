@@ -1,27 +1,29 @@
-# AI Basics: thirty-nine small classroom labs
+# AI Basics: forty small classroom labs
 
-For beginners; English; JavaScript/Node.js 22+. Allow 330-370 minutes for all labs.
-Start with lab 00, then teach labs 1-7, 8-12, 13-18, 19-24, 25-28, 29-31 (inside a model), 32-35 (images and sound),
+For beginners; English and Polish for basic labs; JavaScript/Node.js 22+. Allow 337-377 minutes for all labs.
+Start with labs 00 and 00a, then teach labs 1-7, 8-12, 13-18, 19-24, 25-28, 29-31 (inside a model), 32-35 (images and sound),
 and 36-38 (music, video, and evaluation) in eight lessons. Every lab has a
-script, a teacher-friendly README, and real Azure outputs after execution.
+script, a teacher-friendly README, and recorded outcomes after execution
+(CPU-only tokenization in 00a; real Azure model outputs where a model is used).
 
 ## Learning path
 
 | Lab | Topic | Time |
 | --- | --- | --- |
-| [00](labs/00-tiny-transformer/readme.md) | Train a tiny causal transformer and follow every step, equation by equation | 15 min |
-| [01](labs/01-specificity/readme.md) | Specific prompts | 5 min |
-| [02](labs/02-roles/readme.md) | System/user roles | 5 min |
-| [03](labs/03-few-shot/readme.md) | Examples without retraining | 5 min |
-| [04](labs/04-temperature/readme.md) | Temperature | 7 min |
-| [05](labs/05-top-p/readme.md) | Top-p | 7 min |
-| [06](labs/06-token-budget/readme.md) | Tokens and truncation | 5 min |
-| [07](labs/07-context/readme.md) | Conversation context | 5 min |
-| [08](labs/08-structured-output/readme.md) | Schema-constrained JSON | 6 min |
-| [09](labs/09-grounding/readme.md) | Source grounding | 6 min |
-| [10](labs/10-untrusted-context/readme.md) | Untrusted source instructions | 6 min |
-| [11](labs/11-tools/readme.md) | Tool calling | 7 min |
-| [12](labs/12-models/readme.md) | Same prompts, different models | 12 min |
+| [00 EN](labs/00-tiny-transformer/readme.md) / [PL](labs/00-tiny-transformer/readme.pl.md) | Train a tiny causal transformer and follow every step, equation by equation | 15 min |
+| [00a EN](labs/00a-tokens/readme.md) / [PL](labs/00a-tokens/readme.pl.md) | OpenAI tokens: the same sentence in Polish, English, and Spanish | 7 min |
+| [01 EN](labs/01-specificity/readme.md) / [PL](labs/01-specificity/readme.pl.md) | Specific prompts | 5 min |
+| [02 EN](labs/02-roles/readme.md) / [PL](labs/02-roles/readme.pl.md) | System/user roles | 5 min |
+| [03 EN](labs/03-few-shot/readme.md) / [PL](labs/03-few-shot/readme.pl.md) | Examples without retraining | 5 min |
+| [04 EN](labs/04-temperature/readme.md) / [PL](labs/04-temperature/readme.pl.md) | Temperature | 7 min |
+| [05 EN](labs/05-top-p/readme.md) / [PL](labs/05-top-p/readme.pl.md) | Top-p | 7 min |
+| [06 EN](labs/06-token-budget/readme.md) / [PL](labs/06-token-budget/readme.pl.md) | Tokens and truncation | 5 min |
+| [07 EN](labs/07-context/readme.md) / [PL](labs/07-context/readme.pl.md) | Conversation context | 5 min |
+| [08 EN](labs/08-structured-output/readme.md) / [PL](labs/08-structured-output/readme.pl.md) | Schema-constrained JSON | 6 min |
+| [09 EN](labs/09-grounding/readme.md) / [PL](labs/09-grounding/readme.pl.md) | Source grounding | 6 min |
+| [10 EN](labs/10-untrusted-context/readme.md) / [PL](labs/10-untrusted-context/readme.pl.md) | Untrusted source instructions | 6 min |
+| [11 EN](labs/11-tools/readme.md) / [PL](labs/11-tools/readme.pl.md) | Tool calling | 7 min |
+| [12 EN](labs/12-models/readme.md) / [PL](labs/12-models/readme.pl.md) | Same prompts, different models | 12 min |
 | [13](labs/13-persistent-memory/readme.md) | Memory across fresh processes | 6 min |
 | [14](labs/14-memory-lifecycle/readme.md) | Remember, replace, forget | 6 min |
 | [15](labs/15-multiturn/readme.md) | Real generated multi-turn dialogue | 7 min |
@@ -48,6 +50,56 @@ script, a teacher-friendly README, and real Azure outputs after execution.
 | [36](labs/36-music-tokens/readme.md) | Music is tokens | 12 min |
 | [37](labs/37-video-frames/readme.md) | Video is frames over time | 12 min |
 | [38](labs/38-llm-judge/readme.md) | Can a model grade a model? | 14 min |
+
+## English / Polski
+
+The **14 basic labs (00, 00a, 01–12)** have English and Polish handouts (links
+above), gallery teaching text, variant labels, exercises, and discussion
+questions. The entire lab 00 prediction/training walkthrough and its
+architecture diagram also have Polish versions. Labs 13–38 are advanced
+material and remain in English; the Polish gallery states that explicitly.
+
+Use the **Language / Język** selector in the gallery, or open
+`?lang=pl#00a-tokens` / `?lang=en#00a-tokens` on its URL. The selector remembers
+your preference and preserves the current lab and variant. Both language
+handouts can be downloaded directly from every basic lab's gallery page.
+
+**Polski:** wybierz **Polski** w galerii. Każde laboratorium podstawowe ma
+polską instrukcję, wyjaśnienia, pytania i ćwiczenia. Prompty do samodzielnych
+ćwiczeń są wyraźnie oznaczone jako tłumaczenia, a nie wykonane żądania.
+Zmiana języka nie uruchamia modelu ani nie zmienia pomiarów.
+
+**Evidence stays original.** Recorded requests and responses, model/token IDs,
+equations, byte counts, timings, errors and automated checks are preserved.
+The Polish view labels the original English evidence and provides separate
+Polish practice prompts. Practice prompts are pedagogical adaptations, not
+replacements for recorded requests: fixed JSON fields, tool names and expected
+test values remain explicit. They have not been executed or scored in Polish.
+The existing demo commands still execute the original English experiments;
+changing a prompt requires checking its language-dependent evaluator too.
+Do not infer Polish API costs or token counts from translated teaching text.
+
+Build both basic presentations without replacing the full English deck:
+
+```sh
+npm run gallery
+npm run deck -- --basic --language en --allow-missing-recordings
+npm run deck -- --basic --language pl --allow-missing-recordings
+```
+
+These produce `deliverables/AI-Basics-basic.pptx` and
+`deliverables/AI-Basics-basic.pl.pptx`. Teaching slides and gallery links follow
+the selected language; saved model outputs remain clearly labeled originals.
+`npm run publish -- --include-deck` includes these basic decks when present,
+alongside the original full deck. Build them before publishing; missing
+optional basic decks are reported as warnings. No paid model calls are needed
+for translation, gallery builds, or presentation builds.
+
+Translation coverage is checked when building the gallery and in the test
+suite; new basic cases and walkthrough steps need Polish teaching content too.
+Localization sources are [interface/lab text](web/polish.mjs),
+[walkthrough text](web/polish-walkthrough.mjs), and
+[shared localization helpers](web/i18n.mjs).
 
 ## Beyond text: the same ideas in every modality
 
@@ -149,6 +201,31 @@ No new Azure infrastructure is required. Lab 00 uses zero model API requests;
 Azure CPU execution and monitoring still incur charges. Training-token counts
 are recorded separately from API billing usage. Its ID is 00, so existing labs
 01-28 keep their identifiers in the gallery, scripts, deck, and recordings.
+
+## What is a token? Lab 00a
+
+[Lab 00a](labs/00a-tokens/readme.md) follows lab 00 without renumbering existing
+labs. It uses OpenAI's **o200k_base** encoding (used by GPT-4o) through the
+community-maintained `tiktoken` JavaScript/WASM bindings. The same meaning,
+"The cat sleeps on the warm windowsill.", takes **11 tokens in Polish,
+9 in English, and 12 in Spanish** for the supplied translations.
+
+The gallery compares counts and shows every token's ID, quoted text piece,
+and exact bytes. Full-sequence decoding verifies that no accents or spaces
+are lost. These are sentence-only counts, not chat-message usage, prices, or
+a universal ranking of languages. Lab 29 remains the deeper BPE/tokenization lab.
+
+```sh
+npm ci
+# Runs offline after installation: no Azure config, API key, or model request.
+npm run demo -- 00a-tokens
+npm run gallery
+```
+
+For optional Azure execution, redeploy the existing job, then run
+`npm run azure:agents -- 00a-tokens`. When this lab is selected, startup
+installs the locked production tokenizer dependency from npm; other selections
+do not install packages. No new Azure infrastructure or model is needed.
 
 ## Agent primitives: a goal, tools, observations, and boundaries
 
@@ -429,7 +506,7 @@ npm run publish -- --media-directory /ABSOLUTE/SESSION --include-deck
 npm run verify -- --media
 ```
 
-When recordings are available, `deliverables/AI-Basics.pptx` embeds all thirty-nine MP4s
+When recordings are available, `deliverables/AI-Basics.pptx` embeds all forty MP4s
 and includes public recording links for viewers that cannot play embedded media.
 To rebuild the current clearly marked draft: `npm run deck -- --allow-missing-recordings`. Desktop PowerPoint is the
 recommended playback application. `deliverables/outcomes.md` records actual
@@ -447,7 +524,7 @@ Static Web Apps uses its Free tier and its usage limits.
 Labs 01-18 now have 58 planned API requests, including twelve for the expanded
 model comparison; the ten agent labs add at most 142 (at most 200 together), and the ten advanced
 GenAI labs add about 136 more (image generation, speech, and transcription are billed per image, character, or
-minute, not per token). Lab 00 adds no model API requests. Actual counts are in saved usage. A filter
+minute, not per token). Labs 00 and 00a add no model API requests. Actual counts are in saved usage. A filter
 rejection stops the
 runner early; the instructor can execute remaining labs individually). Visible-output caps are usually
 320 tokens; the reasoning request has a 1,400-token total completion cap.

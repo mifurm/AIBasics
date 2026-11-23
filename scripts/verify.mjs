@@ -4,7 +4,9 @@ import { createHash } from 'node:crypto';
 import { labs } from '../lib/labs.mjs';
 import { evaluate } from '../lib/evaluate.mjs';
 import { loadConfig } from '../lib/azure.mjs';
+import { isBasicLab, validateTranslations } from '../web/i18n.mjs';
 
+validateTranslations(labs);
 const { values } = parseArgs({ options: { media: { type: 'boolean', default: false } } });
 const config = await loadConfig();
 const galleryResponse = await fetch(new URL('results.json', config.website));
@@ -13,6 +15,7 @@ const gallery = await galleryResponse.json();
 if (gallery.length !== labs.length) throw new Error(`Deployed gallery does not contain all ${labs.length} labs.`);
 for (const lab of labs) {
   await stat(`labs/${lab.id}/readme.md`);
+  if (isBasicLab(lab)) await stat(`labs/${lab.id}/readme.pl.md`);
   await stat(`labs/${lab.id}/demo.mjs`);
   const record = JSON.parse(await readFile(`results/${lab.id}.json`, 'utf8'));
   const deployed = gallery.find(item => item.id === lab.id);
@@ -31,7 +34,7 @@ for (const lab of labs) {
           throw new Error(`Invalid teaching computation evidence in ${lab.id}`);
         }
       } else if (result.kind === 'experiment') {
-        if (lab.series !== 'genai' || result.apiRequests !== result.apiCalls.length ||
+        if ((lab.series !== 'genai' && lab.id !== '00a-tokens') || result.apiRequests !== result.apiCalls.length ||
           result.apiCalls.some(call => !call.operation || !Number.isInteger(call.latencyMs))) throw new Error(`Invalid experiment evidence in ${lab.id}`);
       } else if (!Number.isInteger(result.usage?.total_tokens)) throw new Error(`Invalid API usage in ${lab.id}`);
       for (const extra of result.extraRequests ?? []) {
@@ -56,6 +59,14 @@ for (const lab of labs) {
     }
     console.log(`${lab.id}: verified saved and deployed outcomes${verifiedArtifacts ? ` and ${verifiedArtifacts} media files` : ''}.`);
   }
+  await Promise.all(['i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs', 'transformer.pl.svg',
+    ...labs.filter(isBasicLab).flatMap(lab => ['en', 'pl'].map(language => `handouts/${lab.id}.${language}.md`)),
+  ].map(async file => {
+    const response = await fetch(new URL(file, config.website), { signal: AbortSignal.timeout(30_000) });
+    if (!response.ok) throw new Error(`Missing deployed localization asset: ${file} (HTTP ${response.status})`);
+    const local = await readFile(`site/${file}`);
+    if (!local.equals(Buffer.from(await response.arrayBuffer()))) throw new Error(`Stale deployed localization asset: ${file}`);
+  }));
   if (values.media) {
     const response = await fetch(`${config.website}recordings/${lab.id}.mp4`, { method: 'HEAD' });
     if (!response.ok || response.headers.get('content-type') !== 'video/mp4' || Number(response.headers.get('content-length')) < 1000) {
