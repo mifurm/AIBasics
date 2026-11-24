@@ -61,7 +61,7 @@ for (const lab of labs) {
     console.log(`${lab.id}: verified saved and deployed outcomes${verifiedArtifacts ? ` and ${verifiedArtifacts} media files` : ''}.`);
   }
 }
-await Promise.all(['i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs', 'polish-advanced.mjs', 'polish-displays.mjs', 'transformer.pl.svg',
+await Promise.all(['theme.js', 'i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs', 'polish-advanced.mjs', 'polish-displays.mjs', 'transformer.pl.svg',
     ...labs.flatMap(lab => ['en', 'pl'].map(language => `handouts/${lab.id}.${language}.md`)),
   ].map(async file => {
     const response = await fetch(new URL(file, config.website), { signal: AbortSignal.timeout(30_000) });

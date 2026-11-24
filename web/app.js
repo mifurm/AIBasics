@@ -21,6 +21,9 @@ function showLanguage() {
   document.documentElement.lang = language;
   languageSelect.value = language;
   document.querySelector('label[for="languageSelect"]').textContent = t('Language');
+  document.querySelector('label[for="themeSelect"]').textContent = t('Theme');
+  document.querySelector('#themeSelect option[value="light"]').textContent = t('Light');
+  document.querySelector('#themeSelect option[value="dark"]').textContent = t('Dark');
   nav.setAttribute('aria-label', t('Classroom labs'));
   document.querySelector('header .eyebrow').textContent = t("A BEGINNER'S FIELD GUIDE");
   document.querySelector('footer').textContent = t('These are saved observations, not live model calls. AI output may be wrong. Only fictional classroom data is used.');

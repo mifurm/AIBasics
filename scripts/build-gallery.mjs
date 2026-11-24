@@ -42,6 +42,7 @@ for (const lab of labs) {
 await writeFile('site/results.json', JSON.stringify(records, null, 2) + '\n');
 await copyFile('web/index.html', 'site/index.html');
 await copyFile('web/app.js', 'site/app.js');
+await copyFile('web/theme.js', 'site/theme.js');
 for (const file of ['i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs', 'polish-advanced.mjs', 'polish-displays.mjs']) await copyFile(`web/${file}`, `site/${file}`);
 await copyFile('web/style.css', 'site/style.css');
 await copyFile('web/transformer.svg', 'site/transformer.svg');

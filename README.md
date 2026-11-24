@@ -64,6 +64,11 @@ Use the **Language / Język** selector in the gallery, or open
 your preference and preserves the current lab and variant. Both language
 handouts can be downloaded directly from every lab's gallery page.
 
+Use **Theme / Motyw** to switch between **Light / Jasny** and **Dark / Ciemny**.
+Until you choose a theme, the gallery follows your system's appearance.
+Your choice is saved on this browser and applied before the page is painted;
+changing the theme keeps the selected lab, variant and language.
+
 **Polski:** wybierz **Polski** w galerii. Każde laboratorium ma
 polską instrukcję, wyjaśnienia, pytania i ćwiczenia; dotyczy to też wszystkich
 laboratoriów zaawansowanych. Prompty do samodzielnych

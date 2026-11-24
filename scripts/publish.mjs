@@ -14,7 +14,7 @@ try {
   } });
   const config = await loadConfig();
   await stat('site/index.html');
-  const allowed = new Set(['index.html', '404.html', 'app.js', 'i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs', 'polish-advanced.mjs', 'polish-displays.mjs',
+  const allowed = new Set(['index.html', '404.html', 'app.js', 'theme.js', 'i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs', 'polish-advanced.mjs', 'polish-displays.mjs',
     'style.css', 'results.json', 'transformer.svg', 'transformer.pl.svg', 'handouts', 'media']);
   const entries = await readdir('site');
   if (entries.some(entry => !allowed.has(entry))) throw new Error('Unexpected site file; refusing to publish unreviewed content.');

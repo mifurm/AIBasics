@@ -154,6 +154,7 @@ export const basicLabs = {
 };
 
 export const ui = {
+  Theme: 'Motyw', Light: 'Jasny', Dark: 'Ciemny',
   'Run: {command}': 'Uruchom: {command}',
   'Recorded: {date}. Status: {status}.': 'Zapisano: {date}. Stan: {status}.',
   '{ms} ms | {tokens} tokens': '{ms} ms | tokeny: {tokens}',

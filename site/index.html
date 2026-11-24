@@ -4,12 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Basics | Classroom labs</title>
+  <script src="./theme.js"></script>
   <link rel="stylesheet" href="./style.css">
   <script src="./app.js" type="module"></script>
 </head>
 <body>
   <header><span class="eyebrow">A BEGINNER'S FIELD GUIDE</span><h1>AI Basics</h1><p>Small experiments. Recorded outcomes. No magic.</p>
-    <div class="language-switch"><label for="languageSelect">Language / Język</label><select id="languageSelect"><option value="en" lang="en">English</option><option value="pl" lang="pl">Polski</option></select></div>
+    <div class="header-controls">
+      <div><label for="languageSelect">Language / Język</label><select id="languageSelect"><option value="en" lang="en">English</option><option value="pl" lang="pl">Polski</option></select></div>
+      <div><label for="themeSelect">Theme</label><select id="themeSelect"><option value="light">Light</option><option value="dark">Dark</option></select></div>
+    </div>
   </header>
   <div class="layout">
     <nav aria-label="Classroom labs" id="labNav"></nav>
