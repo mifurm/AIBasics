@@ -1,6 +1,6 @@
 # 04 — Temperatura: różnorodność czy powtarzalność
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](04-temperature.en.md) | [Polski](04-temperature.pl.md)
 
 **Język galerii:** przełącznik zmienia tekst dydaktyczny i udostępnia polskie tłumaczenia promptów do ćwiczeń. Oryginalne zapisane prompty, odpowiedzi modeli i metryki pozostają bez zmian. Tłumaczenia służą nauczaniu — nie są zmyślonymi wynikami polskich wywołań API.
 

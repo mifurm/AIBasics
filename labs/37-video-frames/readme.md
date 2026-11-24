@@ -1,5 +1,9 @@
 # 37 - Video is frames over time
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **12 minutes.** Prerequisites: lab 33; [Azure setup](../../README.md#run-the-advanced-genai-labs-entirely-in-azure).
 
 1. Predict whether a model can tell which way a three-spoke wheel turns from six frames.

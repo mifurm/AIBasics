@@ -1,6 +1,6 @@
 # AI Basics: forty small classroom labs
 
-For beginners; English and Polish for basic labs; JavaScript/Node.js 22+. Allow 337-377 minutes for all labs.
+For beginners; English and Polish for all 40 labs; JavaScript/Node.js 22+. Allow 337-377 minutes for all labs.
 Start with labs 00 and 00a, then teach labs 1-7, 8-12, 13-18, 19-24, 25-28, 29-31 (inside a model), 32-35 (images and sound),
 and 36-38 (music, video, and evaluation) in eight lessons. Every lab has a
 script, a teacher-friendly README, and recorded outcomes after execution
@@ -24,48 +24,49 @@ script, a teacher-friendly README, and recorded outcomes after execution
 | [10 EN](labs/10-untrusted-context/readme.md) / [PL](labs/10-untrusted-context/readme.pl.md) | Untrusted source instructions | 6 min |
 | [11 EN](labs/11-tools/readme.md) / [PL](labs/11-tools/readme.pl.md) | Tool calling | 7 min |
 | [12 EN](labs/12-models/readme.md) / [PL](labs/12-models/readme.pl.md) | Same prompts, different models | 12 min |
-| [13](labs/13-persistent-memory/readme.md) | Memory across fresh processes | 6 min |
-| [14](labs/14-memory-lifecycle/readme.md) | Remember, replace, forget | 6 min |
-| [15](labs/15-multiturn/readme.md) | Real generated multi-turn dialogue | 7 min |
-| [16](labs/16-summary-memory/readme.md) | Context summarization and token savings | 7 min |
-| [17](labs/17-tool-chain/readme.md) | Catalog lookup followed by calculation | 8 min |
-| [18](labs/18-semantic-memory/readme.md) | Embeddings and semantic memory retrieval | 8 min |
-| [19](labs/19-workflow-agent/readme.md) | Workflow versus model-selected actions | 8 min |
-| [20](labs/20-agent-feedback/readme.md) | Act, observe, repeat | 8 min |
-| [21](labs/21-agent-clarification/readme.md) | Clarify missing requirements | 7 min |
-| [22](labs/22-agent-state/readme.md) | Explicit current task state | 8 min |
-| [23](labs/23-agent-errors/readme.md) | Tool errors and bounded recovery | 8 min |
-| [24](labs/24-agent-stopping/readme.md) | Completion, impossibility, and limits | 8 min |
-| [25](labs/25-agent-permissions/readme.md) | Read versus write permissions | 7 min |
-| [26](labs/26-agent-approval/readme.md) | Exact-action approval | 8 min |
-| [27](labs/27-agent-verification/readme.md) | Independent result verification | 8 min |
-| [28](labs/28-agent-trace/readme.md) | Trace-based evaluation | 8 min |
-| [29](labs/29-tokenization/readme.md) | Tokens: learned chunks, uneven costs | 10 min |
-| [30](labs/30-logprobs/readme.md) | The model's real probabilities | 10 min |
-| [31](labs/31-embedding-space/readme.md) | Meaning as geometry (embeddings) | 10 min |
-| [32](labs/32-image-generation/readme.md) | From prompt to pixels (image generation) | 12 min |
-| [33](labs/33-vision/readme.md) | What a vision model sees | 12 min |
-| [34](labs/34-speech-roundtrip/readme.md) | Sound is samples: speech out, speech in | 12 min |
-| [35](labs/35-diarization/readme.md) | Who spoke when (diarization) | 12 min |
-| [36](labs/36-music-tokens/readme.md) | Music is tokens | 12 min |
-| [37](labs/37-video-frames/readme.md) | Video is frames over time | 12 min |
-| [38](labs/38-llm-judge/readme.md) | Can a model grade a model? | 14 min |
+| [13 EN](labs/13-persistent-memory/readme.md) / [PL](labs/13-persistent-memory/readme.pl.md) | Memory across fresh processes | 6 min |
+| [14 EN](labs/14-memory-lifecycle/readme.md) / [PL](labs/14-memory-lifecycle/readme.pl.md) | Remember, replace, forget | 6 min |
+| [15 EN](labs/15-multiturn/readme.md) / [PL](labs/15-multiturn/readme.pl.md) | Real generated multi-turn dialogue | 7 min |
+| [16 EN](labs/16-summary-memory/readme.md) / [PL](labs/16-summary-memory/readme.pl.md) | Context summarization and token savings | 7 min |
+| [17 EN](labs/17-tool-chain/readme.md) / [PL](labs/17-tool-chain/readme.pl.md) | Catalog lookup followed by calculation | 8 min |
+| [18 EN](labs/18-semantic-memory/readme.md) / [PL](labs/18-semantic-memory/readme.pl.md) | Embeddings and semantic memory retrieval | 8 min |
+| [19 EN](labs/19-workflow-agent/readme.md) / [PL](labs/19-workflow-agent/readme.pl.md) | Workflow versus model-selected actions | 8 min |
+| [20 EN](labs/20-agent-feedback/readme.md) / [PL](labs/20-agent-feedback/readme.pl.md) | Act, observe, repeat | 8 min |
+| [21 EN](labs/21-agent-clarification/readme.md) / [PL](labs/21-agent-clarification/readme.pl.md) | Clarify missing requirements | 7 min |
+| [22 EN](labs/22-agent-state/readme.md) / [PL](labs/22-agent-state/readme.pl.md) | Explicit current task state | 8 min |
+| [23 EN](labs/23-agent-errors/readme.md) / [PL](labs/23-agent-errors/readme.pl.md) | Tool errors and bounded recovery | 8 min |
+| [24 EN](labs/24-agent-stopping/readme.md) / [PL](labs/24-agent-stopping/readme.pl.md) | Completion, impossibility, and limits | 8 min |
+| [25 EN](labs/25-agent-permissions/readme.md) / [PL](labs/25-agent-permissions/readme.pl.md) | Read versus write permissions | 7 min |
+| [26 EN](labs/26-agent-approval/readme.md) / [PL](labs/26-agent-approval/readme.pl.md) | Exact-action approval | 8 min |
+| [27 EN](labs/27-agent-verification/readme.md) / [PL](labs/27-agent-verification/readme.pl.md) | Independent result verification | 8 min |
+| [28 EN](labs/28-agent-trace/readme.md) / [PL](labs/28-agent-trace/readme.pl.md) | Trace-based evaluation | 8 min |
+| [29 EN](labs/29-tokenization/readme.md) / [PL](labs/29-tokenization/readme.pl.md) | Tokens: learned chunks, uneven costs | 10 min |
+| [30 EN](labs/30-logprobs/readme.md) / [PL](labs/30-logprobs/readme.pl.md) | The model's real probabilities | 10 min |
+| [31 EN](labs/31-embedding-space/readme.md) / [PL](labs/31-embedding-space/readme.pl.md) | Meaning as geometry (embeddings) | 10 min |
+| [32 EN](labs/32-image-generation/readme.md) / [PL](labs/32-image-generation/readme.pl.md) | From prompt to pixels (image generation) | 12 min |
+| [33 EN](labs/33-vision/readme.md) / [PL](labs/33-vision/readme.pl.md) | What a vision model sees | 12 min |
+| [34 EN](labs/34-speech-roundtrip/readme.md) / [PL](labs/34-speech-roundtrip/readme.pl.md) | Sound is samples: speech out, speech in | 12 min |
+| [35 EN](labs/35-diarization/readme.md) / [PL](labs/35-diarization/readme.pl.md) | Who spoke when (diarization) | 12 min |
+| [36 EN](labs/36-music-tokens/readme.md) / [PL](labs/36-music-tokens/readme.pl.md) | Music is tokens | 12 min |
+| [37 EN](labs/37-video-frames/readme.md) / [PL](labs/37-video-frames/readme.pl.md) | Video is frames over time | 12 min |
+| [38 EN](labs/38-llm-judge/readme.md) / [PL](labs/38-llm-judge/readme.pl.md) | Can a model grade a model? | 14 min |
 
 ## English / Polski
 
-The **14 basic labs (00, 00a, 01–12)** have English and Polish handouts (links
+**All 40 labs (00, 00a, 01–38)** have English and Polish handouts (links
 above), gallery teaching text, variant labels, exercises, and discussion
 questions. The entire lab 00 prediction/training walkthrough and its
-architecture diagram also have Polish versions. Labs 13–38 are advanced
-material and remain in English; the Polish gallery states that explicitly.
+architecture diagram also have Polish versions. Memory, agent and GenAI labs
+include translated display explanations, media captions and trace headings.
 
 Use the **Language / Język** selector in the gallery, or open
 `?lang=pl#00a-tokens` / `?lang=en#00a-tokens` on its URL. The selector remembers
 your preference and preserves the current lab and variant. Both language
-handouts can be downloaded directly from every basic lab's gallery page.
+handouts can be downloaded directly from every lab's gallery page.
 
-**Polski:** wybierz **Polski** w galerii. Każde laboratorium podstawowe ma
-polską instrukcję, wyjaśnienia, pytania i ćwiczenia. Prompty do samodzielnych
+**Polski:** wybierz **Polski** w galerii. Każde laboratorium ma
+polską instrukcję, wyjaśnienia, pytania i ćwiczenia; dotyczy to też wszystkich
+laboratoriów zaawansowanych. Prompty do samodzielnych
 ćwiczeń są wyraźnie oznaczone jako tłumaczenia, a nie wykonane żądania.
 Zmiana języka nie uruchamia modelu ani nie zmienia pomiarów.
 
@@ -79,20 +80,23 @@ The existing demo commands still execute the original English experiments;
 changing a prompt requires checking its language-dependent evaluator too.
 Do not infer Polish API costs or token counts from translated teaching text.
 
-Build both basic presentations without replacing the full English deck:
+Build both full presentations, plus optional basic-only presentations:
 
 ```sh
 npm run gallery
+npm run deck -- --language en --allow-missing-recordings
+npm run deck -- --language pl --allow-missing-recordings
 npm run deck -- --basic --language en --allow-missing-recordings
 npm run deck -- --basic --language pl --allow-missing-recordings
 ```
 
-These produce `deliverables/AI-Basics-basic.pptx` and
-`deliverables/AI-Basics-basic.pl.pptx`. Teaching slides and gallery links follow
+These produce `deliverables/AI-Basics.pptx`, `deliverables/AI-Basics.pl.pptx`,
+`deliverables/AI-Basics-basic.pptx` and `deliverables/AI-Basics-basic.pl.pptx`.
+Teaching slides and gallery links follow
 the selected language; saved model outputs remain clearly labeled originals.
-`npm run publish -- --include-deck` includes these basic decks when present,
-alongside the original full deck. Build them before publishing; missing
-optional basic decks are reported as warnings. No paid model calls are needed
+`npm run publish -- --include-deck` includes the Polish full deck and basic decks
+when present, alongside the original full English deck. Build them before
+publishing; missing optional decks are reported as warnings. No paid model calls are needed
 for translation, gallery builds, or presentation builds.
 
 Translation coverage is checked when building the gallery and in the test

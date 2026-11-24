@@ -1,6 +1,6 @@
 # 11 — Model prosi, kod oblicza
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](11-tools.en.md) | [Polski](11-tools.pl.md)
 
 **Język galerii:** przełącznik zmienia tekst dydaktyczny i udostępnia polskie tłumaczenia promptów do ćwiczeń. Oryginalne zapisane prompty, odpowiedzi modeli i metryki pozostają bez zmian. Tłumaczenia służą nauczaniu — nie są zmyślonymi wynikami polskich wywołań API.
 

@@ -1,5 +1,9 @@
 # 18 - Find a memory by meaning, not keywords
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **8 minutes; two chat requests and one batched embedding request.**
 
 1. Complete [setup](../../README.md#setup-and-deploy). This lab additionally needs

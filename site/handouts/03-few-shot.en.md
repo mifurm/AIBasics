@@ -1,6 +1,6 @@
 # 03 - Teach a pattern with examples
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](03-few-shot.en.md) | [Polski](03-few-shot.pl.md)
 
 **Language note:** the gallery language selector switches teaching text and provides Polish practice-prompt translations. Original recorded prompts, model output, and metrics remain unchanged; translations are teaching aids, not fabricated Polish API outcomes.
 

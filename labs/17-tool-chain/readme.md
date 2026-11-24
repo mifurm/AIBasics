@@ -1,5 +1,9 @@
 # 17 - Look up, then calculate with tools
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **8 minutes; three Azure chat requests.** A bounded, visible two-tool sequence.
 
 1. Run `node labs/17-tool-chain/demo.mjs` after [setup](../../README.md#setup-and-deploy).

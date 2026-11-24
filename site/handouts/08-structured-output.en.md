@@ -1,6 +1,6 @@
 # 08 - Turn language into validated data
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](08-structured-output.en.md) | [Polski](08-structured-output.pl.md)
 
 **Language note:** the gallery language selector switches teaching text and provides Polish practice-prompt translations. Original recorded prompts, model output, and metrics remain unchanged; translations are teaching aids, not fabricated Polish API outcomes.
 

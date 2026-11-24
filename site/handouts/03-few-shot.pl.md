@@ -1,6 +1,6 @@
 # 03 — Pokaż wzorzec na przykładach
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](03-few-shot.en.md) | [Polski](03-few-shot.pl.md)
 
 **Język galerii:** przełącznik zmienia tekst dydaktyczny i udostępnia polskie tłumaczenia promptów do ćwiczeń. Oryginalne zapisane prompty, odpowiedzi modeli i metryki pozostają bez zmian. Tłumaczenia służą nauczaniu — nie są zmyślonymi wynikami polskich wywołań API.
 

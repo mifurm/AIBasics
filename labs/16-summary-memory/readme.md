@@ -1,5 +1,9 @@
 # 16 - Compress context into a useful summary
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **7 minutes; three Azure chat requests.** Demonstrate a cheap form of working
 memory compression rather than a maximum-context-window stress test.
 

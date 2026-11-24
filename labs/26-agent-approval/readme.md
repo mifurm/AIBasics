@@ -1,5 +1,9 @@
 # 26 - Approve the exact action
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **8 minutes.** Prerequisite: lab 25 and [Azure setup](../../README.md#run-the-agent-labs-entirely-in-azure).
 
 1. Run `npm run azure:agents -- 26-agent-approval`.

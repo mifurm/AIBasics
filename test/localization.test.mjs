@@ -3,28 +3,29 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { labs } from '../lib/labs.mjs';
 import { validateWalkthrough } from '../lib/transformer-walkthrough-check.mjs';
-import { basicLabs, ui } from '../web/polish.mjs';
-import { isBasicLab, localizeLab, localizeDiagram, translate, validateTranslations } from '../web/i18n.mjs';
+import { ui } from '../web/polish.mjs';
+import { isBasicLab, polishLabs, localizeLab, localizeBlock, localizeDiagram, localizeTeaching, translate, validateTranslations } from '../web/i18n.mjs';
 
 const basics = labs.filter(isBasicLab);
 const recordFor = async lab => ({ ...lab, ...JSON.parse(await readFile(`results/${lab.id}.json`, 'utf8')) });
 
-test('every basic lab has complete Polish teaching content, case labels and applicable practice prompts', async () => {
+test('every lab has complete Polish teaching content, case labels and applicable practice prompts without changing evidence', async () => {
   validateTranslations(labs);
   assert.equal(basics.length, 14);
-  for (const lab of basics) {
+  for (const lab of labs) {
     const record = await recordFor(lab);
     const before = JSON.stringify(record);
     const polish = localizeLab(record, 'pl');
     assert.notEqual(polish.title, lab.title);
     for (const field of ['title', 'concept', 'question', 'caveat', 'exercise']) {
-      assert.equal(polish[field], basicLabs[lab.id][field]);
+      assert.equal(polish[field], polishLabs[lab.id][field]);
       assert.notEqual(polish[field], lab[field], `${lab.id}: untranslated ${field}`);
     }
     polish.results.forEach((result, index) => {
       const original = record.results[index];
       assert.notEqual(result.label, original.label);
-      for (const key of ['output', 'usage', 'apiCalls', 'measurements', 'latencyMs', 'actualModel', 'error', 'toolTrace']) {
+      for (const key of ['output', 'usage', 'apiCalls', 'measurements', 'latencyMs', 'actualModel', 'error', 'toolTrace',
+        'memoryTrace', 'summaryTrace', 'toolSteps', 'retrievalTrace', 'agentTrace', 'finalMessages', 'artifacts']) {
         assert.deepEqual(result[key], original[key], `${lab.id}: changed evidence ${key}`);
       }
       assert.deepEqual(result.request.messages, original.request.messages);
@@ -35,7 +36,42 @@ test('every basic lab has complete Polish teaching content, case labels and appl
   }
   const missing = [{ ...basics[2], id: '01-missing-translation' }];
   assert.throws(() => validateTranslations(missing), /Incomplete Polish/);
-  assert.equal(localizeLab(labs.find(lab => lab.id === '29-tokenization'), 'pl').title, 'Tokens: learned chunks, uneven costs');
+  assert.throws(() => localizeLab(missing[0], 'pl'), /Missing Polish lab/);
+});
+
+test('every authored display heading, explanation, caption and label has a translation, including media variants', async () => {
+  const checkBlocks = (original, localized) => original.forEach((block, index) => {
+    const translated = localized[index];
+    for (const key of ['title', 'caption', 'alt']) {
+      if (block[key]) assert.equal(translated[key], localizeTeaching(block[key]));
+    }
+    if (block.type === 'text') assert.equal(translated.text, localizeTeaching(block.text));
+    if (block.type === 'code') assert.equal(translated.text, block.text, 'Recorded code must not be translated');
+    if (block.headers) assert.deepEqual(translated.headers, block.headers.map(localizeTeaching));
+    if (block.items) block.items.forEach((item, i) => {
+      assert.equal(translated.items[i].label, localizeTeaching(item.label));
+      assert.equal(translated.items[i].value, item.value);
+      assert.equal(translated.items[i].max, item.max);
+    });
+    if (block.blocks) checkBlocks(block.blocks, translated.blocks);
+    assert.equal(translated.artifact, block.artifact, 'Media reference must not change');
+  });
+  for (const lab of labs) {
+    const record = await recordFor(lab);
+    const polish = localizeLab(record, 'pl');
+    record.results.forEach((result, i) => {
+      if (result.request.summary) assert.equal(polish.results[i].request.summary, localizeTeaching(result.request.summary));
+      if (result.display) checkBlocks(result.display, polish.results[i].display);
+    });
+  }
+  assert.throws(() => localizeTeaching('An untranslated teaching paragraph'), /Missing Polish teaching translation/);
+  assert.throws(() => localizeBlock({ type: 'table', headers: ['Measurement', 'Value'],
+    rows: [['A new untranslated measurement', 3]] }), /Missing Polish teaching translation/);
+  const record = await recordFor(labs.find(lab => lab.id === '31-embedding-space'));
+  const localized = localizeLab(record, 'pl').results[0];
+  const table = localized.display.find(block => block.title === 'Jak dobrze geometria rozdziela tematy?');
+  assert.equal(table.rows[0][0], 'Długość wektora');
+  assert.deepEqual(table.rows.map(row => row[1]), record.results[0].display.find(block => block.title === 'How well does the geometry separate topics?').rows.map(row => row[1]));
 });
 
 test('both Polish walkthroughs preserve every equation and operand and still reproduce the recorded math', async () => {
@@ -95,13 +131,27 @@ test('interface templates preserve named values and reject unsupported or missin
   assert.throws(() => translate('Input: {input} | Output: {output}{reasoning}', 'pl'), /Missing translation value/);
 });
 
-test('all basic handouts provide reciprocal language links and explain the original evidence', async () => {
-  for (const lab of basics) {
+test('all 40 handouts provide reciprocal language links and explain the original evidence', async () => {
+  for (const lab of labs) {
     for (const file of ['readme.md', 'readme.pl.md']) {
       const text = await readFile(`labs/${lab.id}/${file}`, 'utf8');
       assert.match(text, /\[[^\]]+\]\((?:\.\/)?readme\.md\)/, `${lab.id}/${file}: English link`);
       assert.match(text, /\[[^\]]+\]\((?:\.\/)?readme\.pl\.md\)/, `${lab.id}/${file}: Polish link`);
       assert.match(text, file === 'readme.pl.md' ? /[ąćęłńóśźż]/ : /Polish|Polski/);
     }
+  }
+});
+
+test('every published handout has working flat-file language links and all localization modules are shipped', async () => {
+  for (const lab of labs) {
+    for (const language of ['en', 'pl']) {
+      const text = await readFile(`site/handouts/${lab.id}.${language}.md`, 'utf8');
+      assert.ok(text.includes(`](${lab.id}.en.md)`), `${lab.id}: missing downloadable English link`);
+      assert.ok(text.includes(`](${lab.id}.pl.md)`), `${lab.id}: missing downloadable Polish link`);
+      assert.doesNotMatch(text, /\]\((?:\.\/)?readme(?:\.pl)?\.md\)/);
+    }
+  }
+  for (const file of ['i18n.mjs', 'polish.mjs', 'polish-advanced.mjs', 'polish-displays.mjs', 'polish-walkthrough.mjs']) {
+    assert.equal(await readFile(`site/${file}`, 'utf8'), await readFile(`web/${file}`, 'utf8'), `Stale shipped module: ${file}`);
   }
 });

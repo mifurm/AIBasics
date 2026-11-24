@@ -1,8 +1,11 @@
 import { basicLabs, ui, annotations, annotationPatterns, comparisonText, diagramText } from './polish.mjs';
 import { localizeWalkthrough } from './polish-walkthrough.mjs';
+import { advancedLabs } from './polish-advanced.mjs';
+import { displayText, displayPatterns } from './polish-displays.mjs';
 
 export const languages = ['en', 'pl'];
 export const isBasicLab = lab => /^(00|00a|0[1-9]|1[0-2])-/.test(lab.id);
+export const polishLabs = { ...basicLabs, ...advancedLabs };
 
 export function assertLanguage(language) {
   if (!languages.includes(language)) throw new Error(`Unsupported language: ${language}`);
@@ -21,25 +24,40 @@ export function translate(source, language = 'en', values = {}) {
 export function localizeAnnotation(source) {
   if (typeof source !== 'string') return source;
   if (Object.hasOwn(annotations, source)) return annotations[source];
+  if (Object.hasOwn(displayText, source)) return displayText[source];
+  if (Object.hasOwn(ui, source)) return ui[source];
   const language = /^(Polish|English|Spanish): inspect every token$/.exec(source);
   if (language) return `${annotations[language[1]]}: każdy token z osobna`;
-  for (const [pattern, replacement] of annotationPatterns) {
+  for (const [pattern, replacement] of [...annotationPatterns, ...displayPatterns]) {
     if (pattern.test(source)) return source.replace(pattern, replacement);
   }
   return source;
 }
 
+export function localizeTeaching(source) {
+  const localized = localizeAnnotation(source);
+  if (localized === source && /[A-Za-z]{3}/.test(source) &&
+    !/^(?:GPT-4o|GPT-5-mini|Model|Token|Prompt|URL|Hindi|<bos>|<eos>|the|robot|plant|blue|green|exp\([sz]\)|[\d.]+%|".*")$/.test(source)) {
+    throw new Error(`Missing Polish teaching translation: ${source}`);
+  }
+  return localized;
+}
+
 export function localizeBlock(block) {
+  const teachingRows = ['Measurement', 'Check', 'Quantity', 'Sentence pair', 'Content'].includes(block.headers?.[0]);
   return {
     ...block,
-    ...(block.title ? { title: localizeAnnotation(block.title) } : {}),
-    ...(block.type === 'text' ? { text: localizeAnnotation(block.text) } : {}),
-    ...(block.headers ? { headers: block.headers.map(localizeAnnotation) } : {}),
-    ...(block.rows ? { rows: block.rows.map(row => row.map(localizeAnnotation)) } : {}),
+    ...(block.title ? { title: localizeTeaching(block.title) } : {}),
+    ...(block.type === 'text' ? { text: localizeTeaching(block.text) } : {}),
+    ...(block.caption ? { caption: localizeTeaching(block.caption) } : {}),
+    ...(block.alt ? { alt: localizeTeaching(block.alt) } : {}),
+    ...(block.headers ? { headers: block.headers.map(localizeTeaching) } : {}),
+    ...(block.rows ? { rows: block.rows.map(row => row.map((cell, index) =>
+      teachingRows && index === 0 ? localizeTeaching(cell) : localizeAnnotation(cell))) } : {}),
     ...(block.blocks ? { blocks: block.blocks.map(localizeBlock) } : {}),
     ...(block.items ? { items: block.items.map(item => ({
-      ...item, label: localizeAnnotation(item.label),
-      ...(item.detail ? { detail: localizeAnnotation(item.detail) } : {}),
+      ...item, label: localizeTeaching(item.label),
+      ...(item.detail ? { detail: localizeTeaching(item.detail) } : {}),
     })) } : {}),
   };
 }
@@ -53,15 +71,15 @@ export function localizeDiagram(svg) {
 }
 
 export function validateTranslations(labs) {
-  for (const lab of labs.filter(isBasicLab)) {
-    const content = basicLabs[lab.id];
+  for (const lab of labs) {
+    const content = polishLabs[lab.id];
     if (!content || ['title', 'concept', 'question', 'caveat', 'exercise'].some(key => !content[key]?.trim())) {
       throw new Error(`Incomplete Polish teaching content: ${lab.id}`);
     }
     if (content.caseLabels.length !== lab.cases.length || content.caseLabels.some(label => !label.trim())) {
       throw new Error(`Incomplete Polish case labels: ${lab.id}`);
     }
-    const needsPrompts = lab.cases.every(testCase => !testCase.computation && !testCase.experiment);
+    const needsPrompts = content.practice?.length > 0 || lab.cases.some(testCase => !testCase.computation && !testCase.experiment);
     if (needsPrompts && (content.practice.length !== lab.cases.length || content.practice.some(messages =>
       !messages.length || messages.some(message => !message.role || !message.content.trim())))) {
       throw new Error(`Incomplete Polish practice prompts: ${lab.id}`);
@@ -71,8 +89,8 @@ export function validateTranslations(labs) {
 
 export function localizeLab(lab, language = 'en') {
   assertLanguage(language);
-  if (language === 'en' || !isBasicLab(lab)) return lab;
-  const content = basicLabs[lab.id];
+  if (language === 'en') return lab;
+  const content = polishLabs[lab.id];
   if (!content) throw new Error(`Missing Polish lab: ${lab.id}`);
   return {
     ...lab,
@@ -82,7 +100,7 @@ export function localizeLab(lab, language = 'en') {
     ...(lab.results ? { results: lab.results.map((result, index) => ({
       ...result, label: content.caseLabels[index],
       ...(result.display ? { display: result.display.map(localizeBlock) } : {}),
-      ...(result.request.summary ? { request: { ...result.request, summary: localizeAnnotation(result.request.summary) } } : {}),
+      ...(result.request.summary ? { request: { ...result.request, summary: localizeTeaching(result.request.summary) } } : {}),
       ...(result.comparison ? { comparison: {
         ...result.comparison,
         taskTitle: comparisonText[result.comparison.taskId].title,

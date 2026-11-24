@@ -1,5 +1,9 @@
 # 30 - The model's real probabilities
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **10 minutes.** Prerequisites: labs 04, 05 and 00; [Azure setup](../../README.md#run-the-advanced-genai-labs-entirely-in-azure).
 
 1. Predict whether "pick a random number from 1 to 10" is spread evenly across the ten numbers.

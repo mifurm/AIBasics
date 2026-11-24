@@ -1,6 +1,6 @@
 # 12 — Te same prompty, różne modele
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](12-models.en.md) | [Polski](12-models.pl.md)
 
 **Język galerii:** przełącznik zmienia tekst dydaktyczny i udostępnia polskie tłumaczenia promptów do ćwiczeń. Oryginalne zapisane prompty, odpowiedzi modeli i metryki pozostają bez zmian. Tłumaczenia służą nauczaniu — nie są zmyślonymi wynikami polskich wywołań API.
 

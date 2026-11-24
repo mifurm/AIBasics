@@ -1,6 +1,6 @@
 # 05 — Top-p: zawężanie puli kandydatów
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](05-top-p.en.md) | [Polski](05-top-p.pl.md)
 
 **Język galerii:** przełącznik zmienia tekst dydaktyczny i udostępnia polskie tłumaczenia promptów do ćwiczeń. Oryginalne zapisane prompty, odpowiedzi modeli i metryki pozostają bez zmian. Tłumaczenia służą nauczaniu — nie są zmyślonymi wynikami polskich wywołań API.
 

@@ -1,5 +1,9 @@
 # 22 - Keep current task state
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **8 minutes.** Prerequisites: labs 15 and 19; [Azure setup](../../README.md#run-the-agent-labs-entirely-in-azure).
 
 1. Run `npm run azure:agents -- 22-agent-state`.

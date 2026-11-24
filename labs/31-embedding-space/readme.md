@@ -1,5 +1,9 @@
 # 31 - Meaning as geometry
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **10 minutes.** Prerequisites: lab 18; [Azure setup](../../README.md#run-the-advanced-genai-labs-entirely-in-azure).
 
 1. Predict which sentences will land near each other on a 2D map.

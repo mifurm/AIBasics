@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { labs } from '../lib/labs.mjs';
 import { evaluate } from '../lib/evaluate.mjs';
 import { loadConfig } from '../lib/azure.mjs';
-import { isBasicLab, validateTranslations } from '../web/i18n.mjs';
+import { validateTranslations, localizeLab } from '../web/i18n.mjs';
 
 validateTranslations(labs);
 const { values } = parseArgs({ options: { media: { type: 'boolean', default: false } } });
@@ -15,11 +15,12 @@ const gallery = await galleryResponse.json();
 if (gallery.length !== labs.length) throw new Error(`Deployed gallery does not contain all ${labs.length} labs.`);
 for (const lab of labs) {
   await stat(`labs/${lab.id}/readme.md`);
-  if (isBasicLab(lab)) await stat(`labs/${lab.id}/readme.pl.md`);
+  await stat(`labs/${lab.id}/readme.pl.md`);
   await stat(`labs/${lab.id}/demo.mjs`);
   const record = JSON.parse(await readFile(`results/${lab.id}.json`, 'utf8'));
   const deployed = gallery.find(item => item.id === lab.id);
   if (!deployed || JSON.stringify(deployed.results) !== JSON.stringify(record.results)) throw new Error(`Stale deployed outcomes: ${lab.id}`);
+  localizeLab(deployed, 'pl');
   if (record.status === 'blocked') {
     if (lab.id !== '10-untrusted-context' || record.results[0].error?.code !== 'content_filter' || record.results[0].output !== null) {
       throw new Error(`Unexpected blocked outcome: ${lab.id}`);
@@ -59,14 +60,16 @@ for (const lab of labs) {
     }
     console.log(`${lab.id}: verified saved and deployed outcomes${verifiedArtifacts ? ` and ${verifiedArtifacts} media files` : ''}.`);
   }
-  await Promise.all(['i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs', 'transformer.pl.svg',
-    ...labs.filter(isBasicLab).flatMap(lab => ['en', 'pl'].map(language => `handouts/${lab.id}.${language}.md`)),
+}
+await Promise.all(['i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs', 'polish-advanced.mjs', 'polish-displays.mjs', 'transformer.pl.svg',
+    ...labs.flatMap(lab => ['en', 'pl'].map(language => `handouts/${lab.id}.${language}.md`)),
   ].map(async file => {
     const response = await fetch(new URL(file, config.website), { signal: AbortSignal.timeout(30_000) });
     if (!response.ok) throw new Error(`Missing deployed localization asset: ${file} (HTTP ${response.status})`);
     const local = await readFile(`site/${file}`);
     if (!local.equals(Buffer.from(await response.arrayBuffer()))) throw new Error(`Stale deployed localization asset: ${file}`);
   }));
+for (const lab of labs) {
   if (values.media) {
     const response = await fetch(`${config.website}recordings/${lab.id}.mp4`, { method: 'HEAD' });
     if (!response.ok || response.headers.get('content-type') !== 'video/mp4' || Number(response.headers.get('content-length')) < 1000) {

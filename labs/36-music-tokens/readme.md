@@ -1,5 +1,9 @@
 # 36 - Music is tokens
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **12 minutes.** Prerequisites: lab 00 and lab 04; [Azure setup](../../README.md#run-the-advanced-genai-labs-entirely-in-azure).
 
 1. Predict which composer moves most stepwise, and what a higher temperature will change.

@@ -1,5 +1,9 @@
 # 28 - Evaluate the answer and the path
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **8 minutes.** Prerequisites: labs 24-27; [Azure setup](../../README.md#run-the-agent-labs-entirely-in-azure).
 
 1. Run `npm run azure:agents -- 28-agent-trace`.

@@ -1,6 +1,6 @@
 # 09 — Oprzyj odpowiedź na źródle
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](09-grounding.en.md) | [Polski](09-grounding.pl.md)
 
 **Język galerii:** przełącznik zmienia tekst dydaktyczny i udostępnia polskie tłumaczenia promptów do ćwiczeń. Oryginalne zapisane prompty, odpowiedzi modeli i metryki pozostają bez zmian. Tłumaczenia służą nauczaniu — nie są zmyślonymi wynikami polskich wywołań API.
 

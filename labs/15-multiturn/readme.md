@@ -1,5 +1,9 @@
 # 15 - Build and revise a plan across turns
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **7 minutes; three Azure chat requests.** Unlike lab 07's fixed history, these
 assistant turns are genuinely generated and then reused by the next request.
 

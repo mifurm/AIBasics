@@ -1,5 +1,9 @@
 # 34 - Sound is samples: speech out, speech in
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **12 minutes.** Prerequisites: labs 06 and 31; [Azure setup](../../README.md#run-the-advanced-genai-labs-entirely-in-azure).
 
 1. Predict at what noise level a speech recognizer starts to fail, and how it will fail.

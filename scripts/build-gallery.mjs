@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { parseArgs } from 'node:util';
 import path from 'node:path';
 import { labs } from '../lib/labs.mjs';
-import { isBasicLab, validateTranslations, localizeDiagram } from '../web/i18n.mjs';
+import { validateTranslations, localizeDiagram, localizeLab } from '../web/i18n.mjs';
 
 validateTranslations(labs);
 await mkdir('site', { recursive: true });
@@ -12,9 +12,11 @@ await rm('site/media', { recursive: true, force: true });
 const { values } = parseArgs({ options: { 'media-directory': { type: 'string' } } });
 const records = [];
 for (const lab of labs) {
-  if (isBasicLab(lab)) {
-    await copyFile(`labs/${lab.id}/readme.md`, `site/handouts/${lab.id}.en.md`);
-    await copyFile(`labs/${lab.id}/readme.pl.md`, `site/handouts/${lab.id}.pl.md`);
+  for (const language of ['en', 'pl']) {
+    const text = await readFile(`labs/${lab.id}/readme${language === 'pl' ? '.pl' : ''}.md`, 'utf8');
+    await writeFile(`site/handouts/${lab.id}.${language}.md`, text
+      .replace(/\]\((?:\.\/)?readme\.md\)/g, `](${lab.id}.en.md)`)
+      .replace(/\]\((?:\.\/)?readme\.pl\.md\)/g, `](${lab.id}.pl.md)`));
   }
   const record = JSON.parse(await readFile(`results/${lab.id}.json`, 'utf8'));
   if (record.status === 'failed' || record.observations.some(check => !check.passed) ||
@@ -33,12 +35,14 @@ for (const lab of labs) {
   if (lab.id === '09-grounding') {
     record.firstAttempt = JSON.parse(await readFile('results/09-grounding-first-attempt.json', 'utf8'));
   }
-  records.push({ ...lab, ...record });
+  const merged = { ...lab, ...record };
+  localizeLab(merged, 'pl');
+  records.push(merged);
 }
 await writeFile('site/results.json', JSON.stringify(records, null, 2) + '\n');
 await copyFile('web/index.html', 'site/index.html');
 await copyFile('web/app.js', 'site/app.js');
-for (const file of ['i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs']) await copyFile(`web/${file}`, `site/${file}`);
+for (const file of ['i18n.mjs', 'polish.mjs', 'polish-walkthrough.mjs', 'polish-advanced.mjs', 'polish-displays.mjs']) await copyFile(`web/${file}`, `site/${file}`);
 await copyFile('web/style.css', 'site/style.css');
 await copyFile('web/transformer.svg', 'site/transformer.svg');
 await writeFile('site/transformer.pl.svg', localizeDiagram(await readFile('web/transformer.svg', 'utf8')));

@@ -1,6 +1,6 @@
 # 06 — Tokeny, limity i ucinanie odpowiedzi
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](06-token-budget.en.md) | [Polski](06-token-budget.pl.md)
 
 **Język galerii:** przełącznik zmienia tekst dydaktyczny i udostępnia polskie tłumaczenia promptów do ćwiczeń. Oryginalne zapisane prompty, odpowiedzi modeli i metryki pozostają bez zmian. Tłumaczenia służą nauczaniu — nie są zmyślonymi wynikami polskich wywołań API.
 

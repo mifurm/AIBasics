@@ -1,5 +1,9 @@
 # 33 - What a vision model sees
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **12 minutes.** Prerequisites: labs 08 and 12; [Azure setup](../../README.md#run-the-advanced-genai-labs-entirely-in-azure).
 
 1. Predict whether a model can count nineteen colored shapes and read a code only 7 pixels tall.

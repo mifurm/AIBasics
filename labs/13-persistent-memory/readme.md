@@ -1,5 +1,9 @@
 # 13 - Memory survives a new process
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **6 minutes; two Azure chat requests.** Predict whether saving a file alone lets
 the model know a classroom fact.
 

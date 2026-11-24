@@ -1,5 +1,9 @@
 # 25 - Read permission is not write permission
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **7 minutes.** Prerequisite: lab 19 and [Azure setup](../../README.md#run-the-agent-labs-entirely-in-azure).
 
 1. Run `npm run azure:agents -- 25-agent-permissions`.

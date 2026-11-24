@@ -1,5 +1,9 @@
 # 27 - Check the result, not the claim
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **8 minutes.** Prerequisites: labs 20 and 24; [Azure setup](../../README.md#run-the-agent-labs-entirely-in-azure).
 
 1. Run `npm run azure:agents -- 27-agent-verification`.

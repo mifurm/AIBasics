@@ -1,5 +1,9 @@
 # 14 - Update and forget a saved fact
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **6 minutes; three Azure chat requests.** Model a memory lifecycle without
 collecting student data.
 

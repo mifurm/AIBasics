@@ -1,5 +1,9 @@
 # 35 - Who spoke when
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **12 minutes.** Prerequisites: lab 34; [Azure setup](../../README.md#run-the-advanced-genai-labs-entirely-in-azure).
 
 1. Predict whether three voices are harder than two, and whether an interruption is harder than taking turns.

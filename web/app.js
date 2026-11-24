@@ -1,4 +1,4 @@
-import { languages, isBasicLab, localizeLab, translate, assertLanguage } from './i18n.mjs';
+import { languages, localizeLab, translate, assertLanguage } from './i18n.mjs';
 
 const nav = document.getElementById('labNav');
 const main = document.getElementById('main');
@@ -442,7 +442,7 @@ function showLab(index, selectedCase = 0) {
   const heading = element('h2', lab.title);
   heading.id = 'labTitle';
   main.append(heading, element('p', lab.concept, 'concept'));
-  if (isBasicLab(lab)) {
+  {
     const handouts = element('p', undefined, 'handout-links');
     for (const [locale, label] of [['en', 'English handout'], ['pl', 'Polish handout']]) {
       const link = element('a', t(label));
@@ -454,9 +454,7 @@ function showLab(index, selectedCase = 0) {
     main.append(handouts);
   }
   if (language === 'pl') {
-    main.append(element('p', t(isBasicLab(lab)
-      ? 'Teaching text is translated. Recorded prompts, answers, tokens, equations and timings stay unchanged. Polish practice prompts below are not recorded model runs.'
-      : 'This advanced lab is available in English; the basic labs 00, 00a and 01–12 have Polish teaching content.'), 'notice'));
+    main.append(element('p', t('Teaching text is translated. Recorded prompts, answers, tokens, equations and timings stay unchanged. Polish practice prompts below are not recorded model runs.'), 'notice'));
   }
   if (lab.diagram) {
     const figure = element('figure', undefined, 'architecture');
@@ -546,12 +544,13 @@ function showLab(index, selectedCase = 0) {
   for (const [key, title] of [['memoryTrace', 'Application memory snapshot'], ['summaryTrace', 'Generated summary used as context'],
     ['toolSteps', 'Ordered tool execution'], ['retrievalTrace', 'Semantic memory ranking'], ['agentTrace', 'Agent actions, observations, state, limits, and rubric']]) {
     if (result[key]) {
-      answer.append(element('h3', title), element('pre', JSON.stringify(result[key], null, 2), 'settings'));
+      answer.append(element('h3', t(title)), ...(language === 'pl' ? [originalEvidence()] : []),
+        element('pre', JSON.stringify(result[key], null, 2), 'settings'));
     }
   }
   if (result.finalMessages) {
     const transcript = element('details');
-    transcript.append(element('summary', 'Inspect the actual tool-call conversation'),
+    transcript.append(element('summary', t('Inspect the actual tool-call conversation')),
       element('pre', JSON.stringify(result.finalMessages, null, 2)));
     answer.append(transcript);
   }

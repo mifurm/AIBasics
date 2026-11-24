@@ -1,6 +1,6 @@
 # 10 - Instructions hidden in source text
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](10-untrusted-context.en.md) | [Polski](10-untrusted-context.pl.md)
 
 **Language note:** the gallery language selector switches teaching text and provides Polish practice-prompt translations. Original recorded prompts, model output, and metrics remain unchanged; translations are teaching aids, not fabricated Polish API outcomes.
 

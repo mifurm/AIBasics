@@ -15,7 +15,6 @@ const { values } = parseArgs({ options: {
 } });
 assertLanguage(values.language);
 validateTranslations(allLabs);
-if (values.language === 'pl' && !values.basic) throw new Error('Polish teaching content covers basic labs only. Use --language pl --basic.');
 const labs = values.basic ? allLabs.filter(isBasicLab) : allLabs;
 const t = (source, replacements) => translate(source, values.language, replacements);
 const languageTag = values.language === 'pl' ? 'pl-PL' : 'en-GB';
@@ -38,13 +37,13 @@ function slide(title, kicker = t('AI BASICS | CLASSROOM LABS')) {
   s.background = { color: 'F2F5F8' };
   s.addShape(pptx.ShapeType.rect, { x: 0, y: 0, w: 13.333, h: 0.16, fill: { color: C.teal }, line: { color: C.teal } });
   s.addText(kicker, { lang: languageTag, x: 0.5, y: 0.36, w: 12.3, h: 0.25, fontFace: 'Aptos', fontSize: 10, bold: true, color: C.teal, charSpacing: 2 });
-  s.addText(title, { lang: languageTag, x: 0.5, y: 0.84, w: 12.3, h: 0.55, fontSize: 28, bold: true, color: C.ink, breakLine: false });
+  s.addText(title, { lang: languageTag, x: 0.5, y: 0.84, w: 12.3, h: 0.55, fontSize: 28, bold: true, color: C.ink, breakLine: false, fit: 'shrink' });
   s.addText(t('Real observations, not guarantees. Only fictional classroom data.'), { lang: languageTag, x: 0.5, y: 7.04, w: 11.7, h: 0.22, fontSize: 9, color: C.gray });
-  s.addText(String(++slideCount), { x: 12.3, y: 7.04, w: 0.45, h: 0.22, fontSize: 9, color: C.gray, align: 'right' });
+  s.addText(String(++slideCount), { lang: languageTag, x: 12.3, y: 7.04, w: 0.45, h: 0.22, fontSize: 9, color: C.gray, align: 'right' });
   return s;
 }
 function body(s, text, x, y, w, h, fontSize = 20, lang = languageTag) {
-  s.addText(text, { lang, x, y, w, h, fontSize, color: C.ink, margin: 0, valign: 'top', breakLine: false });
+  s.addText(text, { lang, x, y, w, h, fontSize, color: C.ink, margin: 0, valign: 'top', breakLine: false, fit: 'shrink' });
 }
 function link(s, text, url, x, y, w = 7) {
   s.addText(text, { lang: languageTag, x, y, w, h: 0.34, fontSize: 13, color: C.teal, underline: true, hyperlink: { url } });
@@ -63,15 +62,15 @@ function addWalkthroughSlides(record) {
   ];
   for (const [title, steps, kicker] of groups) {
     const s = slide(title, `LAB 00 | ${kicker.toUpperCase()}`);
-    const header = ['Step', 'In plain words', 'The equation'].map(text => ({ text: t(text), options: { bold: true, fill: { color: C.pale }, color: C.ink } }));
+    const header = ['Step', 'In plain words', 'The equation'].map(text => ({ text: t(text), options: { lang: languageTag, bold: true, fill: { color: C.pale }, color: C.ink } }));
     const rows = [header, ...steps.map(step => [
-      { text: String(step.number), options: { align: 'center', bold: true } },
-      { text: step.title },
-      { text: step.headline, options: { fontFace: 'Cambria Math' } },
+      { text: String(step.number), options: { lang: languageTag, align: 'center', bold: true } },
+      { text: step.title, options: { lang: languageTag } },
+      { text: step.headline, options: { lang: languageTag, fontFace: 'Cambria Math' } },
     ])];
     s.addTable(rows, { lang: languageTag, x: 0.5, y: 1.6, w: 12.3, colW: [0.8, 4.7, 6.8], fontFace: 'Aptos', fontSize: 12, color: C.ink, border: { type: 'solid', color: 'D5E0E7', pt: 0.75 }, valign: 'middle', rowH: 0.45 });
     link(s, t('Open the full walkthrough with every number'), `${config.website}?lang=${values.language}#00-tiny-transformer`, 0.5, 6.6, 6);
-    s.addNotes(steps.map(step => `Step ${step.number}: ${step.title}\n${step.plain}`).join('\n\n'));
+    s.addNotes(steps.map(step => `${t('Step')} ${step.number}: ${step.title}\n${step.plain}`).join('\n\n'));
   }
 }
 
@@ -82,7 +81,7 @@ function addWalkthroughSlides(record) {
   s.addText(t('{count} LABS\nCHAT + REASONING\n+ EMBEDDINGS', { count: labs.length }), { lang: languageTag, x: 8.8, y: 2.4, w: 3.5, h: 2.3, fontSize: 24, bold: true, color: C.white, align: 'center', valign: 'mid' });
   link(s, t('Open the deployed teaching gallery'), `${config.website}?lang=${values.language}`, 0.6, 6.15);
   if (values.language === 'pl') s.addNotes(t('Teaching text is translated. Recorded prompts, answers, tokens, equations and timings stay unchanged. Polish practice prompts below are not recorded model runs.'));
-  s.addNotes('Audience: beginners. Split into five lessons: prompting; reliable outputs and tools; memory; agent loops; safe and testable execution. Ask students to predict the result before showing it. The browser displays saved Azure API results; videos, when available, do not claim to show live inference.');
+  s.addNotes(t('Audience: beginners. Split into five lessons: prompting; reliable outputs and tools; memory; agent loops; safe and testable execution. Ask students to predict the result before showing it. The browser displays saved Azure API results; videos, when available, do not claim to show live inference.'));
 }
 {
   const s = slide(t('How does a language model produce an answer?'));
@@ -91,10 +90,10 @@ function addWalkthroughSlides(record) {
     const x = 0.55 + i * 3.2;
     s.addShape(pptx.ShapeType.roundRect, { x, y: 2.0, w: 2.75, h: 1.6, fill: { color: i === 3 ? C.navy : C.pale }, line: { color: C.teal } });
     s.addText(t(text), { lang: languageTag, x: x + 0.16, y: 2.28, w: 2.43, h: 1.1, fontSize: 19, color: i === 3 ? C.white : C.ink, align: 'center', valign: 'mid' });
-    if (i < 3) s.addText('>', { x: x + 2.85, y: 2.5, w: 0.3, h: 0.5, fontSize: 27, color: C.teal });
+    if (i < 3) s.addText('>', { lang: languageTag, x: x + 2.85, y: 2.5, w: 0.3, h: 0.5, fontSize: 27, color: C.teal });
   });
   body(s, t('Training changes network weights. Prompting supplies context.\nThe model is not a search engine, a database, or a calculator by default.\nA fluent answer can still be wrong.'), 0.7, 4.25, 11.9, 2.0, 23);
-  s.addNotes('This is a simplified autoregressive language-model explanation, not a claim to reveal internal computations. Modern systems add retrieval, tools, and reasoning. Next-token prediction can produce powerful learned capabilities, but it does not guarantee truth.');
+  s.addNotes(t('This is a simplified autoregressive language-model explanation, not a claim to reveal internal computations. Modern systems add retrieval, tools, and reasoning. Next-token prediction can produce powerful learned capabilities, but it does not guarantee truth.'));
 }
 {
   const s = slide(t('The basic knobs - and what they cannot do'));
@@ -109,7 +108,7 @@ function addWalkthroughSlides(record) {
   const split = Math.ceil(labs.length / 2);
   body(s, labs.slice(0, split).map(lab => `${lab.id.split('-')[0]}  ${localizeLab(lab, values.language).title}`).join('\n'), 0.7, 1.8, 5.9, 4.9, 16);
   body(s, labs.slice(split).map(lab => `${lab.id.split('-')[0]}  ${localizeLab(lab, values.language).title}`).join('\n'), 6.9, 1.8, 5.8, 4.9, 16);
-  s.addNotes('For every lab: predict before the video, inspect actual prompts and output, discuss the caution, then change one variable. The gallery includes a retained failed citation attempt and an Azure-blocked request.');
+  s.addNotes(t('For every lab: predict before the video, inspect actual prompts and output, discuss the caution, then change one variable. The gallery includes a retained failed citation attempt and an Azure-blocked request.'));
 }
 const report = [
   '# Actual Azure teaching outcomes', '',
@@ -150,7 +149,7 @@ for (let i = 0; i < labs.length; i++) {
       body(s, result.comparison.modelLabel, x + 0.15, 2.4, 3.7, 0.35, 18);
       body(s, result.output.length > 320 ? `${result.output.slice(0, 320)}\n[Excerpt; full output in gallery]` : result.output,
         x + 0.15, 3.0, 3.7, 2.25, 13, 'en-GB');
-      body(s, `${result.latencyMs} ms | ${result.usage.total_tokens} tokens`, x + 0.15, 5.55, 3.7, 0.35, 12);
+      body(s, t('{ms} ms | {tokens} tokens', { ms: result.latencyMs, tokens: result.usage.total_tokens }), x + 0.15, 5.55, 3.7, 0.35, 12);
     });
   } else {
     s.addShape(pptx.ShapeType.roundRect, { x: 4.5, y: 1.7, w: 8.2, h: 4.61, fill: { color: C.white }, line: { color: 'D5E0E7' } });
@@ -171,14 +170,14 @@ for (let i = 0; i < labs.length; i++) {
   if (lab.diagram) link(s, t('Open the transformer architecture'), `${config.website}${lab.diagram}`, 0.6, 6.5, 3.8);
   link(s, t('Explore prompts and all outputs'), `${config.website}?lang=${values.language}#${lab.id}`, 8.55, 6.5, 4.15);
   s.addNotes([
-    `Run: node labs/${lab.id}/demo.mjs`, `Try it: ${lab.exercise}`,
+    t('Run: {command}', { command: `node labs/${lab.id}/demo.mjs` }), t('Try it: {text}', { text: lab.exercise }),
     ...(values.language === 'pl' ? [
       t('Teaching text is translated. Recorded prompts, answers, tokens, equations and timings stay unchanged. Polish practice prompts below are not recorded model runs.'),
       ...lab.practice.map((messages, index) => `${record.results[index]?.label ?? index + 1}\n${t('Polish practice prompt (translation, not an executed request)')}\n${messages.map(message => `${message.role.toUpperCase()}: ${message.content}`).join('\n')}`),
     ] : []),
-    `Recorded: ${record.recordedAt}. Status: ${record.status ?? 'completed'}.`,
-    lab.id === '09-grounding' ? 'First attempt omitted the citation and failed evaluation; retained separately and in the gallery. When recorded, the video includes that actual first attempt alongside the refined result.' : '',
-    record.status === 'blocked' ? 'Azure returned HTTP 400 content_filter; no model completion and no second variant. No filter bypass attempted.' : '',
+    t('Recorded: {date}. Status: {status}.', { date: record.recordedAt, status: record.status ?? 'completed' }),
+    lab.id === '09-grounding' ? t('First attempt omitted the citation and failed evaluation; retained separately and in the gallery. When recorded, the video includes that actual first attempt alongside the refined result.') : '',
+    record.status === 'blocked' ? t('Azure returned HTTP 400 content_filter; no model completion and no second variant. No filter bypass attempted.') : '',
     ...record.results.map(result => result.status === 'blocked' ? result.error.message :
       `${result.label}: ${result.actualModel}; ${result.latencyMs} ms; ${result.kind === 'computation' ? 'no model API requests' : result.kind === 'experiment' ? `${result.apiRequests} Azure API request(s)` : `${result.usage.total_tokens} API tokens`}. Actual output:\n${result.output}`),
   ].filter(Boolean).join('\n\n'));
@@ -213,7 +212,7 @@ for (let i = 0; i < labs.length; i++) {
   const s = slide(t('What should students take away?'));
   body(s, t('1. Clear tasks and relevant context beat vague instructions.\n2. Examples guide patterns; they do not retrain the model.\n3. Sampling controls variety, not truth.\n4. Ground, validate, and allowlist tools.\n5. Measure representative tasks before choosing a model.'), 0.7, 1.8, 11.7, 3.3, 24);
   body(s, t('A missing citation and a blocked request are learning outcomes, too.'), 0.7, 5.6, 11.7, 0.9, 24);
-  s.addNotes('Actual observed failures are preserved. Do not teach students to bypass provider controls. All examples use fictional data; keep private student information out of public recordings.');
+  s.addNotes(t('Actual observed failures are preserved. Do not teach students to bypass provider controls. All examples use fictional data; keep private student information out of public recordings.'));
 }
 {
   const s = slide(t('Instructor setup and official references'));
@@ -227,7 +226,7 @@ for (let i = 0; i < labs.length; i++) {
   ];
   sources.forEach(([text, url], i) => link(s, t(text), url, 0.7, 3.7 + i * 0.43, 11.8));
   link(s, t('Open the deployed gallery'), `${config.website}?lang=${values.language}`, 0.7, 6.1);
-  s.addNotes('Embedded MP4 playback depends on the presentation viewer. Use desktop PowerPoint or public per-lab links when recordings are available. Output limits reduce usage but are not a dollar cap. Model requests are billed; Free-tier hosting has storage and bandwidth limits.');
+  s.addNotes(t('Embedded MP4 playback depends on the presentation viewer. Use desktop PowerPoint or public per-lab links when recordings are available. Output limits reduce usage but are not a dollar cap. Model requests are billed; Free-tier hosting has storage and bandwidth limits.'));
 }
 const first = JSON.parse(await readFile('results/09-grounding-first-attempt.json', 'utf8'));
 detailed.push('\n## Retained first grounding attempt\n\nThe original prompt requested a citation but did not obtain one. The evaluator failed and stopped the runner. The prompt was refined, not the output edited.\n');

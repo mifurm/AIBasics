@@ -1,6 +1,6 @@
 # 02 - Roles and instruction priority
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](02-roles.en.md) | [Polski](02-roles.pl.md)
 
 **Language note:** the gallery language selector switches teaching text and provides Polish practice-prompt translations. Original recorded prompts, model output, and metrics remain unchanged; translations are teaching aids, not fabricated Polish API outcomes.
 

@@ -1,5 +1,9 @@
 # 38 - Can a model grade a model?
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **14 minutes.** Prerequisites: labs 12 and 24; [Azure setup](../../README.md#run-the-advanced-genai-labs-entirely-in-azure).
 
 1. Predict whether a judge model can be fooled by a longer, more confident wrong answer.

@@ -1,6 +1,6 @@
 # 07 — Kontekst to nie trwała pamięć
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](07-context.en.md) | [Polski](07-context.pl.md)
 
 **Język galerii:** przełącznik zmienia tekst dydaktyczny i udostępnia polskie tłumaczenia promptów do ćwiczeń. Oryginalne zapisane prompty, odpowiedzi modeli i metryki pozostają bez zmian. Tłumaczenia służą nauczaniu — nie są zmyślonymi wynikami polskich wywołań API.
 

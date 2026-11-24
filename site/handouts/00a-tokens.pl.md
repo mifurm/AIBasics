@@ -1,6 +1,6 @@
 # 00a — Czym jest token?
 
-[English](readme.md) | [Polski](readme.pl.md)
+[English](00a-tokens.en.md) | [Polski](00a-tokens.pl.md)
 
 **Język galerii:** przełącznik zmienia tekst dydaktyczny i udostępnia polskie tłumaczenia promptów do ćwiczeń. Oryginalne zapisane prompty, odpowiedzi modeli i metryki pozostają bez zmian. Tłumaczenia służą nauczaniu — nie są zmyślonymi wynikami polskich wywołań API.
 

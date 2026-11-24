@@ -1,5 +1,9 @@
 # 29 - Tokens: learned chunks, uneven costs
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **10 minutes.** Prerequisites: labs 06 and 00; [Azure setup](../../README.md#run-the-advanced-genai-labs-entirely-in-azure).
 
 1. Predict which of eight translations of one sentence will cost the most tokens.

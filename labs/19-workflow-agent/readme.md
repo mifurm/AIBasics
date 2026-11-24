@@ -1,5 +1,9 @@
 # 19 - Workflow or agent?
 
+[English](readme.md) | [Polski](readme.pl.md)
+
+**Language note:** translations are teaching aids. Original recorded prompts, model output, and metrics remain unchanged; they are not fabricated Polish API outcomes.
+
 **8 minutes.** Prerequisites: labs 11 and 17; [Azure setup](../../README.md#run-the-agent-labs-entirely-in-azure).
 
 1. Predict which tools a unit price, a basket total, and a greeting need.
